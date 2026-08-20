@@ -1,0 +1,11 @@
+# Entornos virtuales de Python
+venv/
+__pycache__/
+
+# Dependencias de Node (Tailwind)
+node_modules/
+
+# Archivos de sistema operativo y editores
+.DS_Store
+Thumbs.db
+.vscode/
