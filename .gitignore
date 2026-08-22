@@ -9,3 +9,6 @@ node_modules/
 .DS_Store
 Thumbs.db
 .vscode/
+
+# Archivos de Tailwind
+**/output.css
