@@ -1,0 +1,30 @@
+/* Reset and base */
+:root { --teal:#077890; --orange:#df721d; --ink:#080808; }
+* { box-sizing:border-box; }
+html, body { min-height:100%; margin:0; }
+body { font-family:Arial, Helvetica, sans-serif; color:var(--ink); background:#fff; }
+
+/* Layout */
+.collection-page { min-height:752px; overflow:hidden; position:relative; background:
+  radial-gradient(ellipse at 30% 42%, rgba(157,247,249,.45) 0, rgba(157,247,249,0) 24%),
+  radial-gradient(ellipse at 77% 27%, rgba(255,187,77,.45) 0, rgba(255,187,77,0) 29%),
+  radial-gradient(ellipse at 49% 92%, rgba(177,239,245,.70) 0, rgba(177,239,245,0) 26%), #fffdf7; }
+.hero { height:151px; position:relative; overflow:hidden; filter:drop-shadow(0 4px 2px rgba(0,0,0,.32)); }
+.hero__orange { position:absolute; inset:0; background:var(--orange); }
+.hero__teal { position:absolute; z-index:1; height:150px; width:111%; left:-12%; top:0; padding:98px 0 0 24%; background:var(--teal); border-radius:0 0 42px 42px; clip-path:polygon(0 66%, 8% 49%, 19% 31%, 30% 21%, 53% 10%, 66% 0, 100% 0, 100% 100%, 0 100%); }
+.hero h1 { margin:0; color:#fff; font-size:29px; line-height:1; font-weight:800; letter-spacing:-.8px; white-space:nowrap; }
+.cards-grid { width:295px; margin:42px auto 0; display:grid; grid-template-columns:1fr 1fr; column-gap:24px; row-gap:40px; }
+.player-card { min-width:0; text-align:center; }
+
+/* Typography */
+.player-card h2 { margin:7px -10px 0; font-size:12px; line-height:14px; font-weight:700; }
+.player-card h2 span { font-weight:700; }
+
+/* Card components */
+.trading-card { width:110px; height:157px; position:relative; margin:auto; overflow:hidden; background:#222; border:2px solid #e7e5e0; box-shadow:0 0 0 1px #4e4e4e; }
+.trading-card img { display:block; width:100%; height:100%; object-fit:cover; }
+.trading-card--moore { width:160px; height:93px; margin-top:1px; background:#171717; border-color:#dededb; }
+.trading-card--meza { width:111px; height:156px; margin-top:-31px; background:#1d1d1b; border:0; box-shadow:none; }
+.meza-name { position:absolute; right:7px; bottom:4px; color:white; font-size:8px; text-align:right; font-weight:bold; line-height:8px; }
+
+@media (min-width:600px) { .collection-page { width:346px; margin:auto; box-shadow:0 0 18px rgba(0,0,0,.2); } }
