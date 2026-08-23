@@ -1,0 +1,5 @@
+logo-bg.svg
+player.png
+estadio.jpg
+mascota.jpg
+mvp.jpg
