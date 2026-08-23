@@ -29,7 +29,7 @@ export function renderBottomNav() {
 
                 <!-- 3. BOTÓN CENTRAL (AR) -->
                 <div class="w-1/5 h-full relative">
-                    <button class="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#f27b21] w-[72px] h-[72px] rounded-[1.25rem] flex items-center justify-center shadow-lg bg-gradient-to-tr from-[#f27b21] to-[#ffb177]">
+                    <button class="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#f27b21] w-[72px] h-[72px] rounded-[1.25rem] flex items-center justify-center shadow-lg bg-[#f27b21] hover:bg-[#e06a1c] transition-colors">
                         <svg class="w-12 h-12 text-white" viewBox="0 0 56 52" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M4.17822 47.8031C1.2817 44.8404 0.364811 39.6045 0.0991822 35.8193C-0.0936785 33.071 3.24694 29.177 4.17821 31.7698C6.13025 37.2047 4.78179 47.299 20.8448 47.7916C22.0855 47.8297 23.3856 49.2328 23.274 50.469C23.162 51.71 22.2329 51.8998 20.9881 51.9548C17.0157 52.1305 8.27267 51.9911 4.17822 47.8031Z" fill="white"/>
                             <path d="M51.2355 47.8031C54.1498 44.8496 55.0785 39.6368 55.3498 35.8544C55.5484 33.0859 52.1814 29.1603 51.2355 31.7698C49.2645 37.207 50.6275 47.3076 34.3938 47.7923C33.1532 47.8293 31.8505 49.2303 31.9626 50.4664C32.0754 51.7095 33.0068 51.8991 34.2539 51.9541C38.2555 52.1308 47.0976 51.9967 51.2355 47.8031Z" fill="white"/>
