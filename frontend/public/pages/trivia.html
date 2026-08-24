@@ -1,77 +1,88 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Zona Diamante</title>
-        <link href="./css/trivia-Style.css" rel="stylesheet">
-    </head>
-    <body>
 
-        <div id="header-superior"></div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>Zona Diamante</title>
 
-        <div id="menu-inferior"></div>
+    <link href="../css/trivia-Style.css" rel="stylesheet">
+</head>
 
-        <script type="module" src="./js/main.js"></script>
+<body class="bg-slate-900 min-h-screen">
 
-
+    <!-- MENÚ SUPERIOR -->
+    <div id="header-superior"></div>
 
 
-              <!-- CONTENIDO DEL TRIVIA -->
-      <main class="trivia-content">
+    <!-- CONTENIDO DEL TRIVIA -->
+    <main class="trivia-content">
 
-          <!-- Barra de progreso y tiempo -->
-          <div class="trivia-top">
+        <!-- Barra de progreso y tiempo -->
+        <div class="trivia-top">
 
-              <div class="progress-container">
-                  <div class="progress-bar" id="progressBar"></div>
-              </div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
 
-              <div class="timer" id="timer">5s</div>
+            <div class="timer" id="timer">5s</div>
 
-          </div>
-
-
-          <!-- Tarjeta de pregunta -->
-          <section class="question-card">
-
-              <div class="question-image">
-                  <!-- Cambia esta imagen por la que quieras -->
-                  <img src="img/pregunta.jpg" alt="Imagen de la pregunta">
-
-                  <div class="question-overlay"></div>
-
-                  <h1 id="questionText">
-                      ¿Cómo se llama la mascota de los dorados?
-                  </h1>
-              </div>
-
-          </section>
+        </div>
 
 
-          <!-- Respuestas -->
-          <section class="answers" id="answers">
+        <!-- Tarjeta de pregunta -->
+        <section class="question-card">
 
-              <button class="answer">
-                  Pantunfla esponjosa
-              </button>
+            <div class="question-image">
 
-              <button class="answer">
-                  Tigre Toño
-              </button>
+                <img 
+                    src="../img/pregunta.jpg" 
+                    alt="Imagen de la pregunta"
+                >
 
-              <button class="answer">
-                  Lobo Mita
-              </button>
+                <div class="question-overlay"></div>
 
-              <button class="answer">
-                  Pancho Pistolas
-              </button>
+                <h1 id="questionText">
+                    ¿Cómo se llama la mascota de los dorados?
+                </h1>
 
-          </section>
+            </div>
 
-      </main>
+        </section>
 
-    </body>
+
+        <!-- Respuestas -->
+        <section class="answers" id="answers">
+
+            <button class="answer">
+                Pantunfla esponjosa
+            </button>
+
+            <button class="answer">
+                Tigre Toño
+            </button>
+
+            <button class="answer">
+                Lobo Mita
+            </button>
+
+            <button class="answer">
+                Pancho Pistolas
+            </button>
+
+        </section>
+
+    </main>
+
+
+    <!-- MENÚ INFERIOR -->
+    <div id="menu-inferior"></div>
+
+
+    <!-- JAVASCRIPT -->
+    <script type="module" src="./js/main.js"></script>
+
+</body>
+
 </html>
