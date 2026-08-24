@@ -1,0 +1,184 @@
+[
+  {
+    "id": "sultanes-mty",
+    "nombre": "Sultanes",
+    "ciudad": "Monterrey",
+    "colores": {
+      "primario": "#002D62", 
+      "secundario": "#E51837",
+      "gradienteDeg": "to-b"
+    },
+    "imagenes": {
+      "logoFondo": "./img/sultanes-logo-bg.svg",
+      "jugadorCarrusel": "./img/sultanes-player.png"
+    },
+    "detalles": {
+      "zona": "Zona Norte de la LMB",
+      "record": "49 - 44",
+      "posicion": "3.°",
+      "historia": "Los Sultanes de Monterrey suman 10 campeonatos de la Liga Mexicana de Béisbol en su historia, además de haber obtenido 13 títulos de la Zona Norte.",
+      "estadisticas": {
+        "pct": ".527",
+        "streak": "P1",
+        "avg": ".273",
+        "hr": 50,
+        "ci": 252
+      },
+      "estadio": {
+        "nombre": "Estadio Walmart Park",
+        "ubicacion": "Monterrey",
+        "imagen": "./img/estadio-sultanes.jpg"
+      },
+      "mascota": {
+        "nombre": "El Perro Sultán",
+        "imagen": "./img/mascota-sultanes.jpg"
+      },
+      "palmares": [
+        "10 campeonatos LMB",
+        "13 títulos de la Zona Norte"
+      ],
+      "mvp": {
+        "nombre": "Ramiro Peña",
+        "imagen": "./img/ramiro-pena.jpg"
+      },
+      "calendario": [
+        {
+          "oponente": "Dorados",
+          "fecha": "10 Agosto",
+          "hora": "5 p.m. hora México"
+        },
+        {
+          "oponente": "Diablos",
+          "fecha": "12 Agosto",
+          "hora": "7 p.m. hora México"
+        }
+      ]
+    }
+  },
+  {
+    "id": "dorados-chi",
+    "nombre": "Dorados",
+    "ciudad": "Chihuahua",
+    "colores": {
+      "primario": "#4B166B",
+      "secundario": "#F2A900",
+      "gradienteDeg": "to-b"
+    },
+    "imagenes": {
+      "logoFondo": "./img/dorados-logo-bg.svg",
+      "jugadorCarrusel": "./img/dorados-player.png"
+    },
+    "detalles": {
+      "zona": "Zona Norte de la LMB",
+      "record": "0 - 0",
+      "posicion": "0.°",
+      "historia": "Historia de los dorados...",
+      "estadisticas": {
+        "pct": ".000",
+        "streak": "-",
+        "avg": ".000",
+        "hr": 0,
+        "ci": 0
+      },
+      "estadio": {
+        "nombre": "Estadio Monumental",
+        "ubicacion": "Chihuahua",
+        "imagen": "./img/estadio-dorados.jpg"
+      },
+      "mascota": {
+        "nombre": "Mascota Dorados",
+        "imagen": "./img/mascota-dorados.jpg"
+      },
+      "palmares": [],
+      "mvp": {
+        "nombre": "Jugador Estrella",
+        "imagen": "./img/dorados-mvp.jpg"
+      },
+      "calendario": []
+    }
+  },
+  {
+    "id": "dorados-chi",
+    "nombre": "Dorados",
+    "ciudad": "Chihuahua",
+    "colores": {
+      "primario": "#4B166B",
+      "secundario": "#F2A900",
+      "gradienteDeg": "to-b"
+    },
+    "imagenes": {
+      "logoFondo": "./img/dorados-logo-bg.svg",
+      "jugadorCarrusel": "./img/dorados-player.png"
+    },
+    "detalles": {
+      "zona": "Zona Norte de la LMB",
+      "record": "0 - 0",
+      "posicion": "0.°",
+      "historia": "Historia de los dorados...",
+      "estadisticas": {
+        "pct": ".000",
+        "streak": "-",
+        "avg": ".000",
+        "hr": 0,
+        "ci": 0
+      },
+      "estadio": {
+        "nombre": "Estadio Monumental",
+        "ubicacion": "Chihuahua",
+        "imagen": "./img/estadio-dorados.jpg"
+      },
+      "mascota": {
+        "nombre": "Mascota Dorados",
+        "imagen": "./img/mascota-dorados.jpg"
+      },
+      "palmares": [],
+      "mvp": {
+        "nombre": "Jugador Estrella",
+        "imagen": "./img/dorados-mvp.jpg"
+      },
+      "calendario": []
+    }
+  },
+  {
+    "id": "dorados-chi",
+    "nombre": "Dorados",
+    "ciudad": "Chihuahua",
+    "colores": {
+      "primario": "#4B166B",
+      "secundario": "#F2A900",
+      "gradienteDeg": "to-b"
+    },
+    "imagenes": {
+      "logoFondo": "./img/dorados-logo-bg.svg",
+      "jugadorCarrusel": "./img/dorados-player.png"
+    },
+    "detalles": {
+      "zona": "Zona Norte de la LMB",
+      "record": "0 - 0",
+      "posicion": "0.°",
+      "historia": "Historia de los dorados...",
+      "estadisticas": {
+        "pct": ".000",
+        "streak": "-",
+        "avg": ".000",
+        "hr": 0,
+        "ci": 0
+      },
+      "estadio": {
+        "nombre": "Estadio Monumental",
+        "ubicacion": "Chihuahua",
+        "imagen": "./img/estadio-dorados.jpg"
+      },
+      "mascota": {
+        "nombre": "Mascota Dorados",
+        "imagen": "./img/mascota-dorados.jpg"
+      },
+      "palmares": [],
+      "mvp": {
+        "nombre": "Jugador Estrella",
+        "imagen": "./img/dorados-mvp.jpg"
+      },
+      "calendario": []
+    }
+  }
+]

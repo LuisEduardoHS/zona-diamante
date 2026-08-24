@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zona Diamante | Escáner</title>
+    <link href="./css/output.css" rel="stylesheet">
+</head>
+<body class="bg-[#1a1a1a] min-h-screen relative overflow-hidden">
+    <div id="header-superior"></div>
+
+    <main class="absolute inset-0 w-full h-full z-0">
+        <video id="camara-feed" class="w-full h-full object-cover" autoplay playsinline></video>
+    </main>
+
+    <div id="ui-escaneando" class="absolute top-28 left-0 w-full flex justify-center z-10 transition-opacity duration-300">
+        <div class="bg-white/50 backdrop-blur-md px-8 py-2.5 rounded-full shadow-lg">
+            <span class="text-[#2b2b31] font-bold text-sm">Escanea un logo</span>
+        </div>
+    </div>
+
+    <div id="ui-resultado" class="absolute inset-0 z-10 flex flex-col items-center justify-end pb-32 hidden pointer-events-none">
+
+        <button class="bg-[#008298] text-white px-8 py-3 rounded-dull font-bold shadow-lg flex items-center gap-2 pointer-events-auto hover:scale-105 transition-transform mb-6">
+            <span>Más información</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+        </button>
+
+        <div class="relative bg-white/90 px-5 py-2 rounded-full shadow-md pointer-events-auto cursor-pointer hover:bg-white transition-colors">
+            <span class="text-[#2b2b31] font-bold text-xs">Nueva Captura</span>
+            <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-white/90"></div>
+        </div>
+
+    </div>
+
+    <div id="ui-resultado" class="absolute inset-0 z-10 flex flex-col items-center justify">
+
+    </div>
+
+    <div id="menu-inferior"></div>
+
+    <script type="module" src="./js/main.js"></script>
+
+    <script type="module" src="./js/camara.js"></script>
+
+</body>
+</html>

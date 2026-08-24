@@ -29,7 +29,7 @@ export function renderBottomNav() {
 
                 <!-- 3. BOTÓN CENTRAL (AR) -->
                 <div class="w-1/5 h-full relative">
-                    <button class="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#f27b21] w-[72px] h-[72px] rounded-[1.25rem] flex items-center justify-center shadow-lg bg-[#f27b21] hover:bg-[#e06a1c] transition-colors">
+                    <a href="camara.html" class="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#f27b21] w-[72px] h-[72px] rounded-[1.25rem] flex items-center justify-center shadow-lg bg-gradient-[#f27b21]">
                         <svg class="w-12 h-12 text-white" viewBox="0 0 56 52" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M4.17822 47.8031C1.2817 44.8404 0.364811 39.6045 0.0991822 35.8193C-0.0936785 33.071 3.24694 29.177 4.17821 31.7698C6.13025 37.2047 4.78179 47.299 20.8448 47.7916C22.0855 47.8297 23.3856 49.2328 23.274 50.469C23.162 51.71 22.2329 51.8998 20.9881 51.9548C17.0157 52.1305 8.27267 51.9911 4.17822 47.8031Z" fill="white"/>
                             <path d="M51.2355 47.8031C54.1498 44.8496 55.0785 39.6368 55.3498 35.8544C55.5484 33.0859 52.1814 29.1603 51.2355 31.7698C49.2645 37.207 50.6275 47.3076 34.3938 47.7923C33.1532 47.8293 31.8505 49.2303 31.9626 50.4664C32.0754 51.7095 33.0068 51.8991 34.2539 51.9541C38.2555 52.1308 47.0976 51.9967 51.2355 47.8031Z" fill="white"/>
@@ -37,7 +37,7 @@ export function renderBottomNav() {
                             <path d="M51.2742 4.15407C54.1607 7.07642 55.0812 12.2334 55.3504 15.9769C55.5477 18.7194 52.2121 22.6085 51.2742 20.0238C49.3212 14.6418 50.6719 4.64357 34.5846 4.16475C33.3567 4.12821 32.0671 2.74174 32.1781 1.51831C32.2898 0.287629 33.212 0.100004 34.4465 0.0454976C38.4107 -0.129523 47.1736 0.00265237 51.2742 4.15407Z" fill="white"/>
                             <ellipse cx="28.3994" cy="26.3994" rx="12.3994" ry="12.3993" stroke="white" stroke-width="5"/>
                         </svg>
-                    </button>
+                    </a>
                 </div>
 
                 <!-- 4. INFO -->
