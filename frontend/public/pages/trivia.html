@@ -1,13 +1,77 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../css/Trivia-Style.css">
-  <title>Trivia</title>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Zona Diamante</title>
+        <link href="./css/output.css" rel="stylesheet">
+    </head>
+    <body class="bg-slate-900 min-h-screen">
 
-</body>
+        <div id="header-superior"></div>
 
+
+        <div id="menu-inferior"></div>
+
+        <script type="module" src="./js/main.js"></script>
+
+
+
+
+              <!-- CONTENIDO DEL TRIVIA -->
+      <main class="trivia-content">
+
+          <!-- Barra de progreso y tiempo -->
+          <div class="trivia-top">
+
+              <div class="progress-container">
+                  <div class="progress-bar" id="progressBar"></div>
+              </div>
+
+              <div class="timer" id="timer">5s</div>
+
+          </div>
+
+
+          <!-- Tarjeta de pregunta -->
+          <section class="question-card">
+
+              <div class="question-image">
+                  <!-- Cambia esta imagen por la que quieras -->
+                  <img src="img/pregunta.jpg" alt="Imagen de la pregunta">
+
+                  <div class="question-overlay"></div>
+
+                  <h1 id="questionText">
+                      ¿Cómo se llama la mascota de los dorados?
+                  </h1>
+              </div>
+
+          </section>
+
+
+          <!-- Respuestas -->
+          <section class="answers" id="answers">
+
+              <button class="answer">
+                  Pantunfla esponjosa
+              </button>
+
+              <button class="answer">
+                  Tigre Toño
+              </button>
+
+              <button class="answer">
+                  Lobo Mita
+              </button>
+
+              <button class="answer">
+                  Pancho Pistolas
+              </button>
+
+          </section>
+
+      </main>
+
+    </body>
 </html>
