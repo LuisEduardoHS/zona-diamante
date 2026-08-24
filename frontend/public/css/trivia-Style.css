@@ -1,0 +1,327 @@
+/* =========================================
+   CONTENIDO DEL TRIVIA
+   ========================================= */
+
+.trivia-content {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+
+    padding-top: 105px;
+    padding-bottom: 100px;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+}
+
+
+/* =========================================
+   PARTE SUPERIOR
+   ========================================= */
+
+.trivia-top {
+    width: calc(100% - 64px);
+
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+/* Barra de progreso */
+
+.progress-container {
+    flex: 1;
+
+    height: 30px;
+
+    background: #eeeeee;
+
+    border-radius: 11px;
+
+    padding: 7px;
+
+    box-sizing: border-box;
+
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.20);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 100%;
+
+    background: #39a900;
+
+    border-radius: 8px;
+
+    transition: width 0.3s ease;
+}
+
+
+/* Contador */
+
+.timer {
+    width: 48px;
+    height: 30px;
+
+    background: #eeeeee;
+
+    border-radius: 11px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+
+    color: #555;
+
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.20);
+}
+
+
+/* =========================================
+   TARJETA DE PREGUNTA
+   ========================================= */
+
+.question-card {
+
+    width: calc(100% - 62px);
+
+    margin: 20px auto 0;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
+
+    background: #65bfd0;
+}
+
+
+.question-image {
+
+    position: relative;
+
+    width: 100%;
+    height: 135px;
+
+    overflow: hidden;
+}
+
+
+.question-image img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+/* Capa azulada sobre la imagen */
+
+.question-overlay {
+
+    position: absolute;
+
+    inset: 0;
+
+    background: rgba(38, 139, 158, 0.55);
+}
+
+
+/* Texto */
+
+.question-image h1 {
+
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: 90%;
+
+    margin: 0;
+
+    text-align: center;
+
+    color: white;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 24px;
+    line-height: 0.95;
+
+    font-weight: 900;
+
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
+}
+
+
+/* =========================================
+   RESPUESTAS
+   ========================================= */
+
+.answers {
+
+    width: calc(100% - 62px);
+
+    margin: 20px auto 0;
+
+    padding: 14px 25px;
+
+    box-sizing: border-box;
+
+    background: #6bc8d9;
+
+    border-radius: 20px;
+
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.25);
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 17px;
+}
+
+
+/* Botones */
+
+.answer {
+
+    width: 100%;
+
+    min-height: 47px;
+
+    border: none;
+
+    border-radius: 25px;
+
+    background: #c8eaf0;
+
+    color: #087493;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 15px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+
+/* Efecto al pasar el mouse */
+
+.answer:hover {
+
+    transform: scale(1.02);
+
+    background: #d8f1f5;
+
+}
+
+
+/* Efecto al presionar */
+
+.answer:active {
+
+    transform: scale(0.98);
+
+}
+
+
+/* Respuesta seleccionada */
+
+.answer.selected {
+
+    background: #f5c542;
+
+    color: white;
+
+}
+
+
+/* Respuesta correcta */
+
+.answer.correct {
+
+    background: #39a900;
+
+    color: white;
+
+}
+
+
+/* Respuesta incorrecta */
+
+.answer.incorrect {
+
+    background: #e55353;
+
+    color: white;
+
+}
+
+
+/* =========================================
+   FONDO DECORATIVO
+   ========================================= */
+
+.trivia-content::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 450px;
+    height: 180px;
+
+    left: -160px;
+    bottom: 20px;
+
+    background: #f06b0c;
+
+    border-radius: 50%;
+
+    transform: rotate(-8deg);
+
+    z-index: -1;
+}
+
+
+.trivia-content::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 450px;
+    height: 140px;
+
+    right: -200px;
+    top: 40px;
+
+    background: #f06b0c;
+
+    border-radius: 50%;
+
+    z-index: -1;
+}
