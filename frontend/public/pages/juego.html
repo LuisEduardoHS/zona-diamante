@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Zona Diamante</title>
+
+    <link href="../css/output.css" rel="stylesheet">
+    <link href="../css/juego-Style.css" rel="stylesheet">
+</head>
+
+<body class="bg-slate-900 min-h-screen">
+
+    <!-- MENÚ SUPERIOR -->
+    <div id="header-superior"></div>
+
+
+    <!-- CONTENIDO -->
+    <main class="juego-content">
+
+
+         <svg class="juego-shape" width="402" height="285" viewBox="0 0 402 285" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M80.4875 506.636C-190.672 361.803 -143.814 162.83 97.9712 144.662C339.757 126.494 346.014 -9.48099 446.083 0.525466C546.152 10.5319 607.712 116.893 528.319 201.21C464.806 268.664 203.301 432.933 80.4875 506.636Z" 
+            fill="#DF6A16"/>
+         </svg> 
+
+
+        <div class="game-image">
+                <img 
+                    src="../assets/img/juego/boceto-PI.png" 
+                    alt="Imagen del juego"
+                >
+
+               <!-- Botón de pausa -->
+                <button class="pause-button" aria-label="Pausar">
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <!-- Texto sobre la imagen -->
+                <p class="bat-message">
+                    Toca la pantalla para batear
+                </p>
+
+
+
+                <button class="collection-button" aria-label="Coleccion">
+                    <span></span>
+                    <span></span>
+                </button>
+                <p class="collection-text span">Colección</p>
+
+            </div>
+    
+
+
+      
+
+    </main>
+
+    <!-- MENÚ INFERIOR -->
+    <div id="menu-inferior"></div>
+
+
+    <!-- JAVASCRIPT -->
+    <script type="module" src="../js/main.js"></script>
+
+</body>
+
+</html>

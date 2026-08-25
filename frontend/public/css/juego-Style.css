@@ -1,0 +1,269 @@
+.juego-content {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+
+    padding-top: 105px;
+    padding-bottom: 100px;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+}
+
+
+.juego-top {
+    width: calc(100% - 64px);
+
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+
+.timer {
+    width: 48px;
+    height: 35px;
+
+    background: #eeeeee;
+
+    border-radius: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: Verdana, Sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+
+    color: #555;
+
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.20);
+}
+
+
+.question-card {
+
+    width: calc(100% - 62px);
+
+    margin: 20px auto 0;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
+
+    background: #59A9B7;
+}
+
+
+.question-image {
+
+    position: relative;
+
+    width: 100%;
+    height: 170px;
+
+    overflow: hidden;
+
+    border-radius: 15px;
+}
+
+
+.question-image img {
+
+    width: 90%;
+    height: 60%;
+    object-fit: cover;
+
+    display: block;
+    display: block;
+    margin: 0 auto;
+
+    border-radius: 15px;
+}
+
+
+
+body {
+      background: linear-gradient(
+	125deg, 
+	#107E91 30%,
+	#F9FAFB 100%
+	);
+}
+
+
+.juego-content::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 100%;
+    height: 820px;
+
+    
+    top: 80px;
+
+    background: #005C6C;
+
+    border-radius: 50px;
+
+    z-index: -1;
+}
+
+
+
+
+
+
+
+.juego-shape {
+    position: absolute;
+
+    width: 402px;
+    height: 285px;
+
+    bottom: -70px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    z-index: -1;
+}
+
+.game-image {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+}
+
+.game-image img {
+    width: 90%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+    margin: 0 auto;
+    border-radius: 32px;
+}
+
+
+
+
+.pause-button {
+    position: absolute;
+
+    top: 20px;
+    right: 45px;
+
+    width: 40px;
+    height: 40px;
+
+    border: none;
+    border-radius: 50%;
+
+    background-color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+
+    cursor: pointer;
+
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+}
+
+
+
+.pause-button span {
+    display: block;
+
+    width: 4px;
+    height: 15px;
+
+    border-radius: 2px;
+
+    background-color: #f58220;
+}
+
+
+
+
+.bat-message {
+    position: absolute;
+
+    left: 50%;
+    top: 58%;
+
+    transform: translate(-50%, -50%);
+
+    width: 100%;
+
+    margin: 0;
+
+    text-align: center;
+
+    color: #777;
+
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+
+    pointer-events: none;
+}
+
+
+
+
+.collection-button {
+    position: absolute;
+
+    bottom: 40px;
+    right: 45px;
+
+    width: 40px;
+    height: 40px;
+
+    border: none;
+    border-radius: 15px;
+
+    background-color: #088EAF;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+
+    cursor: pointer;
+
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+}
+
+
+.collection-text span{
+    margin: 4px 0 0;
+
+    color: #088EAF;
+    
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+
+    text-align: center;
+    
+
+}
