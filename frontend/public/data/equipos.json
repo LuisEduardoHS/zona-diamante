@@ -1,0 +1,206 @@
+[
+  {
+    "id": "sultanes-mty",
+    "nombre": "Sultanes",
+    "ciudad": "Monterrey",
+    "colores": {
+      "primario": "#002D62",
+      "secundario": "#E51837",
+      "gradienteDeg": "to-b"
+    },
+    "imagenes": {
+      "logoFondo": "./assets/img/equipos/sultanes/logo-bg.png",
+      "jugadorCarrusel": "./assets/img/equipos/sultanes/jugador.png"
+    },
+    "detalles": {
+      "zona": "Zona Norte de la LMB",
+      "record": "53 - 37",
+      "posicion": "1.°",
+      "historia": "Los Sultanes de Monterrey son una de las franquicias más antiguas y ganadoras. Suman 10 campeonatos de la Liga Mexicana de Béisbol en su historia y son reconocidos por su fiel afición regiomontana.",
+      "estadisticas": {
+        "pct": ".589",
+        "streak": "G2",
+        "avg": ".295",
+        "hr": 84,
+        "ci": 415
+      },
+      "estadio": {
+        "nombre": "Estadio Mobil Super",
+        "ubicacion": "Monterrey, Nuevo León",
+        "imagen": "./assets/img/equipos/sultanes/estadio.png"
+      },
+      "mascota": {
+        "nombre": "El Perro Sultán",
+        "imagen": "./assets/img/equipos/sultanes/mascota.png"
+      },
+      "palmares": [
+        "10 Campeonatos de la LMB",
+        "Múltiples títulos de la Zona Norte"
+      ],
+      "mvp": {
+        "nombre": "Ramiro Peña",
+        "imagen": "./assets/img/equipos/sultanes/mvp.png"
+      },
+      "calendario": [
+        {
+          "oponente": "Dorados",
+          "fecha": "Próximamente",
+          "hora": "Por definir"
+        }
+      ]
+    }
+  },
+  {
+    "id": "dorados-chi",
+    "nombre": "Dorados",
+    "ciudad": "Chihuahua",
+    "colores": {
+      "primario": "#4B166B",
+      "secundario": "#F2A900",
+      "gradienteDeg": "to-b"
+    },
+    "imagenes": {
+      "logoFondo": "./assets/img/equipos/Dorados/logo-bg.png",
+      "jugadorCarrusel": "./assets/img/equipos/Dorados/player.png"
+    },
+    "detalles": {
+      "zona": "Zona Norte de la LMB",
+      "record": "33 - 57",
+      "posicion": "10.°",
+      "historia": "Los Dorados de Chihuahua son un equipo con una inmensa tradición en el 'Estado Grande'. Regresaron recientemente a la LMB para revivir la pasión del béisbol en la capital chihuahuense.",
+      "estadisticas": {
+        "pct": ".367",
+        "streak": "P3",
+        "avg": ".265",
+        "hr": 55,
+        "ci": 310
+      },
+      "estadio": {
+        "nombre": "Estadio Monumental Chihuahua",
+        "ubicacion": "Chihuahua, Chihuahua",
+        "imagen": "./assets/img/equipos/Dorados/estadio.jpg"
+      },
+      "mascota": {
+        "nombre": "Dorado",
+        "imagen": "./assets/img/equipos/Dorados/mascota.png"
+      },
+      "palmares": [
+        "6 Campeonatos de la Liga Estatal",
+        "Equipo de expansión LMB 2024"
+      ],
+      "mvp": {
+        "nombre": "Leo Piña",
+        "imagen": "./assets/img/equipos/Dorados/mvp.png"
+      },
+      "calendario": [
+        {
+          "oponente": "Sultanes",
+          "fecha": "Próximamente",
+          "hora": "Por definir"
+        }
+      ]
+    }
+  },
+  {
+    "id": "charros-jal",
+    "nombre": "Charros",
+    "ciudad": "Jalisco",
+    "colores": {
+      "primario": "#002C5F",
+      "secundario": "#00A3E0",
+      "gradienteDeg": "to-b"
+    },
+    "imagenes": {
+      "logoFondo": "./assets/img/equipos/Charros/logo-bg.png",
+      "jugadorCarrusel": "./assets/img/equipos/Charros/player.png"
+    },
+    "detalles": {
+      "zona": "Zona Norte de la LMB",
+      "record": "43 - 47",
+      "posicion": "6.°",
+      "historia": "Una franquicia emblemática del béisbol mexicano. Los Charros compiten tanto en verano (LMB) como en invierno (LMP), siempre arropados por una de las mejores aficiones del país en Jalisco.",
+      "estadisticas": {
+        "pct": ".478",
+        "streak": "G1",
+        "avg": ".280",
+        "hr": 70,
+        "ci": 380
+      },
+      "estadio": {
+        "nombre": "Estadio Panamericano",
+        "ubicacion": "Zapopan, Jalisco",
+        "imagen": "./assets/img/equipos/Charros/estadio.png"
+      },
+      "mascota": {
+        "nombre": "El Charro",
+        "imagen": "./assets/img/equipos/Charros/mascota.jpg"
+      },
+      "palmares": [
+        "2 Campeonatos de LMB (1967, 1971)",
+        "2 Campeonatos de LMP"
+      ],
+      "mvp": {
+        "nombre": "Japhet Amador",
+        "imagen": "./assets/img/equipos/Charros/mvp.png"
+      },
+      "calendario": [
+        {
+          "oponente": "Algodoneros",
+          "fecha": "Próximamente",
+          "hora": "Por definir"
+        }
+      ]
+    }
+  },
+  {
+    "id": "algodoneros-ul",
+    "nombre": "Algodoneros",
+    "ciudad": "Unión Laguna",
+    "colores": {
+      "primario": "#5B1126",
+      "secundario": "#B68B45",
+      "gradienteDeg": "to-b"
+    },
+    "imagenes": {
+      "logoFondo": "./assets/img/equipos/Algonoderos/logo-bg.png",
+      "jugadorCarrusel": "./assets/img/equipos/Algonoderos/player.png"
+    },
+    "detalles": {
+      "zona": "Zona Norte de la LMB",
+      "record": "52 - 39",
+      "posicion": "3.°",
+      "historia": "Fundados en 1940, son el equipo profesional con más arraigo en la Comarca Lagunera. Son conocidos por su histórico y hermoso Estadio Revolución y su apasionada afición guinda.",
+      "estadisticas": {
+        "pct": ".571",
+        "streak": "G3",
+        "avg": ".288",
+        "hr": 75,
+        "ci": 420
+      },
+      "estadio": {
+        "nombre": "Estadio Revolución",
+        "ubicacion": "Torreón, Coahuila",
+        "imagen": "./assets/img/equipos/Algonoderos/estadio.png"
+      },
+      "mascota": {
+        "nombre": "El Pollo Algodonero",
+        "imagen": "./assets/img/equipos/Algonoderos/mascota.png"
+      },
+      "palmares": [
+        "2 Campeonatos de LMB (1942, 1950)",
+        "Campeón Zona Norte (2023)"
+      ],
+      "mvp": {
+        "nombre": "Nick Torres",
+        "imagen": "./assets/img/equipos/Algonoderos/mvp.png"
+      },
+      "calendario": [
+        {
+          "oponente": "Charros",
+          "fecha": "Próximamente",
+          "hora": "Por definir"
+        }
+      ]
+    }
+  }
+]
