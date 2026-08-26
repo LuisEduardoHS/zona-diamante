@@ -3,11 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../css/output.css" rel="stylesheet">
   <link rel="stylesheet" href="../css/Collect-Style.css">
-  <title>Colección de cartas</title>
+  <title>Colección de cartas | Zona Diamante</title>
 </head>
 <body>
-  <main class="collection-page">
+
+  <!-- MENÚ SUPERIOR -->
+  <div id="header-superior"></div>
+
+  <main class="collection-page" style="padding-top: 80px; padding-bottom: 100px;">
     <header class="hero">
       <div class="hero__orange"></div>
       <div class="hero__teal">
@@ -32,7 +37,7 @@
 
       <article class="player-card player-card--lower">
         <div class="trading-card trading-card--moore">
-          <img src="../assets/img/Cartas/SultanesC.png" alt="Carta coleccionable de Eddie Moore"  style="filter: grayscale(100%);" >
+          <img src="../assets/img/Cartas/SultanesC.png" alt="Carta coleccionable de Eddie Moore" style="filter: grayscale(100%);">
         </div>
         <h2>Eddie Moore<br><span>Sultanes</span></h2>
       </article>
@@ -45,5 +50,13 @@
       </article>
     </section>
   </main>
+
+  <!-- MENÚ INFERIOR -->
+  <div id="menu-inferior"></div>
+
+  <!-- JAVASCRIPT -->
+  <!-- Las rutas son relativas a /pages/, por eso ../js/ -->
+  <script type="module" src="../js/main.js"></script>
+
 </body>
 </html>

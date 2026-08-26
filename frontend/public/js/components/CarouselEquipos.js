@@ -57,18 +57,18 @@ export async function renderCarousel() {
                             <span class="text-white text-[11px] font-bold uppercase tracking-widest">${equipo.ciudad}</span>
                         </div>
 
-                        <h2 class="text-5x1 leading-none font-monument text-white tracking-tight drop-shadow-2xl capitalize text-right"
+                        <h2 class="text-3xl leading-none font-monument text-white tracking-tight drop-shadow-2xl capitalize text-right"
                             style="text-shadow: 0 4px 30px rgba(0,0,0,0.8);">
                             ${equipo.nombre}
                         </h2>
 
-                        <button
-                            class="mt-2 px-7 py-2 rounded-full font-bold text-sm border-0 cursor-pointer transition-transform active:scale-95"
+                        <a
+                            href="equipo.html?id=${equipo.id}"
+                            class="mt-2 px-7 py-2 rounded-full font-bold text-sm border-0 cursor-pointer transition-transform active:scale-95 inline-block text-center no-underline"
                             style="background-color: ${equipo.colores.secundario}; color: ${equipo.colores.primario}; box-shadow: 0 4px 15px rgba(0,0,0,0.4); font-weight: 800;"
-                            data-equipo-id="${equipo.id}"
                         >
                             Ver más
-                        </button>
+                        </a>
                     </div>
                 </div>
             `;
@@ -78,7 +78,7 @@ export async function renderCarousel() {
             <div id="carrusel-track" class="relative w-full h-full overflow-hidden rounded-b-[3rem]">
                 ${slidesHTML}
             </div>
-            <div id="carousel-dots" class="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2 z-50 pointer-events-auto">
+            <div id="carousel-dots" class="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2 z-[5] pointer-events-auto">
             </div>
         `;
 

@@ -217,7 +217,7 @@ body {
 .collection-container {
     position: absolute;
 
-    bottom: 15px;
+    bottom: 100px;
     right: 40px;
 
     display: flex;
@@ -241,6 +241,8 @@ body {
     justify-content: center;
 
     cursor: pointer;
+
+    text-decoration: none;
 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
 }

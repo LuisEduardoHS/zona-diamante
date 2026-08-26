@@ -16,8 +16,7 @@
       "zona": "Zona Norte de la LMB",
       "record": "53 - 37",
       "posicion": "1.°",
-      "historia": "Los Sultanes de Monterrey son una de las franquicias más antiguas y ganadoras. Suman 10 campeonatos de la Liga Mexicana de Béisbol en su historia y son reconocidos por su fiel afición regiomontana.",
-      "estadisticas": {
+      "historia": "Los Sultanes de Monterrey suman <span class=\"text-red-500 font-black\">10</span> campeonatos de la Liga Mexicana de Béisbol en su historia, además de haber obtenido 13 títulos de la Zona Norte.",      "estadisticas": {
         "pct": ".589",
         "streak": "G2",
         "avg": ".295",

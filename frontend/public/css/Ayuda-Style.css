@@ -16,7 +16,7 @@
     color: #f0f7f8;
 }
 
-.GlassDisplay{
+.GlassDisplay {
     width: 300px;
     padding: 10px;
     padding-top: 20px;
@@ -30,18 +30,15 @@
     -webkit-backdrop-filter: blur(8px);
     box-shadow: 0 8px 12px -8px rgba(0, 0, 0, 0.45);
 
-
     font: bold 15px Arial, Helvetica, sans-serif;
     text-align: center;
     color: #53545a;
 }
 
-.InvisibleDivision{
+.InvisibleDivision {
     width: 300px;
     height: 10px;
     margin: 20px auto;
-
-    border: invisible;    
 }
 
 body {
@@ -49,10 +46,10 @@ body {
     font-size: 16px;
     color: #53545a;
     background-color: #fff3de;
-    padding: 15px;
-
+    /* padding: 15px eliminado — rompía el nav fijo */
     margin: auto;
-
+    /* Espacio inferior para que el contenido no quede debajo del nav fijo */
+    padding-bottom: 90px;
 }
 
 .card {
@@ -63,27 +60,28 @@ body {
     border-radius: 20px;
 }
 
-.image{
-   display: block; max-width: 100%; height: auto; margin: 0 auto; align-content: center;
+.image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    align-content: center;
 }
 
-.contenedor { 
+.contenedor {
     display: flex;
     justify-content: center;
     gap: 20px;
 }
 
-a{
+/* Solo aplica color a links dentro del contenido, no al BottomNav ni Header */
+.GlassDisplay a,
+.TitleBubble a,
+.contenedor a {
     color: #0e0957;
 }
 
-nav{
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
+/* NOTA: La regla global "nav { ... }" fue eliminada porque sobreescribía
+   los estilos del menú inferior (BottomNav) que usa Tailwind CSS. */
 
 /*Contact.html style*/
-
-
