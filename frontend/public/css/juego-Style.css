@@ -135,8 +135,6 @@ body {
 
 
 
-
-
 .game-image {
     position: relative;
 
@@ -156,9 +154,6 @@ body {
     margin: 0 auto;
     border-radius: 32px;
 }
-
-
-
 
 .pause-button {
     position: absolute;
@@ -185,8 +180,6 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
 }
 
-
-
 .pause-button span {
     display: block;
 
@@ -197,9 +190,6 @@ body {
 
     background-color: #f58220;
 }
-
-
-
 
 .bat-message {
     position: absolute;
@@ -224,9 +214,6 @@ body {
     pointer-events: none;
 }
 
-
-
-
 .collection-container {
     position: absolute;
 
@@ -239,7 +226,6 @@ body {
 
     gap: 0;
 }
-
 
 .collection-button {
     width: 50px;
@@ -259,7 +245,6 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
 }
 
-
 .collection-text {
     margin: 0;
 
@@ -268,6 +253,119 @@ body {
     font-family: Arial, sans-serif;
     font-size: 11px;
     font-weight: bold;
+
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.pause-button,
+.collection-container {
+    z-index: 101;
+}
+
+
+#pantallaJuego {
+    position: relative;
+}
+
+
+#resultadoOverlay {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(80, 80, 80, 0.65);
+
+    display: none;
+
+    z-index: 100;
+
+    justify-content: center;
+    align-items: center;
+}
+
+#resultadoOverlay.activo {
+    display: flex;
+}
+
+
+.resultado-contenido {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+}
+
+
+.mensaje-ganaste {
+    width: 230px;
+
+    padding: 35px 20px;
+
+    margin-bottom: 14px;
+
+    background-color: #087e9f;
+
+    border-radius: 25px;
+
+    color: white;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 30px;
+
+    font-weight: bold;
+
+    text-align: center;
+
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+
+.resultado-imagen {
+    width: 110px;
+    height: auto;
+
+    display: block;
+
+    margin-bottom: 10px;
+
+    filter: drop-shadow(
+        0 3px 4px rgba(0, 0, 0, 0.35)
+    );
+}
+
+
+.resultado-texto {
+    margin: 0;
+
+    color: white;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    line-height: 1.25;
 
     text-align: center;
 }
