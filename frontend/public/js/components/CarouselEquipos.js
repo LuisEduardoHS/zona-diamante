@@ -57,8 +57,8 @@ export async function renderCarousel() {
                             <span class="text-white text-[11px] font-bold uppercase tracking-widest">${equipo.ciudad}</span>
                         </div>
 
-                        <h2 class="text-[3.2rem] leading-none font-black text-white tracking-tight drop-shadow-2xl capitalize text-right"
-                            style="text-shadow: 0 4px 20px rgba(0,0,0,0.8); font-family: 'Inter', system-ui, sans-serif;">
+                        <h2 class="text-5x1 leading-none font-monument text-white tracking-tight drop-shadow-2xl capitalize text-right"
+                            style="text-shadow: 0 4px 30px rgba(0,0,0,0.8);">
                             ${equipo.nombre}
                         </h2>
 

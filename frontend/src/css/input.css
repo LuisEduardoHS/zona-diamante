@@ -1,2 +1,15 @@
 @import "tailwindcss";
 @source "../../public/js";
+
+@font-face {
+    font-family: 'Monument Extended';
+
+    src: url('../../public/assets/fonts/Monument.otf') format('opentype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@theme {
+    --font-monument: 'Monument Extended', sans-serif;
+}
