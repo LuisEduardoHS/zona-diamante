@@ -1,46 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zona Diamante | Escáner</title>
+    <title>Zona Diamante | AR</title>
     <link href="./css/output.css" rel="stylesheet">
+
+    <script src="./js/libs/aframe.min.js"></script>
+    <script src="./js/libs/mindar-image-aframe.prod.js"></script>
+
+    <style>
+        video, canvas {
+            width: 100vw !important;
+            height: 100vh !important;
+            object-fit: cover !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+        }
+    </style>
 </head>
-<body class="bg-[#1a1a1a] min-h-screen relative overflow-hidden">
+
+<body class="bg-[#1a1a1a] min-h-screen font-sans overflow-hidden">
+
     <div id="header-superior"></div>
 
-    <main class="absolute inset-0 w-full h-full z-0">
-        <video id="camara-feed" class="w-full h-full object-cover" autoplay playsinline></video>
-    </main>
+    <div id="ar-ui" class="absolute top-0 left-0 w-full h-full pointer-events-none z-40 flex flex-col items-center justify-between pb-28 pt-12">
+        <div class="bg-black/50 backdrop-blur-md px-6 py-2 rounded-full border-white/20 shadow-lg">
+            <span id="ar-status" class="font-bold text-sm text-white">Escaneando logo...</span>
+        </div>
 
-    <div id="ui-escaneando" class="absolute top-28 left-0 w-full flex justify-center z-10 transition-opacity duration-300">
-        <div class="bg-white/50 backdrop-blur-md px-8 py-2.5 rounded-full shadow-lg">
-            <span class="text-[#2b2b31] font-bold text-sm">Escanea un logo</span>
+        <div id="ar-result" class="hidden bg-white text-[#2b2b31] px-8 py-6 rounded-[2rem] shadow-2xl flex-col items-center gap-2 w-10/12 pointer-events-auto transition-all transform translate-y-10 opacity-0 duration-300">
+            <p class="text-xs text-gray-500 font-bold uppercase tracking-wider">Objeto detectado</p>
+            <h2 id="equipo-detectado" class="font-monument text-2xl uppercase tracking-tighter text-center text-[#008298]">Equipo</h2>
+            <button class="mt-4 w-full bg-[#f27b21] text-white font-bold py-3 rounded-xl shadow-md active:scale-95 transition-transform">
+                Reclamar Carta
+            </button>
         </div>
     </div>
 
-    <div id="ui-resultado" class="absolute inset-0 z-10 flex flex-col items-center justify-end pb-32 hidden pointer-events-none">
+    <a-scene mindar-image="imageTargetSrc: ./ar/targets.mind; uiScanning: no;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-        <button class="bg-[#008298] text-white px-8 py-3 rounded-dull font-bold shadow-lg flex items-center gap-2 pointer-events-auto hover:scale-105 transition-transform mb-6">
-            <span>Más información</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
-        </button>
+        <a-entity id="target-0" mindar-image-target="targetIndex: 0"></a-entity>
+        <a-entity id="target-1" mindar-image-target="targetIndex: 1"></a-entity>
+        <a-entity id="target-2" mindar-image-target="targetIndex: 2"></a-entity>
+        <a-entity id="target-3" mindar-image-target="targetIndex: 3"></a-entity>
+    </a-scene>
 
-        <div class="relative bg-white/90 px-5 py-2 rounded-full shadow-md pointer-events-auto cursor-pointer hover:bg-white transition-colors">
-            <span class="text-[#2b2b31] font-bold text-xs">Nueva Captura</span>
-            <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-white/90"></div>
-        </div>
-
-    </div>
-
-    <div id="ui-resultado" class="absolute inset-0 z-10 flex flex-col items-center justify">
-
-    </div>
-
-    <div id="menu-inferior"></div>
+    <div id="menu-inferior" class="z-50 relative pointer-events-auto"></div>
 
     <script type="module" src="./js/main.js"></script>
-
     <script type="module" src="./js/camara.js"></script>
 
 </body>
