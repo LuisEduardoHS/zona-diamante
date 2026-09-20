@@ -38,7 +38,7 @@ export async function cargarDetalleEquipo() {
                 
                 <!-- Nombre del Equipo (ajustado ligeramente hacia abajo para centrarse en el nuevo espacio) -->
                 <div class="absolute bottom-5 right-6 w-full px-6 flex justify-end">
-                    <h1 class="text-[2.1rem] leading-none font-monument text-white uppercase tracking-tighter drop-shadow-xl text-right">
+                    <h1 class="text-[2.1rem] leading-none font-urbanist font-black text-white uppercase tracking-tighter drop-shadow-xl text-right">
                         ${equipo.nombre}
                     </h1>
                 </div>
@@ -56,7 +56,7 @@ export async function cargarDetalleEquipo() {
                 </div>
                 
                 <!-- Fila de Récord y Posición -->
-                <div class="flex items-center gap-4 w-full justify-center mt-2">
+                <div class="flex flex-wrap items-center gap-3 w-full justify-center mt-2">
                     <span class="font-bold text-[#2b2b31] text-lg">Récord:</span>
                     
                     <!-- Píldora de Récord -->

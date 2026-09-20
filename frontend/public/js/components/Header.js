@@ -4,7 +4,7 @@ export function renderHeader() {
     const base = inSubfolder ? '../' : '';
 
     const headerHTML = `
-        <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-5">
+        <header class="site-header fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-5">
             <button id="btn-abrir-menu" class="w-12 h-12 rounded-full bg-[#f27b21] flex items-center justify-center shadow-md transition-transform hover:scale-105">
                 <svg width="18" height="16" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect y="4" width="4" height="20" rx="2" transform="rotate(-90 0 4)" fill="white"/>
@@ -32,7 +32,7 @@ export function renderHeader() {
                 </button>
             </div>
 
-            <nav class="flex flex-col items-center justify-center w-3/4 h-full mx-auto mt-8 overflow-y-auto">
+            <nav class="site-menu-links flex flex-col items-center w-3/4 mx-auto overflow-y-auto">
 
                 <!-- Sección principal -->
                 <p class="menu-item transform -translate-y-10 opacity-0 transition-all duration-500 delay-[50ms] w-full text-center text-white/50 font-bold text-xs uppercase tracking-widest pt-4 pb-1">

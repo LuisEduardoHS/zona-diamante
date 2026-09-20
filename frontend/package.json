@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx @tailwindcss/cli -i ./src/css/input.css -o ./public/css/output.css --watch",
-    "build": "npx @tailwindcss/cli -i ./src/css/input.css -o ./public/css/output.css"
+    "build": "npx @tailwindcss/cli -i ./src/css/input.css -o ./public/css/output.css",
+    "test": "node --test tests/*.test.mjs",
+    "preview:foto": "node tests/preview-foto-ar.cjs"
   },
   "keywords": [],
   "author": "",

@@ -17,7 +17,7 @@ export function renderBottomNav() {
     const isJuego = currentFile === 'juego.html';
 
     const navHTML = `
-        <nav class="fixed bottom-0 left-0 w-full bg-[#c8c8c8] h-20 rounded-t-3xl z-50">
+        <nav class="site-bottom-nav fixed bottom-0 left-0 w-full bg-[#c8c8c8] h-20 rounded-t-3xl z-50">
             <div class="flex justify-between items-center h-full px-2">
 
                 <!-- 1. INICIO -->

@@ -49,7 +49,7 @@ export async function renderCarousel() {
 
                     <div class="absolute bottom-0 left-0 w-full h-[55%] bg-gradient-to-t from-black/90 via-black/50 to-transparent z-30 pointer-events-none rounded-b-[3rem]"></div>
 
-                    <div class="absolute bottom-[18%] left-0 w-full flex flex-col items-end px-5 z-40 gap-1">
+                    <div class="carrusel-info absolute left-0 w-full flex flex-col items-end px-5 z-40 gap-1">
                         <div class="bg-white/15 backdrop-blur-md px-3 py-1.5 rounded-full flex items-center gap-2 border border-white/20 shadow mb-1">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="flex-shrink-0" style="width:11px;height:11px;fill:white;">
                                 <path d="M128 252.6C128 148.4 214 64 320 64C426 64 512 148.4 512 252.6C512 371.9 391.8 514.9 341.6 569.4C329.8 582.2 310.1 582.2 298.3 569.4C248.1 514.9 127.9 371.9 127.9 252.6zM320 320C355.3 320 384 291.3 384 256C384 220.7 355.3 192 320 192C284.7 192 256 220.7 256 256C256 291.3 284.7 320 320 320z"/>
@@ -57,7 +57,7 @@ export async function renderCarousel() {
                             <span class="text-white text-[11px] font-bold uppercase tracking-widest">${equipo.ciudad}</span>
                         </div>
 
-                        <h2 class="text-3xl leading-none font-monument text-white tracking-tight drop-shadow-2xl capitalize text-right"
+                        <h2 class="text-3xl leading-none font-urbanist font-black text-white tracking-tight drop-shadow-2xl capitalize text-right"
                             style="text-shadow: 0 4px 30px rgba(0,0,0,0.8);">
                             ${equipo.nombre}
                         </h2>

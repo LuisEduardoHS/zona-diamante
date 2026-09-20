@@ -1,3 +1,6 @@
+import { lanzarConfeti } from './confeti.js';
+import { iniciarFotoAR } from './foto-ar.js';
+
 // Inicia cuando el HTML está listo.
 document.addEventListener('DOMContentLoaded', () => {
     // Relaciona cada marcador con su equipo.
@@ -8,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         3: "Sultanes"
     };
     const modelosAR = {
-        0: "./ar/models/algodoneros_modelo.glb",
+        0: "./ar/models/Algodoneros_color.glb",
         1: "./ar/models/charros_modelo.glb",
         2: "./ar/models/dorados_modelo.glb"
     };
@@ -27,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Botones, cámara y modelos de las dos vistas.
     const btnInspeccionar = document.getElementById('btn-inspeccionar');
+    const btnReclamar = document.getElementById('btn-reclamar');
     const btnCerrarInspector = document.getElementById('btn-cerrar-inspector');
     const camara = document.getElementById('ar-camera');
     const modelosEnTargets = document.querySelectorAll('.modelo-target');
@@ -37,10 +41,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Conserva el estado real del seguimiento aunque el inspector esté abierto.
     const targetsVisibles = new Set();
     let targetActivo = null;
+    let targetResultado = null;
+    let temporizadorPerdida = null;
     let temporizadorOcultar = null;
     let temporizadorInicioCamara = null;
     let arIniciando = false;
     let arListo = false;
+    let arPausado = false;
+    let paginaSuspendida = document.hidden;
+    let versionVisibilidad = 0;
 
     // Guarda el encuadre y los cambios hechos con los dedos.
     let encuadre = null;
@@ -98,6 +107,9 @@ document.addEventListener('DOMContentLoaded', () => {
             camera.far - encuadre.distancia
         ) * 0.9 / (encuadre.radio * encuadre.escala);
         zoom = Math.max(0.2, Math.min(zoom, 3, limite));
+        // Conserva el centro dentro del 70% central de la vista, incluso tras girar el celular.
+        desplazamiento.x = Math.max(-0.35, Math.min(0.35, desplazamiento.x));
+        desplazamiento.y = Math.max(-0.35, Math.min(0.35, desplazamiento.y));
         const escala = encuadre.escala * zoom;
         const centro = encuadre.centro.clone().multiplyScalar(escala)
             .applyQuaternion(modeloCamara.object3D.quaternion);
@@ -117,10 +129,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Habilita Ver 3D cuando el modelo está listo.
     const actualizarCarga = () => {
-        const tieneModelo = targetActivo !== null && Boolean(modelosAR[targetActivo]);
+        const tieneModelo = targetResultado !== null && Boolean(modelosAR[targetResultado]);
         const modeloCorrectoListo = tieneModelo
             && modeloCargado
-            && modeloPreparadoPara === targetActivo;
+            && modeloPreparadoPara === targetResultado;
 
         btnInspeccionar.disabled = !modeloCorrectoListo;
         btnInspeccionar.textContent = !tieneModelo
@@ -254,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // MindAR se inicia explícitamente para poder recuperar un fallo de permisos.
     const iniciarCamara = async () => {
-        if (arIniciando || arListo) return;
+        if (arIniciando || arListo || paginaSuspendida) return;
 
         const sistemaAR = escena.systems?.['mindar-image-system'];
         if (!sistemaAR) {
@@ -286,6 +298,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        if (paginaSuspendida) {
+            arIniciando = false;
+            return;
+        }
+
         // Elimina el elemento de video dejado por un intento fallido de MindAR.
         if (sistemaAR.video && !sistemaAR.video.srcObject) {
             sistemaAR.video.remove();
@@ -307,6 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Una vez recibido el video, da más tiempo a MindAR para compilar los marcadores.
         sistemaAR.video?.addEventListener('loadedmetadata', () => {
             clearTimeout(temporizadorInicioCamara);
+            if (paginaSuspendida) return;
             uiStatus.textContent = 'Preparando escáner...';
             temporizadorInicioCamara = setTimeout(() => {
                 mostrarErrorCamara('No se pudo preparar el escáner. Vuelve a intentarlo.');
@@ -323,6 +341,10 @@ document.addEventListener('DOMContentLoaded', () => {
         uiError.classList.remove('flex');
         uiStatus.textContent = 'Escaneando logo...';
         reajustarInspector();
+        // MindAR empieza a procesar justo después de emitir arReady.
+        queueMicrotask(() => {
+            if (paginaSuspendida) pausarCamara();
+        });
     });
     escena.addEventListener('arError', mostrarErrorCamara);
     escena.addEventListener('renderstart', iniciarCamara, { once: true });
@@ -336,6 +358,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         clearTimeout(temporizadorOcultar);
         temporizadorOcultar = null;
+        clearTimeout(temporizadorPerdida);
+        temporizadorPerdida = null;
+        targetResultado = index;
 
         const nombreEquipo = equiposAR[index];
         textoEquipo.textContent = nombreEquipo;
@@ -354,6 +379,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Oculta la tarjeta y vuelve al mensaje de escaneo.
     const ocultarResultado = (inmediato = false) => {
         if (modoInspector) return;
+
+        clearTimeout(temporizadorPerdida);
+        temporizadorPerdida = null;
+        targetResultado = null;
+        actualizarCarga();
 
         uiStatus.textContent = "Escaneando logo...";
         uiStatusContainer.classList.replace('bg-green-500/80', 'bg-black/50');
@@ -380,6 +410,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (targetActivo !== null && targetsVisibles.has(targetActivo)) {
             mostrarResultado(targetActivo);
+        } else if (!inmediato && targetResultado !== null) {
+            // Mantiene el último resultado utilizable mientras se recupera el logo.
+            if (temporizadorPerdida === null) {
+                temporizadorPerdida = setTimeout(() => {
+                    temporizadorPerdida = null;
+                    ocultarResultado();
+                }, 900);
+            }
         } else {
             ocultarResultado(inmediato);
         }
@@ -390,11 +428,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const target = document.getElementById(`target-${i}`);
         if (target) {
             target.addEventListener('targetFound', () => {
+                if (paginaSuspendida || arPausado) return;
                 targetsVisibles.add(i);
                 targetActivo = i;
                 actualizarResultadoSegunTracking();
             });
             target.addEventListener('targetLost', () => {
+                if (paginaSuspendida || arPausado) return;
                 targetsVisibles.delete(i);
                 if (targetActivo === i) {
                     const visibles = Array.from(targetsVisibles);
@@ -405,9 +445,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    const fotoAR = iniciarFotoAR({
+        escena,
+        puedeCapturar: () => modoInspector && arListo && !arPausado && !paginaSuspendida && modeloCargado,
+        obtenerEquipo: () => equiposAR[modeloPreparadoPara]
+    });
+
+    btnReclamar.addEventListener('click', lanzarConfeti);
+
     // Abre el visor 3D y oculta la interfaz del escáner.
     btnInspeccionar.addEventListener('click', () => {
-        if (!modeloCargado || modeloPreparadoPara !== targetActivo) return;
+        if (targetResultado === null || !modeloCargado || modeloPreparadoPara !== targetResultado) return;
         zoom = 1;
         desplazamiento = { x: 0, y: 0 };
         modeloCamara.setAttribute('rotation', '0 0 0');
@@ -416,6 +464,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         modoInspector = true;
+        clearTimeout(temporizadorPerdida);
+        temporizadorPerdida = null;
         const canvas = escena.canvas;
         if (canvas) {
             touchActionOriginal = canvas.style.touchAction || '';
@@ -428,11 +478,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         modelosEnTargets.forEach((modelo) => modelo.setAttribute('visible', false));
         if (modeloCamara) modeloCamara.setAttribute('visible', true);
+        fotoAR.activar(true);
+        lanzarConfeti();
     });
 
     // Cierra el visor 3D y regresa al escáner.
     btnCerrarInspector.addEventListener('click', () => {
         modoInspector = false;
+        fotoAR.activar(false);
         if (escena.canvas) escena.canvas.style.touchAction = touchActionOriginal;
         reiniciarGesto();
 
@@ -473,6 +526,89 @@ document.addEventListener('DOMContentLoaded', () => {
             distanciaPellizcoPrevia = paneoPrevio.distancia;
         }
     };
+
+    // Pausa captura, seguimiento y renderizado sin volver a descargar los modelos.
+    const pausarCamara = () => {
+        clearTimeout(temporizadorInicioCamara);
+        clearTimeout(temporizadorPerdida);
+        temporizadorPerdida = null;
+        reiniciarGesto();
+        escena.pause();
+        if (!arListo || arPausado) return;
+        const sistemaAR = escena.systems['mindar-image-system'];
+        sistemaAR.pause();
+        sistemaAR.video.srcObject?.getTracks().forEach((track) => { track.enabled = false; });
+        arPausado = true;
+        targetsVisibles.clear();
+        targetActivo = null;
+        // El controlador reinicia el tracking al reanudar; descarta poses antiguas.
+        for (let i = 0; i <= 3; i++) {
+            const target = document.getElementById(`target-${i}`);
+            if (target) target.object3D.visible = false;
+        }
+        if (!modoInspector) ocultarResultado(true);
+    };
+
+    const reanudarCamara = async () => {
+        const version = ++versionVisibilidad;
+        escena.play();
+        if (!arPausado) {
+            const video = escena.systems?.['mindar-image-system']?.video;
+            if (arIniciando && video) {
+                video.srcObject?.getTracks().forEach((track) => { track.enabled = true; });
+                video.play().catch(() => {
+                    if (!paginaSuspendida && version === versionVisibilidad) {
+                        mostrarErrorCamara('No se pudo reanudar la cámara. Pulsa Reintentar para recuperarla.');
+                    }
+                });
+                clearTimeout(temporizadorInicioCamara);
+                temporizadorInicioCamara = setTimeout(() => {
+                    mostrarErrorCamara('No se pudo preparar el escáner. Vuelve a intentarlo.');
+                }, 30000);
+            }
+            if (!arIniciando && !arListo) iniciarCamara();
+            return;
+        }
+        const sistemaAR = escena.systems['mindar-image-system'];
+        try {
+            const tracks = sistemaAR.video.srcObject?.getVideoTracks() || [];
+            if (!tracks.length || tracks.some((track) => track.readyState === 'ended')) {
+                throw new Error('La captura de cámara terminó en segundo plano.');
+            }
+            tracks.forEach((track) => { track.enabled = true; });
+            await sistemaAR.video.play();
+            if (paginaSuspendida || version !== versionVisibilidad) return;
+            sistemaAR.controller.processVideo(sistemaAR.video);
+            arPausado = false;
+            uiStatus.textContent = 'Escaneando logo...';
+            reajustarInspector();
+        } catch (error) {
+            if (paginaSuspendida || version !== versionVisibilidad) return;
+            tracksDesactivar();
+            mostrarErrorCamara('No se pudo reanudar la cámara. Pulsa Reintentar para recuperarla.');
+        }
+    };
+
+    const tracksDesactivar = () => {
+        const video = escena.systems?.['mindar-image-system']?.video;
+        video?.pause();
+        video?.srcObject?.getTracks().forEach((track) => { track.enabled = false; });
+    };
+
+    const actualizarVisibilidad = (suspendida) => {
+        if (paginaSuspendida === suspendida) return;
+        paginaSuspendida = suspendida;
+        ++versionVisibilidad;
+        if (suspendida) {
+            pausarCamara();
+            tracksDesactivar();
+        } else {
+            reanudarCamara();
+        }
+    };
+    document.addEventListener('visibilitychange', () => actualizarVisibilidad(document.hidden));
+    window.addEventListener('pagehide', () => actualizarVisibilidad(true));
+    window.addEventListener('pageshow', () => actualizarVisibilidad(document.hidden));
 
     // Escucha solo la escena para no interferir con los botones y menús.
     escena.addEventListener('touchstart', (e) => {

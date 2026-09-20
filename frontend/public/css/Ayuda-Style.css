@@ -1,6 +1,6 @@
 
 .TitleBubble {
-    width: 300px;
+    width: min(300px, calc(100% - 32px));
     padding: 10px;
     padding-top: 20px;
     padding-bottom: 20px;
@@ -12,12 +12,12 @@
 
     font: bold 16px Arial, Helvetica, sans-serif;
     text-align: center;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
     color: #f0f7f8;
 }
 
 .GlassDisplay {
-    width: 300px;
+    width: min(300px, calc(100% - 32px));
     padding: 10px;
     padding-top: 20px;
     padding-bottom: 20px;
@@ -36,7 +36,7 @@
 }
 
 .InvisibleDivision {
-    width: 300px;
+    width: min(300px, calc(100% - 32px));
     height: 10px;
     margin: 20px auto;
 }
@@ -49,11 +49,12 @@ body {
     /* padding: 15px eliminado — rompía el nav fijo */
     margin: auto;
     /* Espacio inferior para que el contenido no quede debajo del nav fijo */
-    padding-bottom: 90px;
+    padding-top: calc(96px + env(safe-area-inset-top, 0px));
+    padding-bottom: var(--bottom-clearance);
 }
 
 .card {
-    width: 300px;
+    width: min(300px, calc(100% - 32px));
     padding: 10px;
     border: 5px solid #97d5e4;
     margin: auto;
@@ -72,6 +73,7 @@ body {
     display: flex;
     justify-content: center;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 /* Solo aplica color a links dentro del contenido, no al BottomNav ni Header */

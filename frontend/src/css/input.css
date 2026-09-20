@@ -2,14 +2,37 @@
 @source "../../public/js";
 
 @font-face {
-    font-family: 'Monument Extended';
-
-    src: url('../../public/assets/fonts/Monument.otf') format('opentype');
-    font-weight: 900;
+    font-family: 'Urbanist';
+    src: url('../assets/fonts/Urbanist-Variable.ttf') format('truetype');
+    font-weight: 100 900;
     font-style: normal;
     font-display: swap;
 }
 
 @theme {
-    --font-monument: 'Monument Extended', sans-serif;
+    --font-urbanist: 'Urbanist', sans-serif;
 }
+
+:root {
+    --bottom-nav-height: calc(80px + env(safe-area-inset-bottom, 0px));
+    --bottom-clearance: calc(var(--bottom-nav-height) + 32px);
+}
+
+.site-bottom-nav {
+    height: var(--bottom-nav-height);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.site-header { padding-top: calc(20px + env(safe-area-inset-top, 0px)); }
+.site-menu-links {
+    justify-content: flex-start;
+    height: 100vh;
+    height: 100dvh;
+    margin-top: 0;
+    padding-top: calc(80px + env(safe-area-inset-top, 0px));
+    padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+    overscroll-behavior: contain;
+}
+.site-menu-links > * { flex-shrink: 0; }
+.equipo-page { padding-bottom: var(--bottom-clearance); }
+#equipo-detalle-container { padding-top: calc(80px + env(safe-area-inset-top, 0px)); }
