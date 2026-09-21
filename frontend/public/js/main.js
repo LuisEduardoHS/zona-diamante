@@ -1,6 +1,6 @@
-import { renderBottomNav, actualizarBottomNav } from './components/BottonNav.js';
-import { renderHeader, cerrarMenu, actualizarHeader } from './components/Header.js';
-import { iniciarNavegacion } from './navegacion.js';
+import { renderBottomNav, actualizarBottomNav } from './components/BottonNav.js?v=20260921-1';
+import { renderHeader, cerrarMenu, actualizarHeader } from './components/Header.js?v=20260921-1';
+import { iniciarNavegacion } from './navegacion.js?v=20260921-1';
 
 renderHeader();
 renderBottomNav();

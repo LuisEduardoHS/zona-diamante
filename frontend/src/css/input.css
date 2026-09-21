@@ -15,6 +15,11 @@
 }
 
 @layer base {
+    html, body {
+        max-width: 100%;
+        overflow-x: hidden;
+        overflow-x: clip;
+    }
     body { font-family: 'Urbanist', sans-serif; }
     button, input, select, textarea { font-family: inherit; }
     h1, h2, h3, h4, h5, h6 { font-weight: 900; line-height: 1.15; }
@@ -29,6 +34,10 @@
 }
 
 .site-bottom-nav {
+    position: fixed;
+    inset: auto 0 0;
+    width: 100%;
+    max-width: 100vw;
     height: var(--bottom-nav-height);
     padding-bottom: env(safe-area-inset-bottom, 0px);
     border: 1px solid #d2d2d2;
@@ -37,7 +46,6 @@
 
 .site-header { padding-top: calc(20px + env(safe-area-inset-top, 0px)); }
 #header-superior, #menu-inferior { position: relative; z-index: 50; }
-.site-header, .site-bottom-nav { transform: translate3d(0, 0, 0); backface-visibility: hidden; }
 .bottom-section-link { color: #858585; }
 .bottom-section-link:hover, .bottom-section-link[aria-current="page"] { color: #2b2b31; }
 .bottom-active-indicator { position: absolute; top: 0; left: calc(10% + 6.4px); width: 32px; height: 6px; border-radius: 0 0 6px 6px; background: #f27b21; transform: translateX(-50%); z-index: 1; pointer-events: none; }
@@ -45,7 +53,7 @@
 .site-bottom-nav > div { position: relative; z-index: 2; }
 .site-bottom-nav > div > div { position: relative; z-index: 2; }
 .site-bottom-nav > div > a[aria-label="Cámara AR"] { z-index: 3; }
-#contenido-pagina { display: block; min-height: 100%; overflow-x: clip; }
+#contenido-pagina { display: block; width: 100%; min-width: 0; min-height: 0; overflow-x: clip; }
 .ar-shell { margin: 0; background: #1a1a1a; overflow: hidden; }
 .ar-frame { position: fixed; inset: 0; width: 100%; height: 100dvh; border: 0; }
 .ar-frame-modal { z-index: 300; }

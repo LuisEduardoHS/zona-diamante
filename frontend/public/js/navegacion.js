@@ -4,6 +4,10 @@ const cache = new Map();
 const estilos = new Map();
 const ordenSecciones = ['index.html', 'trivia.html', 'juego.html', 'camara.html', 'pages/coleccion.html', 'Informacion.html', 'Ayuda.html'];
 
+function esEstiloBase(href) {
+    return new URL(href, location.href).pathname.endsWith('/css/output.css');
+}
+
 function posicionSeccion(url) {
     const archivo = rutaInterna(url)?.archivo;
     const posicion = ordenSecciones.indexOf(archivo);
@@ -25,7 +29,7 @@ function prepararPagina(doc, url) {
         titulo: doc.title,
         estilos: [...doc.querySelectorAll('link[rel="stylesheet"]')]
             .map(node => new URL(node.getAttribute('href'), url).href)
-            .filter(href => !href.endsWith('/css/output.css'))
+            .filter(href => !esEstiloBase(href))
     };
 }
 
@@ -79,7 +83,7 @@ export function iniciarNavegacion(actualizarShell) {
     const inicial = prepararPagina(document, location.href);
     cache.set(location.origin + location.pathname, Promise.resolve(inicial));
     for (const link of document.querySelectorAll('link[rel="stylesheet"]')) {
-        if (!link.href.endsWith('/css/output.css')) estilos.set(link.href, { link, lista: Promise.resolve() });
+        if (!esEstiloBase(link.href)) estilos.set(link.href, { link, lista: Promise.resolve() });
     }
     const vista = document.createElement('div');
     vista.id = 'contenido-pagina';
@@ -132,12 +136,14 @@ export function iniciarNavegacion(actualizarShell) {
             animacionVista?.cancel();
             vista.innerHTML = pagina.html;
             animacionVista = vista.animate([
-                { transform: `translateX(${direccion * 100}%)`, opacity: .85 },
+                { transform: `translate3d(${direccion * 100}%, 0, 0)`, opacity: .85 },
                 { transform: 'translateX(0)', opacity: 1 }
             ], {
                 duration: matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 320,
                 easing: 'cubic-bezier(.22, .75, .25, 1)',
-                fill: 'both'
+                // No conservar el fotograma inicial: algunos navegadores incluyen
+                // su translateX(100%) en el ancho desplazable aun al terminar.
+                fill: 'none'
             });
             for (const id of ['header-superior', 'menu-inferior']) document.getElementById(id).inert = false;
             actualizarShell();
@@ -148,6 +154,11 @@ export function iniciarNavegacion(actualizarShell) {
             const ancla = info.url.hash && document.getElementById(decodeURIComponent(info.url.hash.slice(1)));
             if (ancla) ancla.scrollIntoView();
             else window.scrollTo(...posicion);
+            // El foco y el cambio de 100dvh pueden actualizar el viewport
+            // después del primer frame; espera otro layout antes de fijar el scroll.
+            if (!ancla) requestAnimationFrame(() => requestAnimationFrame(() => {
+                if (solicitud === version) window.scrollTo(...posicion);
+            }));
             aviso.textContent = pagina.titulo;
             seccionActual = posicionSeccion(info.url);
         } catch (error) {
