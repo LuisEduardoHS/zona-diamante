@@ -36,6 +36,8 @@
 }
 
 .site-header { padding-top: calc(20px + env(safe-area-inset-top, 0px)); }
+#header-superior, #menu-inferior { position: relative; z-index: 50; }
+.site-header, .site-bottom-nav { transform: translate3d(0, 0, 0); backface-visibility: hidden; }
 .bottom-section-link { color: #858585; }
 .bottom-section-link:hover, .bottom-section-link[aria-current="page"] { color: #2b2b31; }
 .bottom-active-indicator { position: absolute; top: 0; left: calc(10% + 6.4px); width: 32px; height: 6px; border-radius: 0 0 6px 6px; background: #f27b21; transform: translateX(-50%); z-index: 1; pointer-events: none; }
