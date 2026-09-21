@@ -62,35 +62,31 @@
     padding: calc(88px + env(safe-area-inset-top, 0px)) 28px calc(24px + env(safe-area-inset-bottom, 0px));
     border: 0;
     border-radius: 0 32px 32px 0;
-    background: #ffb92f;
-    color: #2b2b31;
+    background: #f27b21;
+    color: white;
     box-shadow: 12px 0 36px #0002;
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
 }
 .site-menu::backdrop { background: #20212666; }
-#btn-cerrar-menu {
+#menu-overlay > .shell-menu-button {
     position: absolute;
     top: calc(20px + env(safe-area-inset-top, 0px));
     left: 24px;
-    display: grid;
-    place-items: center;
-    width: 48px;
-    height: 48px;
-    border: 0;
-    border-radius: 50%;
+    z-index: 1;
     background: white;
     color: #f27b21;
-    box-shadow: 0 3px 10px #0002;
-    cursor: pointer;
 }
-#btn-cerrar-menu svg { width: 24px; height: 24px; stroke-width: 3; }
+.shell-menu-button svg { transition: transform 180ms ease, opacity 180ms ease; }
+.shell-menu-button.menu-icono-cambiando svg { transform: rotate(90deg) scale(.7); opacity: 0; }
 .site-menu-links { display: flex; flex-direction: column; justify-content: center; gap: clamp(12px, 3dvh, 26px); min-height: 100%; }
-.site-menu-group-title { margin: 0 0 5px; text-align: center; font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: #61400b; }
+.site-menu-group-title { margin: 0 0 5px; text-align: center; font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: white; }
 .site-menu-link { display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 44px; padding: clamp(7px, 1.6dvh, 15px) 8px; border-bottom: 1px solid #2b2b3126; color: inherit; font-size: clamp(23px, 3.8dvh, 32px); font-weight: 800; line-height: 1.15; text-decoration: none; transition: background 150ms; }
 .site-menu-link:last-child { border-bottom: 0; }
 .site-menu-link:hover, .site-menu-link[aria-current="page"] { background: #ffffff38; border-radius: 12px; }
+.site-menu-link--ar { background: #ffffff38; border: 1px solid #ffffff55; border-radius: 12px; }
+.site-menu-link--ar .site-menu-icon svg { width: 30px; height: 30px; }
 .site-menu-icon { display: grid; place-items: center; flex: 0 0 26px; }
 .site-menu-icon svg { width: 26px; height: 26px; }
 .site-menu a:focus-visible, .site-menu button:focus-visible, .shell-menu-button:focus-visible { outline: 3px solid #2b2b31; outline-offset: 2px; }
