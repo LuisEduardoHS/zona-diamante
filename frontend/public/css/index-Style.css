@@ -1,5 +1,5 @@
 body {
-    background-color: #ffffff;
+    background-color: #f7f7f7;
     overflow-x: hidden;
 }
 
@@ -34,7 +34,7 @@ main {
 }
 .inicio-acciones > * { min-height: 44px; }
 .carrusel-info { bottom: max(56px, 15%); }
-.carrusel-info h2 { max-width: 100%; font-size: clamp(32px, 8vw, 44px); overflow-wrap: anywhere; }
+.carrusel-info h2 { max-width: 100%; font-size: clamp(38px, 9vw, 52px); overflow-wrap: anywhere; }
 
 @media (orientation: portrait) and (max-height: 480px) {
     .inicio-acciones { flex-direction: row; gap: 8px; }
@@ -42,7 +42,7 @@ main {
     .inicio-acciones span { padding-right: 18px; }
     .inicio-acciones svg { right: 12px; }
     .carrusel-info { bottom: 44px; }
-    .carrusel-info h2 { font-size: 26px; }
+    .carrusel-info h2 { font-size: 31px; }
     #carousel-dots { bottom: 10px; }
 }
 
@@ -50,7 +50,7 @@ main {
     .inicio-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 34%); min-height: 320px; }
     .inicio-acciones { justify-content: center; margin-top: 0; padding: 60px 20px 16px; gap: 12px; }
     .carrusel-info { bottom: 48px; }
-    .carrusel-info h2 { font-size: 26px; }
+    .carrusel-info h2 { font-size: 31px; }
     .carrusel-info > div { padding-top: 3px; padding-bottom: 3px; }
     #carousel-dots { bottom: 12px; }
 }

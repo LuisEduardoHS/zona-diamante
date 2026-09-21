@@ -4,6 +4,7 @@ import { iniciarNavegacion } from './navegacion.js';
 
 renderHeader();
 renderBottomNav();
+actualizarBottomNav();
 iniciarNavegacion(() => {
     cerrarMenu();
     actualizarHeader();

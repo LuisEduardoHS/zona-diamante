@@ -31,14 +31,19 @@
 .site-bottom-nav {
     height: var(--bottom-nav-height);
     padding-bottom: env(safe-area-inset-bottom, 0px);
+    border: 1px solid #d2d2d2;
+    border-bottom: 0;
 }
 
 .site-header { padding-top: calc(20px + env(safe-area-inset-top, 0px)); }
 .bottom-section-link { color: #858585; }
 .bottom-section-link:hover, .bottom-section-link[aria-current="page"] { color: #2b2b31; }
-.bottom-active-mark { display: none; position: absolute; top: 0; width: 32px; height: 6px; border-radius: 0 0 6px 6px; background: #f27b21; }
-[aria-current="page"] > .bottom-active-mark { display: block; }
-#contenido-pagina { display: contents; }
+.bottom-active-indicator { position: absolute; top: 0; left: calc(10% + 6.4px); width: 32px; height: 6px; border-radius: 0 0 6px 6px; background: #f27b21; transform: translateX(-50%); z-index: 1; pointer-events: none; }
+.bottom-active-indicator--listo { transition: left 320ms cubic-bezier(.22, .75, .25, 1); }
+.site-bottom-nav > div { position: relative; z-index: 2; }
+.site-bottom-nav > div > div { position: relative; z-index: 2; }
+.site-bottom-nav > div > a[aria-label="Cámara AR"] { z-index: 3; }
+#contenido-pagina { display: block; min-height: 100%; overflow-x: clip; }
 .ar-shell { margin: 0; background: #1a1a1a; overflow: hidden; }
 .ar-frame { position: fixed; inset: 0; width: 100%; height: 100dvh; border: 0; }
 .ar-frame-modal { z-index: 300; }
@@ -85,7 +90,7 @@
 .site-menu-link { display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 44px; padding: clamp(7px, 1.6dvh, 15px) 8px; border-bottom: 1px solid #2b2b3126; color: inherit; font-size: clamp(23px, 3.8dvh, 32px); font-weight: 800; line-height: 1.15; text-decoration: none; transition: background 150ms; }
 .site-menu-link:last-child { border-bottom: 0; }
 .site-menu-link:hover, .site-menu-link[aria-current="page"] { background: #ffffff38; border-radius: 12px; }
-.site-menu-link--ar { background: #ffffff38; border: 1px solid #ffffff55; border-radius: 12px; }
+.site-menu-link--ar { background: transparent; border: 1px solid #ffffff55; border-radius: 12px; }
 .site-menu-link--ar .site-menu-icon svg { width: 30px; height: 30px; }
 .site-menu-icon { display: grid; place-items: center; flex: 0 0 26px; }
 .site-menu-icon svg { width: 26px; height: 26px; }

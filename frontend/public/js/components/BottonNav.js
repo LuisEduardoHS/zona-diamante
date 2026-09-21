@@ -1,11 +1,27 @@
-import { ruta } from '../rutas.js';
+import { ruta, rutaInterna } from '../rutas.js';
 
 export function actualizarBottomNav() {
-    const actual = location.pathname === new URL(ruta('')).pathname ? ruta('index.html') : location.origin + location.pathname;
-    document.querySelectorAll('.site-bottom-nav a').forEach(enlace => {
-        if (enlace.href === actual) enlace.setAttribute('aria-current', 'page');
+    const actual = rutaInterna(location.href)?.archivo || 'index.html';
+    const nav = document.querySelector('.site-bottom-nav');
+    if (!nav) return;
+    const enlaces = [...nav.querySelectorAll('a')];
+    enlaces.forEach(enlace => {
+        if (rutaInterna(enlace.href)?.archivo === actual) enlace.setAttribute('aria-current', 'page');
         else enlace.removeAttribute('aria-current');
     });
+    const activo = enlaces.find(enlace => enlace.getAttribute('aria-current') === 'page');
+    const indicador = nav.querySelector('.bottom-active-indicator');
+    if (!activo || !indicador) return;
+    // Las cinco columnas son iguales. Una posición relativa evita medir un
+    // layout todavía sin preparar y se adapta también al girar el teléfono.
+    const posicion = (enlaces.indexOf(activo) + 0.5) / enlaces.length;
+    indicador.style.left = `calc(${posicion * 100}% + ${8 * (1 - 2 * posicion)}px)`;
+    if (!indicador.classList.contains('bottom-active-indicator--listo')) {
+        // La primera posición se pinta directamente; sólo los cambios posteriores se animan.
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+            indicador.classList.add('bottom-active-indicator--listo');
+        }));
+    }
 }
 
 export function renderBottomNav() {
@@ -13,12 +29,12 @@ export function renderBottomNav() {
     const base = ruta('');
 
     const navHTML = `
-        <nav aria-label="Navegación inferior" class="site-bottom-nav fixed bottom-0 left-0 w-full bg-[#c8c8c8] h-20 rounded-t-3xl z-50">
+        <nav aria-label="Navegación inferior" class="site-bottom-nav fixed bottom-0 left-0 w-full bg-white h-20 rounded-t-3xl z-50">
+            <span class="bottom-active-indicator" aria-hidden="true"></span>
             <div class="flex justify-between items-center h-full px-2">
 
                 <!-- 1. INICIO -->
                 <a href="${base}index.html" class="relative w-1/5 h-full flex flex-col items-center justify-center transition-colors cursor-pointer no-underline bottom-section-link">
-                    <span class="bottom-active-mark" aria-hidden="true"></span>
                     <svg class="w-7 h-7 mb-1 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
                         <path d="M341.8 72.6C329.5 61.2 310.5 61.2 298.3 72.6L74.3 280.6C64.7 289.6 61.5 303.5 66.3 315.7C71.1 327.9 82.8 336 96 336L112 336L112 512C112 547.3 140.7 576 176 576L464 576C499.3 576 528 547.3 528 512L528 336L544 336C557.2 336 569 327.9 573.8 315.7C578.6 303.5 575.4 289.5 565.8 280.6L341.8 72.6zM304 384L336 384C362.5 384 384 405.5 384 432L384 528L256 528L256 432C256 405.5 277.5 384 304 384z"/>
                     </svg>
@@ -27,7 +43,6 @@ export function renderBottomNav() {
 
                 <!-- 2. TRIVIA -->
                 <a href="${base}trivia.html" class="relative w-1/5 h-full flex flex-col items-center justify-center transition-colors cursor-pointer no-underline bottom-section-link">
-                    <span class="bottom-active-mark" aria-hidden="true"></span>
                     <svg class="w-7 h-7 mb-1 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
                         <path d="M353.8 118.1L330.2 70.3C326.3 62 314.1 61.7 309.8 70.3L286.2 118.1L233.9 125.6C224.6 127 220.6 138.5 227.5 145.4L265.5 182.4L256.5 234.5C255.1 243.8 264.7 251 273.3 246.7L320.2 221.9L366.8 246.3C375.4 250.6 385.1 243.4 383.6 234.1L374.6 182L412.6 145.4C419.4 138.6 415.5 127.1 406.2 125.6L353.9 118.1zM288 320C261.5 320 240 341.5 240 368L240 528C240 554.5 261.5 576 288 576L352 576C378.5 576 400 554.5 400 528L400 368C400 341.5 378.5 320 352 320L288 320zM80 384C53.5 384 32 405.5 32 432L32 528C32 554.5 53.5 576 80 576L144 576C170.5 576 192 554.5 192 528L192 432C192 405.5 170.5 384 144 384L80 384zM448 496L448 528C448 554.5 469.5 576 496 576L560 576C586.5 576 608 554.5 608 528L608 496C608 469.5 586.5 448 560 448L496 448C469.5 448 448 469.5 448 496z"/>
                     </svg>
@@ -49,7 +64,6 @@ export function renderBottomNav() {
 
                 <!-- 4. INFO -->
                 <a href="${base}Informacion.html" class="relative w-1/5 h-full flex flex-col items-center justify-center transition-colors cursor-pointer no-underline bottom-section-link">
-                    <span class="bottom-active-mark" aria-hidden="true"></span>
                     <svg class="w-7 h-7 mb-1 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
                         <path d="M320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576zM288 224C288 206.3 302.3 192 320 192C337.7 192 352 206.3 352 224C352 241.7 337.7 256 320 256C302.3 256 288 241.7 288 224zM280 288L328 288C341.3 288 352 298.7 352 312L352 400L360 400C373.3 400 384 410.7 384 424C384 437.3 373.3 448 360 448L280 448C266.7 448 256 437.3 256 424C256 410.7 266.7 400 280 400L304 400L304 336L280 336C266.7 336 256 325.3 256 312C256 298.7 266.7 288 280 288z"/>
                     </svg>
@@ -58,7 +72,6 @@ export function renderBottomNav() {
 
                 <!-- 5. JUEGO -->
                 <a href="${base}juego.html" class="relative w-1/5 h-full flex flex-col items-center justify-center transition-colors cursor-pointer no-underline bottom-section-link">
-                    <span class="bottom-active-mark" aria-hidden="true"></span>
                     <svg class="w-7 h-7 mb-1 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
                         <path d="M448 128C554 128 640 214 640 320C640 426 554 512 448 512L192 512C86 512 0 426 0 320C0 214 86 128 192 128L448 128zM192 240C178.7 240 168 250.7 168 264L168 296L136 296C122.7 296 112 306.7 112 320C112 333.3 122.7 344 136 344L168 344L168 376C168 389.3 178.7 400 192 400C205.3 400 216 389.3 216 376L216 344L248 344C261.3 344 272 333.3 272 320C272 306.7 261.3 296 248 296L216 296L216 264C216 250.7 205.3 240 192 240zM432 336C414.3 336 400 350.3 400 368C400 385.7 414.3 400 432 400C449.7 400 464 385.7 464 368C464 350.3 449.7 336 432 336zM496 240C478.3 240 464 254.3 464 272C464 289.7 478.3 304 496 304C513.7 304 528 289.7 528 272C528 254.3 513.7 240 496 240z"/>
                     </svg>

@@ -2,6 +2,13 @@ import { rutaInterna } from './rutas.js';
 
 const cache = new Map();
 const estilos = new Map();
+const ordenSecciones = ['index.html', 'trivia.html', 'juego.html', 'camara.html', 'pages/coleccion.html', 'Informacion.html', 'Ayuda.html'];
+
+function posicionSeccion(url) {
+    const archivo = rutaInterna(url)?.archivo;
+    const posicion = ordenSecciones.indexOf(archivo);
+    return posicion < 0 ? 0 : posicion;
+}
 
 function prepararPagina(doc, url) {
     const contenido = doc.body.cloneNode(true);
@@ -85,6 +92,8 @@ export function iniciarNavegacion(actualizarShell) {
     aviso.setAttribute('role', 'status');
     document.body.append(aviso);
     let ciclo = new AbortController();
+    let animacionVista;
+    let seccionActual = posicionSeccion(location.href);
     let version = 0;
     const nuevaEntrada = () => `${Date.now()}-${Math.random().toString(36).slice(2)}`;
     let entrada = history.state?.zdEntrada || nuevaEntrada();
@@ -119,7 +128,17 @@ export function iniciarNavegacion(actualizarShell) {
             for (const [href, { link }] of estilos) link.media = pagina.estilos.includes(href) ? 'all' : 'not all';
             document.body.className = pagina.clase;
             document.title = pagina.titulo;
+            const direccion = posicionSeccion(info.url) >= seccionActual ? 1 : -1;
+            animacionVista?.cancel();
             vista.innerHTML = pagina.html;
+            animacionVista = vista.animate([
+                { transform: `translateX(${direccion * 100}%)`, opacity: .85 },
+                { transform: 'translateX(0)', opacity: 1 }
+            ], {
+                duration: matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 320,
+                easing: 'cubic-bezier(.22, .75, .25, 1)',
+                fill: 'both'
+            });
             for (const id of ['header-superior', 'menu-inferior']) document.getElementById(id).inert = false;
             actualizarShell();
             await montarSeccion(info.archivo, ciclo.signal);
@@ -130,6 +149,7 @@ export function iniciarNavegacion(actualizarShell) {
             if (ancla) ancla.scrollIntoView();
             else window.scrollTo(...posicion);
             aviso.textContent = pagina.titulo;
+            seccionActual = posicionSeccion(info.url);
         } catch (error) {
             // Si falla la carga parcial, el enlace normal sigue disponible.
             if (solicitud === version) location.assign(info.url.href);
