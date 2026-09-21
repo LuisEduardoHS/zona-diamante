@@ -50,6 +50,7 @@
 .bottom-section-link { color: #858585; }
 .bottom-section-link:hover, .bottom-section-link[aria-current="page"] { color: #2b2b31; }
 .bottom-active-indicator { position: absolute; top: 0; left: calc(10% + 6.4px); width: 32px; height: 6px; border-radius: 0 0 6px 6px; background: #f27b21; transform: translateX(-50%); z-index: 1; pointer-events: none; }
+.bottom-active-indicator--oculto { display: none; }
 .bottom-active-indicator--listo { transition: left 320ms cubic-bezier(.22, .75, .25, 1); }
 .site-bottom-nav > div { position: relative; z-index: 2; }
 .site-bottom-nav > div > div { position: relative; z-index: 2; }

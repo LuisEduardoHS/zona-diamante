@@ -11,7 +11,11 @@ export function actualizarBottomNav() {
     });
     const activo = enlaces.find(enlace => enlace.getAttribute('aria-current') === 'page');
     const indicador = nav.querySelector('.bottom-active-indicator');
-    if (!activo || !indicador) return;
+    if (!activo || !indicador) {
+        indicador?.classList.add('bottom-active-indicator--oculto');
+        return;
+    }
+    indicador.classList.remove('bottom-active-indicator--oculto');
     // Las cinco columnas son iguales. Una posición relativa evita medir un
     // layout todavía sin preparar y se adapta también al girar el teléfono.
     const posicion = (enlaces.indexOf(activo) + 0.5) / enlaces.length;
