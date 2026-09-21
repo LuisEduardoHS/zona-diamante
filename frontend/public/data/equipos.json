@@ -9,8 +9,8 @@
       "gradienteDeg": "to-b"
     },
     "imagenes": {
-      "logoFondo": "./assets/img/equipos/sultanes/logo-bg.png",
-      "jugadorCarrusel": "./assets/img/equipos/sultanes/jugador.png"
+      "logoFondo": "./assets/img/equipos/sultanes/logo-bg.webp",
+      "jugadorCarrusel": "./assets/img/equipos/sultanes/jugador.webp"
     },
     "detalles": {
       "zona": "Zona Norte de la LMB",
@@ -26,11 +26,11 @@
       "estadio": {
         "nombre": "Estadio Mobil Super",
         "ubicacion": "Monterrey, Nuevo León",
-        "imagen": "./assets/img/equipos/sultanes/estadio.png"
+        "imagen": "./assets/img/equipos/sultanes/estadio.webp"
       },
       "mascota": {
         "nombre": "El Perro Sultán",
-        "imagen": "./assets/img/equipos/sultanes/mascota.png"
+        "imagen": "./assets/img/equipos/sultanes/mascota.webp"
       },
       "palmares": [
         "10 Campeonatos de la LMB",
@@ -38,7 +38,7 @@
       ],
       "mvp": {
         "nombre": "Ramiro Peña",
-        "imagen": "./assets/img/equipos/sultanes/mvp.png"
+        "imagen": "./assets/img/equipos/sultanes/mvp.webp"
       },
       "calendario": [
         {
@@ -59,8 +59,8 @@
       "gradienteDeg": "to-b"
     },
     "imagenes": {
-      "logoFondo": "./assets/img/equipos/Dorados/logo-bg.png",
-      "jugadorCarrusel": "./assets/img/equipos/Dorados/player.png"
+      "logoFondo": "./assets/img/equipos/Dorados/logo-bg.webp",
+      "jugadorCarrusel": "./assets/img/equipos/Dorados/player.webp"
     },
     "detalles": {
       "zona": "Zona Norte de la LMB",
@@ -81,7 +81,7 @@
       },
       "mascota": {
         "nombre": "Dorado",
-        "imagen": "./assets/img/equipos/Dorados/mascota.png"
+        "imagen": "./assets/img/equipos/Dorados/mascota.webp"
       },
       "palmares": [
         "6 Campeonatos de la Liga Estatal",
@@ -89,7 +89,7 @@
       ],
       "mvp": {
         "nombre": "Leo Piña",
-        "imagen": "./assets/img/equipos/Dorados/mvp.png"
+        "imagen": "./assets/img/equipos/Dorados/mvp.webp"
       },
       "calendario": [
         {
@@ -110,8 +110,8 @@
       "gradienteDeg": "to-b"
     },
     "imagenes": {
-      "logoFondo": "./assets/img/equipos/Charros/logo-bg.png",
-      "jugadorCarrusel": "./assets/img/equipos/Charros/player.png"
+      "logoFondo": "./assets/img/equipos/Charros/logo-bg.webp",
+      "jugadorCarrusel": "./assets/img/equipos/Charros/player.webp"
     },
     "detalles": {
       "zona": "Zona Norte de la LMB",
@@ -128,7 +128,7 @@
       "estadio": {
         "nombre": "Estadio Panamericano",
         "ubicacion": "Zapopan, Jalisco",
-        "imagen": "./assets/img/equipos/Charros/estadio.png"
+        "imagen": "./assets/img/equipos/Charros/estadio.webp"
       },
       "mascota": {
         "nombre": "El Charro",
@@ -140,7 +140,7 @@
       ],
       "mvp": {
         "nombre": "Japhet Amador",
-        "imagen": "./assets/img/equipos/Charros/mvp.png"
+        "imagen": "./assets/img/equipos/Charros/mvp.webp"
       },
       "calendario": [
         {
@@ -161,8 +161,8 @@
       "gradienteDeg": "to-b"
     },
     "imagenes": {
-      "logoFondo": "./assets/img/equipos/Algonoderos/logo-bg.png",
-      "jugadorCarrusel": "./assets/img/equipos/Algonoderos/player.png"
+      "logoFondo": "./assets/img/equipos/Algonoderos/logo-bg.webp",
+      "jugadorCarrusel": "./assets/img/equipos/Algonoderos/player.webp"
     },
     "detalles": {
       "zona": "Zona Norte de la LMB",
@@ -179,11 +179,11 @@
       "estadio": {
         "nombre": "Estadio Revolución",
         "ubicacion": "Torreón, Coahuila",
-        "imagen": "./assets/img/equipos/Algonoderos/estadio.png"
+        "imagen": "./assets/img/equipos/Algonoderos/estadio.webp"
       },
       "mascota": {
         "nombre": "El Pollo Algodonero",
-        "imagen": "./assets/img/equipos/Algonoderos/mascota.png"
+        "imagen": "./assets/img/equipos/Algonoderos/mascota.webp"
       },
       "palmares": [
         "2 Campeonatos de LMB (1942, 1950)",
@@ -191,7 +191,7 @@
       ],
       "mvp": {
         "nombre": "Nick Torres",
-        "imagen": "./assets/img/equipos/Algonoderos/mvp.png"
+        "imagen": "./assets/img/equipos/Algonoderos/mvp.webp"
       },
       "calendario": [
         {

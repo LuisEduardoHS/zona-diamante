@@ -12,3 +12,6 @@ Thumbs.db
 
 # Archivos de Tailwind
 **/output.css
+
+# Pruebas y herramientas de validación locales del frontend
+/frontend/tests/

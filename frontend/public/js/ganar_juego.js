@@ -1,10 +1,5 @@
-const pantallaJuego = document.getElementById("pantallaJuego");
-const resultadoOverlay = document.getElementById("resultadoOverlay");
-
-function mostrarResultado() {
-    resultadoOverlay.classList.add("activo");
-
-    pantallaJuego.removeEventListener("click", mostrarResultado);
+export function iniciarJuego(signal) {
+    const pantalla = document.getElementById('pantallaJuego');
+    const resultado = document.getElementById('resultadoOverlay');
+    pantalla?.addEventListener('click', () => resultado.classList.add('activo'), { once: true, signal });
 }
-
-pantallaJuego.addEventListener("click", mostrarResultado);

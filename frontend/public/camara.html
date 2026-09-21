@@ -5,93 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zona Diamante | AR</title>
     <link href="./css/output.css" rel="stylesheet">
-
-    <script src="./js/libs/aframe.min.js"></script>
-    <script src="./js/libs/mindar-image-aframe.prod.js"></script>
-
-    <style>
-        video, canvas {
-            width: 100vw !important;
-            height: 100vh !important;
-            object-fit: cover !important;
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-        }
-
-        a-scene {
-            position: fixed !important;
-            inset: 0 !important;
-        }
-    </style>
 </head>
-
-<body class="bg-[#1a1a1a] min-h-screen font-sans overflow-hidden">
-
+<body class="ar-shell">
     <div id="header-superior"></div>
-
-    <div id="ar-ui" class="absolute top-0 left-0 w-full h-full pointer-events-none z-40 flex flex-col items-center justify-between pb-28 pt-12">
-        <div id="ar-status-container" class="bg-black/50 backdrop-blur-md px-6 py-2 rounded-full border-white/20 shadow-lg">
-            <span id="ar-status" role="status" aria-live="polite" class="font-bold text-sm text-white">Iniciando cámara...</span>
-        </div>
-
-        <div id="ar-result" class="hidden bg-white text-[#2b2b31] px-8 py-6 rounded-[2rem] shadow-2xl flex-col items-center gap-2 w-10/12 pointer-events-auto transition-all transform translate-y-10 opacity-0 duration-300">
-            <p class="text-xs text-gray-500 font-bold uppercase tracking-wider">Objeto detectado</p>
-            <h2 id="equipo-detectado" class="font-monument text-2xl uppercase tracking-tighter text-center text-[#008298]">Equipo</h2>
-
-            <div class="flex gap-3 w-full mt-4">
-                <button id="btn-inspeccionar" disabled class="flex-1 bg-[#2b2b31] text-white font-bold py-3 rounded-xl shadow-md active:scale-95 transition-transform text-sm disabled:opacity-50">
-                    Cargando 3D...
-                </button>
-
-                <button class="flex-1 bg-[#f27b21] text-white font-bold py-3 rounded-xl shadow-md active:scale-95 transition-transform text-sm">
-                    Reclamar
-                </button>
-            </div>
-            <p id="modelo-status" role="status" class="text-xs text-gray-500 text-center">Cargando el modelo 3D...</p>
-        </div>
-    </div>
-
-    <div id="ar-error" role="alert" class="hidden absolute inset-0 z-40 flex-col items-center justify-center px-8 pointer-events-none">
-        <div class="bg-white text-[#2b2b31] px-8 py-6 rounded-[2rem] shadow-2xl flex flex-col items-center gap-3 w-full pointer-events-auto text-center">
-            <h2 class="font-monument text-xl uppercase tracking-tighter text-[#008298]">No se pudo iniciar la cámara</h2>
-            <p id="ar-error-message" class="text-sm text-gray-500">Revisa el permiso de cámara e inténtalo de nuevo.</p>
-            <button id="btn-reintentar-camara" class="w-full bg-[#f27b21] text-white font-bold py-3 rounded-xl shadow-md active:scale-95 transition-transform">
-                Reintentar
-            </button>
-        </div>
-    </div>
-
-    <button id="btn-cerrar-inspector" class="hidden absolute top-24 right-6 z-50 bg-red-500 text-white w-10 h-10 rounded-full font-bold shadow-xl active:scale-95 flex justify-center items-center pointer-events-auto">
-        ✕
-    </button>
-
-    <a-scene mindar-image="imageTargetSrc: ./ar/targets.mind; autoStart: false; uiLoading: no; uiScanning: no; uiError: no;" loading-screen="enabled: false" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-
-        <a-camera id="ar-camera" position="0 0 0" look-controls="enabled: false" wasd-controls="enabled: false">
-            <a-gltf-model id="modelo-camara" rotation="0 0 0" visible="false"></a-gltf-model>
-        </a-camera>
-
-        <a-entity id="target-0" mindar-image-target="targetIndex: 0">
-            <a-gltf-model id="modelo-target-algodoneros" class="modelo-target" src="./ar/models/algodoneros_modelo.glb" position="0 0 0" scale="0.5 0.5 0.5" rotation="0 0 0"></a-gltf-model>
-        </a-entity>
-
-        <a-entity id="target-1" mindar-image-target="targetIndex: 1">
-            <a-gltf-model class="modelo-target" src="./ar/models/charros_modelo.glb" position="0 0 0" scale="0.5 0.5 0.5" rotation="0 0 0"></a-gltf-model>
-        </a-entity>
-
-        <a-entity id="target-2" mindar-image-target="targetIndex: 2">
-            <a-gltf-model class="modelo-target" src="./ar/models/dorados_modelo.glb" position="0 0 0" scale="0.5 0.5 0.5" rotation="0 0 0"></a-gltf-model>
-        </a-entity>
-
-        <a-entity id="target-3" mindar-image-target="targetIndex: 3"></a-entity>
-
-    </a-scene>
-
-    <div id="menu-inferior" class="z-50 relative pointer-events-auto"></div>
-
+    <main aria-label="Cámara de realidad aumentada">
+        <iframe id="ar-frame" class="ar-frame" data-src="./ar-vista.html" title="Escáner y cámara AR" allow="camera; web-share" allowfullscreen></iframe>
+    </main>
+    <div id="menu-inferior"></div>
     <script type="module" src="./js/main.js"></script>
-    <script type="module" src="./js/camara.js"></script>
-
 </body>
 </html>

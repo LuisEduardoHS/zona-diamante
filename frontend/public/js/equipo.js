@@ -1,4 +1,6 @@
-export async function cargarDetalleEquipo() {
+import { obtenerEquipos } from './datos-equipos.js';
+
+export async function cargarDetalleEquipo(signal) {
     const container = document.getElementById('equipo-detalle-container');
     if (!container) return;
 
@@ -13,8 +15,8 @@ export async function cargarDetalleEquipo() {
 
     try {
 
-        const response = await fetch('./data/equipos.json');
-        const equipos = await response.json();
+        const equipos = await obtenerEquipos();
+        if (signal?.aborted || !container.isConnected) return;
 
         const equipo = equipos.find(eq => eq.id === equipoId);
 
@@ -38,7 +40,7 @@ export async function cargarDetalleEquipo() {
                 
                 <!-- Nombre del Equipo (ajustado ligeramente hacia abajo para centrarse en el nuevo espacio) -->
                 <div class="absolute bottom-5 right-6 w-full px-6 flex justify-end">
-                    <h1 class="text-[2.1rem] leading-none font-monument text-white uppercase tracking-tighter drop-shadow-xl text-right">
+                    <h1 class="text-[2.1rem] leading-none font-urbanist font-black text-white uppercase tracking-tighter drop-shadow-xl text-right">
                         ${equipo.nombre}
                     </h1>
                 </div>
@@ -56,7 +58,7 @@ export async function cargarDetalleEquipo() {
                 </div>
                 
                 <!-- Fila de Récord y Posición -->
-                <div class="flex items-center gap-4 w-full justify-center mt-2">
+                <div class="flex flex-wrap items-center gap-3 w-full justify-center mt-2">
                     <span class="font-bold text-[#2b2b31] text-lg">Récord:</span>
                     
                     <!-- Píldora de Récord -->
@@ -81,13 +83,12 @@ export async function cargarDetalleEquipo() {
 
         container.classList.remove('opacity-0');
 
-        console.log("Detalle del equipo cargado correctamente:", equipo);
+
 
     } catch (error) {
+        if (signal?.aborted || !container.isConnected) return;
         console.error("Error al cargar el detalle del equipo:", error);
         container.innerHTML = `<h2 class="text-xl font-bold mt-10 text-red-500">Error de conexión.</h2>`;
         container.classList.remove('opacity-0');
     }
 }
-
-cargarDetalleEquipo();
