@@ -76,6 +76,9 @@ async function montarSeccion(archivo, signal) {
     } else if (archivo === 'camara.html') {
         const frame = document.getElementById('ar-frame');
         if (frame && !signal.aborted) frame.src = frame.dataset.src;
+    } else if (archivo === 'Ayuda.html') {
+        const { iniciarAyuda } = await import('./ayuda.js');
+        if (!signal.aborted) iniciarAyuda();
     }
 }
 
