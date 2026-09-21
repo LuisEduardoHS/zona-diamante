@@ -13,10 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
         2: "Dorados",
         3: "Sultanes"
     };
+    // Resolver los modelos desde la URL del módulo evita que el visor dependa
+    // de la URL visible del documento (por ejemplo, una subcarpeta en Pages).
+    // También hace que la ruta sea la misma en localhost y en producción.
+    const rutaModelo = (archivo) => new URL(`../ar/models/${archivo}`, import.meta.url).href;
     const modelosAR = {
-        0: "./ar/models/Algodoneros_color.glb",
-        1: "./ar/models/charros_modelo.glb",
-        2: "./ar/models/dorados_modelo.glb"
+        0: rutaModelo('Algodoneros_color.glb'),
+        1: rutaModelo('charros_modelo.glb'),
+        2: rutaModelo('dorados_modelo.glb')
     };
 
     // Elementos que muestran el resultado del escaneo.
@@ -247,12 +251,16 @@ document.addEventListener('DOMContentLoaded', () => {
         actualizarCarga();
     });
     // Muestra un aviso si falla la carga.
-    modeloCamara.addEventListener('model-error', () => {
+    modeloCamara.addEventListener('model-error', (evento) => {
         modeloCargado = false;
         modeloPreparadoPara = null;
         actualizarCarga();
         btnInspeccionar.textContent = '3D no disponible';
         uiModelo.textContent = 'No se pudo cargar el modelo 3D de este equipo.';
+        console.error('No se pudo cargar el modelo 3D:', {
+            src: modeloCamara.getAttribute('src'),
+            detalle: evento.detail ?? evento
+        });
     });
     // Muestra el estado inicial de carga.
     actualizarCarga();
