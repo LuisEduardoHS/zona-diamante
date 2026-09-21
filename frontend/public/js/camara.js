@@ -1,6 +1,8 @@
 import { lanzarConfeti } from './confeti.js';
 import { iniciarFotoAR } from './foto-ar.js';
 import { configurarCalidadCamara } from './calidad-camara.js';
+import { configurarDeteccionAmplia } from './deteccion-amplia.js';
+import { crearEntradaModelo, POSE_REPOSO } from './entradas-modelo.js';
 
 // Inicia cuando el HTML está listo.
 document.addEventListener('DOMContentLoaded', () => {
@@ -56,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let encuadre = null;
     let zoom = 1;
     let desplazamiento = { x: 0, y: 0 };
+    let poseEntrada = POSE_REPOSO;
 
     // El origen del GLB de Algodoneros está desplazado; centra su geometría
     // horizontalmente sin cambiar la posición de los demás equipos.
@@ -112,15 +115,33 @@ document.addEventListener('DOMContentLoaded', () => {
         desplazamiento.x = Math.max(-0.35, Math.min(0.35, desplazamiento.x));
         desplazamiento.y = Math.max(-0.35, Math.min(0.35, desplazamiento.y));
         const escala = encuadre.escala * zoom;
-        const centro = encuadre.centro.clone().multiplyScalar(escala)
+        const escalaAnimada = new AFRAME.THREE.Vector3(
+            escala * poseEntrada.sx, escala * poseEntrada.sy, escala * poseEntrada.sz
+        );
+        const centro = encuadre.centro.clone().multiply(escalaAnimada)
             .applyQuaternion(modeloCamara.object3D.quaternion);
-        modeloCamara.setAttribute('scale', { x: escala, y: escala, z: escala });
+        // El acercamiento viene desde el fondo sin atravesar los planos de recorte.
+        const margenFondo = Math.max(0, camera.far - encuadre.distancia - encuadre.radio * Math.max(escalaAnimada.x, escalaAnimada.y, escalaAnimada.z));
+        const fondo = Math.max(-margenFondo * .9, poseEntrada.z * encuadre.distancia);
+        modeloCamara.setAttribute('scale', { x: escalaAnimada.x, y: escalaAnimada.y, z: escalaAnimada.z });
         modeloCamara.setAttribute('position', {
-            x: desplazamiento.x * encuadre.ancho - centro.x,
-            y: desplazamiento.y * encuadre.alto - centro.y,
-            z: -encuadre.distancia - centro.z
+            x: (desplazamiento.x + poseEntrada.x) * encuadre.ancho - centro.x,
+            y: (desplazamiento.y + poseEntrada.y) * encuadre.alto - centro.y,
+            z: -encuadre.distancia + fondo - centro.z
         });
     };
+
+    const entradaModelo = crearEntradaModelo({
+        aplicar(pose) {
+            poseEntrada = pose;
+            modeloCamara.setAttribute('rotation', { x: pose.rx, y: pose.ry, z: pose.rz });
+            aplicarTransformacion();
+        },
+        alTerminar() {
+            reiniciarGesto();
+            if (modoInspector) fotoAR.activar(true);
+        }
+    });
 
     // Mensaje y estado de carga del modelo.
     const uiModelo = document.getElementById('modelo-status');
@@ -335,6 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     escena.addEventListener('arReady', () => {
+        configurarDeteccionAmplia(escena.systems['mindar-image-system']?.controller);
         clearTimeout(temporizadorInicioCamara);
         temporizadorInicioCamara = null;
         arIniciando = false;
@@ -449,7 +471,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fotoAR = iniciarFotoAR({
         escena,
-        puedeCapturar: () => modoInspector && arListo && !arPausado && !paginaSuspendida && modeloCargado,
+        puedeCapturar: () => modoInspector && !entradaModelo.activa && arListo && !arPausado && !paginaSuspendida && modeloCargado,
         obtenerEquipo: () => equiposAR[modeloPreparadoPara]
     });
 
@@ -457,7 +479,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Abre el visor 3D y oculta la interfaz del escáner.
     btnInspeccionar.addEventListener('click', () => {
-        if (targetResultado === null || !modeloCargado || modeloPreparadoPara !== targetResultado) return;
+        if (modoInspector || targetResultado === null || !modeloCargado || modeloPreparadoPara !== targetResultado) return;
+        entradaModelo.cancelar();
+        poseEntrada = POSE_REPOSO;
         zoom = 1;
         desplazamiento = { x: 0, y: 0 };
         modeloCamara.setAttribute('rotation', '0 0 0');
@@ -481,13 +505,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         modelosEnTargets.forEach((modelo) => modelo.setAttribute('visible', false));
         if (modeloCamara) modeloCamara.setAttribute('visible', true);
-        fotoAR.activar(true);
+        fotoAR.activar(false);
+        entradaModelo.iniciar();
         lanzarConfeti();
     });
 
     // Cierra el visor 3D y regresa al escáner.
     btnCerrarInspector.addEventListener('click', () => {
         modoInspector = false;
+        entradaModelo.cancelar();
         document.getElementById('luz-principal').setAttribute('position', '-0.5 1 1');
         fotoAR.activar(false);
         if (escena.canvas) escena.canvas.style.touchAction = touchActionOriginal;
@@ -533,6 +559,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Pausa captura, seguimiento y renderizado sin volver a descargar los modelos.
     const pausarCamara = () => {
+        // Si la app pasa a segundo plano, al regresar ya queda en su pose normal.
+        entradaModelo.terminar();
         clearTimeout(temporizadorInicioCamara);
         clearTimeout(temporizadorPerdida);
         temporizadorPerdida = null;
@@ -616,13 +644,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Escucha solo la escena para no interferir con los botones y menús.
     escena.addEventListener('touchstart', (e) => {
-        if (!modoInspector) return;
+        if (!modoInspector || entradaModelo.activa) return;
         e.preventDefault();
         reiniciarGesto(e.targetTouches);
     }, { passive: false });
 
     escena.addEventListener('touchmove', (e) => {
-        if (!modoInspector || !encuadre) return;
+        if (!modoInspector || entradaModelo.activa || !encuadre) return;
         e.preventDefault();
         const touches = e.targetTouches;
 
@@ -661,7 +689,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: false });
 
     escena.addEventListener('touchend', (e) => {
-        reiniciarGesto(modoInspector ? e.targetTouches : []);
+        reiniciarGesto(modoInspector && !entradaModelo.activa ? e.targetTouches : []);
     });
     escena.addEventListener('touchcancel', () => reiniciarGesto());
 
