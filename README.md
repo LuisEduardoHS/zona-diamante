@@ -14,7 +14,6 @@ Zona Diamante es una experiencia web interactiva de beisbol. Permite explorar eq
 
 - HTML, CSS y JavaScript modular en el frontend.
 - Tailwind CSS 4 para estilos utilitarios y compilacion del CSS comun.
-- Urbanist como tipografia principal.
 - A-Frame y MindAR para la experiencia de realidad aumentada.
 - Node.js para las herramientas de frontend.
 - Python y FastAPI para el backend.
@@ -35,20 +34,3 @@ npm run build
 ```
 
 El sitio puede servirse directamente desde `frontend/public/` con un servidor estatico. La navegacion compartida mantiene el header y la barra inferior, y carga el contenido y los estilos de cada seccion sin reconstruir el documento completo.
-
-## Pruebas locales
-
-La carpeta `frontend/tests/` contiene pruebas y utilidades de validacion local. No forma parte del sitio publicado ni es importada por el frontend en ejecucion; se conserva solamente para desarrollo. Esta carpeta esta excluida del seguimiento futuro mediante `.gitignore`.
-
-Los scripts `npm test`, `npm run preview:foto` y `npm run preview:navegacion` siguen apuntando a esas herramientas cuando se necesite ejecutar validaciones locales.
-
-## Backend
-
-Desde `backend/`, con el entorno de Python preparado:
-
-```bash
-pip install -r requirements.txt
-uvicorn main:app --reload
-```
-
-La API expone actualmente una ruta raiz de comprobacion y esta preparada para crecer con los servicios que necesite la experiencia.
