@@ -1,4 +1,6 @@
-export async function cargarDetalleEquipo() {
+import { obtenerEquipos } from './datos-equipos.js';
+
+export async function cargarDetalleEquipo(signal) {
     const container = document.getElementById('equipo-detalle-container');
     if (!container) return;
 
@@ -13,8 +15,8 @@ export async function cargarDetalleEquipo() {
 
     try {
 
-        const response = await fetch('./data/equipos.json');
-        const equipos = await response.json();
+        const equipos = await obtenerEquipos();
+        if (signal?.aborted || !container.isConnected) return;
 
         const equipo = equipos.find(eq => eq.id === equipoId);
 
@@ -81,13 +83,12 @@ export async function cargarDetalleEquipo() {
 
         container.classList.remove('opacity-0');
 
-        console.log("Detalle del equipo cargado correctamente:", equipo);
+
 
     } catch (error) {
+        if (signal?.aborted || !container.isConnected) return;
         console.error("Error al cargar el detalle del equipo:", error);
         container.innerHTML = `<h2 class="text-xl font-bold mt-10 text-red-500">Error de conexión.</h2>`;
         container.classList.remove('opacity-0');
     }
 }
-
-cargarDetalleEquipo();

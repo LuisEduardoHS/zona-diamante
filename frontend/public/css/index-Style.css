@@ -3,56 +3,6 @@ body {
     overflow-x: hidden;
 }
 
-.blob {
-    position: fixed;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.35;
-    pointer-events: none;
-    z-index: 0;
-}
-
-.blob-1 {
-    width: 320px;
-    height: 320px;
-    background: #f27b21;
-    top: -80px;
-    left: -80px;
-}
-
-.blob-2 {
-    width: 260px;
-    height: 260px;
-    background: #008298;
-    top: 80px;
-    right: -60px;
-}
-
-.blob-3 {
-    width: 200px;
-    height: 200px;
-    background: #f9a55a;
-    top: 45%;
-    left: -50px;
-}
-
-.blob-4 {
-    width: 280px;
-    height: 280px;
-    background: #38bcd4;
-    bottom: 80px;
-    right: -60px;
-}
-
-.blob-5 {
-    width: 160px;
-    height: 160px;
-    background: #f27b21;
-    bottom: 60px;
-    left: 20px;
-    opacity: 0.2;
-}
-
 #header-superior,
 #menu-inferior {
     position: relative;
@@ -84,7 +34,7 @@ main {
 }
 .inicio-acciones > * { min-height: 44px; }
 .carrusel-info { bottom: max(56px, 15%); }
-.carrusel-info h2 { max-width: 100%; overflow-wrap: anywhere; }
+.carrusel-info h2 { max-width: 100%; font-size: clamp(32px, 8vw, 44px); overflow-wrap: anywhere; }
 
 @media (orientation: portrait) and (max-height: 480px) {
     .inicio-acciones { flex-direction: row; gap: 8px; }

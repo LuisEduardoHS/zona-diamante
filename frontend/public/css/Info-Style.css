@@ -10,7 +10,7 @@
     border-radius: 25px;
     background-color: #0f7e91;
 
-    font: bold 16px Arial, Helvetica, sans-serif;
+    font: 900 clamp(24px, 6vw, 32px)/1.15 'Urbanist', sans-serif;
     text-align: center;
     overflow-wrap: anywhere;
     color: #f0f7f8;
@@ -30,7 +30,7 @@
     -webkit-backdrop-filter: blur(8px);
     box-shadow: 0 8px 12px -8px rgba(0, 0, 0, 0.45);
 
-    font: bold 15px Arial, Helvetica, sans-serif;
+    font: 500 16px/1.55 'Urbanist', sans-serif;
     text-align: center;
     color: #53545a;
 }
@@ -42,7 +42,7 @@
 }
 
 body {
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Urbanist', sans-serif;
     font-size: 16px;
     color: #53545a;
     background-color: #fff3de;

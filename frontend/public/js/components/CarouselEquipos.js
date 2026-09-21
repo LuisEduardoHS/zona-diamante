@@ -1,10 +1,13 @@
-export async function renderCarousel() {
+import { obtenerEquipos } from '../datos-equipos.js';
+import { ruta } from '../rutas.js';
+
+export async function renderCarousel(signal) {
     const container = document.getElementById('carrusel-container');
     if (!container) return;
 
     try {
-        const response = await fetch('./data/equipos.json');
-        const equipos = await response.json();
+        const equipos = await obtenerEquipos();
+        if (signal?.aborted || !container.isConnected) return;
 
         container.classList.remove('animate-pulse', 'items-center', 'justify-center');
         container.classList.add('relative', 'overflow-hidden');
@@ -14,7 +17,7 @@ export async function renderCarousel() {
             slidesHTML += `
                 <div
                     class="absolute inset-0 overflow-hidden rounded-b-[3rem]"
-                    data-slide="${index}"
+                    data-slide="${index}" ${index ? 'inert' : ''}
                     style="
                         background-color: ${equipo.colores.primario};
                         opacity: ${index === 0 ? 1 : 0};
@@ -32,16 +35,16 @@ export async function renderCarousel() {
 
                     <div class="absolute top-[5%] right-[-5%] w-[72%] h-[55%] flex items-center justify-center pointer-events-none z-10">
                         <img
-                            src="${equipo.imagenes.logoFondo}"
-                            alt="Logo ${equipo.nombre}"
+                            ${index === 0 ? 'src' : 'data-src'}="${equipo.imagenes.logoFondo}"
+                            alt="Logo ${equipo.nombre}" decoding="async"
                             class="w-full h-full object-contain drop-shadow-2xl"
                         >
                     </div>
 
                     <div class="absolute bottom-0 left-0 w-full h-[90%] flex justify-center items-end pointer-events-none z-20">
                         <img
-                            src="${equipo.imagenes.jugadorCarrusel}"
-                            alt="Jugador ${equipo.nombre}"
+                            ${index === 0 ? 'src' : 'data-src'}="${equipo.imagenes.jugadorCarrusel}"
+                            alt="Jugador ${equipo.nombre}" decoding="async" fetchpriority="${index === 0 ? 'high' : 'low'}"
                             class="h-full object-contain object-bottom drop-shadow-2xl"
                             style="filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));"
                         >
@@ -63,7 +66,7 @@ export async function renderCarousel() {
                         </h2>
 
                         <a
-                            href="equipo.html?id=${equipo.id}"
+                            href="${ruta('equipo.html')}?id=${equipo.id}"
                             class="mt-2 px-7 py-2 rounded-full font-bold text-sm border-0 cursor-pointer transition-transform active:scale-95 inline-block text-center no-underline"
                             style="background-color: ${equipo.colores.secundario}; color: ${equipo.colores.primario}; box-shadow: 0 4px 15px rgba(0,0,0,0.4); font-weight: 800;"
                         >
@@ -92,7 +95,10 @@ export async function renderCarousel() {
             if (!dotsContainer) return;
             dotsContainer.innerHTML = '';
             for (let i = 0; i < total; i++) {
-                const wrapper = document.createElement('div');
+                const wrapper = document.createElement('button');
+                wrapper.type = 'button';
+                wrapper.setAttribute('aria-label', `Ver equipo ${equipos[i].nombre}`);
+                wrapper.setAttribute('aria-pressed', String(i === activeIndex));
                 wrapper.style.cssText = 'position:relative; width:24px; height:24px; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;';
 
                 if (i === activeIndex) {
@@ -137,11 +143,22 @@ export async function renderCarousel() {
             }
         }
 
+        function cargarSlide(index) {
+            track.querySelectorAll(`[data-slide="${index % total}"] img[data-src]`).forEach(img => {
+                img.src = img.dataset.src;
+                img.removeAttribute('data-src');
+            });
+        }
+
         function goTo(index) {
             const slides = track.querySelectorAll('[data-slide]');
             const prev = current;
             current = ((index % total) + total) % total;
 
+            cargarSlide(current);
+            cargarSlide(current + 1);
+            slides[prev].inert = true;
+            slides[current].inert = false;
             slides[prev].style.opacity = '0';
             slides[prev].style.transform = 'scale(1.04)';
             slides[prev].style.zIndex = '0';
@@ -156,6 +173,8 @@ export async function renderCarousel() {
         }
 
         function startAutoPlay() {
+            stopAutoPlay();
+            if (signal?.aborted || document.hidden || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
             autoPlayInterval = setInterval(() => {
                 goTo(current + 1);
             }, 4000);
@@ -180,7 +199,7 @@ export async function renderCarousel() {
             touchStartX = e.changedTouches[0].screenX;
             isDragging = true;
             stopAutoPlay();
-        }, { passive: true });
+        }, { passive: true, signal });
 
         container.addEventListener('touchend', (e) => {
             if (!isDragging) return;
@@ -190,12 +209,21 @@ export async function renderCarousel() {
                 goTo(diff > 0 ? current + 1 : current - 1);
             }
             startAutoPlay();
-        }, { passive: true });
+        }, { passive: true, signal });
 
         renderDots(0);
         startAutoPlay();
+        const anticipacion = setTimeout(() => cargarSlide(1), 1000);
+        signal?.addEventListener('abort', () => { stopAutoPlay(); clearTimeout(anticipacion); }, { once: true });
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) stopAutoPlay(); else startAutoPlay();
+        }, { signal });
 
     } catch (error) {
+        if (!signal?.aborted && container.isConnected) {
+            container.classList.remove('animate-pulse');
+            container.textContent = 'No se pudieron cargar los equipos. Intenta recargar la página.';
+        }
         console.error('Error al cargar los equipos:', error);
     }
 }

@@ -1,5 +1,6 @@
 import { lanzarConfeti } from './confeti.js';
 import { iniciarFotoAR } from './foto-ar.js';
+import { configurarCalidadCamara } from './calidad-camara.js';
 
 // Inicia cuando el HTML está listo.
 document.addEventListener('DOMContentLoaded', () => {
@@ -314,6 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 12000);
 
         try {
+            configurarCalidadCamara(sistemaAR);
             sistemaAR.start();
         } catch (error) {
             console.error('No se pudo iniciar MindAR.', error);
@@ -464,6 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         modoInspector = true;
+        document.getElementById('luz-principal').setAttribute('position', '-0.35 0.65 1.2');
         clearTimeout(temporizadorPerdida);
         temporizadorPerdida = null;
         const canvas = escena.canvas;
@@ -485,6 +488,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Cierra el visor 3D y regresa al escáner.
     btnCerrarInspector.addEventListener('click', () => {
         modoInspector = false;
+        document.getElementById('luz-principal').setAttribute('position', '-0.5 1 1');
         fotoAR.activar(false);
         if (escena.canvas) escena.canvas.style.touchAction = touchActionOriginal;
         reiniciarGesto();

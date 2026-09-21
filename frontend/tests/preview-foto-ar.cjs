@@ -3,7 +3,7 @@ const http = require('node:http');
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const publicRoot = path.resolve(__dirname, '../public');
-const tipos = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.glb': 'model/gltf-binary', '.otf': 'font/otf', '.png': 'image/png' };
+const tipos = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.glb': 'model/gltf-binary', '.otf': 'font/otf', '.png': 'image/png', '.webp': 'image/webp', '.ttf': 'font/ttf', '.json': 'application/json' };
 
 const fixture = `
 import { iniciarFotoAR } from '/js/foto-ar.js';
@@ -19,7 +19,7 @@ function dibujar() {
     ctx.fillStyle = '#326844'; ctx.fillRect(0, 400, 1280, 320);
     ctx.fillStyle = '#bc9671'; ctx.beginPath(); ctx.moveTo(640, 420); ctx.lineTo(930, 570); ctx.lineTo(640, 710); ctx.lineTo(350, 570); ctx.closePath(); ctx.fill();
     ctx.strokeStyle = '#fff'; ctx.lineWidth = 4; ctx.stroke();
-    ctx.fillStyle = '#fff'; ctx.font = '20px sans-serif'; ctx.fillText('Prueba local · fondo simulado', 470, 55);
+    ctx.fillStyle = '#fff'; ctx.font = '20px Urbanist'; ctx.fillText('Prueba local · fondo simulado', 470, 55);
     requestAnimationFrame(dibujar);
 }
 dibujar();
@@ -38,6 +38,7 @@ const escala = 1.1 / esfera.radius;
 modelo.setAttribute('scale', { x: escala, y: escala, z: escala });
 modelo.setAttribute('position', { x: -esfera.center.x * escala, y: -esfera.center.y * escala, z: -4 - esfera.center.z * escala });
 modelo.setAttribute('visible', true);
+document.getElementById('luz-principal').setAttribute('position', '-0.35 0.65 1.2');
 document.getElementById('ar-ui').classList.add('hidden');
 const fotos = iniciarFotoAR({ escena, puedeCapturar: () => true, obtenerEquipo: () => 'Algodoneros' });
 fotos.activar(true);
@@ -47,6 +48,15 @@ http.createServer(async (req, res) => {
     try {
         const url = new URL(req.url, 'http://127.0.0.1:4173');
         res.setHeader('Cache-Control', 'no-store');
+        if (url.pathname === '/__navigation-tests') {
+            res.setHeader('Content-Type', 'text/html; charset=utf-8');
+            res.end(`<!doctype html><html lang="es"><title>Pruebas de navegación</title><body><button id="ejecutar">Ejecutar pruebas de navegación</button><pre id="resultado" role="log"></pre><iframe id="sitio" title="Sitio bajo prueba" src="/index.html" width="390" height="740" allow="web-share"></iframe><script type="module" src="/__navigation-tests.js"></script></body></html>`);
+            return;
+        }
+        if (url.pathname === '/__navigation-tests.js') {
+            res.setHeader('Content-Type', 'text/javascript; charset=utf-8');
+            res.end(await fs.readFile(path.join(__dirname, 'navegacion-browser.js'))); return;
+        }
         if (url.pathname === '/__foto-review') {
             res.setHeader('Content-Type', 'text/html; charset=utf-8');
             res.end(`<!doctype html><html lang="es"><title>Prueba local · Foto AR</title><body style="margin:0;background:#202126;color:white;font:14px system-ui;text-align:center"><p>Prueba local con fondo simulado · <button onclick="t.width=390;t.height=740">Móvil</button> <button onclick="t.width=760;t.height=390">Horizontal</button> <button onclick="t.width=1024;t.height=768">Escritorio</button></p><iframe id="t" title="Cámara de prueba" src="/__foto-fixture" width="390" height="740" style="border:0;border-radius:18px" allow="web-share"></iframe></body></html>`);
@@ -56,8 +66,8 @@ http.createServer(async (req, res) => {
             res.setHeader('Content-Type', 'text/javascript; charset=utf-8');
             res.end(fixture); return;
         }
-        if (url.pathname === '/__foto-fixture') {
-            const html = (await fs.readFile(path.join(publicRoot, 'camara.html'), 'utf8'))
+        if (url.pathname === '/__foto-fixture' || (url.pathname === '/ar-vista.html' && (process.env.ZD_AR_SIMULADA === '1' || process.argv.includes('--simular-ar')))) {
+            const html = (await fs.readFile(path.join(publicRoot, 'ar-vista.html'), 'utf8'))
                 .replace('<script src="./js/libs/mindar-image-aframe.prod.js"></script>', '')
                 .replace(/mindar-image="[^"]*"/g, '')
                 .replace(/mindar-image-target="[^"]*"/g, '')
@@ -65,7 +75,7 @@ http.createServer(async (req, res) => {
             res.setHeader('Content-Type', 'text/html; charset=utf-8');
             res.end(html); return;
         }
-        const filename = path.resolve(publicRoot, '.' + decodeURIComponent(url.pathname));
+        const filename = path.resolve(publicRoot, '.' + decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname));
         if (!filename.startsWith(publicRoot + path.sep)) { res.writeHead(403).end(); return; }
         const data = await fs.readFile(filename);
         res.setHeader('Content-Type', tipos[path.extname(filename)] || 'application/octet-stream');

@@ -37,7 +37,7 @@
     justify-content: center;
     align-items: center;
 
-    font-family: Verdana, Sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 16px;
     font-weight: bold;
 
@@ -209,7 +209,7 @@ body {
 
     color: #777;
 
-    font-family: Arial, sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 14px;
     font-weight: bold;
 
@@ -254,7 +254,7 @@ body {
 
     color: #088EAF;
 
-    font-family: Arial, sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 11px;
     font-weight: bold;
 
@@ -336,11 +336,11 @@ body {
 
     color: white;
 
-    font-family: Arial, sans-serif;
+    font-family: 'Urbanist', sans-serif;
 
-    font-size: 30px;
+    font-size: 34px;
 
-    font-weight: bold;
+    font-weight: 900;
 
     text-align: center;
 
@@ -367,7 +367,7 @@ body {
 
     color: white;
 
-    font-family: Arial, sans-serif;
+    font-family: 'Urbanist', sans-serif;
 
     font-size: 15px;
 

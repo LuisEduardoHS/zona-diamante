@@ -2,7 +2,7 @@
 :root { --teal:#077890; --orange:#df721d; --ink:#080808; }
 * { box-sizing:border-box; }
 html, body { min-height:100%; margin:0; }
-body { font-family:Arial, Helvetica, sans-serif; color:var(--ink); background:#fff; }
+body { font-family:'Urbanist', sans-serif; color:var(--ink); background:#fff; }
 
 /* Layout */
 .collection-page { min-height:100dvh; padding-top:calc(80px + env(safe-area-inset-top, 0px)); padding-bottom:var(--bottom-clearance); overflow:hidden; position:relative; background:
@@ -12,12 +12,12 @@ body { font-family:Arial, Helvetica, sans-serif; color:var(--ink); background:#f
 .hero { height:151px; position:relative; overflow:hidden; filter:drop-shadow(0 4px 2px rgba(0,0,0,.32)); }
 .hero__orange { position:absolute; inset:0; background:var(--orange); }
 .hero__teal { position:absolute; z-index:1; height:150px; width:111%; left:-12%; top:0; padding:98px 0 0 24%; background:var(--teal); border-radius:0 0 42px 42px; clip-path:polygon(0 66%, 8% 49%, 19% 31%, 30% 21%, 53% 10%, 66% 0, 100% 0, 100% 100%, 0 100%); }
-.hero h1 { margin:0; color:#fff; font-size:clamp(22px, 6.5vw, 29px); line-height:1.1; font-weight:800; letter-spacing:-.8px; }
+.hero h1 { margin:0; color:#fff; font-size:clamp(26px, 7vw, 34px); line-height:1.1; font-weight:900; letter-spacing:-.8px; }
 .cards-grid { width:min(295px, calc(100% - 32px)); margin:42px auto 0; display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1fr); column-gap:24px; row-gap:40px; }
 .player-card { min-width:0; text-align:center; }
 
 /* Typography */
-.player-card h2 { margin:7px -10px 0; font-size:12px; line-height:14px; font-weight:700; }
+.player-card h2 { margin:7px 0 0; font-size:16px; line-height:1.2; font-weight:800; }
 .player-card h2 span { font-weight:700; }
 
 /* Card components */
