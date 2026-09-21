@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @source "../../public/js";
+@source "../../public";
 
 @font-face {
     font-family: 'Urbanist';
@@ -54,6 +55,31 @@
 .site-bottom-nav > div > div { position: relative; z-index: 2; }
 .site-bottom-nav > div > a[aria-label="Cámara AR"] { z-index: 3; }
 #contenido-pagina { display: block; width: 100%; min-width: 0; min-height: 0; overflow-x: clip; }
+.ayuda-pregunta > p {
+    max-height: 0;
+    margin: 0;
+    overflow: hidden;
+    opacity: 0;
+    padding-bottom: 0;
+    transition: max-height 280ms ease, opacity 220ms ease, padding-bottom 280ms ease;
+}
+.ayuda-pregunta[open] > p {
+    max-height: 180px;
+    opacity: 1;
+    padding-bottom: 20px;
+}
+.ayuda-pregunta > summary span {
+    display: inline-block;
+    transition: transform 240ms ease, color 240ms ease;
+}
+.ayuda-pregunta[open] > summary span {
+    transform: rotate(45deg);
+    color: #008298;
+}
+@media (prefers-reduced-motion: reduce) {
+    .ayuda-pregunta > p,
+    .ayuda-pregunta > summary span { transition: none; }
+}
 .ar-shell { margin: 0; background: #1a1a1a; overflow: hidden; }
 .ar-frame { position: fixed; inset: 0; width: 100%; height: 100dvh; border: 0; }
 .ar-frame-modal { z-index: 300; }

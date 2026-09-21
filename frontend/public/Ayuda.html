@@ -1,49 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="./css/output.css?v=20260921-1" rel="stylesheet">
-    <link rel="stylesheet" href="./css/Ayuda-Style.css">
-    <title>Información</title>
+    <link rel="icon" type="image/svg+xml" href="./assets/logo-naranja.svg">
+    <link href="./css/output.css?v=20260921-2" rel="stylesheet">
+    <title>Ayuda | Zona Diamante</title>
 
 </head>
 
-<body>
+<body class="min-h-dvh bg-[#f5f5f5] font-sans text-[#2b2b31]">
 
     <!-- MENÚ SUPERIOR -->
     <div id="header-superior"></div>
 
-    <h1 class="TitleBubble">AYUDA</h1>
+    <main id="ayuda-app" class="mx-auto w-full max-w-3xl px-4 pb-[calc(var(--bottom-clearance)+24px)] pt-[calc(112px+env(safe-area-inset-top,0px))] sm:px-6">
+        <section class="text-center">
+            <p class="text-xs font-black uppercase tracking-[0.2em] text-[#f27b21]">Centro de ayuda</p>
+            <h1 class="mt-3 text-4xl font-black leading-tight sm:text-5xl">¿Con qué te ayudamos?</h1>
+            <p class="mx-auto mt-4 max-w-xl text-sm leading-6 text-[#6b6b72]">Encuentra respuestas sobre las secciones y experiencias de Zona Diamante.</p>
+            <label class="mx-auto mt-6 flex max-w-xl items-center gap-3 rounded-xl border border-[#dedede] bg-white px-4 py-3 text-left shadow-sm focus-within:border-[#008298] focus-within:ring-2 focus-within:ring-[#008298]/20" for="ayuda-busqueda">
+                <svg class="h-5 w-5 shrink-0 text-[#008298]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+                <span class="sr-only">Buscar en la ayuda</span>
+                <input id="ayuda-busqueda" class="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-[#777]" type="search" placeholder="Buscar una pregunta" autocomplete="off">
+                <button id="ayuda-limpiar" class="hidden rounded-full p-1 text-[#777] hover:bg-[#f1f1f1]" type="button" aria-label="Limpiar búsqueda">
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+                </button>
+            </label>
+        </section>
 
+        <section class="mt-10" aria-labelledby="guias-titulo">
+            <div class="mb-4">
+                <p class="text-xs font-black uppercase tracking-[0.2em] text-[#f27b21]">Guías</p>
+                <h2 id="guias-titulo" class="mt-1 text-2xl font-black">Aprende a usar la app</h2>
+            </div>
+            <div class="divide-y divide-[#ededed] overflow-hidden rounded-xl border border-[#e2e2e2] bg-white shadow-sm">
+                <a class="flex items-center gap-4 px-5 py-4 no-underline transition hover:bg-[#f8fbfb]" href="camara.html"><span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-[#f27b21] text-sm font-black text-white">01</span><span class="min-w-0 flex-1"><strong class="block text-base">Usar la Cámara AR</strong><span class="mt-1 block text-sm text-[#6b6b72]">Permisos, iluminación y escaneo de cartas.</span></span><span class="text-2xl font-light text-[#008298]" aria-hidden="true">›</span></a>
+                <a class="flex items-center gap-4 px-5 py-4 no-underline transition hover:bg-[#f8fbfb]" href="trivia.html"><span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-[#008298] text-sm font-black text-white">02</span><span class="min-w-0 flex-1"><strong class="block text-base">Jugar la Trivia</strong><span class="mt-1 block text-sm text-[#6b6b72]">Cómo responder y avanzar entre preguntas.</span></span><span class="text-2xl font-light text-[#008298]" aria-hidden="true">›</span></a>
+                <a class="flex items-center gap-4 px-5 py-4 no-underline transition hover:bg-[#f8fbfb]" href="pages/coleccion.html"><span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-[#f27b21] text-sm font-black text-white">03</span><span class="min-w-0 flex-1"><strong class="block text-base">Consultar tu Colección</strong><span class="mt-1 block text-sm text-[#6b6b72]">Dónde ver las cartas que has desbloqueado.</span></span><span class="text-2xl font-light text-[#008298]" aria-hidden="true">›</span></a>
+            </div>
+        </section>
 
-    <div class="GlassDisplay">
-        <p>Que es la pagina?</p>
-        <p>wawawawa</p>
-    </div>
+        <section class="mt-10" aria-labelledby="faq-titulo">
+            <div class="mb-4 flex flex-wrap items-end justify-between gap-4">
+                <div><p class="text-xs font-black uppercase tracking-[0.2em] text-[#f27b21]">Respuestas</p><h2 id="faq-titulo" class="mt-1 text-2xl font-black">Preguntas frecuentes</h2></div>
+                <div class="flex gap-2" role="group" aria-label="Filtrar preguntas">
+                    <button class="ayuda-filtro rounded-full bg-[#2b2b31] px-4 py-2 text-xs font-bold text-white" type="button" data-filtro="todas" aria-pressed="true">Todas</button>
+                    <button class="ayuda-filtro rounded-full bg-white px-4 py-2 text-xs font-bold text-[#2b2b31] shadow-sm" type="button" data-filtro="uso" aria-pressed="false">Uso</button>
+                    <button class="ayuda-filtro rounded-full bg-white px-4 py-2 text-xs font-bold text-[#2b2b31] shadow-sm" type="button" data-filtro="tecnico" aria-pressed="false">Técnico</button>
+                </div>
+            </div>
+            <div id="ayuda-faq" class="divide-y divide-[#ededed] overflow-hidden rounded-xl border border-[#e2e2e2] bg-white shadow-sm">
+                <details class="ayuda-pregunta px-5" data-tema="uso" open><summary class="cursor-pointer list-none py-5 pr-8 text-base font-bold marker:hidden">¿Cómo navego entre las secciones?<span class="float-right text-xl font-normal text-[#f27b21]">+</span></summary><p class="pb-5 text-sm leading-6 text-[#6b6b72]">Usa el menú inferior para acceder a Inicio, Trivia, Cámara AR, Información y Juego. También puedes abrir el botón circular de la esquina superior para ver todas las opciones, incluida tu Colección.</p></details>
+                <details class="ayuda-pregunta px-5" data-tema="tecnico"><summary class="cursor-pointer list-none py-5 pr-8 text-base font-bold marker:hidden">¿Qué necesito para usar la Cámara AR?<span class="float-right text-xl font-normal text-[#f27b21]">+</span></summary><p class="pb-5 text-sm leading-6 text-[#6b6b72]">Permite el acceso a la cámara cuando el navegador lo solicite y apunta a una carta o marcador compatible con buena iluminación. Si no aparece la imagen, revisa que la cámara no esté siendo usada por otra aplicación.</p></details>
+                <details class="ayuda-pregunta px-5" data-tema="uso"><summary class="cursor-pointer list-none py-5 pr-8 text-base font-bold marker:hidden">¿Cómo consigo cartas para mi colección?<span class="float-right text-xl font-normal text-[#f27b21]">+</span></summary><p class="pb-5 text-sm leading-6 text-[#6b6b72]">Explora la experiencia de Cámara AR y escanea las cartas disponibles. Cuando una carta se desbloquea, podrás consultarla desde la sección Colección.</p></details>
+                <details class="ayuda-pregunta px-5" data-tema="tecnico"><summary class="cursor-pointer list-none py-5 pr-8 text-base font-bold marker:hidden">¿Por qué una sección tarda en mostrar su contenido?<span class="float-right text-xl font-normal text-[#f27b21]">+</span></summary><p class="pb-5 text-sm leading-6 text-[#6b6b72]">Algunas secciones cargan imágenes, animaciones o la cámara sólo cuando las visitas. Espera unos segundos con una conexión estable y evita cerrar la página durante la carga.</p></details>
+                <details class="ayuda-pregunta px-5" data-tema="uso"><summary class="cursor-pointer list-none py-5 pr-8 text-base font-bold marker:hidden">¿Puedo volver a una sección anterior?<span class="float-right text-xl font-normal text-[#f27b21]">+</span></summary><p class="pb-5 text-sm leading-6 text-[#6b6b72]">Sí. Usa el menú para cambiar de sección o los controles de navegación del navegador. La aplicación conserva la posición de lectura cuando es posible.</p></details>
+            </div>
+            <p id="ayuda-sin-resultados" class="mt-4 hidden rounded-2xl bg-white p-6 text-center text-sm text-[#6b6b72]">No encontramos una respuesta con esa búsqueda. Prueba con “cámara”, “cartas” o “juego”.</p>
+        </section>
 
-    <div class="InvisibleDivision"></div>
-
-    <h1 class="TitleBubble">Index de Paginas</h1>
-
-
-    <div class="GlassDisplay">
-
-        <ul>
-            <li><a href="pages/coleccion.html">Tu Colección de cartas</a></li>
-            <li><a href="Informacion.html">Información</a></li>
-            <li><a href="Ayuda.html">Ayuda</a></li>
-        </ul>
-
-    </div>
+        <section class="mt-10" aria-label="Contactos y soporte">
+            <form id="ayuda-formulario" class="rounded-2xl border border-[#008298]/15 bg-white p-6 shadow-sm sm:p-8">
+                <p class="text-xs font-black uppercase tracking-[0.2em] text-[#f27b21]">¿Necesitas más ayuda?</p>
+                <h2 class="mt-2 text-2xl font-black">Contáctanos</h2>
+                <p class="mt-2 text-sm leading-6 text-[#6b6b72]">Si no encontraste la respuesta, cuéntanos qué ocurrió para poder ayudarte.</p>
+                <div class="mt-5 grid gap-4 sm:grid-cols-2">
+                    <label class="block text-sm font-bold" for="ayuda-tipo">Motivo<select id="ayuda-tipo" class="mt-2 w-full rounded-xl border border-[#d9d9d9] bg-[#fffaf1] p-3 text-sm outline-none focus:border-[#008298] focus:ring-2 focus:ring-[#008298]/20"><option>Reportar un problema</option><option>Enviar una sugerencia</option><option>Hacer una pregunta</option></select></label>
+                    <label class="block text-sm font-bold" for="ayuda-contacto">Contacto (opcional)<input id="ayuda-contacto" class="mt-2 w-full rounded-xl border border-[#d9d9d9] bg-[#fffaf1] p-3 text-sm outline-none focus:border-[#008298] focus:ring-2 focus:ring-[#008298]/20" type="text" placeholder="Correo o usuario"></label>
+                </div>
+                <label class="mt-4 block text-sm font-bold" for="ayuda-mensaje">Mensaje<textarea id="ayuda-mensaje" class="mt-2 min-h-28 w-full resize-y rounded-xl border border-[#d9d9d9] bg-[#fffaf1] p-3 text-sm outline-none focus:border-[#008298] focus:ring-2 focus:ring-[#008298]/20" required placeholder="Cuéntanos qué estabas intentando hacer..."></textarea></label>
+                <button class="mt-4 rounded-xl bg-[#008298] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#006f7e]" type="submit">Enviar mensaje</button>
+                <p id="ayuda-confirmacion" class="mt-3 hidden text-sm font-bold text-[#008298]" role="status">Gracias. Registramos tu mensaje en este dispositivo.</p>
+            </form>
+        </section>
+    </main>
 
     <!-- MENÚ INFERIOR -->
     <div id="menu-inferior"></div>
 
 
     <!-- JAVASCRIPT -->
-    <script type="module" src="./js/main.js?v=20260921-1"></script>
+    <script type="module" src="./js/main.js?v=20260921-2"></script>
 
 </body>
 
