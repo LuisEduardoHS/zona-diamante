@@ -1,48 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/svg+xml" href="./assets/logo-naranja.svg">
 
         
-        <link href="./css/output.css?v=20260921-1" rel="stylesheet">
-        <link rel="stylesheet" href="./css/Info-Style.css">
-        <title>Información</title> 
+        <link href="./css/output.css?v=20260922-4" rel="stylesheet">
+        <title>Historia | Zona Diamante</title>
 
     </head>
 
-    <body class="bg-slate-900 min-h-dvh">
+    <body class="historia-page font-sans">
         <!-- MENÚ SUPERIOR -->
         <div id="header-superior"></div>
 
-        <h1 class="TitleBubble">Historia del béisbol mexicano</h1>
-        
+        <main id="historia-app" class="historia-layout mx-auto w-full max-w-6xl px-[18px] sm:px-6">
+            <section class="historia-hero historia-reveal relative isolate -mx-[18px] flex items-end overflow-hidden px-6 pb-[clamp(7rem,18vh,10rem)] pt-[calc(110px+env(safe-area-inset-top,0px))] text-white sm:-mx-6 md:items-center md:px-16 md:pb-24">
+                <div class="historia-hero-media absolute inset-0 -z-10">
+                    <img class="h-full w-full object-cover" src="./assets/img/historia-ilustracion.png" alt="">
+                </div>
+                <div class="max-w-[720px]">
+                    <p class="sr-only">Una historia de pasión y diamantes</p>
+                    <h1 class="max-w-[720px] text-[clamp(2.35rem,8vw,6.5rem)] font-black leading-[.94] tracking-[-.035em] drop-shadow-lg">El béisbol mexicano se cuenta entrada por entrada.</h1>
+                    <a class="historia-cta mt-8 inline-flex items-center gap-[18px] rounded-full bg-[#f27b21] px-5 py-3.5 text-sm font-extrabold text-white no-underline transition hover:bg-[#df6712]" href="#cronologia">Explorar la historia <span class="text-xl" aria-hidden="true">↓</span></a>
+                </div>
+            </section>
 
-        <div class="GlassDisplay">
-            <p>Es en el año de 1925 que comenzó la instauración de la primera liga profesional de beisbol siendo la Liga Mexicana de verano. En 1945 surgió la Liga Mexicana de invierno que luego fe la Liga Mexicana del Pacífico. Estas dos ligas son las de mayor nivel según los estándares, ambas clasificadas como AAA. El beisbol es llamado "El rey de los deportes." </p>
-            <p>México es parte de Federación Internacional de Béisbol, por lo cual participa en diversos eventos internacionales como son Serie del Caribe, Clásico Mundial de Beisbol, las Olimpiadas y en el beisbol infantil se participa en el Campeonato Mundial de Ligas Menores de Beisbol. </p>
-        </div>
+            <section class="historia-reveal grid gap-8 border-t border-[#e5dfd3] py-14 md:grid-cols-2 md:gap-8 md:pb-[42px] md:pt-[76px]" aria-labelledby="intro-titulo">
+                <div><p class="mb-2.5 text-[.72rem] font-black uppercase tracking-[.18em] text-[#f27b21]">El contexto</p><h2 id="intro-titulo" class="text-[clamp(1.8rem,3vw,3rem)] font-black leading-[1.03]">Un deporte con dos temporadas y una sola pasión.</h2></div>
+                <p class="m-0 max-w-[510px] text-base leading-[1.7] text-[#686870] md:mt-6">La organización profesional comenzó en 1925 con la Liga Mexicana de verano. Veinte años después nació la liga invernal que con el tiempo se convertiría en la Liga Mexicana del Pacífico. Juntas forman el corazón competitivo del béisbol nacional.</p>
+            </section>
 
-        <div class="InvisibleDivision"></div>
+            <section class="historia-reveal mb-[70px] grid grid-cols-3 border-y border-[#e5dfd3] md:mb-[100px]" aria-label="Datos clave del béisbol mexicano">
+                <article class="border-r border-[#e5dfd3] px-2.5 py-5 md:px-5 md:py-[25px]"><strong class="block text-[clamp(2rem,5vw,3.5rem)] font-black leading-none text-[#008298]">1925</strong><span class="mt-2 block text-[.72rem] text-[#686870] md:text-[.82rem]">Nace la Liga Mexicana</span></article>
+                <article class="border-r border-[#e5dfd3] px-2.5 py-5 md:px-5 md:py-[25px]"><strong class="block text-[clamp(2rem,5vw,3.5rem)] font-black leading-none text-[#008298]">1945</strong><span class="mt-2 block text-[.72rem] text-[#686870] md:text-[.82rem]">Comienza la liga invernal</span></article>
+                <article class="px-2.5 py-5 md:px-5 md:py-[25px]"><strong class="block text-[clamp(2rem,5vw,3.5rem)] font-black leading-none text-[#008298]">2</strong><span class="mt-2 block text-[.72rem] text-[#686870] md:text-[.82rem]">Ligas profesionales principales</span></article>
+            </section>
 
+            <section id="cronologia" class="historia-cronologia" aria-labelledby="cronologia-titulo">
+                <div class="historia-seccion-cabecera historia-reveal items-start justify-between gap-8 md:flex md:items-end"><div><p class="mb-2.5 text-[.72rem] font-black uppercase tracking-[.18em] text-[#f27b21]">El recorrido</p><h2 id="cronologia-titulo" class="text-[clamp(1.8rem,3vw,3rem)] font-black leading-[1.03]">Una línea de tiempo viva</h2></div><p class="m-0 mt-4 max-w-[510px] text-base leading-[1.7] text-[#686870] md:mt-0">Selecciona una etapa para conocer cómo fue creciendo el juego.</p></div>
+                <div class="my-[30px] flex flex-wrap gap-2 md:mb-[42px]" role="tablist" aria-label="Filtrar etapas históricas">
+                    <button class="historia-filtro" type="button" role="tab" aria-selected="true" data-era="todas">Todas</button>
+                    <button class="historia-filtro" type="button" role="tab" aria-selected="false" data-era="origen">Orígenes</button>
+                    <button class="historia-filtro" type="button" role="tab" aria-selected="false" data-era="expansion">Expansión</button>
+                    <button class="historia-filtro" type="button" role="tab" aria-selected="false" data-era="mundo">México en el mundo</button>
+                </div>
+                <div class="historia-linea">
+                    <article class="historia-evento historia-reveal" data-era="origen"><span class="historia-punto" aria-hidden="true"></span><span class="historia-ano">1925</span><div><h3>La primera liga profesional</h3><p>La Liga Mexicana de verano organiza el talento del país y pone las bases de la competencia profesional.</p></div></article>
+                    <article class="historia-evento historia-reveal" data-era="expansion"><span class="historia-punto" aria-hidden="true"></span><span class="historia-ano">1945</span><div><h3>El juego también se juega en invierno</h3><p>Nace la liga invernal, que más tarde se consolidaría como la Liga Mexicana del Pacífico.</p></div></article>
+                    <article class="historia-evento historia-reveal" data-era="expansion"><span class="historia-punto" aria-hidden="true"></span><span class="historia-ano">Hoy</span><div><h3>Dos ligas, miles de historias</h3><p>La LMB y la LMP reúnen estadios, ciudades y aficiones distintas alrededor del mismo diamante.</p></div></article>
+                    <article class="historia-evento historia-reveal" data-era="mundo"><span class="historia-punto" aria-hidden="true"></span><span class="historia-ano">Mundo</span><div><h3>Una camiseta que cruza fronteras</h3><p>México participa en la Serie del Caribe, el Clásico Mundial, los Juegos Olímpicos y torneos infantiles internacionales.</p></div></article>
+                </div>
+            </section>
 
-        <div class="image">
-            <img decoding="async" src="./assets/img/beisbol1.webp" alt="Imagen de futboll">
-        </div>
+            <section class="historia-reveal my-[50px] grid items-center gap-8 md:my-20 md:grid-cols-[minmax(280px,1.1fr)_1fr] md:gap-[clamp(30px,7vw,100px)]" aria-labelledby="identidad-titulo">
+                <figure class="historia-ilustracion relative m-0"><img class="block h-[280px] w-full object-cover md:h-[360px]" src="./assets/img/theshow25.webp" loading="lazy" alt="Experiencia digital relacionada con el béisbol"><span class="absolute -bottom-3 left-5 bg-[#f27b21] px-3 py-2.5 text-xs font-extrabold text-white">El juego también evoluciona</span></figure>
+                <div><p class="mb-2.5 text-[.72rem] font-black uppercase tracking-[.18em] text-[#f27b21]">La identidad</p><h2 id="identidad-titulo" class="text-[clamp(1.8rem,3vw,3rem)] font-black leading-[1.03]">De la cancha al mundo digital</h2><p class="mt-6 max-w-[510px] text-base leading-[1.7] text-[#686870]">La historia sigue escribiéndose en cada estadio, en cada colección y en cada nueva generación que descubre por qué al béisbol se le llama el rey de los deportes.</p><a class="mt-[22px] inline-block font-black text-[#008298] no-underline" href="trivia.html">Pon a prueba lo que sabes <span class="ml-2 text-xl" aria-hidden="true">→</span></a></div>
+            </section>
 
-        <div class="InvisibleDivision"></div>
-
-
-        <div class="image">
-            <img decoding="async" loading="lazy" src="./assets/img/theshow25.webp" alt="Imagen de futboll">
-        </div>
+            <section class="historia-cierre historia-reveal -mx-[18px] rounded-t-[2.75rem] bg-[#008298] px-6 py-[68px] text-center text-white sm:-mx-6" ><p class="mb-2.5 text-[.72rem] font-black uppercase tracking-[.18em] text-[#ffd5ae]">Tu siguiente entrada</p><h2 class="text-[clamp(2rem,5vw,4rem)] font-black leading-[1.03]">La historia no termina aquí.</h2><p class="my-3.5">Conoce a los equipos que mantienen vivo el diamante mexicano.</p><a class="inline-flex items-center gap-[18px] rounded-full bg-white px-5 py-3.5 text-sm font-extrabold text-[#008298] no-underline transition hover:bg-[#fff7ea]" href="pages/coleccion.html">Ver la colección <span class="text-xl" aria-hidden="true">→</span></a></section>
+        </main>
 
         <!-- MENÚ INFERIOR -->
         <div id="menu-inferior"></div>
 
         <!-- JAVASCRIPT -->
-        <script type="module" src="./js/main.js?v=20260921-1"></script>
+        <script type="module" src="./js/main.js?v=20260922-3"></script>
 
 </body>
 
