@@ -79,6 +79,9 @@ async function montarSeccion(archivo, signal) {
     } else if (archivo === 'Ayuda.html') {
         const { iniciarAyuda } = await import('./ayuda.js');
         if (!signal.aborted) iniciarAyuda();
+    } else if (archivo === 'Informacion.html') {
+        const { iniciarHistoria } = await import('./historia.js?v=20260922-3');
+        if (!signal.aborted) iniciarHistoria();
     }
 }
 
