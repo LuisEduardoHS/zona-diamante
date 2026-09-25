@@ -56,9 +56,13 @@ export function cerrarMenu() {
 }
 export function actualizarHeader() {
     const autentificacion = esAutenticacion();
+    const header = document.querySelector('.site-header');
     const abrir = document.getElementById('btn-abrir-menu');
+    const cerrar = document.getElementById('btn-cerrar-autenticacion');
     const marca = document.querySelector('.shell-brand');
     if (autentificacion) {
+        header?.classList.add('hidden');
+        cerrar?.classList.remove('hidden');
         marca?.classList.add('hidden');
         abrir?.setAttribute('aria-label', 'Cerrar');
         abrir?.removeAttribute('aria-haspopup');
@@ -66,6 +70,8 @@ export function actualizarHeader() {
         abrir?.setAttribute('aria-expanded', 'false');
         if (abrir) abrir.innerHTML = icono(iconoCerrar, true);
     } else {
+        header?.classList.remove('hidden');
+        cerrar?.classList.add('hidden');
         marca?.classList.remove('hidden');
         abrir?.setAttribute('aria-label', 'Abrir menú');
         abrir?.setAttribute('aria-haspopup', 'dialog');
@@ -87,6 +93,7 @@ export function renderHeader() {
             <button id="btn-abrir-menu" type="button" aria-label="Abrir menú" aria-haspopup="dialog" aria-controls="menu-overlay" aria-expanded="false" class="shell-menu-button">${icono('M5 6h14M5 12h14M5 18h14')}</button>
             <a class="shell-brand" href="${ruta('login.html')}" aria-label="Iniciar sesión"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" aria-hidden="true"><path d="M320 312C386.3 312 440 258.3 440 192C440 125.7 386.3 72 320 72C253.7 72 200 125.7 200 192C200 258.3 253.7 312 320 312zM290.3 368C191.8 368 112 447.8 112 546.3C112 562.7 125.3 576 141.7 576L498.3 576C514.7 576 528 562.7 528 546.3C528 447.8 448.2 368 349.7 368L290.3 368z"/></svg></a>
         </header>
+        <button id="btn-cerrar-autenticacion" type="button" aria-label="Cerrar" class="shell-menu-button hidden fixed left-6 top-5 z-50">${icono(iconoCerrar, true)}</button>
         <dialog id="menu-overlay" class="site-menu" aria-labelledby="menu-titulo">
             <h2 id="menu-titulo" class="sr-only">Menú principal</h2>
             <nav class="site-menu-links" aria-label="Menú principal">
@@ -99,6 +106,10 @@ export function renderHeader() {
         </dialog>`;
     const dialogo = document.getElementById('menu-overlay');
     const abrir = document.getElementById('btn-abrir-menu');
+    const botonCerrarAutenticacion = document.getElementById('btn-cerrar-autenticacion');
+    botonCerrarAutenticacion.addEventListener('click', () => {
+        if (esAutenticacion()) cerrarAutenticacion();
+    });
     abrir.addEventListener('click', () => {
         if (esAutenticacion()) {
             cerrarAutenticacion();

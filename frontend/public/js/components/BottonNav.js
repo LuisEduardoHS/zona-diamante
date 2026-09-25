@@ -5,6 +5,7 @@ export function actualizarBottomNav() {
     const nav = document.querySelector('.site-bottom-nav');
     if (!nav) return;
     const esAutenticacion = actual === 'login.html' || actual === 'registro.html';
+    document.getElementById('menu-inferior')?.classList.toggle('hidden', esAutenticacion);
     nav.classList.toggle('hidden', esAutenticacion);
     if (esAutenticacion) return;
     const enlaces = [...nav.querySelectorAll('a')];
