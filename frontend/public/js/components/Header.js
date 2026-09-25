@@ -1,4 +1,4 @@
-import { ruta } from '../rutas.js';
+import { ruta, rutaInterna } from '../rutas.js';
 
 const secciones = [
     ['index.html', 'Inicio', 'Tu zona de béisbol', 'M341.8 72.6C329.5 61.2 310.5 61.2 298.3 72.6L74.3 280.6C64.7 289.6 61.5 303.5 66.3 315.7C71.1 327.9 82.8 336 96 336L112 336L112 512C112 547.3 140.7 576 176 576L464 576C499.3 576 528 547.3 528 512L528 336L544 336C557.2 336 569 327.9 573.8 315.7C578.6 303.5 575.4 289.5 565.8 280.6L341.8 72.6zM304 384L336 384C362.5 384 384 405.5 384 432L384 528L256 528L256 432C256 405.5 277.5 384 304 384z', true],
@@ -15,6 +15,18 @@ const cambiarIconoMenu = (boton, path) => {
     boton.classList.add('menu-icono-cambiando');
     boton.innerHTML = icono(path);
     requestAnimationFrame(() => boton.classList.remove('menu-icono-cambiando'));
+};
+
+const iconoCerrar = 'M183.1 137.4C170.6 124.9 150.3 124.9 137.8 137.4C125.3 149.9 125.3 170.2 137.8 182.7L275.2 320L137.9 457.4C125.4 469.9 125.4 490.2 137.9 502.7C150.4 515.2 170.7 515.2 183.2 502.7L320.5 365.3L457.9 502.6C470.4 515.1 490.7 515.1 503.2 502.6C515.7 490.1 515.7 469.8 503.2 457.3L365.8 320L503.1 182.6C515.6 170.1 515.6 149.8 503.1 137.3C490.6 124.8 470.3 124.8 457.8 137.3L320.5 274.7L183.1 137.4z';
+const esAutenticacion = () => ['login.html', 'registro.html'].includes(rutaInterna(location.href)?.archivo);
+const cerrarAutenticacion = () => {
+    const enlace = document.createElement('a');
+    enlace.href = ruta('index.html');
+    enlace.className = 'hidden';
+    enlace.setAttribute('aria-hidden', 'true');
+    document.body.append(enlace);
+    enlace.click();
+    enlace.remove();
 };
 
 let animacionMenu;
@@ -43,6 +55,24 @@ export function cerrarMenu() {
     }).catch(() => { cerrando = false; });
 }
 export function actualizarHeader() {
+    const autentificacion = esAutenticacion();
+    const abrir = document.getElementById('btn-abrir-menu');
+    const marca = document.querySelector('.shell-brand');
+    if (autentificacion) {
+        marca?.classList.add('hidden');
+        abrir?.setAttribute('aria-label', 'Cerrar');
+        abrir?.removeAttribute('aria-haspopup');
+        abrir?.removeAttribute('aria-controls');
+        abrir?.setAttribute('aria-expanded', 'false');
+        if (abrir) abrir.innerHTML = icono(iconoCerrar, true);
+    } else {
+        marca?.classList.remove('hidden');
+        abrir?.setAttribute('aria-label', 'Abrir menú');
+        abrir?.setAttribute('aria-haspopup', 'dialog');
+        abrir?.setAttribute('aria-controls', 'menu-overlay');
+        abrir?.setAttribute('aria-expanded', 'false');
+        if (abrir) abrir.innerHTML = icono('M5 6h14M5 12h14M5 18h14');
+    }
     const actual = location.pathname === new URL(ruta('')).pathname ? ruta('index.html') : location.origin + location.pathname;
     document.querySelectorAll('.site-menu-link').forEach(enlace => {
         if (enlace.href === actual) enlace.setAttribute('aria-current', 'page');
@@ -55,7 +85,7 @@ export function renderHeader() {
     contenedor.innerHTML = `
         <header class="site-header fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-5">
             <button id="btn-abrir-menu" type="button" aria-label="Abrir menú" aria-haspopup="dialog" aria-controls="menu-overlay" aria-expanded="false" class="shell-menu-button">${icono('M5 6h14M5 12h14M5 18h14')}</button>
-            <span class="shell-brand" aria-label="Zona Diamante"><svg viewBox="0 0 41 37" fill="none" aria-hidden="true"><path d="M24.4351 11H16.4351L14.9351 12.5L20.4351 19L25.9351 12.5L24.4351 11Z" fill="#2B2B31" stroke="#2B2B31" stroke-width="22"/></svg></span>
+            <a class="shell-brand" href="${ruta('login.html')}" aria-label="Iniciar sesión"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" aria-hidden="true"><path d="M320 312C386.3 312 440 258.3 440 192C440 125.7 386.3 72 320 72C253.7 72 200 125.7 200 192C200 258.3 253.7 312 320 312zM290.3 368C191.8 368 112 447.8 112 546.3C112 562.7 125.3 576 141.7 576L498.3 576C514.7 576 528 562.7 528 546.3C528 447.8 448.2 368 349.7 368L290.3 368z"/></svg></a>
         </header>
         <dialog id="menu-overlay" class="site-menu" aria-labelledby="menu-titulo">
             <h2 id="menu-titulo" class="sr-only">Menú principal</h2>
@@ -70,6 +100,10 @@ export function renderHeader() {
     const dialogo = document.getElementById('menu-overlay');
     const abrir = document.getElementById('btn-abrir-menu');
     abrir.addEventListener('click', () => {
+        if (esAutenticacion()) {
+            cerrarAutenticacion();
+            return;
+        }
         if (dialogo.open) {
             cerrarMenu();
             return;

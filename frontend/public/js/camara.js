@@ -63,6 +63,50 @@ document.addEventListener('DOMContentLoaded', () => {
     let zoom = 1;
     let desplazamiento = { x: 0, y: 0 };
     let poseEntrada = POSE_REPOSO;
+    let rotacionAutomaticaDisponible = false;
+    let frameRotacionAutomatica = null;
+    let tiempoRotacionAnterior = null;
+
+    const detenerRotacionAutomatica = () => {
+        if (frameRotacionAutomatica !== null) {
+            cancelAnimationFrame(frameRotacionAutomatica);
+            frameRotacionAutomatica = null;
+        }
+        tiempoRotacionAnterior = null;
+    };
+
+    const iniciarRotacionAutomatica = () => {
+        if (!rotacionAutomaticaDisponible || frameRotacionAutomatica !== null) return;
+
+        const rotar = (tiempo) => {
+            frameRotacionAutomatica = null;
+            if (!modoInspector || !rotacionAutomaticaDisponible) {
+                tiempoRotacionAnterior = null;
+                return;
+            }
+
+            if (tiempoRotacionAnterior !== null) {
+                const segundos = Math.min((tiempo - tiempoRotacionAnterior) / 1000, 0.1);
+                const rotacion = modeloCamara.getAttribute('rotation') || { x: 0, y: 0, z: 0 };
+                modeloCamara.setAttribute('rotation', {
+                    x: rotacion.x,
+                    y: rotacion.y + segundos * 12,
+                    z: rotacion.z
+                });
+                aplicarTransformacion();
+            }
+
+            tiempoRotacionAnterior = tiempo;
+            frameRotacionAutomatica = requestAnimationFrame(rotar);
+        };
+
+        frameRotacionAutomatica = requestAnimationFrame(rotar);
+    };
+
+    const cancelarRotacionPorInteraccion = () => {
+        rotacionAutomaticaDisponible = false;
+        detenerRotacionAutomatica();
+    };
 
     // El origen del GLB de Algodoneros está desplazado; centra su geometría
     // horizontalmente sin cambiar la posición de los demás equipos.
@@ -507,6 +551,8 @@ document.addEventListener('DOMContentLoaded', () => {
             canvas.style.touchAction = 'none';
         }
         reiniciarGesto();
+        rotacionAutomaticaDisponible = true;
+        iniciarRotacionAutomatica();
 
         document.getElementById('ar-ui').classList.add('hidden');
         btnCerrarInspector.classList.remove('hidden');
@@ -522,6 +568,8 @@ document.addEventListener('DOMContentLoaded', () => {
     btnCerrarInspector.addEventListener('click', () => {
         modoInspector = false;
         entradaModelo.cancelar();
+        rotacionAutomaticaDisponible = false;
+        detenerRotacionAutomatica();
         document.getElementById('luz-principal').setAttribute('position', '-0.5 1 1');
         fotoAR.activar(false);
         if (escena.canvas) escena.canvas.style.touchAction = touchActionOriginal;
@@ -569,6 +617,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const pausarCamara = () => {
         // Si la app pasa a segundo plano, al regresar ya queda en su pose normal.
         entradaModelo.terminar();
+        detenerRotacionAutomatica();
         clearTimeout(temporizadorInicioCamara);
         clearTimeout(temporizadorPerdida);
         temporizadorPerdida = null;
@@ -676,6 +725,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             aplicarTransformacion();
             touchPrevio = { x: touches[0].clientX, y: touches[0].clientY };
+            cancelarRotacionPorInteraccion();
         }
 
         else if (touches.length === 2 && paneoPrevio) {
@@ -691,6 +741,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 desplazamiento.y -= (paneoActual.y - paneoPrevio.y) / rect.height;
             }
             aplicarTransformacion();
+            cancelarRotacionPorInteraccion();
             distanciaPellizcoPrevia = paneoActual.distancia;
             paneoPrevio = paneoActual;
         }

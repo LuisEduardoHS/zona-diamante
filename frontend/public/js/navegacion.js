@@ -82,6 +82,12 @@ async function montarSeccion(archivo, signal) {
     } else if (archivo === 'Informacion.html') {
         const { iniciarHistoria } = await import('./historia.js?v=20260922-3');
         if (!signal.aborted) iniciarHistoria();
+    } else if (archivo === 'login.html') {
+        const { iniciarLogin } = await import('./login.js');
+        if (!signal.aborted) iniciarLogin();
+    } else if (archivo === 'registro.html') {
+        const { iniciarRegistro } = await import('./registro.js');
+        if (!signal.aborted) iniciarRegistro();
     }
 }
 

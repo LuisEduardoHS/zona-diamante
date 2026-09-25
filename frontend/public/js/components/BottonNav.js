@@ -4,6 +4,9 @@ export function actualizarBottomNav() {
     const actual = rutaInterna(location.href)?.archivo || 'index.html';
     const nav = document.querySelector('.site-bottom-nav');
     if (!nav) return;
+    const esAutenticacion = actual === 'login.html' || actual === 'registro.html';
+    nav.classList.toggle('hidden', esAutenticacion);
+    if (esAutenticacion) return;
     const enlaces = [...nav.querySelectorAll('a')];
     enlaces.forEach(enlace => {
         if (rutaInterna(enlace.href)?.archivo === actual) enlace.setAttribute('aria-current', 'page');
