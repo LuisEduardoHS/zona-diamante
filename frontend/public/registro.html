@@ -3,54 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7fbfb">
     <link rel="icon" type="image/svg+xml" href="./assets/logo-naranja.svg">
-    <link href="./css/output.css?v=20260922-4" rel="stylesheet">
+    <link href="./css/output.css?v=20260926-1" rel="stylesheet">
     <title>Crear cuenta | Zona Diamante</title>
 </head>
-<body class="h-dvh overflow-hidden bg-white text-[#2b2b31]">
+<body class="auth-page text-[#2b2b31]">
     <div id="header-superior"></div>
 
-    <main class="relative box-border h-dvh overflow-hidden px-8 pb-6 pt-[calc(112px+env(safe-area-inset-top,0px))] max-[700px]:pt-[calc(96px+env(safe-area-inset-top,0px))]">
-        <h1 class="relative z-[1] m-0 text-center text-[clamp(30px,8vw,40px)] font-black leading-none">Crear cuenta</h1>
+    <main class="auth-layout">
+        <div class="auth-shell">
+            <header class="auth-heading">
+                <p class="auth-eyebrow">Únete a Zona Diamante</p>
+                <h1>Crea tu cuenta</h1>
+                <p>Completa estos pasos para preparar tu perfil de aficionado.</p>
+            </header>
 
-        <section class="relative z-[1] mx-auto mt-[clamp(74px,14svh,124px)] flex min-h-[calc(100dvh-280px)] w-full max-w-[430px] flex-col max-[700px]:mt-[54px]" aria-label="Formulario de creación de cuenta">
-            <form id="crear-cuenta-form" class="grid gap-2">
-                <p id="registro-paso" class="mb-2 text-center text-sm font-bold text-[#686870]" aria-live="polite">1 de 4</p>
+            <section class="auth-card" aria-label="Creación de cuenta">
+                <form id="crear-cuenta-form" class="auth-form" novalidate>
+                    <div>
+                        <p id="registro-paso" class="auth-progress-copy" aria-live="polite">Paso 1 de 4 · Tu correo</p>
+                        <div class="auth-progress" aria-hidden="true">
+                            <span data-progreso="0" data-activo="true"></span>
+                            <span data-progreso="1"></span>
+                            <span data-progreso="2"></span>
+                            <span data-progreso="3"></span>
+                        </div>
+                    </div>
 
-                <div data-paso="0" class="grid gap-2">
-                    <label class="sr-only" for="registro-correo">Correo electrónico</label>
-                    <input id="registro-correo" class="box-border min-h-[58px] w-full rounded-[10px] border-2 border-[#d9d9d9] bg-white px-4 py-[13px] text-base text-[#2b2b31] outline-none placeholder:text-[#77777d] focus:border-[#008298] focus:ring-4 focus:ring-[#008298]/15" name="correo" type="email" autocomplete="email" placeholder="Correo electrónico" required>
-                    <button type="button" class="registro-siguiente mt-[14px] min-h-[58px] rounded-full border-0 bg-[#f27b21] px-4 font-inherit font-extrabold text-white transition-colors hover:bg-[#d86613]">Continuar</button>
-                </div>
+                    <div data-paso="0" class="auth-step">
+                        <h2 class="auth-step-title">¿Cuál es tu correo?</h2>
+                        <div class="auth-field">
+                            <label class="auth-label" for="registro-correo">Correo electrónico</label>
+                            <input id="registro-correo" class="auth-input" name="correo" type="email" inputmode="email" autocomplete="email" placeholder="tu@correo.com" required>
+                            <p class="auth-helper">Lo usarás para ingresar y recuperar tu cuenta.</p>
+                        </div>
+                        <button type="button" class="registro-siguiente auth-primary">Continuar</button>
+                    </div>
 
-                <div data-paso="1" class="hidden grid gap-2">
-                    <label class="sr-only" for="registro-contrasena">Contraseña</label>
-                    <input id="registro-contrasena" class="box-border min-h-[58px] w-full rounded-[10px] border-2 border-[#d9d9d9] bg-white px-4 py-[13px] text-base text-[#2b2b31] outline-none placeholder:text-[#77777d] focus:border-[#008298] focus:ring-4 focus:ring-[#008298]/15" name="contrasena" type="password" autocomplete="new-password" placeholder="Contraseña" required>
-                    <button type="button" class="registro-siguiente mt-[14px] min-h-[58px] rounded-full border-0 bg-[#f27b21] px-4 font-inherit font-extrabold text-white transition-colors hover:bg-[#d86613]">Continuar</button>
-                </div>
+                    <div data-paso="1" class="auth-step" hidden>
+                        <h2 class="auth-step-title">Crea una contraseña</h2>
+                        <div class="auth-field">
+                            <label class="auth-label" for="registro-contrasena">Contraseña</label>
+                            <div class="auth-input-wrap">
+                                <input id="registro-contrasena" class="auth-input" name="contrasena" type="password" minlength="8" autocomplete="new-password" placeholder="Mínimo 8 caracteres" required>
+                                <button class="auth-password-toggle" type="button" data-password-toggle="registro-contrasena" aria-label="Mostrar contraseña" aria-pressed="false"></button>
+                            </div>
+                            <p class="auth-helper">Usa al menos 8 caracteres.</p>
+                        </div>
+                        <button type="button" class="registro-siguiente auth-primary">Continuar</button>
+                    </div>
 
-                <div data-paso="2" class="hidden grid gap-2">
-                    <label class="sr-only" for="registro-confirmar">Confirmar contraseña</label>
-                    <input id="registro-confirmar" class="box-border min-h-[58px] w-full rounded-[10px] border-2 border-[#d9d9d9] bg-white px-4 py-[13px] text-base text-[#2b2b31] outline-none placeholder:text-[#77777d] focus:border-[#008298] focus:ring-4 focus:ring-[#008298]/15" name="confirmar" type="password" autocomplete="new-password" placeholder="Confirmar contraseña" required>
-                    <button type="button" class="registro-siguiente mt-[14px] min-h-[58px] rounded-full border-0 bg-[#f27b21] px-4 font-inherit font-extrabold text-white transition-colors hover:bg-[#d86613]">Continuar</button>
-                </div>
+                    <div data-paso="2" class="auth-step" hidden>
+                        <h2 class="auth-step-title">Confirma tu contraseña</h2>
+                        <div class="auth-field">
+                            <label class="auth-label" for="registro-confirmar">Repite la contraseña</label>
+                            <div class="auth-input-wrap">
+                                <input id="registro-confirmar" class="auth-input" name="confirmar" type="password" minlength="8" autocomplete="new-password" placeholder="Vuelve a escribirla" required>
+                                <button class="auth-password-toggle" type="button" data-password-toggle="registro-confirmar" aria-label="Mostrar contraseña" aria-pressed="false"></button>
+                            </div>
+                        </div>
+                        <button type="button" class="registro-siguiente auth-primary">Continuar</button>
+                    </div>
 
-                <div data-paso="3" class="hidden grid gap-2">
-                    <label for="registro-foto" class="flex min-h-[120px] cursor-pointer items-center justify-center rounded-[10px] border-2 border-dashed border-[#008298] px-4 text-center font-bold text-[#008298]">Seleccionar foto
-                        <input id="registro-foto" class="sr-only" name="foto" type="file" accept="image/*" required>
-                    </label>
-                    <p id="registro-foto-nombre" class="m-0 text-center text-sm text-[#686870]">Aún no seleccionas una foto.</p>
-                    <button type="submit" class="mt-[14px] min-h-[58px] rounded-full border-0 bg-[#f27b21] px-4 font-inherit font-extrabold text-white transition-colors hover:bg-[#d86613]">Crear cuenta</button>
-                </div>
+                    <div data-paso="3" class="auth-step" hidden>
+                        <h2 class="auth-step-title">Agrega una foto</h2>
+                        <label for="registro-foto" class="auth-photo">
+                            <span>Seleccionar foto de perfil</span>
+                            <input id="registro-foto" class="sr-only" name="foto" type="file" accept="image/png,image/jpeg,image/webp" required>
+                        </label>
+                        <p id="registro-foto-nombre" class="auth-helper text-center" aria-live="polite">JPG, PNG o WebP.</p>
+                        <button type="submit" class="auth-primary">Crear cuenta</button>
+                    </div>
 
-                <button type="button" class="registro-anterior hidden min-h-[42px] rounded-full border border-[#008298] bg-transparent px-4 font-inherit font-extrabold text-[#008298]">Atrás</button>
-                <p id="registro-estado" class="m-0 text-center text-xs text-[#008298]" role="status" aria-live="polite"></p>
-            </form>
-            <a class="mt-auto flex min-h-[58px] w-full items-center justify-center rounded-full border border-[#008298] text-sm font-extrabold text-[#008298] no-underline transition-colors hover:bg-[#008298]/[.08]" href="login.html">Volver a iniciar sesión</a>
-        </section>
+                    <button type="button" class="registro-anterior auth-back" hidden>← Volver al paso anterior</button>
+                    <p id="registro-estado" class="auth-status" role="status" aria-live="polite"></p>
+                </form>
+            </section>
+
+            <p class="auth-switch">¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></p>
+        </div>
     </main>
 
     <div id="menu-inferior"></div>
-    <script type="module" src="./js/main.js?v=20260924-1"></script>
+    <script type="module" src="./js/main.js?v=20260925-1"></script>
 </body>
 </html>

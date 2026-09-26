@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="./assets/logo-naranja.svg">
     <title>Zona Diamante | AR</title>
-    <link href="./css/output.css?v=20260922-4" rel="stylesheet">
+    <link href="./css/output.css?v=20260926-1" rel="stylesheet">
     <link href="./css/camara-foto.css" rel="stylesheet">
 
     <script src="./js/libs/aframe.min.js"></script>
@@ -128,15 +128,17 @@
             <a-gltf-model id="modelo-camara" rotation="0 0 0" visible="false"></a-gltf-model>
         </a-camera>
 
-        <a-entity light="type: ambient; color: #BBB; intensity: 1"></a-entity>
-        <a-entity id="luz-principal" light="type: directional; color: #FFF; intensity: 0.6" position="-0.5 1 1"></a-entity>
+        <!-- Iluminación suave para conservar el volumen sin endurecer las sombras. -->
+        <a-entity light="type: ambient; color: #F4F7FF; intensity: 1.15"></a-entity>
+        <a-entity id="luz-principal" light="type: directional; color: #FFF4E8; intensity: 0.38" position="-0.5 1 1"></a-entity>
+        <a-entity id="luz-relleno" light="type: directional; color: #E8F7FF; intensity: 0.28" position="0.8 0.35 -1"></a-entity>
 
         <a-entity id="target-0" mindar-image-target="targetIndex: 0">
-            <a-gltf-model id="modelo-target-algodoneros" class="modelo-target" src="./ar/models/Algodoneros_color.glb" position="0 0 0" scale="0.5 0.5 0.5" rotation="0 0 0"></a-gltf-model>
+            <a-gltf-model id="modelo-target-algodoneros" class="modelo-target" src="./ar/models/Final/Pollo_Fin.glb?v=20260926-3" position="0 0 0" scale="0.5 0.5 0.5" rotation="0 0 0"></a-gltf-model>
         </a-entity>
 
         <a-entity id="target-1" mindar-image-target="targetIndex: 1">
-            <a-gltf-model class="modelo-target" src="./ar/models/charros_modelo.glb" position="0 0 0" scale="0.5 0.5 0.5" rotation="0 0 0"></a-gltf-model>
+            <a-gltf-model class="modelo-target" src="./ar/models/Final/Straiky_Fin.glb?v=20260926-3" position="0 0 0" scale="0.5 0.5 0.5" rotation="0 0 0"></a-gltf-model>
         </a-entity>
 
         <a-entity id="target-2" mindar-image-target="targetIndex: 2">
@@ -148,7 +150,7 @@
     </a-scene>
 
     <script type="module" src="./js/ar-marco.js"></script>
-    <script type="module" src="./js/camara.js"></script>
+    <script type="module" src="./js/camara.js?v=20260926-3"></script>
 
 </body>
 </html>

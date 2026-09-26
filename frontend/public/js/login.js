@@ -1,18 +1,17 @@
+import { iniciarControlesContrasena, mostrarPrimerError } from './auth-ui.js';
+
 export function iniciarLogin() {
     const formularioLogin = document.getElementById('login-form');
     const estadoLogin = document.getElementById('login-estado');
 
     if (!formularioLogin || !estadoLogin) return;
 
-    const enlaceRegistro = document.querySelector('a[href="registro.html"]');
-    formularioLogin.querySelectorAll('input').forEach((campo) => {
-        campo.addEventListener('focus', () => enlaceRegistro?.classList.add('hidden'));
-        campo.addEventListener('blur', () => enlaceRegistro?.classList.remove('hidden'));
-    });
+    iniciarControlesContrasena(formularioLogin);
+    formularioLogin.addEventListener('input', () => { estadoLogin.textContent = ''; });
 
     formularioLogin.addEventListener('submit', (event) => {
         event.preventDefault();
+        if (mostrarPrimerError(formularioLogin)) return;
         estadoLogin.textContent = 'El acceso estará disponible próximamente.';
     });
-
 }

@@ -3,32 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7fbfb">
     <link rel="icon" type="image/svg+xml" href="./assets/logo-naranja.svg">
-    <link href="./css/output.css?v=20260922-4" rel="stylesheet">
+    <link href="./css/output.css?v=20260926-1" rel="stylesheet">
     <title>Iniciar sesión | Zona Diamante</title>
 </head>
-<body class="h-dvh overflow-hidden bg-white text-[#2b2b31]">
+<body class="auth-page text-[#2b2b31]">
     <div id="header-superior"></div>
 
-    <main class="relative box-border h-dvh overflow-hidden px-8 pb-6 pt-[calc(112px+env(safe-area-inset-top,0px))] max-[700px]:pt-[calc(96px+env(safe-area-inset-top,0px))]">
-        <h1 class="relative z-[1] m-0 text-center text-[clamp(30px,8vw,40px)] font-black leading-none">Iniciar sesión</h1>
+    <main class="auth-layout">
+        <div class="auth-shell">
+            <header class="auth-heading">
+                <p class="auth-eyebrow">Zona Diamante</p>
+                <h1>Qué bueno verte</h1>
+                <p>Inicia sesión para continuar tu colección y tus experiencias.</p>
+            </header>
 
-        <section class="relative z-[1] mx-auto mt-[clamp(74px,14svh,124px)] flex min-h-[calc(100dvh-280px)] w-full max-w-[430px] flex-col max-[700px]:mt-[54px]" aria-label="Formulario de inicio de sesión">
-            <form id="login-form" class="grid gap-2">
-                <label class="sr-only" for="login-correo">Correo electrónico</label>
-                <input id="login-correo" class="box-border min-h-[58px] w-full rounded-[10px] border-2 border-[#d9d9d9] bg-white px-4 py-[13px] text-base text-[#2b2b31] outline-none placeholder:text-[#77777d] focus:border-[#008298] focus:ring-4 focus:ring-[#008298]/15" name="correo" type="email" autocomplete="email" placeholder="Nombre de usuario, correo o celular" required>
+            <section class="auth-card" aria-label="Inicio de sesión">
+                <form id="login-form" class="auth-form" novalidate>
+                    <div class="auth-field">
+                        <label class="auth-label" for="login-correo">Correo electrónico</label>
+                        <input id="login-correo" class="auth-input" name="correo" type="email" inputmode="email" autocomplete="email" placeholder="tu@correo.com" required>
+                    </div>
 
-                <label class="sr-only" for="login-contrasena">Contraseña</label>
-                <input id="login-contrasena" class="box-border min-h-[58px] w-full rounded-[10px] border-2 border-[#d9d9d9] bg-white px-4 py-[13px] text-base text-[#2b2b31] outline-none placeholder:text-[#77777d] focus:border-[#008298] focus:ring-4 focus:ring-[#008298]/15" name="contrasena" type="password" autocomplete="current-password" placeholder="Contraseña" required>
+                    <div class="auth-field">
+                        <label class="auth-label" for="login-contrasena">Contraseña</label>
+                        <div class="auth-input-wrap">
+                            <input id="login-contrasena" class="auth-input" name="contrasena" type="password" autocomplete="current-password" placeholder="Escribe tu contraseña" required>
+                            <button class="auth-password-toggle" type="button" data-password-toggle="login-contrasena" aria-label="Mostrar contraseña" aria-pressed="false"></button>
+                        </div>
+                    </div>
 
-                <button type="submit" class="mt-[14px] min-h-[58px] rounded-full border-0 bg-[#f27b21] px-4 font-inherit font-extrabold text-white transition-colors hover:bg-[#d86613]">Iniciar sesión</button>
-                <p id="login-estado" class="m-0 text-center text-xs text-[#008298]" role="status" aria-live="polite"></p>
-            </form>
-            <a class="mt-auto flex min-h-[58px] w-full items-center justify-center rounded-full border border-[#008298] text-sm font-extrabold text-[#008298] no-underline transition-colors hover:bg-[#008298]/[.08]" href="registro.html">Crear cuenta</a>
-        </section>
+                    <button type="submit" class="auth-primary">Iniciar sesión</button>
+                    <p id="login-estado" class="auth-status" role="status" aria-live="polite"></p>
+                </form>
+
+                <div class="auth-divider" aria-hidden="true">¿Primera vez aquí?</div>
+                <a class="auth-secondary" href="registro.html">Crear una cuenta</a>
+            </section>
+        </div>
     </main>
 
     <div id="menu-inferior"></div>
-    <script type="module" src="./js/main.js?v=20260924-1"></script>
+    <script type="module" src="./js/main.js?v=20260925-1"></script>
 </body>
 </html>

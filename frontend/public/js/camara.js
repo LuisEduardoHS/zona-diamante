@@ -18,8 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // También hace que la ruta sea la misma en localhost y en producción.
     const rutaModelo = (archivo) => new URL(`../ar/models/${archivo}`, import.meta.url).href;
     const modelosAR = {
-        0: rutaModelo('Algodoneros_color.glb'),
-        1: rutaModelo('charros_modelo.glb'),
+        0: rutaModelo('Final/Pollo_Fin.glb?v=20260926-3'),
+        1: rutaModelo('Final/Straiky_Fin.glb?v=20260926-3'),
         2: rutaModelo('dorados_modelo.glb')
     };
 

@@ -36,7 +36,7 @@ function prepararPagina(doc, url) {
 async function obtenerPagina(url) {
     const key = url.origin + url.pathname;
     if (!cache.has(key)) {
-        const peticion = fetch(key).then(async response => {
+        const peticion = fetch(key, { cache: 'no-cache' }).then(async response => {
             if (!response.ok) throw new Error('No se pudo abrir la sección.');
             const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
             if (!doc.getElementById('header-superior')) throw new Error('Página no compatible.');
@@ -83,10 +83,10 @@ async function montarSeccion(archivo, signal) {
         const { iniciarHistoria } = await import('./historia.js?v=20260922-3');
         if (!signal.aborted) iniciarHistoria();
     } else if (archivo === 'login.html') {
-        const { iniciarLogin } = await import('./login.js');
+        const { iniciarLogin } = await import('./login.js?v=20260925-1');
         if (!signal.aborted) iniciarLogin();
     } else if (archivo === 'registro.html') {
-        const { iniciarRegistro } = await import('./registro.js');
+        const { iniciarRegistro } = await import('./registro.js?v=20260925-1');
         if (!signal.aborted) iniciarRegistro();
     }
 }

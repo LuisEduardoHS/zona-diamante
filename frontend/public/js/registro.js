@@ -1,3 +1,5 @@
+import { iniciarControlesContrasena, mostrarPrimerError } from './auth-ui.js';
+
 export function iniciarRegistro() {
     const formulario = document.getElementById('crear-cuenta-form');
     const estado = document.getElementById('registro-estado');
@@ -5,22 +7,22 @@ export function iniciarRegistro() {
     const progreso = document.getElementById('registro-paso');
     const siguiente = [...formulario?.querySelectorAll('.registro-siguiente') || []];
     const anterior = formulario?.querySelector('.registro-anterior');
+    const indicadores = [...formulario?.querySelectorAll('[data-progreso]') || []];
     const foto = document.getElementById('registro-foto');
     const nombreFoto = document.getElementById('registro-foto-nombre');
     if (!formulario || !estado || !pasos.length || !progreso || !anterior) return;
 
-    const enlaceLogin = document.querySelector('a[href="login.html"]');
-    formulario.querySelectorAll('input').forEach((campo) => {
-        campo.addEventListener('focus', () => enlaceLogin?.classList.add('hidden'));
-        campo.addEventListener('blur', () => enlaceLogin?.classList.remove('hidden'));
-    });
+    iniciarControlesContrasena(formulario);
+    formulario.addEventListener('input', () => { estado.textContent = ''; });
 
     let pasoActual = 0;
+    const nombresPasos = ['Tu correo', 'Tu contraseña', 'Confirmación', 'Tu foto'];
     const mostrarPaso = (indice, enfocar = true) => {
         pasoActual = Math.max(0, Math.min(indice, pasos.length - 1));
-        pasos.forEach((paso, indicePaso) => paso.classList.toggle('hidden', indicePaso !== pasoActual));
-        anterior.classList.toggle('hidden', pasoActual === 0);
-        progreso.textContent = `${pasoActual + 1} de ${pasos.length}`;
+        pasos.forEach((paso, indicePaso) => { paso.hidden = indicePaso !== pasoActual; });
+        anterior.hidden = pasoActual === 0;
+        indicadores.forEach((indicador, indicePaso) => indicador.dataset.activo = String(indicePaso <= pasoActual));
+        progreso.textContent = `Paso ${pasoActual + 1} de ${pasos.length} · ${nombresPasos[pasoActual]}`;
         if (enfocar) pasos[pasoActual].querySelector('input')?.focus();
     };
 
@@ -44,11 +46,12 @@ export function iniciarRegistro() {
 
     anterior.addEventListener('click', () => mostrarPaso(pasoActual - 1));
     foto?.addEventListener('change', () => {
-        nombreFoto.textContent = foto.files?.[0]?.name || 'Aún no seleccionas una foto.';
+        nombreFoto.textContent = foto.files?.[0]?.name || 'JPG, PNG o WebP.';
     });
 
     formulario.addEventListener('submit', (event) => {
         event.preventDefault();
+        if (mostrarPrimerError(formulario)) return;
         estado.textContent = 'La creación de cuentas estará disponible próximamente.';
     });
 
