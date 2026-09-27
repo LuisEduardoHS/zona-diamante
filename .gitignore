@@ -15,3 +15,7 @@ Thumbs.db
 
 # Pruebas y herramientas de validación locales del frontend
 /frontend/tests/
+
+# Archivos de configuración de entorno
+.env
+**/.env
