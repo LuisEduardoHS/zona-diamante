@@ -1,4 +1,4 @@
-import { lanzarConfeti } from './confeti.js';
+import { lanzarConfeti } from '../juego/confeti.js';
 import { iniciarFotoAR } from './foto-ar.js';
 import { configurarCalidadCamara } from './calidad-camara.js';
 import { configurarDeteccionAmplia } from './deteccion-amplia.js';
@@ -6,6 +6,14 @@ import { crearEntradaModelo, POSE_REPOSO } from './entradas-modelo.js';
 
 // Inicia cuando el HTML está listo.
 document.addEventListener('DOMContentLoaded', () => {
+    // Controles visuales compartidos. El HTML no define el tamaño final porque
+    // cada GLB usa unidades distintas y debe normalizarse después de cargar.
+    const TAMANO_SOBRE_LOGO = 0.68;
+    const OCUPACION_VISOR_3D = 1.18;
+    const ALTURA_VISOR_3D = 0.08;
+    const VELOCIDAD_ROTACION_3D = 20;
+    const MENSAJE_ESPERA_ESCANEO = 'Apunta la cámara a un logo';
+
     // Relaciona cada marcador con su equipo.
     const equiposAR = {
         0: "Algodoneros",
@@ -16,11 +24,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Resolver los modelos desde la URL del módulo evita que el visor dependa
     // de la URL visible del documento (por ejemplo, una subcarpeta en Pages).
     // También hace que la ruta sea la misma en localhost y en producción.
-    const rutaModelo = (archivo) => new URL(`../ar/models/${archivo}`, import.meta.url).href;
+    const rutaModelo = (archivo) => new URL(`../../../ar/models/${archivo}`, import.meta.url).href;
     const modelosAR = {
-        0: rutaModelo('Final/Pollo_Fin.glb?v=20260926-3'),
-        1: rutaModelo('Final/Straiky_Fin.glb?v=20260926-3'),
-        2: rutaModelo('dorados_modelo.glb')
+        0: rutaModelo('Final/Pollo_Fin.glb?v=20260927-4'),
+        1: rutaModelo('Final/Straiky_Fin.glb?v=20260927-4'),
+        2: rutaModelo('Final/Pancho_Fin.glb?v=20260927-4'),
+        3: rutaModelo('Final/Perro%20-%20Fin.glb?v=20260927-4')
     };
 
     // Elementos que muestran el resultado del escaneo.
@@ -41,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnCerrarInspector = document.getElementById('btn-cerrar-inspector');
     const camara = document.getElementById('ar-camera');
     const modelosEnTargets = document.querySelectorAll('.modelo-target');
-    const modeloTargetAlgodoneros = document.getElementById('modelo-target-algodoneros');
     const modeloCamara = document.getElementById('modelo-camara');
     const escena = document.querySelector('a-scene');
 
@@ -90,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const rotacion = modeloCamara.getAttribute('rotation') || { x: 0, y: 0, z: 0 };
                 modeloCamara.setAttribute('rotation', {
                     x: rotacion.x,
-                    y: rotacion.y + segundos * 12,
+                    y: rotacion.y + segundos * VELOCIDAD_ROTACION_3D,
                     z: rotacion.z
                 });
                 aplicarTransformacion();
@@ -108,46 +116,65 @@ document.addEventListener('DOMContentLoaded', () => {
         detenerRotacionAutomatica();
     };
 
-    // El origen del GLB de Algodoneros está desplazado; centra su geometría
-    // horizontalmente sin cambiar la posición de los demás equipos.
-    const centrarModeloAlgodoneros = () => {
-        const mesh = modeloTargetAlgodoneros?.getObject3D('mesh');
+    // Los archivos finales vienen de escenas de Blender con unidades y orígenes
+    // distintos. Los centra y les da un tamaño uniforme sobre cada marcador.
+    const prepararModeloTarget = (entidad) => {
+        const mesh = entidad.getObject3D('mesh');
         if (!mesh) return;
 
+        normalizarMateriales(mesh);
+        // Calcula los límites en coordenadas propias del GLB. De este modo un
+        // scale antiguo conservado en el HTML o en caché no altera el resultado.
+        entidad.object3D.updateMatrixWorld(true);
+        const inversaEntidad = new AFRAME.THREE.Matrix4()
+            .copy(entidad.object3D.matrixWorld)
+            .invert();
         const caja = new AFRAME.THREE.Box3();
         mesh.traverse((objeto) => {
             if (!objeto.isMesh || !objeto.geometry) return;
-
             objeto.geometry.computeBoundingBox();
             if (!objeto.geometry.boundingBox) return;
-
-            // Calcula la transformación local sin depender de que MindAR
-            // tenga visible el marcador en este momento.
-            const matrizLocal = new AFRAME.THREE.Matrix4().identity();
-            let actual = objeto;
-            while (actual && actual !== modeloTargetAlgodoneros.object3D) {
-                actual.updateMatrix();
-                matrizLocal.premultiply(actual.matrix);
-                actual = actual.parent;
-            }
-
+            const matrizLocal = new AFRAME.THREE.Matrix4()
+                .multiplyMatrices(inversaEntidad, objeto.matrixWorld);
             caja.union(objeto.geometry.boundingBox.clone().applyMatrix4(matrizLocal));
         });
-
         if (caja.isEmpty()) return;
-        const centro = caja.getCenter(new AFRAME.THREE.Vector3());
-        const posicion = modeloTargetAlgodoneros.getAttribute('position') || { x: 0, y: 0, z: 0 };
-        const escalaX = modeloTargetAlgodoneros.object3D.scale.x;
 
-        modeloTargetAlgodoneros.setAttribute('position', {
-            x: -centro.x * escalaX,
-            y: posicion.y,
-            z: posicion.z
+        const centro = caja.getCenter(new AFRAME.THREE.Vector3());
+        const tamano = caja.getSize(new AFRAME.THREE.Vector3());
+        const dimensionMayor = Math.max(tamano.x, tamano.y, tamano.z);
+        if (!Number.isFinite(dimensionMayor) || dimensionMayor <= 0) return;
+
+        const escala = TAMANO_SOBRE_LOGO / dimensionMayor;
+        entidad.setAttribute('scale', { x: escala, y: escala, z: escala });
+        entidad.setAttribute('position', {
+            x: -centro.x * escala,
+            y: -centro.y * escala,
+            z: -centro.z * escala
         });
     };
 
-    modeloTargetAlgodoneros?.addEventListener('model-loaded', centrarModeloAlgodoneros);
-    if (modeloTargetAlgodoneros?.getObject3D('mesh')) centrarModeloAlgodoneros();
+    // Reduce reflejos quemados de los materiales exportados con KHR_materials_specular.
+    // Mantiene textura y color, pero evita que zonas de Straiky parezcan emitir luz.
+    function normalizarMateriales(mesh) {
+        mesh.traverse((objeto) => {
+            if (!objeto.isMesh || !objeto.material) return;
+            const materiales = Array.isArray(objeto.material) ? objeto.material : [objeto.material];
+            materiales.forEach((material) => {
+                if ('metalness' in material) material.metalness = 0;
+                if ('roughness' in material) material.roughness = Math.max(material.roughness ?? 1, 0.58);
+                if ('specularIntensity' in material) material.specularIntensity = Math.min(material.specularIntensity ?? 1, 0.4);
+                if ('envMapIntensity' in material) material.envMapIntensity = 0.15;
+                if ('clearcoat' in material) material.clearcoat = 0;
+                material.needsUpdate = true;
+            });
+        });
+    }
+
+    modelosEnTargets.forEach((modelo) => {
+        modelo.addEventListener('model-loaded', () => prepararModeloTarget(modelo));
+        if (modelo.getObject3D('mesh')) prepararModeloTarget(modelo);
+    });
 
     // Mantiene el centro del modelo al girarlo, moverlo o escalarlo.
     const aplicarTransformacion = () => {
@@ -174,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modeloCamara.setAttribute('scale', { x: escalaAnimada.x, y: escalaAnimada.y, z: escalaAnimada.z });
         modeloCamara.setAttribute('position', {
             x: (desplazamiento.x + poseEntrada.x) * encuadre.ancho - centro.x,
-            y: (desplazamiento.y + poseEntrada.y) * encuadre.alto - centro.y,
+            y: (desplazamiento.y + poseEntrada.y + ALTURA_VISOR_3D) * encuadre.alto - centro.y,
             z: -encuadre.distancia + fondo - centro.z
         });
     };
@@ -269,9 +296,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const medioFovY = camera.getEffectiveFOV() * Math.PI / 360;
         const medioFovX = Math.atan(Math.tan(medioFovY) * camera.aspect);
         const radioVisible = Math.min(
-            distancia * Math.sin(Math.min(medioFovX, medioFovY)) * 0.8,
-            (distancia - camera.near) * 0.8,
-            (camera.far - distancia) * 0.8
+            distancia * Math.sin(Math.min(medioFovX, medioFovY)) * OCUPACION_VISOR_3D,
+            (distancia - camera.near) * OCUPACION_VISOR_3D,
+            (camera.far - distancia) * OCUPACION_VISOR_3D
         );
         if (radioVisible <= 0) return false;
         // Cambia el tamaño y centra el modelo frente a la cámara.
@@ -290,6 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Actualiza el botón cuando termina la carga.
     modeloCamara.addEventListener('model-loaded', () => {
+        normalizarMateriales(modeloCamara.getObject3D('mesh'));
         modeloCargado = true;
         modeloPreparadoPara = modeloSolicitadoPara;
         actualizarCarga();
@@ -415,7 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
         arListo = true;
         uiError.classList.add('hidden');
         uiError.classList.remove('flex');
-        uiStatus.textContent = 'Escaneando logo...';
+        uiStatus.textContent = MENSAJE_ESPERA_ESCANEO;
         reajustarInspector();
         // MindAR empieza a procesar justo después de emitir arReady.
         queueMicrotask(() => {
@@ -461,7 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
         targetResultado = null;
         actualizarCarga();
 
-        uiStatus.textContent = "Escaneando logo...";
+        uiStatus.textContent = MENSAJE_ESPERA_ESCANEO;
         uiStatusContainer.classList.replace('bg-green-500/80', 'bg-black/50');
 
         uiResult.classList.add('translate-y-10', 'opacity-0');
@@ -542,7 +570,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         modoInspector = true;
-        document.getElementById('luz-principal').setAttribute('position', '-0.35 0.65 1.2');
+        document.getElementById('luz-principal').setAttribute('position', '-1.1 1.6 1.4');
         clearTimeout(temporizadorPerdida);
         temporizadorPerdida = null;
         const canvas = escena.canvas;
@@ -570,7 +598,7 @@ document.addEventListener('DOMContentLoaded', () => {
         entradaModelo.cancelar();
         rotacionAutomaticaDisponible = false;
         detenerRotacionAutomatica();
-        document.getElementById('luz-principal').setAttribute('position', '-0.5 1 1');
+        document.getElementById('luz-principal').setAttribute('position', '-1.1 1.6 1.4');
         fotoAR.activar(false);
         if (escena.canvas) escena.canvas.style.touchAction = touchActionOriginal;
         reiniciarGesto();
@@ -669,7 +697,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (paginaSuspendida || version !== versionVisibilidad) return;
             sistemaAR.controller.processVideo(sistemaAR.video);
             arPausado = false;
-            uiStatus.textContent = 'Escaneando logo...';
+            uiStatus.textContent = MENSAJE_ESPERA_ESCANEO;
             reajustarInspector();
         } catch (error) {
             if (paginaSuspendida || version !== versionVisibilidad) return;

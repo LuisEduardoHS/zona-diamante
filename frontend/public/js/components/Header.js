@@ -1,4 +1,5 @@
-import { ruta, rutaInterna } from '../rutas.js';
+import { RUTAS, ruta, rutaInterna } from '../app/rutas.js';
+import { observarEstadoSesion } from '../features/auth/session.js';
 
 const secciones = [
     ['index.html', 'Inicio', 'Tu zona de béisbol', 'M341.8 72.6C329.5 61.2 310.5 61.2 298.3 72.6L74.3 280.6C64.7 289.6 61.5 303.5 66.3 315.7C71.1 327.9 82.8 336 96 336L112 336L112 512C112 547.3 140.7 576 176 576L464 576C499.3 576 528 547.3 528 512L528 336L544 336C557.2 336 569 327.9 573.8 315.7C578.6 303.5 575.4 289.5 565.8 280.6L341.8 72.6zM304 384L336 384C362.5 384 384 405.5 384 432L384 528L256 528L256 432C256 405.5 277.5 384 304 384z', true],
@@ -8,7 +9,15 @@ const secciones = [
     ['pages/coleccion.html', 'Colección', 'Tus cartas de jugadores', 'M288 32L352 32C369.7 32 384 46.3 384 64L384 128L256 128L256 64C256 46.3 270.3 32 288 32zM96 96L208 96L208 128C208 154.5 229.5 176 256 176L384 176C410.5 176 432 154.5 432 128L432 96L544 96C579.3 96 608 124.7 608 160L608 480C608 515.3 579.3 544 544 544L96 544C60.7 544 32 515.3 32 480L32 160C32 124.7 60.7 96 96 96zM208 464C208 472.8 215.2 480 224 480L416 480C424.8 480 432 472.8 432 464C432 419.8 396.2 384 352 384L288 384C243.8 384 208 419.8 208 464zM320 344C350.9 344 376 318.9 376 288C376 257.1 350.9 232 320 232C289.1 232 264 257.1 264 288C264 318.9 289.1 344 320 344z', true],
     ['Informacion.html', 'Información', 'Conoce Zona Diamante', 'M320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576zM288 224C288 206.3 302.3 192 320 192C337.7 192 352 206.3 352 224C352 241.7 337.7 256 320 256C302.3 256 288 241.7 288 224zM280 288L328 288C341.3 288 352 298.7 352 312L352 400L360 400C373.3 400 384 410.7 384 424C384 437.3 373.3 448 360 448L280 448C266.7 448 256 437.3 256 424C256 410.7 266.7 400 280 400L304 400L304 336L280 336C266.7 336 256 325.3 256 312C256 298.7 266.7 288 280 288z', true],
     ['Ayuda.html', 'Ayuda', 'Todo para empezar', 'M320 128C241 128 175.3 185.3 162.3 260.7C171.6 257.7 181.6 256 192 256L208 256C234.5 256 256 277.5 256 304L256 400C256 426.5 234.5 448 208 448L192 448C139 448 96 405 96 352L96 288C96 164.3 196.3 64 320 64C443.7 64 544 164.3 544 288L544 456.1C544 522.4 490.2 576.1 423.9 576.1L336 576L304 576C277.5 576 256 554.5 256 528C256 501.5 277.5 480 304 480L336 480C362.5 480 384 501.5 384 528L384 528L424 528C463.8 528 496 495.8 496 456L496 435.1C481.9 443.3 465.5 447.9 448 447.9L432 447.9C405.5 447.9 384 426.4 384 399.9L384 303.9C384 277.4 405.5 255.9 432 255.9L448 255.9C458.4 255.9 468.3 257.5 477.7 260.6C464.7 185.3 399.1 127.9 320 127.9z', true]
-];
+].map(([archivo, ...datos]) => [{
+    'index.html': RUTAS.inicio,
+    'trivia.html': RUTAS.trivia,
+    'juego.html': RUTAS.juego,
+    'camara.html': RUTAS.camara,
+    'pages/coleccion.html': RUTAS.coleccion,
+    'Informacion.html': RUTAS.informacion,
+    'Ayuda.html': RUTAS.ayuda
+}[archivo] || archivo, ...datos]);
 const icono = (path, relleno = false) => `<svg viewBox="${relleno ? '0 0 640 640' : '0 0 24 24'}" fill="${relleno ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${path}"/></svg>`;
 const iconoCamara = () => `<svg viewBox="0 0 56 52" fill="none" aria-hidden="true"><path d="M4.17822 47.8031C1.2817 44.8404 0.364811 39.6045 0.0991822 35.8193C-0.0936785 33.071 3.24694 29.177 4.17821 31.7698C6.13025 37.2047 4.78179 47.299 20.8448 47.7916C22.0855 47.8297 23.3856 49.2328 23.274 50.469C23.162 51.71 22.2329 51.8998 20.9881 51.9548C17.0157 52.1308 8.27267 51.9911 4.17822 47.8031Z" fill="currentColor"/><path d="M51.2355 47.8031C54.1498 44.8496 55.0785 39.6368 55.3498 35.8544C55.5484 33.0859 52.1814 29.1603 51.2355 31.7698C49.2645 37.207 50.6275 47.3076 34.3938 47.7923C33.1532 47.8293 31.8505 49.2303 31.9626 50.4664C32.0754 51.7095 33.0068 51.8991 34.2539 51.9541C38.2555 52.1308 47.0976 51.9967 51.2355 47.8031Z" fill="currentColor"/><path d="M4.2169 4.15407C1.31277 7.06726 0.38043 12.2011 0.105468 15.9416C-0.0976205 18.7044 3.26423 22.625 4.2169 20.0238C6.18878 14.6395 4.82362 4.63511 21.0816 4.16415C22.3097 4.12821 23.6016 2.74419 23.49 1.52095C23.3776 0.288111 22.453 0.100724 21.2162 0.0461953C17.223 -0.129867 8.36091 -0.00285188 4.2169 4.15407Z" fill="currentColor"/><path d="M51.2742 4.15407C54.1607 7.0764 55.0812 12.2334 55.3504 15.9769C55.5477 18.7194 52.2121 22.6085 51.2742 20.0238C49.3215 14.6418 50.6719 4.64357 34.5846 4.16475C33.3567 4.12821 32.0671 2.74174 32.1781 1.51831C32.2898 0.287629 33.212 0.100004 34.4465 0.0454976C38.4107 -0.129523 47.1736 0.00265237 51.2742 4.15407Z" fill="currentColor"/><ellipse cx="28.3994" cy="26.3994" rx="12.3994" ry="12.3993" stroke="currentColor" stroke-width="5"/></svg>`;
 const cambiarIconoMenu = (boton, path) => {
@@ -18,10 +27,10 @@ const cambiarIconoMenu = (boton, path) => {
 };
 
 const iconoCerrar = 'M183.1 137.4C170.6 124.9 150.3 124.9 137.8 137.4C125.3 149.9 125.3 170.2 137.8 182.7L275.2 320L137.9 457.4C125.4 469.9 125.4 490.2 137.9 502.7C150.4 515.2 170.7 515.2 183.2 502.7L320.5 365.3L457.9 502.6C470.4 515.1 490.7 515.1 503.2 502.6C515.7 490.1 515.7 469.8 503.2 457.3L365.8 320L503.1 182.6C515.6 170.1 515.6 149.8 503.1 137.3C490.6 124.8 470.3 124.8 457.8 137.3L320.5 274.7L183.1 137.4z';
-const esAutenticacion = () => ['login.html', 'registro.html'].includes(rutaInterna(location.href)?.archivo);
+const esAutenticacion = () => [RUTAS.login, RUTAS.registro, RUTAS.recuperar, RUTAS.restablecer].includes(rutaInterna(location.href)?.archivo);
 const cerrarAutenticacion = () => {
     const enlace = document.createElement('a');
-    enlace.href = ruta('index.html');
+    enlace.href = ruta(RUTAS.inicio);
     enlace.className = 'hidden';
     enlace.setAttribute('aria-hidden', 'true');
     document.body.append(enlace);
@@ -79,7 +88,7 @@ export function actualizarHeader() {
         abrir?.setAttribute('aria-expanded', 'false');
         if (abrir) abrir.innerHTML = icono('M5 6h14M5 12h14M5 18h14');
     }
-    const actual = location.pathname === new URL(ruta('')).pathname ? ruta('index.html') : location.origin + location.pathname;
+    const actual = location.pathname === new URL(ruta('')).pathname ? ruta(RUTAS.inicio) : location.origin + location.pathname;
     document.querySelectorAll('.site-menu-link').forEach(enlace => {
         if (enlace.href === actual) enlace.setAttribute('aria-current', 'page');
         else enlace.removeAttribute('aria-current');
@@ -91,7 +100,7 @@ export function renderHeader() {
     contenedor.innerHTML = `
         <header class="site-header fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-5">
             <button id="btn-abrir-menu" type="button" aria-label="Abrir menú" aria-haspopup="dialog" aria-controls="menu-overlay" aria-expanded="false" class="shell-menu-button">${icono('M5 6h14M5 12h14M5 18h14')}</button>
-            <a class="shell-brand" href="${ruta('login.html')}" aria-label="Iniciar sesión"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" aria-hidden="true"><path d="M320 312C386.3 312 440 258.3 440 192C440 125.7 386.3 72 320 72C253.7 72 200 125.7 200 192C200 258.3 253.7 312 320 312zM290.3 368C191.8 368 112 447.8 112 546.3C112 562.7 125.3 576 141.7 576L498.3 576C514.7 576 528 562.7 528 546.3C528 447.8 448.2 368 349.7 368L290.3 368z"/></svg></a>
+            <a class="shell-brand" href="${ruta(RUTAS.login)}" aria-label="Iniciar sesión"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" aria-hidden="true"><path d="M320 312C386.3 312 440 258.3 440 192C440 125.7 386.3 72 320 72C253.7 72 200 125.7 200 192C200 258.3 253.7 312 320 312zM290.3 368C191.8 368 112 447.8 112 546.3C112 562.7 125.3 576 141.7 576L498.3 576C514.7 576 528 562.7 528 546.3C528 447.8 448.2 368 349.7 368L290.3 368z"/></svg></a>
         </header>
         <button id="btn-cerrar-autenticacion" type="button" aria-label="Cerrar" class="shell-menu-button hidden fixed left-6 top-5 z-50">${icono(iconoCerrar, true)}</button>
         <dialog id="menu-overlay" class="site-menu" aria-labelledby="menu-titulo">
@@ -100,13 +109,30 @@ export function renderHeader() {
                 ${[['Principal', secciones.slice(0, 3)], ['Experiencia', secciones.slice(3, 5)], ['Información', secciones.slice(5)]].map(([grupo, enlaces]) => `
                     <section class="site-menu-group" aria-label="${grupo}">
                         <p class="site-menu-group-title">${grupo}</p>
-                        ${enlaces.map(([path, nombre, , dibujo, relleno]) => `<a class="site-menu-link${path === 'camara.html' ? ' site-menu-link--ar' : ''}" href="${ruta(path)}"><span class="site-menu-icon">${path === 'camara.html' ? iconoCamara() : icono(dibujo, relleno)}</span><span>${path === 'Informacion.html' ? 'Info' : nombre}</span></a>`).join('')}
+                        ${enlaces.map(([path, nombre, , dibujo, relleno]) => `<a class="site-menu-link${path === RUTAS.camara ? ' site-menu-link--ar' : ''}" href="${ruta(path)}"><span class="site-menu-icon">${path === RUTAS.camara ? iconoCamara() : icono(dibujo, relleno)}</span><span>${path === RUTAS.informacion ? 'Info' : nombre}</span></a>`).join('')}
                     </section>`).join('')}
             </nav>
         </dialog>`;
     const dialogo = document.getElementById('menu-overlay');
     const abrir = document.getElementById('btn-abrir-menu');
     const botonCerrarAutenticacion = document.getElementById('btn-cerrar-autenticacion');
+    const cuenta = contenedor.querySelector('.shell-brand');
+    const iconoCuenta = cuenta.innerHTML;
+    observarEstadoSesion(({ user, profile }) => {
+        const autenticado = Boolean(user);
+        cuenta.href = ruta(autenticado ? RUTAS.perfil : RUTAS.login);
+        cuenta.setAttribute('aria-label', autenticado ? 'Abrir mi perfil' : 'Iniciar sesión');
+        const avatarUrl = profile?.avatarUrl || profile?.avatar_url;
+        if (autenticado && avatarUrl) {
+            const imagen = document.createElement('img');
+            imagen.className = 'shell-account-avatar';
+            imagen.src = avatarUrl;
+            imagen.alt = '';
+            cuenta.replaceChildren(imagen);
+        } else {
+            cuenta.innerHTML = iconoCuenta;
+        }
+    });
     botonCerrarAutenticacion.addEventListener('click', () => {
         if (esAutenticacion()) cerrarAutenticacion();
     });

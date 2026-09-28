@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7fbfb">
+    <link rel="icon" type="image/svg+xml" href="../../assets/logo-naranja.svg">
+    <link href="../../css/output.css?v=20260927-14" rel="stylesheet">
+    <title>Nueva contraseña | Zona Diamante</title>
+</head>
+<body class="auth-page text-[#2b2b31]">
+    <div id="header-superior"></div>
+    <main class="auth-layout">
+        <div class="auth-shell">
+            <header class="auth-heading">
+                <p class="auth-eyebrow">Protege tu cuenta</p>
+                <h1>Crea una nueva contraseña</h1>
+                <p>Elige una contraseña distinta a la que utilizabas anteriormente.</p>
+            </header>
+            <section class="auth-card" aria-label="Crear nueva contraseña">
+                <form id="restablecer-form" class="auth-form" novalidate>
+                    <div class="auth-field">
+                        <label class="auth-label" for="restablecer-contrasena">Nueva contraseña</label>
+                        <div class="auth-input-wrap">
+                            <input id="restablecer-contrasena" class="auth-input" name="contrasena" type="password" minlength="8" autocomplete="new-password" placeholder="Mínimo 8 caracteres" required>
+                            <button class="auth-password-toggle" type="button" data-password-toggle="restablecer-contrasena" aria-label="Mostrar contraseña" aria-pressed="false"></button>
+                        </div>
+                        <ul class="auth-requirements" aria-label="Requisitos de contraseña">
+                            <li data-password-rule="length">Al menos 8 caracteres</li>
+                            <li data-password-rule="letter">Al menos una letra</li>
+                            <li data-password-rule="number">Al menos un número</li>
+                        </ul>
+                    </div>
+                    <div class="auth-field">
+                        <label class="auth-label" for="restablecer-confirmar">Confirma la contraseña</label>
+                        <div class="auth-input-wrap">
+                            <input id="restablecer-confirmar" class="auth-input" name="confirmar" type="password" minlength="8" autocomplete="new-password" placeholder="Vuelve a escribirla" required>
+                            <button class="auth-password-toggle" type="button" data-password-toggle="restablecer-confirmar" aria-label="Mostrar contraseña" aria-pressed="false"></button>
+                        </div>
+                    </div>
+                    <button type="submit" class="auth-primary" data-submit-label="Guardar contraseña">Guardar contraseña</button>
+                    <p id="restablecer-estado" class="auth-status" role="status" aria-live="polite"></p>
+                </form>
+            </section>
+        </div>
+    </main>
+    <div id="menu-inferior"></div>
+    <script type="module" src="../../js/app/main.js?v=20260927-14"></script>
+</body>
+</html>

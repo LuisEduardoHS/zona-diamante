@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#f7fbfb">
-    <link rel="icon" type="image/svg+xml" href="./assets/logo-naranja.svg">
-    <link href="./css/output.css?v=20260926-1" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../../assets/logo-naranja.svg">
+    <link href="../../css/output.css?v=20260927-14" rel="stylesheet">
     <title>Iniciar sesión | Zona Diamante</title>
 </head>
 <body class="auth-page text-[#2b2b31]">
@@ -16,7 +16,6 @@
             <header class="auth-heading">
                 <p class="auth-eyebrow">Zona Diamante</p>
                 <h1>Qué bueno verte</h1>
-                <p>Inicia sesión para continuar tu colección y tus experiencias.</p>
             </header>
 
             <section class="auth-card" aria-label="Inicio de sesión">
@@ -32,9 +31,10 @@
                             <input id="login-contrasena" class="auth-input" name="contrasena" type="password" autocomplete="current-password" placeholder="Escribe tu contraseña" required>
                             <button class="auth-password-toggle" type="button" data-password-toggle="login-contrasena" aria-label="Mostrar contraseña" aria-pressed="false"></button>
                         </div>
+                        <a class="auth-inline-link" href="recuperar.html">¿Olvidaste tu contraseña?</a>
                     </div>
 
-                    <button type="submit" class="auth-primary">Iniciar sesión</button>
+                    <button type="submit" class="auth-primary" data-submit-label="Iniciar sesión">Iniciar sesión</button>
                     <p id="login-estado" class="auth-status" role="status" aria-live="polite"></p>
                 </form>
 
@@ -45,6 +45,6 @@
     </main>
 
     <div id="menu-inferior"></div>
-    <script type="module" src="./js/main.js?v=20260925-1"></script>
+    <script type="module" src="../../js/app/main.js?v=20260927-14"></script>
 </body>
 </html>
