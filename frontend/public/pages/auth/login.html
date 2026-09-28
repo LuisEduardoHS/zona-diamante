@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7fbfb">
+    <link rel="icon" type="image/svg+xml" href="../../assets/logo-naranja.svg">
+    <link href="../../css/output.css?v=20260927-14" rel="stylesheet">
+    <title>Iniciar sesión | Zona Diamante</title>
+</head>
+<body class="auth-page text-[#2b2b31]">
+    <div id="header-superior"></div>
+
+    <main class="auth-layout">
+        <div class="auth-shell">
+            <header class="auth-heading">
+                <p class="auth-eyebrow">Zona Diamante</p>
+                <h1>Qué bueno verte</h1>
+            </header>
+
+            <section class="auth-card" aria-label="Inicio de sesión">
+                <form id="login-form" class="auth-form" novalidate>
+                    <div class="auth-field">
+                        <label class="auth-label" for="login-correo">Correo electrónico</label>
+                        <input id="login-correo" class="auth-input" name="correo" type="email" inputmode="email" autocomplete="email" placeholder="tu@correo.com" required>
+                    </div>
+
+                    <div class="auth-field">
+                        <label class="auth-label" for="login-contrasena">Contraseña</label>
+                        <div class="auth-input-wrap">
+                            <input id="login-contrasena" class="auth-input" name="contrasena" type="password" autocomplete="current-password" placeholder="Escribe tu contraseña" required>
+                            <button class="auth-password-toggle" type="button" data-password-toggle="login-contrasena" aria-label="Mostrar contraseña" aria-pressed="false"></button>
+                        </div>
+                        <a class="auth-inline-link" href="recuperar.html">¿Olvidaste tu contraseña?</a>
+                    </div>
+
+                    <button type="submit" class="auth-primary" data-submit-label="Iniciar sesión">Iniciar sesión</button>
+                    <p id="login-estado" class="auth-status" role="status" aria-live="polite"></p>
+                </form>
+
+                <div class="auth-divider" aria-hidden="true">¿Primera vez aquí?</div>
+                <a class="auth-secondary" href="registro.html">Crear una cuenta</a>
+            </section>
+        </div>
+    </main>
+
+    <div id="menu-inferior"></div>
+    <script type="module" src="../../js/app/main.js?v=20260927-14"></script>
+</body>
+</html>

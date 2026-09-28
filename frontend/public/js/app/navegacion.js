@@ -1,8 +1,8 @@
-import { rutaInterna } from './rutas.js';
+import { RUTAS, rutaInterna } from './rutas.js';
 
 const cache = new Map();
 const estilos = new Map();
-const ordenSecciones = ['index.html', 'trivia.html', 'juego.html', 'camara.html', 'pages/coleccion.html', 'Informacion.html', 'Ayuda.html'];
+const ordenSecciones = [RUTAS.inicio, RUTAS.trivia, RUTAS.juego, RUTAS.camara, RUTAS.coleccion, RUTAS.informacion, RUTAS.ayuda];
 
 function esEstiloBase(href) {
     return new URL(href, location.href).pathname.endsWith('/css/output.css');
@@ -36,7 +36,7 @@ function prepararPagina(doc, url) {
 async function obtenerPagina(url) {
     const key = url.origin + url.pathname;
     if (!cache.has(key)) {
-        const peticion = fetch(key).then(async response => {
+        const peticion = fetch(key, { cache: 'no-cache' }).then(async response => {
             if (!response.ok) throw new Error('No se pudo abrir la sección.');
             const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
             if (!doc.getElementById('header-superior')) throw new Error('Página no compatible.');
@@ -64,30 +64,43 @@ function cargarEstilo(href) {
 }
 
 async function montarSeccion(archivo, signal) {
-    if (archivo === 'index.html') {
-        const { renderCarousel } = await import('./components/CarouselEquipos.js');
+    if (archivo === RUTAS.inicio) {
+        const { renderCarousel } = await import('../components/CarouselEquipos.js');
         if (!signal.aborted) await renderCarousel(signal);
-    } else if (archivo === 'equipo.html') {
-        const { cargarDetalleEquipo } = await import('./equipo.js');
+    } else if (archivo === RUTAS.equipo) {
+        const { cargarDetalleEquipo } = await import('../features/equipos/equipo.js');
         if (!signal.aborted) await cargarDetalleEquipo(signal);
-    } else if (archivo === 'juego.html') {
-        const { iniciarJuego } = await import('./ganar_juego.js');
+    } else if (archivo === RUTAS.juego) {
+        const { iniciarJuego } = await import('../features/juego/ganar_juego.js');
         if (!signal.aborted) iniciarJuego(signal);
-    } else if (archivo === 'camara.html') {
+    } else if (archivo === RUTAS.camara) {
         const frame = document.getElementById('ar-frame');
-        if (frame && !signal.aborted) frame.src = frame.dataset.src;
-    } else if (archivo === 'Ayuda.html') {
-        const { iniciarAyuda } = await import('./ayuda.js');
+        if (frame && !signal.aborted) {
+            const urlAR = new URL(frame.dataset.src, location.href);
+            urlAR.searchParams.set('app', '20260927-14');
+            frame.src = urlAR.href;
+        }
+    } else if (archivo === RUTAS.ayuda) {
+        const { iniciarAyuda } = await import('../features/contenido/ayuda.js');
         if (!signal.aborted) iniciarAyuda();
-    } else if (archivo === 'Informacion.html') {
-        const { iniciarHistoria } = await import('./historia.js?v=20260922-3');
+    } else if (archivo === RUTAS.informacion) {
+        const { iniciarHistoria } = await import('../features/contenido/historia.js?v=20260927-2');
         if (!signal.aborted) iniciarHistoria();
-    } else if (archivo === 'login.html') {
-        const { iniciarLogin } = await import('./login.js');
+    } else if (archivo === RUTAS.login) {
+        const { iniciarLogin } = await import('../features/auth/login.js?v=20260927-2');
         if (!signal.aborted) iniciarLogin();
-    } else if (archivo === 'registro.html') {
-        const { iniciarRegistro } = await import('./registro.js');
+    } else if (archivo === RUTAS.registro) {
+        const { iniciarRegistro } = await import('../features/auth/registro.js?v=20260927-2');
         if (!signal.aborted) iniciarRegistro();
+    } else if (archivo === RUTAS.recuperar) {
+        const { iniciarRecuperacion } = await import('../features/auth/recuperar.js?v=20260927-2');
+        if (!signal.aborted) iniciarRecuperacion();
+    } else if (archivo === RUTAS.restablecer) {
+        const { iniciarRestablecimiento } = await import('../features/auth/restablecer.js?v=20260927-2');
+        if (!signal.aborted) iniciarRestablecimiento();
+    } else if (archivo === RUTAS.perfil) {
+        const { iniciarPerfil } = await import('../features/auth/perfil.js?v=20260927-2');
+        if (!signal.aborted) iniciarPerfil();
     }
 }
 

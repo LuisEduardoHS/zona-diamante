@@ -1,4 +1,4 @@
-import { obtenerEquipos } from './datos-equipos.js';
+import { obtenerEquipos } from '../../services/datos-equipos.js';
 
 export async function cargarDetalleEquipo(signal) {
     const container = document.getElementById('equipo-detalle-container');

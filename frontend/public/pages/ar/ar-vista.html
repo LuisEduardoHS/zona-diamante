@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/svg+xml" href="./assets/logo-naranja.svg">
+    <link rel="icon" type="image/svg+xml" href="../../assets/logo-naranja.svg">
     <title>Zona Diamante | AR</title>
-    <link href="./css/output.css?v=20260922-4" rel="stylesheet">
-    <link href="./css/camara-foto.css" rel="stylesheet">
+    <link href="../../css/output.css?v=20260927-14" rel="stylesheet">
+    <link href="../../css/camara-foto.css" rel="stylesheet">
 
-    <script src="./js/libs/aframe.min.js"></script>
-    <script src="./js/libs/mindar-image-aframe.prod.js"></script>
+    <script src="../../vendor/aframe.min.js"></script>
+    <script src="../../vendor/mindar-image-aframe.prod.js"></script>
 
     <style>
         video, canvas {
@@ -122,33 +122,37 @@
     </dialog>
 
     <!-- Confirma tras 3 actualizaciones válidas; conserva el suavizado y la tolerancia a pérdidas. -->
-    <a-scene mindar-image="imageTargetSrc: ./ar/targets.mind; autoStart: false; filterMinCF: 0.001; filterBeta: 0.01; warmupTolerance: 2; missTolerance: 8; uiLoading: no; uiScanning: no; uiError: no;" loading-screen="enabled: false" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-scene mindar-image="imageTargetSrc: ../../ar/targets.mind; autoStart: false; filterMinCF: 0.001; filterBeta: 0.01; warmupTolerance: 2; missTolerance: 8; uiLoading: no; uiScanning: no; uiError: no;" loading-screen="enabled: false" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
 
         <a-camera id="ar-camera" position="0 0 0" look-controls="enabled: false" wasd-controls="enabled: false">
             <a-gltf-model id="modelo-camara" rotation="0 0 0" visible="false"></a-gltf-model>
         </a-camera>
 
-        <a-entity light="type: ambient; color: #BBB; intensity: 1"></a-entity>
-        <a-entity id="luz-principal" light="type: directional; color: #FFF; intensity: 0.6" position="-0.5 1 1"></a-entity>
+        <!-- Iluminación de estudio: cielo/suelo suave, clave cálida y relleno frío. -->
+        <a-entity light="type: hemisphere; color: #F4F6FF; groundColor: #55463E; intensity: 0.8"></a-entity>
+        <a-entity id="luz-principal" light="type: directional; color: #FFF0D8; intensity: 0.95" position="-1.1 1.6 1.4"></a-entity>
+        <a-entity id="luz-relleno" light="type: directional; color: #C9DDF2; intensity: 0.2" position="1.2 0.25 -0.8"></a-entity>
 
         <a-entity id="target-0" mindar-image-target="targetIndex: 0">
-            <a-gltf-model id="modelo-target-algodoneros" class="modelo-target" src="./ar/models/Algodoneros_color.glb" position="0 0 0" scale="0.5 0.5 0.5" rotation="0 0 0"></a-gltf-model>
+            <a-gltf-model class="modelo-target" src="../../ar/models/Final/Pollo_Fin.glb?v=20260927-10" position="0.016 -0.122 -0.041" scale="0.3191 0.3191 0.3191" rotation="0 0 0"></a-gltf-model>
         </a-entity>
 
         <a-entity id="target-1" mindar-image-target="targetIndex: 1">
-            <a-gltf-model class="modelo-target" src="./ar/models/charros_modelo.glb" position="0 0 0" scale="0.5 0.5 0.5" rotation="0 0 0"></a-gltf-model>
+            <a-gltf-model class="modelo-target" src="../../ar/models/Final/Straiky_Fin.glb?v=20260927-10" position="0 -0.139 0.075" scale="0.232 0.232 0.232" rotation="0 0 0"></a-gltf-model>
         </a-entity>
 
         <a-entity id="target-2" mindar-image-target="targetIndex: 2">
-            <a-gltf-model class="modelo-target" src="./ar/models/dorados_modelo.glb" position="0 0 0" scale="0.5 0.5 0.5" rotation="0 0 0"></a-gltf-model>
+            <a-gltf-model class="modelo-target" src="../../ar/models/Final/Pancho_Fin.glb?v=20260927-10" position="0 -0.061 -0.008" scale="0.2564 0.2564 0.2564" rotation="0 0 0"></a-gltf-model>
         </a-entity>
 
-        <a-entity id="target-3" mindar-image-target="targetIndex: 3"></a-entity>
+        <a-entity id="target-3" mindar-image-target="targetIndex: 3">
+            <a-gltf-model class="modelo-target" src="../../ar/models/Final/Perro%20-%20Fin.glb?v=20260927-10" position="0 -0.055 0.07" scale="0.2475 0.2475 0.2475" rotation="0 0 0"></a-gltf-model>
+        </a-entity>
 
     </a-scene>
 
-    <script type="module" src="./js/ar-marco.js"></script>
-    <script type="module" src="./js/camara.js"></script>
+    <script type="module" src="../../js/features/ar/ar-marco.js"></script>
+    <script type="module" src="../../js/features/ar/camara.js?v=20260927-14"></script>
 
 </body>
 </html>

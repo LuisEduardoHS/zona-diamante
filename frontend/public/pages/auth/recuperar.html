@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7fbfb">
+    <link rel="icon" type="image/svg+xml" href="../../assets/logo-naranja.svg">
+    <link href="../../css/output.css?v=20260927-14" rel="stylesheet">
+    <title>Recuperar contraseña | Zona Diamante</title>
+</head>
+<body class="auth-page text-[#2b2b31]">
+    <div id="header-superior"></div>
+    <main class="auth-layout">
+        <div class="auth-shell">
+            <header class="auth-heading">
+                <p class="auth-eyebrow">Recupera tu cuenta</p>
+                <h1>¿Olvidaste tu contraseña?</h1>
+                <p>Escribe tu correo y te enviaremos un enlace para crear una nueva.</p>
+            </header>
+            <section class="auth-card" aria-label="Recuperar contraseña">
+                <form id="recuperar-form" class="auth-form" novalidate>
+                    <div class="auth-field">
+                        <label class="auth-label" for="recuperar-correo">Correo electrónico</label>
+                        <input id="recuperar-correo" class="auth-input" name="email" type="email" maxlength="254" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false" placeholder="tu@correo.com" required>
+                    </div>
+                    <button type="submit" class="auth-primary" data-submit-label="Enviar enlace">Enviar enlace</button>
+                    <p id="recuperar-estado" class="auth-status" role="status" aria-live="polite"></p>
+                </form>
+                <div id="recuperar-exito" class="auth-success-panel" hidden tabindex="-1">
+                    <span class="auth-success-icon" aria-hidden="true">✓</span>
+                    <h2>Revisa tu bandeja</h2>
+                    <p>Si existe una cuenta para ese correo, recibirás las instrucciones para restablecerla.</p>
+                    <a class="auth-secondary" href="login.html">Volver a iniciar sesión</a>
+                </div>
+            </section>
+            <p class="auth-switch"><a href="login.html">← Volver a iniciar sesión</a></p>
+        </div>
+    </main>
+    <div id="menu-inferior"></div>
+    <script type="module" src="../../js/app/main.js?v=20260927-14"></script>
+</body>
+</html>

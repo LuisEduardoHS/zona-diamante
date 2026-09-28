@@ -1,4 +1,4 @@
-import { ruta } from './rutas.js';
+import { ruta } from '../app/rutas.js';
 
 let pendiente;
 export function obtenerEquipos() {

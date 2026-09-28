@@ -15,7 +15,7 @@ Cada apertura elige aleatoriamente entre las entradas disponibles, excluyendo la
 
 ## Cómo se calculan
 
-`public/js/entradas-modelo.js` contiene las duraciones, los pasos y el controlador del tiempo. Cada paso usa `t` entre 0 y 1:
+`public/js/features/ar/entradas-modelo.js` contiene las duraciones, los pasos y el controlador del tiempo. Cada paso usa `t` entre 0 y 1:
 
 - `x` e `y`: fracciones del ancho y alto visibles a la distancia del modelo. Así se adaptan a diferentes pantallas y tamaños de GLB.
 - `z`: desplazamiento en profundidad, relativo a la distancia normal de la cámara. Los valores negativos alejan el modelo.
@@ -25,7 +25,7 @@ Cada apertura elige aleatoriamente entre las entradas disponibles, excluyendo la
 
 `requestAnimationFrame` actualiza el movimiento según el tiempo transcurrido, no contando fotogramas. Una pantalla de 60 Hz y otra de 120 Hz conservan la misma duración.
 
-`public/js/camara.js` aplica cada pose al encuadre existente. Compensa el centro geométrico después de escalar y girar, especialmente importante para Algodoneros, cuyo origen está desplazado. No recalcula toda la geometría en cada fotograma: reutiliza el centro y el tamaño obtenidos al abrir el visor.
+`public/js/features/ar/camara.js` aplica cada pose al encuadre existente. Compensa el centro geométrico después de escalar y girar, especialmente importante para Algodoneros, cuyo origen está desplazado. No recalcula toda la geometría en cada fotograma: reutiliza el centro y el tamaño obtenidos al abrir el visor.
 
 ## Finalización e interrupciones
 
@@ -40,6 +40,6 @@ Cada apertura elige aleatoriamente entre las entradas disponibles, excluyendo la
 
 `npm test` valida continuidad, escalas válidas, finalización exacta, cancelación, callbacks antiguos y movimiento reducido.
 
-Con `npm run preview:foto`, abrir `http://127.0.0.1:4173/__entradas-review`. Permite revisar las entradas y ejecutar las 12 combinaciones de los tres modelos disponibles. La prueba utiliza A-Frame, los GLB y `camara.js` reales; simula únicamente la cámara y los eventos de detección. También comprueba gestos, captura después de animar y cierre a mitad de la entrada.
+Con `npm run preview:foto`, abrir `http://127.0.0.1:4173/__entradas-review`. Permite revisar las entradas y ejecutar las 16 combinaciones de los cuatro modelos finales. La prueba utiliza A-Frame, los GLB y `camara.js` reales; simula únicamente la cámara y los eventos de detección. También comprueba gestos, captura después de animar y cierre a mitad de la entrada.
 
 Esta prueba no sustituye comprobar el seguimiento de logos y el rendimiento de cámara en el teléfono real.

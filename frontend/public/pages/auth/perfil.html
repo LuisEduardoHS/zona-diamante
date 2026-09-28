@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#fffaf1">
+    <link rel="icon" type="image/svg+xml" href="../../assets/logo-naranja.svg">
+    <link href="../../css/output.css?v=20260927-14" rel="stylesheet">
+    <title>Mi perfil | Zona Diamante</title>
+</head>
+<body class="profile-page bg-[#fffaf1] text-[#2b2b31]">
+    <div id="header-superior"></div>
+    <main class="profile-layout">
+        <header class="profile-heading">
+            <p class="auth-eyebrow">Tu cuenta</p>
+            <h1>Mi perfil</h1>
+            <p>Administra cómo apareces en Zona Diamante.</p>
+        </header>
+
+        <section class="profile-card profile-identity" aria-labelledby="perfil-foto-titulo">
+            <div class="profile-avatar" data-avatar-preview>
+                <img id="perfil-avatar-imagen" alt="" hidden>
+                <span id="perfil-avatar-iniciales" aria-hidden="true">ZD</span>
+            </div>
+            <div class="profile-avatar-copy">
+                <h2 id="perfil-foto-titulo">Foto de perfil</h2>
+                <p>JPG, PNG o WebP de hasta 5 MB.</p>
+                <div class="profile-avatar-actions">
+                    <label class="profile-file-button" for="perfil-avatar">Elegir foto
+                        <input id="perfil-avatar" class="sr-only" type="file" accept="image/png,image/jpeg,image/webp">
+                    </label>
+                    <button id="perfil-avatar-quitar" class="profile-text-button" type="button" hidden>Quitar</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="profile-card" aria-labelledby="perfil-datos-titulo">
+            <div class="profile-section-heading">
+                <div><p class="profile-kicker">Información pública</p><h2 id="perfil-datos-titulo">Datos del perfil</h2></div>
+                <span id="perfil-cambios" class="profile-unsaved" hidden>Cambios sin guardar</span>
+            </div>
+            <form id="perfil-form" class="auth-form" novalidate aria-busy="true">
+                <div class="auth-field">
+                    <label class="auth-label" for="perfil-nombre">Nombre para mostrar</label>
+                    <input id="perfil-nombre" class="auth-input" name="display_name" type="text" minlength="2" maxlength="50" autocomplete="name" placeholder="Tu nombre" required>
+                </div>
+                <div class="auth-field">
+                    <label class="auth-label" for="perfil-usuario">Nombre de usuario</label>
+                    <div class="auth-input-prefix"><span aria-hidden="true">@</span><input id="perfil-usuario" class="auth-input" name="username" type="text" minlength="3" maxlength="24" pattern="[a-z0-9._]+" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="aficionado24" required></div>
+                    <p class="auth-helper">Minúsculas, números, punto o guion bajo.</p>
+                </div>
+                <div class="auth-field">
+                    <label class="auth-label" for="perfil-correo">Correo de acceso</label>
+                    <input id="perfil-correo" class="auth-input" name="email" type="email" readonly aria-readonly="true">
+                    <p class="auth-helper">El correo se administra por separado para proteger tu acceso.</p>
+                </div>
+                <div class="profile-form-actions">
+                    <button id="perfil-cancelar" class="auth-secondary" type="button" disabled>Descartar</button>
+                    <button class="auth-primary" type="submit" data-submit-label="Guardar cambios">Guardar cambios</button>
+                </div>
+                <p id="perfil-estado" class="auth-status" role="status" aria-live="polite"></p>
+            </form>
+        </section>
+
+        <section class="profile-card" aria-labelledby="perfil-progreso-titulo">
+            <div class="profile-section-heading"><div><p class="profile-kicker">Zona Diamante</p><h2 id="perfil-progreso-titulo">Tu progreso</h2></div></div>
+            <div class="profile-points"><span>Puntos disponibles</span><strong id="perfil-puntos">—</strong></div>
+            <a class="profile-row-link" href="../coleccion/coleccion.html"><span><strong>Mi colección</strong><small>Consulta las cartas que has desbloqueado</small></span><span aria-hidden="true">›</span></a>
+        </section>
+
+        <section class="profile-card" aria-labelledby="perfil-seguridad-titulo">
+            <div class="profile-section-heading"><div><p class="profile-kicker">Acceso</p><h2 id="perfil-seguridad-titulo">Seguridad</h2></div></div>
+            <a class="profile-row-link" href="recuperar.html"><span><strong>Cambiar contraseña</strong><small>Recibe un enlace seguro en tu correo</small></span><span aria-hidden="true">›</span></a>
+            <button id="perfil-cerrar-sesion" class="profile-logout" type="button">Cerrar sesión</button>
+            <p id="perfil-sesion-estado" class="auth-status" role="status" aria-live="polite"></p>
+        </section>
+    </main>
+    <div id="menu-inferior"></div>
+    <script type="module" src="../../js/app/main.js?v=20260927-14"></script>
+</body>
+</html>

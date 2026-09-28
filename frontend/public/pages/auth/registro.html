@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7fbfb">
+    <link rel="icon" type="image/svg+xml" href="../../assets/logo-naranja.svg">
+    <link href="../../css/output.css?v=20260927-14" rel="stylesheet">
+    <title>Crear cuenta | Zona Diamante</title>
+</head>
+<body class="auth-page text-[#2b2b31]">
+    <div id="header-superior"></div>
+
+    <main class="auth-layout">
+        <div class="auth-shell">
+            <header class="auth-heading">
+                <p class="auth-eyebrow">Únete a Zona Diamante</p>
+                <h1>Crea tu cuenta</h1>
+            </header>
+
+            <section class="auth-card" aria-label="Creación de cuenta">
+                <form id="crear-cuenta-form" class="auth-form" novalidate>
+                    <div>
+                        <p id="registro-paso" class="auth-progress-copy" aria-live="polite">Paso 1 de 3 · Tu perfil</p>
+                        <div class="auth-progress" aria-hidden="true">
+                            <span data-progreso="0" data-activo="true"></span>
+                            <span data-progreso="1"></span>
+                            <span data-progreso="2"></span>
+                        </div>
+                    </div>
+
+                    <div data-paso="0" class="auth-step">
+                        <h2 class="auth-step-title">¿Cómo quieres aparecer?</h2>
+                        <div class="auth-field">
+                            <label class="auth-label" for="registro-nombre">Nombre para mostrar</label>
+                            <input id="registro-nombre" class="auth-input" name="display_name" type="text" minlength="2" maxlength="50" autocomplete="name" placeholder="Tu nombre" required>
+                            <p class="auth-helper">Es el nombre que verás dentro de Zona Diamante.</p>
+                        </div>
+                        <div class="auth-field">
+                            <label class="auth-label" for="registro-usuario">Nombre de usuario</label>
+                            <div class="auth-input-prefix">
+                                <span aria-hidden="true">@</span>
+                                <input id="registro-usuario" class="auth-input" name="username" type="text" minlength="3" maxlength="24" pattern="[a-z0-9._]+" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="aficionado24" required aria-describedby="registro-usuario-ayuda">
+                            </div>
+                            <p id="registro-usuario-ayuda" class="auth-helper">De 3 a 24 caracteres: minúsculas, números, punto o guion bajo.</p>
+                        </div>
+                        <button type="button" class="registro-siguiente auth-primary">Continuar</button>
+                    </div>
+
+                    <div data-paso="1" class="auth-step" hidden>
+                        <h2 class="auth-step-title">¿Cuál es tu correo?</h2>
+                        <div class="auth-field">
+                            <label class="auth-label" for="registro-correo">Correo electrónico</label>
+                            <input id="registro-correo" class="auth-input" name="email" type="email" maxlength="254" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false" placeholder="tu@correo.com" required>
+                            <p class="auth-helper">Lo usarás para ingresar y recuperar tu cuenta.</p>
+                        </div>
+                        <button type="button" class="registro-siguiente auth-primary">Continuar</button>
+                    </div>
+
+                    <div data-paso="2" class="auth-step" hidden>
+                        <h2 class="auth-step-title">Protege tu cuenta</h2>
+                        <div class="auth-field">
+                            <label class="auth-label" for="registro-contrasena">Contraseña</label>
+                            <div class="auth-input-wrap">
+                                <input id="registro-contrasena" class="auth-input" name="contrasena" type="password" minlength="8" autocomplete="new-password" placeholder="Mínimo 8 caracteres" required>
+                                <button class="auth-password-toggle" type="button" data-password-toggle="registro-contrasena" aria-label="Mostrar contraseña" aria-pressed="false"></button>
+                            </div>
+                            <ul class="auth-requirements" aria-label="Requisitos de contraseña">
+                                <li data-password-rule="length">Al menos 8 caracteres</li>
+                                <li data-password-rule="letter">Al menos una letra</li>
+                                <li data-password-rule="number">Al menos un número</li>
+                            </ul>
+                        </div>
+                        <div class="auth-field">
+                            <label class="auth-label" for="registro-confirmar">Repite la contraseña</label>
+                            <div class="auth-input-wrap">
+                                <input id="registro-confirmar" class="auth-input" name="confirmar" type="password" minlength="8" autocomplete="new-password" placeholder="Vuelve a escribirla" required>
+                                <button class="auth-password-toggle" type="button" data-password-toggle="registro-confirmar" aria-label="Mostrar contraseña" aria-pressed="false"></button>
+                            </div>
+                        </div>
+                        <button type="submit" class="auth-primary" data-submit-label="Crear cuenta">Crear cuenta</button>
+                    </div>
+
+                    <button type="button" class="registro-anterior auth-back" hidden>← Volver al paso anterior</button>
+                    <p id="registro-estado" class="auth-status" role="status" aria-live="polite"></p>
+                </form>
+
+                <div id="registro-exito" class="auth-success-panel" hidden tabindex="-1">
+                    <span class="auth-success-icon" aria-hidden="true">✓</span>
+                    <h2>Revisa tu correo</h2>
+                    <p>Enviamos un enlace de confirmación a <strong id="registro-correo-confirmacion"></strong>.</p>
+                    <a class="auth-primary" href="login.html">Ir a iniciar sesión</a>
+                </div>
+            </section>
+
+            <p class="auth-switch">¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></p>
+        </div>
+    </main>
+
+    <div id="menu-inferior"></div>
+    <script type="module" src="../../js/app/main.js?v=20260927-14"></script>
+</body>
+</html>

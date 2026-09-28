@@ -1,5 +1,5 @@
-import { obtenerEquipos } from '../datos-equipos.js';
-import { ruta } from '../rutas.js';
+import { obtenerEquipos } from '../services/datos-equipos.js';
+import { RUTAS, ruta } from '../app/rutas.js';
 
 export async function renderCarousel(signal) {
     const container = document.getElementById('carrusel-container');
@@ -65,7 +65,7 @@ export async function renderCarousel(signal) {
                         </h2>
 
                         <a
-                            href="${ruta('equipo.html')}?id=${equipo.id}"
+                            href="${ruta(RUTAS.equipo)}?id=${equipo.id}"
                             class="mt-2 px-7 py-2 rounded-full font-bold text-sm border-0 cursor-pointer transition-transform active:scale-95 inline-block text-center no-underline"
                             style="background-color: ${equipo.colores.secundario}; color: ${equipo.colores.primario}; font-weight: 800;"
                         >
