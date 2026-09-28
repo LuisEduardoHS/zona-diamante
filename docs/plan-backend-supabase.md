@@ -127,14 +127,32 @@ zona-diamante/
 |   `-- Dockerfile
 |-- frontend/
 |   |-- public/
-|   |   `-- js/
-|   |       |-- api/
-|   |       |   |-- backend-client.js
-|   |       |   `-- supabase-client.js
-|   |       |-- auth/
-|   |       |   |-- session.js
-|   |       |   `-- guards.js
-|   |       `-- ...archivos actuales
+|   |   |-- index.html
+|   |   |-- pages/
+|   |   |   |-- auth/
+|   |   |   |-- contenido/
+|   |   |   |-- experiencias/
+|   |   |   |-- equipos/
+|   |   |   |-- coleccion/
+|   |   |   |-- ar/
+|   |   |   `-- demos/
+|   |   |-- js/
+|   |   |   |-- app/
+|   |   |   |   |-- main.js
+|   |   |   |   |-- navegacion.js
+|   |   |   |   `-- rutas.js
+|   |   |   |-- components/
+|   |   |   |-- features/
+|   |   |   |   |-- auth/
+|   |   |   |   |-- ar/
+|   |   |   |   |-- contenido/
+|   |   |   |   |-- equipos/
+|   |   |   |   `-- juego/
+|   |   |   `-- services/
+|   |   |       |-- backend-client.js
+|   |   |       |-- supabase-client.js
+|   |   |       `-- datos-equipos.js
+|   |   `-- vendor/
 |   |-- scripts/
 |   |   `-- generate-runtime-config.cjs
 |   |-- .env.example
@@ -162,7 +180,11 @@ zona-diamante/
 - `supabase/migrations/`: fuente oficial del esquema y las políticas RLS.
 - `supabase/tests/`: pruebas que demuestran qué puede y qué no puede hacer cada rol.
 - `supabase/seed.sql`: equipos, cartas y preguntas de desarrollo.
-- `frontend/public/js/api/`: comunicación del navegador con Supabase y FastAPI.
+- `frontend/public/pages/`: páginas agrupadas por área funcional; `index.html` permanece en la raíz como entrada del sitio.
+- `frontend/public/js/app/`: arranque, catálogo central de rutas y navegación SPA.
+- `frontend/public/js/features/`: controladores agrupados por funcionalidad.
+- `frontend/public/js/services/`: comunicación con datos locales, Supabase y FastAPI.
+- `frontend/public/vendor/`: librerías de terceros servidas sin modificación.
 
 El esquema no se mantendrá solamente con cambios manuales en el panel de Supabase. Cada cambio permanente deberá quedar en una migración SQL dentro del repositorio.
 
@@ -465,10 +487,10 @@ Trabajo:
 
 1. Añadir `@supabase/supabase-js` al frontend.
 2. Crear un cliente único.
-3. Conectar `registro.html`.
+3. Conectar `pages/auth/registro.html`.
 4. Validar contraseña, correo, confirmación y errores.
 5. Subir avatar a Storage.
-6. Conectar `login.html`.
+6. Conectar `pages/auth/login.html`.
 7. Mantener y observar la sesión.
 8. Añadir cerrar sesión y recuperación de contraseña.
 9. Proteger colección y perfil.
