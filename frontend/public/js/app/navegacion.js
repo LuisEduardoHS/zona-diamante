@@ -1,8 +1,22 @@
 import { RUTAS, rutaInterna } from './rutas.js';
+import { requerirSesion } from '../features/auth/guards.js';
 
 const cache = new Map();
 const estilos = new Map();
 const ordenSecciones = [RUTAS.inicio, RUTAS.trivia, RUTAS.juego, RUTAS.camara, RUTAS.coleccion, RUTAS.informacion, RUTAS.ayuda];
+
+const rutasPrivadas = new Set([
+    RUTAS.coleccion,
+    RUTAS.perfil
+]);
+
+async function permitirRuta(info) {
+    if (!info || !rutasPrivadas.has(info.archivo)) {
+        return true;
+    }
+
+    return requerirSesion(info.url.href);
+}
 
 function esEstiloBase(href) {
     return new URL(href, location.href).pathname.endsWith('/css/output.css');
@@ -134,9 +148,16 @@ export function iniciarNavegacion(actualizarShell) {
     window.addEventListener('scroll', guardarScroll, { passive: true });
 
     async function navegar(destino, pop = false) {
+
         const info = rutaInterna(destino);
         if (!info) return;
+
+        if (!(await permitirRuta(info))) {
+            return;
+        }
+
         const solicitud = ++version;
+
         guardarScroll();
         vista.setAttribute('aria-busy', 'true');
         const progreso = setTimeout(() => {
@@ -236,6 +257,23 @@ export function iniciarNavegacion(actualizarShell) {
             for (const id of ['header-superior', 'menu-inferior']) document.getElementById(id).inert = event.data.abierto === true;
         }
     });
+
     actualizarShell();
-    void montarSeccion(rutaInterna(location.href)?.archivo, ciclo.signal);
+
+    const infoInicial = rutaInterna(location.href);
+
+    if (infoInicial && rutasPrivadas.has(infoInicial.archivo)) {
+        // Evita mostrar brevemente contenido privado mientras
+        // Supabase termina de restaurar la sesión.
+        vista.hidden = true;
+
+        void permitirRuta(infoInicial).then(permitida => {
+            if (!permitida) return;
+
+            vista.hidden = false;
+            void montarSeccion(infoInicial.archivo, ciclo.signal);
+        });
+    } else {
+        void montarSeccion(infoInicial?.archivo, ciclo.signal);
+    }
 }
