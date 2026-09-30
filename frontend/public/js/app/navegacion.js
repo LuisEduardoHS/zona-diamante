@@ -1,4 +1,4 @@
-import { RUTAS, rutaInterna } from './rutas.js';
+import { RUTAS, rutaInterna } from './rutas.js?v=20260930-1';
 import { requerirSesion } from '../features/auth/guards.js';
 
 const cache = new Map();

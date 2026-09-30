@@ -1,4 +1,4 @@
-import { RUTAS, ruta, rutaInterna } from '../app/rutas.js';
+import { RUTAS, ruta, rutaInterna } from '../app/rutas.js?v=20260930-1';
 import { observarEstadoSesion } from '../features/auth/session.js';
 
 const secciones = [

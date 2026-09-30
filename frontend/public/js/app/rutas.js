@@ -23,6 +23,16 @@ export const paginas = Object.values(RUTAS);
 export function rutaInterna(href) {
     const url = new URL(href, baseURL);
     if (url.origin !== baseURL.origin || !url.pathname.startsWith(baseURL.pathname)) return null;
-    const archivo = url.pathname.slice(baseURL.pathname.length) || RUTAS.inicio;
+    const rutaPublica = url.pathname.slice(baseURL.pathname.length).replace(/\/$/, '');
+    let archivo = rutaPublica || RUTAS.inicio;
+
+    // Netlify activa Pretty URLs por defecto y convierte, por ejemplo,
+    // `pages/auth/registro.html` en `pages/auth/registro`. Conservamos la URL
+    // publicada, pero normalizamos el identificador interno para que el shell y
+    // los controladores de cada pagina se inicialicen igual que en local.
+    if (!paginas.includes(archivo) && paginas.includes(`${archivo}.html`)) {
+        archivo = `${archivo}.html`;
+    }
+
     return paginas.includes(archivo) ? { url, archivo } : null;
 }
