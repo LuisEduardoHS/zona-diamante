@@ -2,12 +2,18 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     environment: str = "development"
+    log_level: str = "INFO"
 
     supabase_url: str = ""
+    supabase_publishable_key: str = ""
     supabase_secret_key: str = ""
     database_url: str = ""
 
-    frontend_origins: str = "http://localhost:8080"
+    frontend_origins: str = (
+        "http://localhost:5500,"
+        "http://127.0.0.1:5500,"
+        "https://zona-diamante.netlify.app"
+        )
 
     model_config = SettingsConfigDict(
         env_file=".env",
