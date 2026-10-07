@@ -84,6 +84,9 @@ async function montarSeccion(archivo, signal) {
     } else if (archivo === RUTAS.equipo) {
         const { cargarDetalleEquipo } = await import('../features/equipos/equipo.js');
         if (!signal.aborted) await cargarDetalleEquipo(signal);
+    } else if (archivo === RUTAS.trivia) {
+        const { iniciarTrivia } = await import('../features/trivia/trivia-page.js');
+        if (!signal.aborted) iniciarTrivia(signal);
     } else if (archivo === RUTAS.juego) {
         const { iniciarJuego } = await import('../features/juego/ganar_juego.js');
         if (!signal.aborted) iniciarJuego(signal);
