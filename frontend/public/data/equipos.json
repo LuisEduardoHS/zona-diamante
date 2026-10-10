@@ -16,7 +16,8 @@
       "zona": "Zona Norte de la LMB",
       "record": "53 - 37",
       "posicion": "1.°",
-      "historia": "Los Sultanes de Monterrey suman <span class=\"text-red-500 font-black\">10</span> campeonatos de la Liga Mexicana de Béisbol en su historia, además de haber obtenido 13 títulos de la Zona Norte.",      "estadisticas": {
+      "historia": "Los Sultanes de Monterrey suman <span class=\"text-red-500 font-black\">10</span> campeonatos de la Liga Mexicana de Béisbol en su historia, además de haber obtenido 13 títulos de la Zona Norte.",
+      "estadisticas": {
         "pct": ".589",
         "streak": "G2",
         "avg": ".295",
@@ -26,7 +27,8 @@
       "estadio": {
         "nombre": "Estadio Mobil Super",
         "ubicacion": "Monterrey, Nuevo León",
-        "imagen": "./assets/img/equipos/sultanes/estadio.webp"
+        "imagen": "./assets/img/equipos/sultanes/estadio.webp",
+        "recorteSuperior": true
       },
       "mascota": {
         "nombre": "El Perro Sultán",
@@ -46,7 +48,38 @@
           "fecha": "Próximamente",
           "hora": "Por definir"
         }
-      ]
+      ],
+      "calendarioUrl": "https://www.sultanes.com.mx/",
+      "galeria": [
+        {
+          "imagen": "./assets/img/equipos/sultanes/mascota.webp",
+          "alt": "El Perro Sultán"
+        },
+        {
+          "imagen": "./assets/img/equipos/sultanes/estadio.webp",
+          "alt": "Estadio Mobil Super"
+        },
+        {
+          "imagen": "./assets/img/equipos/sultanes/mvp.webp",
+          "alt": "Ramiro Peña"
+        },
+        {
+          "imagen": "./assets/img/equipos/sultanes/jugador.webp",
+          "alt": "En el diamante · Sultanes"
+        },
+        {
+          "imagen": "./assets/img/equipos/sultanes/logo-bg.webp",
+          "alt": "Escudo de Sultanes"
+        }
+      ],
+      "video": {
+        "tipo": "youtube",
+        "id": "X31R6I2ZlGs",
+        "titulo": "Javier Salazar · Jonrón de tres carreras",
+        "autor": "Sultanes de Monterrey",
+        "poster": "./assets/img/equipos/sultanes/mvp.webp",
+        "fuente": "https://www.youtube.com/watch?v=X31R6I2ZlGs"
+      }
     }
   },
   {
@@ -97,7 +130,38 @@
           "fecha": "Próximamente",
           "hora": "Por definir"
         }
-      ]
+      ],
+      "calendarioUrl": "https://lmb.com.mx/equipos/dorados",
+      "galeria": [
+        {
+          "imagen": "./assets/img/equipos/Dorados/mascota.webp",
+          "alt": "Dorado"
+        },
+        {
+          "imagen": "./assets/img/equipos/Dorados/estadio.jpg",
+          "alt": "Estadio Monumental Chihuahua"
+        },
+        {
+          "imagen": "./assets/img/equipos/Dorados/mvp.webp",
+          "alt": "Leo Piña"
+        },
+        {
+          "imagen": "./assets/img/equipos/Dorados/player.webp",
+          "alt": "En el diamante · Dorados"
+        },
+        {
+          "imagen": "./assets/img/equipos/Dorados/logo-bg.webp",
+          "alt": "Escudo de Dorados"
+        }
+      ],
+      "video": {
+        "tipo": "youtube",
+        "id": "sVWf1ufRhEY",
+        "titulo": "Dorados vs. El Águila · Resumen",
+        "autor": "Hi Sports TV",
+        "poster": "./assets/img/equipos/Dorados/mvp.webp",
+        "fuente": "https://www.youtube.com/watch?v=sVWf1ufRhEY"
+      }
     }
   },
   {
@@ -148,7 +212,38 @@
           "fecha": "Próximamente",
           "hora": "Por definir"
         }
-      ]
+      ],
+      "calendarioUrl": "https://www.charrosjalisco.com/",
+      "galeria": [
+        {
+          "imagen": "./assets/img/equipos/Charros/mascota.jpg",
+          "alt": "El Charro"
+        },
+        {
+          "imagen": "./assets/img/equipos/Charros/estadio.webp",
+          "alt": "Estadio Panamericano"
+        },
+        {
+          "imagen": "./assets/img/equipos/Charros/mvp.webp",
+          "alt": "Japhet Amador"
+        },
+        {
+          "imagen": "./assets/img/equipos/Charros/player.webp",
+          "alt": "En el diamante · Charros"
+        },
+        {
+          "imagen": "./assets/img/equipos/Charros/logo-bg.webp",
+          "alt": "Escudo de Charros"
+        }
+      ],
+      "video": {
+        "tipo": "youtube",
+        "id": "bFJSFN0xO30",
+        "titulo": "Conociendo a Mateo Gil",
+        "autor": "Charros de Jalisco",
+        "poster": "./assets/img/equipos/Charros/mvp.webp",
+        "fuente": "https://www.youtube.com/watch?v=bFJSFN0xO30"
+      }
     }
   },
   {
@@ -199,7 +294,38 @@
           "fecha": "Próximamente",
           "hora": "Por definir"
         }
-      ]
+      ],
+      "calendarioUrl": "https://www.unionlaguna.mx/",
+      "galeria": [
+        {
+          "imagen": "./assets/img/equipos/Algonoderos/mascota.webp",
+          "alt": "El Pollo Algodonero"
+        },
+        {
+          "imagen": "./assets/img/equipos/Algonoderos/estadio.webp",
+          "alt": "Estadio Revolución"
+        },
+        {
+          "imagen": "./assets/img/equipos/Algonoderos/mvp.webp",
+          "alt": "Nick Torres"
+        },
+        {
+          "imagen": "./assets/img/equipos/Algonoderos/player.webp",
+          "alt": "En el diamante · Algodoneros"
+        },
+        {
+          "imagen": "./assets/img/equipos/Algonoderos/logo-bg.webp",
+          "alt": "Escudo de Algodoneros"
+        }
+      ],
+      "video": {
+        "tipo": "youtube",
+        "id": "MNSlGFjkYmQ",
+        "titulo": "Algodoneros vs. Toros · Playoffs, juego 5",
+        "autor": "Algodoneros del Unión Laguna Oficial",
+        "poster": "./assets/img/equipos/Algonoderos/mvp.webp",
+        "fuente": "https://www.youtube.com/watch?v=MNSlGFjkYmQ"
+      }
     }
   }
 ]

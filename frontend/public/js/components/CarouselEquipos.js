@@ -1,4 +1,4 @@
-import { obtenerEquipos } from '../services/datos-equipos.js';
+import { obtenerEquipos } from '../services/datos-equipos.js?v=20261010-2';
 import { RUTAS, ruta } from '../app/rutas.js';
 
 export async function renderCarousel(signal) {
