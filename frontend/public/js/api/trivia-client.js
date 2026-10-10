@@ -2,6 +2,25 @@
 // estas funciones pueden conservar sus firmas y reemplazar únicamente el mock.
 const CLAVE_RESULTADO = 'zona-diamante:trivia-diaria';
 const ESPERA_MOCK = 450;
+let estadoDiarioCache;
+
+function claveEstadoDiario() {
+    let resultadoGuardado;
+    try { resultadoGuardado = localStorage.getItem(CLAVE_RESULTADO); } catch { resultadoGuardado = null; }
+    return JSON.stringify([fechaLocal(), location.search, resultadoGuardado]);
+}
+
+// Caché de esta sesión de navegación; cambia al cambiar el día o el resultado
+// guardado (incluidos los cambios realizados desde otra pestaña).
+export function getCachedDailyTriviaStatus() {
+    if (new URLSearchParams(location.search).get('triviaMock') === 'reset') return null;
+    return estadoDiarioCache?.key === claveEstadoDiario() ? estadoDiarioCache.value : null;
+}
+
+function guardarEstadoDiario(value) {
+    estadoDiarioCache = { key: claveEstadoDiario(), value };
+    return value;
+}
 
 const BANCO_MOCK = [
     {
@@ -92,18 +111,21 @@ function leerResultado() {
 }
 
 export async function getDailyTriviaStatus({ signal } = {}) {
+    if (signal?.aborted) throw new DOMException('Operación cancelada', 'AbortError');
+    const cached = getCachedDailyTriviaStatus();
+    if (cached) return cached;
     await esperar(signal);
     const modo = new URLSearchParams(location.search).get('triviaMock');
     if (modo === 'error') throw new Error('Fallo simulado del servicio');
     if (modo === 'unavailable') return { status: 'unavailable', date: fechaLocal(), next_available_at: siguienteDia(), last_result: null };
     if (modo === 'reset') localStorage.removeItem(CLAVE_RESULTADO);
     const result = leerResultado();
-    return {
+    return guardarEstadoDiario({
         status: result ? 'completed' : 'available',
         date: fechaLocal(),
         next_available_at: result?.next_available_at || null,
         last_result: result
-    };
+    });
 }
 
 export async function startDailyTrivia({ signal } = {}) {
@@ -141,5 +163,9 @@ export async function submitDailyTrivia(attemptId, answers, { signal } = {}) {
         next_available_at: siguienteDia()
     };
     localStorage.setItem(CLAVE_RESULTADO, JSON.stringify({ date: fechaLocal(), result }));
+    guardarEstadoDiario({
+        status: 'completed', date: fechaLocal(),
+        next_available_at: result.next_available_at, last_result: result
+    });
     return result;
 }
