@@ -2,10 +2,57 @@ import { obtenerEquipos } from '../../services/datos-equipos.js?v=20261010-2';
 import { RUTAS, ruta } from '../../app/rutas.js';
 
 const html = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
-const icon = (path, cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${path}"/></svg>`;
-const closeIcon = icon('m6 6 12 12M18 6 6 18');
-const playIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m8 5 11 7-11 7z"/></svg>';
-const magicIcon = icon('m4 20 12-12 4 4-12 12M14 10l4 4M5 3v4M3 5h4M18 2v4M16 4h4M21 16v4M19 18h4');
+// Font Awesome Free, Classic Solid — CC BY 4.0. See assets/icons/fontawesome/LICENSE.txt
+const FA_ICONS = {
+    "xmark": {
+        "viewBox": "0 0 384 512",
+        "body": "<!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc. --><path fill=\"currentColor\" d=\"M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z\"/>"
+    },
+    "play": {
+        "viewBox": "0 0 448 512",
+        "body": "<!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc. --><path fill=\"currentColor\" d=\"M91.2 36.9c-12.4-6.8-27.4-6.5-39.6 .7S32 57.9 32 72l0 368c0 14.1 7.5 27.2 19.6 34.4s27.2 7.5 39.6 .7l336-184c12.8-7 20.8-20.5 20.8-35.1s-8-28.1-20.8-35.1l-336-184z\"/>"
+    },
+    "wand-magic-sparkles": {
+        "viewBox": "0 0 576 512",
+        "body": "<!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc. --><path fill=\"currentColor\" d=\"M263.4-27L278.2 9.8 315 24.6c3 1.2 5 4.2 5 7.4s-2 6.2-5 7.4L278.2 54.2 263.4 91c-1.2 3-4.2 5-7.4 5s-6.2-2-7.4-5L233.8 54.2 197 39.4c-3-1.2-5-4.2-5-7.4s2-6.2 5-7.4L233.8 9.8 248.6-27c1.2-3 4.2-5 7.4-5s6.2 2 7.4 5zM110.7 41.7l21.5 50.1 50.1 21.5c5.9 2.5 9.7 8.3 9.7 14.7s-3.8 12.2-9.7 14.7l-50.1 21.5-21.5 50.1c-2.5 5.9-8.3 9.7-14.7 9.7s-12.2-3.8-14.7-9.7L59.8 164.2 9.7 142.7C3.8 140.2 0 134.4 0 128s3.8-12.2 9.7-14.7L59.8 91.8 81.3 41.7C83.8 35.8 89.6 32 96 32s12.2 3.8 14.7 9.7zM464 304c6.4 0 12.2 3.8 14.7 9.7l21.5 50.1 50.1 21.5c5.9 2.5 9.7 8.3 9.7 14.7s-3.8 12.2-9.7 14.7l-50.1 21.5-21.5 50.1c-2.5 5.9-8.3 9.7-14.7 9.7s-12.2-3.8-14.7-9.7l-21.5-50.1-50.1-21.5c-5.9-2.5-9.7-8.3-9.7-14.7s3.8-12.2 9.7-14.7l50.1-21.5 21.5-50.1c2.5-5.9 8.3-9.7 14.7-9.7zM460 0c11 0 21.6 4.4 29.5 12.2l42.3 42.3C539.6 62.4 544 73 544 84s-4.4 21.6-12.2 29.5l-88.2 88.2-101.3-101.3 88.2-88.2C438.4 4.4 449 0 460 0zM44.2 398.5L308.4 134.3 409.7 235.6 145.5 499.8C137.6 507.6 127 512 116 512s-21.6-4.4-29.5-12.2L44.2 457.5C36.4 449.6 32 439 32 428s4.4-21.6 12.2-29.5z\"/>"
+    },
+    "arrow-up-right-from-square": {
+        "viewBox": "0 0 512 512",
+        "body": "<!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc. --><path fill=\"currentColor\" d=\"M320 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l82.7 0-201.4 201.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L448 109.3 448 192c0 17.7 14.3 32 32 32s32-14.3 32-32l0-160c0-17.7-14.3-32-32-32L320 0zM80 96C35.8 96 0 131.8 0 176L0 432c0 44.2 35.8 80 80 80l256 0c44.2 0 80-35.8 80-80l0-80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 80c0 8.8-7.2 16-16 16L80 448c-8.8 0-16-7.2-16-16l0-256c0-8.8 7.2-16 16-16l80 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L80 96z\"/>"
+    },
+    "location-dot": {
+        "viewBox": "0 0 384 512",
+        "body": "<!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc. --><path fill=\"currentColor\" d=\"M0 188.6C0 84.4 86 0 192 0S384 84.4 384 188.6c0 119.3-120.2 262.3-170.4 316.8-11.8 12.8-31.5 12.8-43.3 0-50.2-54.5-170.4-197.5-170.4-316.8zM192 256a64 64 0 1 0 0-128 64 64 0 1 0 0 128z\"/>"
+    },
+    "trophy": {
+        "viewBox": "0 0 512 512",
+        "body": "<!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc. --><path fill=\"currentColor\" d=\"M144.3 0l224 0c26.5 0 48.1 21.8 47.1 48.2-.2 5.3-.4 10.6-.7 15.8l49.6 0c26.1 0 49.1 21.6 47.1 49.8-7.5 103.7-60.5 160.7-118 190.5-15.8 8.2-31.9 14.3-47.2 18.8-20.2 28.6-41.2 43.7-57.9 51.8l0 73.1 64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-192 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l64 0 0-73.1c-16-7.7-35.9-22-55.3-48.3-18.4-4.8-38.4-12.1-57.9-23.1-54.1-30.3-102.9-87.4-109.9-189.9-1.9-28.1 21-49.7 47.1-49.7l49.6 0c-.3-5.2-.5-10.4-.7-15.8-1-26.5 20.6-48.2 47.1-48.2zM101.5 112l-52.4 0c6.2 84.7 45.1 127.1 85.2 149.6-14.4-37.3-26.3-86-32.8-149.6zM380 256.8c40.5-23.8 77.1-66.1 83.3-144.8L411 112c-6.2 60.9-17.4 108.2-31 144.8z\"/>"
+    },
+    "expand": {
+        "viewBox": "0 0 448 512",
+        "body": "<!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc. --><path fill=\"currentColor\" d=\"M32 32C14.3 32 0 46.3 0 64l0 96c0 17.7 14.3 32 32 32s32-14.3 32-32l0-64 64 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 32zM64 352c0-17.7-14.3-32-32-32S0 334.3 0 352l0 96c0 17.7 14.3 32 32 32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0 0-64zM320 32c-17.7 0-32 14.3-32 32s14.3 32 32 32l64 0 0 64c0 17.7 14.3 32 32 32s32-14.3 32-32l0-96c0-17.7-14.3-32-32-32l-96 0zM448 352c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 64-64 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l96 0c17.7 0 32-14.3 32-32l0-96z\"/>"
+    },
+    "chevron-left": {
+        "viewBox": "0 0 320 512",
+        "body": "<!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc. --><path fill=\"currentColor\" d=\"M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z\"/>"
+    },
+    "chevron-right": {
+        "viewBox": "0 0 320 512",
+        "body": "<!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc. --><path fill=\"currentColor\" d=\"M311.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L243.2 256 73.9 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z\"/>"
+    },
+    "plus": {
+        "viewBox": "0 0 448 512",
+        "body": "<!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc. --><path fill=\"currentColor\" d=\"M256 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 160-160 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l160 0 0 160c0 17.7 14.3 32 32 32s32-14.3 32-32l0-160 160 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-160 0 0-160z\"/>"
+    },
+    "minus": {
+        "viewBox": "0 0 448 512",
+        "body": "<!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc. --><path fill=\"currentColor\" d=\"M0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32z\"/>"
+    }
+};
+const icon = name => { const item = FA_ICONS[name]; return `<svg viewBox="${item.viewBox}" fill="currentColor" aria-hidden="true" focusable="false">${item.body}</svg>`; };
+const closeIcon = icon('xmark');
+const playIcon = icon('play');
+const magicIcon = icon('wand-magic-sparkles');
 const image = (src, alt, cls = '', eager = false) => src ? `<img class="${cls}" src="${html(src)}" alt="${html(alt)}" loading="${eager ? 'eager' : 'lazy'}" decoding="async">` : `<span class="equipo-image-empty ${cls}">Imagen por confirmar</span>`;
 const value = data => data === undefined || data === null || data === '' ? '—' : html(data);
 export const FILTROS_VIDEO = Object.freeze({
@@ -41,7 +88,7 @@ function calendarioTemplate(equipo, equipos) {
                 </li>`;
             }).join('')}</ul>` : '<p class="equipo-empty">Aún no hay juegos programados.</p>'}
             ${juegos.some(juego => !juego.inicio && /próximamente|definir|confirmar/i.test(juego.fecha || '')) ? '<p class="equipo-note">Fechas y horarios pendientes de confirmación.</p>' : ''}
-            ${d.calendarioUrl ? `<a class="equipo-text-link" href="${html(d.calendarioUrl)}" target="_blank" rel="noopener noreferrer">Consultar sitio oficial ${icon('M7 17 17 7M7 7h10v10')}</a>` : ''}
+            ${d.calendarioUrl ? `<a class="equipo-text-link" href="${html(d.calendarioUrl)}" target="_blank" rel="noopener noreferrer">Consultar sitio oficial ${icon('arrow-up-right-from-square')}</a>` : ''}
         </div>
     </section>`;
 }
@@ -64,22 +111,22 @@ export function detalleTemplate(equipo, equipos) {
             <p class="equipo-pill equipo-position">${value(d.posicion)} <span>en su zona</span></p>
         </section>
         <details class="equipo-statistics equipo-card" open>
-            <summary class="equipo-section-bar">Estadísticas <span class="equipo-disclosure-icon" aria-hidden="true"></span></summary>
+            <summary class="equipo-section-bar">Estadísticas <span class="equipo-disclosure-icon" aria-hidden="true"><span class="equipo-disclosure-plus">${icon('plus')}</span><span class="equipo-disclosure-minus">${icon('minus')}</span></span></summary>
             <div class="equipo-statistics-body">
                 <h3 class="equipo-pill">Historia y campeonatos</h3>
                 <p class="equipo-history">${html(d.historia || 'Próximamente conocerás más sobre la historia del equipo.')}</p>
                 <dl class="equipo-stats">${stats.map(([label, data, type]) => `<div class="equipo-stat ${type ? 'equipo-stat--wide' : ''}"><dt>${label}</dt><dd>${value(data)}</dd></div>`).join('')}</dl>
             </div>
         </details>
-        <figure class="equipo-stadium">${image(d.estadio.imagen, d.estadio.nombre, d.estadio.recorteSuperior ? 'equipo-crop-top' : '')}<figcaption><span>${icon('M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0ZM15 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z')}${html(d.estadio.ubicacion || equipo.ciudad)}</span><h2>${html(d.estadio.nombre || 'Estadio por confirmar')}</h2></figcaption></figure>
+        <figure class="equipo-stadium">${image(d.estadio.imagen, d.estadio.nombre, d.estadio.recorteSuperior ? 'equipo-crop-top' : '')}<figcaption><span>${icon('location-dot')}${html(d.estadio.ubicacion || equipo.ciudad)}</span><h2>${html(d.estadio.nombre || 'Estadio por confirmar')}</h2></figcaption></figure>
         <section class="equipo-mascot equipo-card" aria-label="Mascota del equipo">${image(d.mascota.imagen, d.mascota.nombre)}<div><h2>${html(d.mascota.nombre || 'Mascota')}</h2><p>La energía de<br>nuestra afición.</p></div></section>
-        ${d.palmares.length ? `<section class="equipo-honours" aria-label="Palmarés"><ul>${d.palmares.map(titulo => `<li>${icon('M8 3h8v6a4 4 0 0 1-8 0V3ZM8 5H4v2a4 4 0 0 0 4 4M16 5h4v2a4 4 0 0 1-4 4M12 13v6M8 21h8')}${html(titulo)}</li>`).join('')}</ul></section>` : ''}
+        ${d.palmares.length ? `<section class="equipo-honours" aria-label="Palmarés"><ul>${d.palmares.map(titulo => `<li>${icon('trophy')}${html(titulo)}</li>`).join('')}</ul></section>` : ''}
         <figure class="equipo-mvp">${image(d.mvp.imagen, d.mvp.nombre)}<span class="equipo-mvp-badge">MVP</span><figcaption><h2>${html(d.mvp.nombre || 'Jugador destacado')}</h2></figcaption></figure>
         ${calendarioTemplate(equipo, equipos)}
     </div>
     <section class="equipo-media" aria-label="Galería y video de ${html(equipo.nombre)}">
         <div class="equipo-media-heading"><p>Dentro del diamante</p><h2>En nuestra casa</h2></div>
-        <div class="equipo-gallery">${gallery.map((foto, index) => `<button type="button" class="equipo-gallery-item" data-gallery-index="${index}" aria-label="Ampliar imagen: ${html(foto.alt || equipo.nombre)}">${image(foto.imagen, foto.alt || equipo.nombre)}<span aria-hidden="true">${icon('M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5')}</span></button>`).join('')}</div>
+        <div class="equipo-gallery">${gallery.map((foto, index) => `<button type="button" class="equipo-gallery-item" data-gallery-index="${index}" aria-label="Ampliar imagen: ${html(foto.alt || equipo.nombre)}">${image(foto.imagen, foto.alt || equipo.nombre)}<span aria-hidden="true">${icon('expand')}</span></button>`).join('')}</div>
         <section class="equipo-video" aria-labelledby="equipo-video-title">
             <div class="equipo-video-title"><div><p>En movimiento</p><h2 id="equipo-video-title">${html(video?.titulo || 'Videos del equipo')}</h2></div>${videoReady ? `<button class="equipo-filter-launch" type="button" data-open-video="filters" aria-label="Abrir video con filtros">${magicIcon}<span>Filtros</span></button>` : ''}</div>
             ${videoReady ? `<button type="button" class="equipo-video-cover" data-open-video="play" aria-label="Reproducir ${html(video.titulo)}">${image(video.poster || d.estadio.imagen, '')}<span class="equipo-play">${playIcon}</span><span class="equipo-watch-label">Ver video</span></button>` : '<p class="equipo-empty">Próximamente habrá un video de este equipo.</p>'}
@@ -90,9 +137,9 @@ export function detalleTemplate(equipo, equipos) {
         <div class="equipo-video-stage" id="equipo-video-stage"></div>
         <fieldset class="equipo-video-filters"><legend>Elige tu filtro</legend><div>${Object.entries(FILTROS_VIDEO).map(([key, filter]) => `<button type="button" data-filter="${key}" aria-pressed="${key === 'original'}">${filter.nombre}</button>`).join('')}</div></fieldset>
         <p class="equipo-filter-note">Los filtros se quitan al cerrar el video.</p>
-        ${video?.fuente ? `<a class="equipo-text-link" href="${html(video.fuente)}" target="_blank" rel="noopener noreferrer">Ver en la fuente original ${icon('M7 17 17 7M7 7h10v10')}</a>` : ''}
+        ${video?.fuente ? `<a class="equipo-text-link" href="${html(video.fuente)}" target="_blank" rel="noopener noreferrer">Ver en la fuente original ${icon('arrow-up-right-from-square')}</a>` : ''}
     </dialog>
-    <dialog class="equipo-dialog equipo-photo-dialog" id="equipo-photo-dialog" aria-labelledby="photo-dialog-title"><div class="equipo-dialog-head"><h2 id="photo-dialog-title">Galería de ${html(equipo.nombre)}</h2><button type="button" class="equipo-close" data-close-dialog aria-label="Cerrar imagen">${closeIcon}</button></div><figure><img id="equipo-photo" alt=""><figcaption id="equipo-photo-caption"></figcaption></figure><div class="equipo-photo-controls"><button type="button" data-photo-step="-1" aria-label="Imagen anterior">${icon('m14 6-6 6 6 6')}</button><span id="equipo-photo-count"></span><button type="button" data-photo-step="1" aria-label="Imagen siguiente">${icon('m10 6 6 6-6 6')}</button></div></dialog>`;
+    <dialog class="equipo-dialog equipo-photo-dialog" id="equipo-photo-dialog" aria-labelledby="photo-dialog-title"><div class="equipo-dialog-head"><h2 id="photo-dialog-title">Galería de ${html(equipo.nombre)}</h2><button type="button" class="equipo-close" data-close-dialog aria-label="Cerrar imagen">${closeIcon}</button></div><figure><img id="equipo-photo" alt=""><figcaption id="equipo-photo-caption"></figcaption><a id="equipo-photo-credit" class="equipo-text-link" target="_blank" rel="noopener noreferrer" hidden></a></figure><div class="equipo-photo-controls"><button type="button" data-photo-step="-1" aria-label="Imagen anterior">${icon('chevron-left')}</button><span id="equipo-photo-count"></span><button type="button" data-photo-step="1" aria-label="Imagen siguiente">${icon('chevron-right')}</button></div></dialog>`;
 }
 
 function iniciarMedios(container, equipo, signal) {
@@ -118,6 +165,12 @@ function iniciarMedios(container, equipo, signal) {
         img.src = foto.imagen;
         img.alt = foto.alt || equipo.nombre;
         container.querySelector('#equipo-photo-caption').textContent = img.alt;
+        const credit = container.querySelector('#equipo-photo-credit');
+        credit.hidden = !foto.fuente;
+        if (foto.fuente) {
+            credit.href = foto.fuente;
+            credit.textContent = `Foto: ${foto.credito || 'Fuente original'}`;
+        } else credit.removeAttribute('href');
         container.querySelector('#equipo-photo-count').textContent = `${photoIndex + 1} / ${gallery.length}`;
     };
     const openDialog = (dialog, button) => {
@@ -192,6 +245,39 @@ function iniciarMedios(container, equipo, signal) {
     }, { once: true }));
 }
 
+export function iniciarRevelado(container, signal) {
+    if (signal?.aborted || typeof IntersectionObserver === 'undefined') return;
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (motion.matches) return;
+    const animations = new Set();
+    let stopped = false;
+    const observer = new IntersectionObserver(entries => {
+        if (stopped) return;
+        for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            observer.unobserve(entry.target);
+            if (typeof entry.target.animate !== 'function') continue;
+            const animation = entry.target.animate([
+                { opacity: 0, transform: 'translateY(22px)' },
+                { opacity: 1, transform: 'translateY(0)' }
+            ], { duration: 520, easing: 'cubic-bezier(.2,.65,.3,1)' });
+            animations.add(animation);
+            animation.finished.catch(() => {}).finally(() => animations.delete(animation));
+        }
+    }, { threshold: 0.08 });
+    container.querySelectorAll('.equipo-sections > *, .equipo-media-heading, .equipo-gallery-item, .equipo-video').forEach(element => observer.observe(element));
+    const cleanup = () => {
+        stopped = true;
+        observer.disconnect();
+        animations.forEach(animation => animation.cancel());
+        animations.clear();
+        motion.removeEventListener('change', onMotionChange);
+    };
+    const onMotionChange = event => { if (event.matches) cleanup(); };
+    motion.addEventListener('change', onMotionChange);
+    signal?.addEventListener('abort', cleanup, { once: true });
+}
+
 export async function cargarDetalleEquipo(signal) {
     const container = document.getElementById('equipo-detalle-container');
     if (!container) return;
@@ -212,6 +298,7 @@ export async function cargarDetalleEquipo(signal) {
         container.setAttribute('aria-busy', 'false');
         document.title = `${equipo.nombre} | Zona Diamante`;
         iniciarMedios(container, equipo, signal);
+        iniciarRevelado(container, signal);
     } catch (error) {
         if (signal?.aborted || !container.isConnected) return;
         console.error('No se pudo cargar el detalle del equipo:', error);

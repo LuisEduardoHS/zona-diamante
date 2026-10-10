@@ -52,24 +52,34 @@
       "calendarioUrl": "https://www.sultanes.com.mx/",
       "galeria": [
         {
-          "imagen": "./assets/img/equipos/sultanes/mascota.webp",
-          "alt": "El Perro Sultán"
+          "imagen": "./assets/img/equipos/galerias/sultanes/01.jpg",
+          "alt": "Lanzamiento de Sultanes desde la lomita",
+          "fuente": "https://lmb.com.mx/noticias/daniel-cruz-lidera-triunfo-sobre-durango-y-pone-sultanes-una-victoria-de-la-serie-de",
+          "credito": "Liga Mexicana de Beisbol"
         },
         {
-          "imagen": "./assets/img/equipos/sultanes/estadio.webp",
-          "alt": "Estadio Mobil Super"
+          "imagen": "./assets/img/equipos/galerias/sultanes/02.jpg",
+          "alt": "Sultanes reunidos en el campo",
+          "fuente": "https://lmb.com.mx/noticias/gana-sultanes-durango-maratonico-juego-3-en-14-entradas",
+          "credito": "Liga Mexicana de Beisbol"
         },
         {
-          "imagen": "./assets/img/equipos/sultanes/mvp.webp",
-          "alt": "Ramiro Peña"
+          "imagen": "./assets/img/equipos/galerias/sultanes/03.jpg",
+          "alt": "Jugada defensiva de Sultanes en una base",
+          "fuente": "https://lmb.com.mx/noticias/muestra-sultanes-bateo-oportuno-y-se-queda-con-el-primero-de-la-serie-de-zona-en-durango",
+          "credito": "Liga Mexicana de Beisbol"
         },
         {
-          "imagen": "./assets/img/equipos/sultanes/jugador.webp",
-          "alt": "En el diamante · Sultanes"
+          "imagen": "./assets/img/equipos/galerias/sultanes/04.jpg",
+          "alt": "Turno al bat de Sultanes",
+          "fuente": "https://lmb.com.mx/noticias/par-de-bambinazos-de-lester-y-sultanes-igualo-la-serie-de-campeonato-ante-toros",
+          "credito": "Liga Mexicana de Beisbol"
         },
         {
-          "imagen": "./assets/img/equipos/sultanes/logo-bg.webp",
-          "alt": "Escudo de Sultanes"
+          "imagen": "./assets/img/equipos/galerias/sultanes/05.jpg",
+          "alt": "Celebración de Sultanes con sus compañeros",
+          "fuente": "https://lmb.com.mx/noticias/sultanes-derrota-durango-y-avanza-la-serie-de-campeonato-por-tercer-ano-consecutivo",
+          "credito": "Liga Mexicana de Beisbol"
         }
       ],
       "video": {
@@ -134,24 +144,34 @@
       "calendarioUrl": "https://lmb.com.mx/equipos/dorados",
       "galeria": [
         {
-          "imagen": "./assets/img/equipos/Dorados/mascota.webp",
-          "alt": "Dorado"
+          "imagen": "./assets/img/equipos/galerias/dorados/01.jpg",
+          "alt": "Bateador de Dorados en uniforme morado",
+          "fuente": "https://lmb.com.mx/noticias/con-drama-en-la-novena-dorados-rescata-el-ultimo-en-monclova",
+          "credito": "Liga Mexicana de Beisbol"
         },
         {
-          "imagen": "./assets/img/equipos/Dorados/estadio.jpg",
-          "alt": "Estadio Monumental Chihuahua"
+          "imagen": "./assets/img/equipos/galerias/dorados/02.jpg",
+          "alt": "Jugadores de Dorados celebrando una carrera",
+          "fuente": "https://lmb.com.mx/noticias/dorados-explota-al-bat-y-se-lleva-la-serie-frente-tecos",
+          "credito": "Liga Mexicana de Beisbol"
         },
         {
-          "imagen": "./assets/img/equipos/Dorados/mvp.webp",
-          "alt": "Leo Piña"
+          "imagen": "./assets/img/equipos/galerias/dorados/03.jpg",
+          "alt": "Pelotero de Dorados preparado a la defensiva",
+          "fuente": "https://lmb.com.mx/noticias/dorados-regresan-al-sendero-del-triunfo",
+          "credito": "Liga Mexicana de Beisbol"
         },
         {
-          "imagen": "./assets/img/equipos/Dorados/player.webp",
-          "alt": "En el diamante · Dorados"
+          "imagen": "./assets/img/equipos/galerias/dorados/04.jpg",
+          "alt": "Dorados al bat durante la Copa León",
+          "fuente": "https://lmb.com.mx/noticias/dorados-vence-los-diablos-rojos-en-la-copa-leon-450",
+          "credito": "Liga Mexicana de Beisbol"
         },
         {
-          "imagen": "./assets/img/equipos/Dorados/logo-bg.webp",
-          "alt": "Escudo de Dorados"
+          "imagen": "./assets/img/equipos/galerias/dorados/05.jpg",
+          "alt": "Jugadores de Dorados durante un encuentro ante Leones",
+          "fuente": "https://www.milb.com/news/dorados-vencen-a-leones-para-reclamar-la-serie",
+          "credito": "Prensa de clubes / MiLB"
         }
       ],
       "video": {
@@ -216,24 +236,34 @@
       "calendarioUrl": "https://www.charrosjalisco.com/",
       "galeria": [
         {
-          "imagen": "./assets/img/equipos/Charros/mascota.jpg",
-          "alt": "El Charro"
+          "imagen": "./assets/img/equipos/galerias/charros/01.jpg",
+          "alt": "Jugador de Charros deslizándose en el plato",
+          "fuente": "https://lmb.com.mx/noticias/charros-sale-con-la-serie-completa-de-chihuahua-en-batalla-de-batazos",
+          "credito": "Liga Mexicana de Beisbol"
         },
         {
-          "imagen": "./assets/img/equipos/Charros/estadio.webp",
-          "alt": "Estadio Panamericano"
+          "imagen": "./assets/img/equipos/galerias/charros/02.jpg",
+          "alt": "Bateador de Charros siguiendo la pelota",
+          "fuente": "https://lmb.com.mx/noticias/triunfo-en-extra-innings-para-los-charros-y-se-iguala-1-1-la-serie-de-zona-ante-los-toros",
+          "credito": "Liga Mexicana de Beisbol"
         },
         {
-          "imagen": "./assets/img/equipos/Charros/mvp.webp",
-          "alt": "Japhet Amador"
+          "imagen": "./assets/img/equipos/galerias/charros/03.jpg",
+          "alt": "Charros celebrando juntos en el campo",
+          "fuente": "https://lmb.com.mx/noticias/charros-vence-sultanes-ambos-aseguran-su-lugar-en-las-series-de-zona",
+          "credito": "Liga Mexicana de Beisbol"
         },
         {
-          "imagen": "./assets/img/equipos/Charros/player.webp",
-          "alt": "En el diamante · Charros"
+          "imagen": "./assets/img/equipos/galerias/charros/04.jpg",
+          "alt": "Compañeros de Charros celebrando una jugada",
+          "fuente": "https://cms2.charrosjalisco.com/con-autoridad-charros-vence-a-sultanes-y-se-coloca-3-0/",
+          "credito": "Charros de Jalisco"
         },
         {
-          "imagen": "./assets/img/equipos/Charros/logo-bg.webp",
-          "alt": "Escudo de Charros"
+          "imagen": "./assets/img/equipos/galerias/charros/05.jpg",
+          "alt": "Lanzador de Charros en el montículo",
+          "fuente": "https://cms2.charrosjalisco.com/charros-lo-hace-de-nuevo-vence-a-laguna-y-se-coloca-3-0-en-la-serie/",
+          "credito": "Charros de Jalisco"
         }
       ],
       "video": {
@@ -298,24 +328,34 @@
       "calendarioUrl": "https://www.unionlaguna.mx/",
       "galeria": [
         {
-          "imagen": "./assets/img/equipos/Algonoderos/mascota.webp",
-          "alt": "El Pollo Algodonero"
+          "imagen": "./assets/img/equipos/galerias/algodoneros/01.jpg",
+          "alt": "Afición y jugadores en el Estadio Revolución",
+          "fuente": "https://www.milb.com/news/algodoneros-ul-debuta-con-victoria-en-su-defensa-del-titulo-del-norte",
+          "credito": "Prensa de clubes / MiLB"
         },
         {
-          "imagen": "./assets/img/equipos/Algonoderos/estadio.webp",
-          "alt": "Estadio Revolución"
+          "imagen": "./assets/img/equipos/galerias/algodoneros/02.jpg",
+          "alt": "Bateador de Unión Laguna en acción",
+          "fuente": "https://www.milb.com/news/algodoneros-union-laguna-se-alza-con-la-victoria-ante-tijuana",
+          "credito": "Prensa de clubes / MiLB"
         },
         {
-          "imagen": "./assets/img/equipos/Algonoderos/mvp.webp",
-          "alt": "Nick Torres"
+          "imagen": "./assets/img/equipos/galerias/algodoneros/03.jpg",
+          "alt": "Jugadores de Algodoneros celebrando en el diamante",
+          "fuente": "https://www.milb.com/news/algodoneros-aseguraron-la-primera-serie-del-2024",
+          "credito": "Prensa de clubes / MiLB"
         },
         {
-          "imagen": "./assets/img/equipos/Algonoderos/player.webp",
-          "alt": "En el diamante · Algodoneros"
+          "imagen": "./assets/img/equipos/galerias/algodoneros/04.jpg",
+          "alt": "Pelotero de Algodoneros durante un turno al bat",
+          "fuente": "https://www.milb.com/news/algodoneros-serie-y-dominio-anual-para-ul-sobre-sultanes",
+          "credito": "Prensa de clubes / MiLB"
         },
         {
-          "imagen": "./assets/img/equipos/Algonoderos/logo-bg.webp",
-          "alt": "Escudo de Algodoneros"
+          "imagen": "./assets/img/equipos/galerias/algodoneros/05.jpg",
+          "alt": "Compañeros de Algodoneros celebrando en Monclova",
+          "fuente": "https://www.unionlaguna.mx/articulo/victoria-y-serie-para-algodoneros-en-monclova/",
+          "credito": "Algodoneros del Unión Laguna"
         }
       ],
       "video": {

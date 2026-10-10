@@ -8,7 +8,7 @@ export function urlEquipo(value) {
         return ['https:', 'http:'].includes(url.protocol) ? url.href : '';
     } catch { return ''; }
 }
-const foto = value => ({ ...value, imagen: urlEquipo(value?.imagen) });
+const foto = value => ({ ...value, imagen: urlEquipo(value?.imagen), fuente: urlEquipo(value?.fuente) });
 
 // Contrato único para el JSON local y las filas de public.teams de Supabase.
 export function normalizarEquipo(row) {
