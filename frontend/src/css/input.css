@@ -364,10 +364,10 @@
 .shell-menu-button, .shell-brand { display: grid; place-items: center; width: 48px; height: 48px; border: 0; border-radius: 50%; box-shadow: 0 3px 10px #0002; }
 .shell-menu-button.hidden, .shell-brand.hidden { display: none !important; }
 .shell-menu-button { background: #f27b21; color: white; cursor: pointer; }
-.shell-brand { background: #c8c8c8; color: #2b2b31; }
+.shell-brand { box-sizing: border-box; flex: 0 0 48px; min-width: 48px; max-width: 48px; min-height: 48px; max-height: 48px; padding: 0; overflow: hidden; aspect-ratio: 1; background: #c8c8c8; color: #2b2b31; line-height: 0; }
 .shell-menu-button svg { width: 22px; height: 22px; stroke-width: 3; }
 .shell-brand svg { width: 30px; height: 30px; }
-.shell-account-avatar { width: 100%; height: 100%; border-radius: inherit; object-fit: cover; }
+.shell-account-avatar { display: block; width: 100%; min-width: 100%; max-width: 100%; height: 100%; min-height: 100%; max-height: 100%; aspect-ratio: 1; border-radius: inherit; object-fit: cover; object-position: center; }
 .site-menu {
     box-sizing: border-box;
     position: fixed;

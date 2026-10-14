@@ -126,6 +126,9 @@ export function renderHeader() {
         if (autenticado && avatarUrl) {
             const imagen = document.createElement('img');
             imagen.className = 'shell-account-avatar';
+            imagen.width = 48;
+            imagen.height = 48;
+            imagen.decoding = 'async';
             imagen.src = avatarUrl;
             imagen.alt = '';
             cuenta.replaceChildren(imagen);
