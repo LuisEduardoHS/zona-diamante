@@ -43,7 +43,7 @@ function loadingTemplate(label = 'Cargando reto del día...') {
     </div>`;
 }
 
-function availableTemplate(completed = false) {
+function availableTemplate(completed = false, guest = false) {
     return `<div class="trivia-screen trivia-cover">
         ${calendarTemplate()}
         <div class="trivia-cover-title">
@@ -51,7 +51,10 @@ function availableTemplate(completed = false) {
             <p>Reto del día</p>
         </div>
         <img class="trivia-cover-ball" src="${ruta('assets/img/trivia/pelota-beis.webp')}" alt="" aria-hidden="true">
-        ${completed
+        ${guest ? `<div class="trivia-guest-actions">
+            <p id="trivia-signin-note">Inicia sesión para jugar<br>y sumar puntos con tus aciertos.</p>
+            <a class="trivia-button trivia-button--link" href="${escapeHTML(ruta(RUTAS.login) + '?next=' + encodeURIComponent(new URL(ruta(RUTAS.trivia)).pathname))}" aria-describedby="trivia-signin-note">Iniciar sesión</a>
+        </div>` : completed
             ? '<div class="trivia-start trivia-next-challenge"><span>Próxima trivia en</span><strong id="trivia-countdown" role="timer" aria-live="off">--:--:--</strong></div>'
             : '<button class="trivia-button trivia-start" id="start-trivia" type="button">Iniciar</button>'}
     </div>`;
@@ -185,6 +188,13 @@ export function iniciarTrivia(signal) {
         render();
     };
 
+    const handleError = error => {
+        if (signal.aborted || error.name === 'AbortError') return;
+        setState(error.status === 401
+            ? { type: 'SESSION_REQUIRED' }
+            : { type: 'ERROR', error: error.message });
+    };
+
     const startCountdown = target => {
         clearInterval(countdownTimer);
         const output = document.getElementById('trivia-countdown');
@@ -222,6 +232,7 @@ export function iniciarTrivia(signal) {
         const templates = {
             loading: () => loadingTemplate(),
             available: availableTemplate,
+            guest: () => availableTemplate(false, true),
             in_progress: () => questionTemplate(state),
             submitting: submittingTemplate,
             completed: () => closedResultId === resultId(state.result) ? availableTemplate(true) : (resultBackdrop || availableTemplate(false)) + completedTemplate(state.result, resultStage),
@@ -270,7 +281,7 @@ export function iniciarTrivia(signal) {
             const status = await getDailyTriviaStatus({ signal });
             if (!signal.aborted) await applyStatus(status);
         } catch (error) {
-            if (error.name !== 'AbortError') setState({ type: 'ERROR', error: error.message });
+            handleError(error);
         }
     };
 
@@ -294,6 +305,7 @@ export function iniciarTrivia(signal) {
                     advanceQuestion();
                 }
             } catch (error) {
+                if (error.status === 401) return handleError(error);
                 if (error.name !== 'AbortError') {
                     setState({
                         type: 'ANSWER_FAILED',
@@ -314,7 +326,7 @@ export function iniciarTrivia(signal) {
                 const attempt = await startDailyTrivia({ signal });
                 if (!signal.aborted) setState({ type: 'START', attempt });
             } catch (error) {
-                if (error.name !== 'AbortError') setState({ type: 'ERROR', error: error.message });
+                handleError(error);
             }
             return;
         }
@@ -331,7 +343,7 @@ export function iniciarTrivia(signal) {
                 const result = await submitDailyTrivia({ signal });
                 if (!signal.aborted) setState({ type: 'COMPLETED', result });
             } catch (error) {
-                if (error.name !== 'AbortError') setState({ type: 'ERROR', error: error.message });
+                handleError(error);
             }
         }
     });

@@ -74,6 +74,9 @@
 .trivia-cover-ball { position: absolute; top: 44%; left: -65%; width: 135%; max-width: none; aspect-ratio: 1; object-fit: contain; transform: rotate(-18deg); transform-origin: center; pointer-events: none; user-select: none; }
 .trivia-button { display: inline-flex; justify-content: center; align-items: center; min-height: 48px; padding: 12px 24px; border: 0; border-radius: 20px; background: var(--trivia-light); color: var(--trivia-ink); font: 900 1rem/1.15 'Urbanist', sans-serif; cursor: pointer; box-shadow: 0 4px 5px #003f4d55; transition: transform .16s, background .16s; }
 .trivia-start { position: absolute; left: 17.5%; bottom: 12%; width: 65%; height: 10%; min-height: 46px; font-size: clamp(22px, 7.3cqw, 30px); }
+.trivia-guest-actions { position: absolute; left: 10%; bottom: 10%; display: grid; gap: 14px; width: 80%; padding: 18px; box-sizing: border-box; border: 1px solid #87d2df55; border-radius: 26px; background: #005c6cf2; box-shadow: 0 6px 18px #003a4830; }
+.trivia-guest-actions p { margin: 0; color: #fff; font-size: clamp(14px, 4cqw, 17px); font-weight: 600; line-height: 1.4; text-wrap: balance; }
+.trivia-guest-actions .trivia-button { width: 100%; font-size: clamp(20px, 5.5cqw, 24px); }
 .trivia-next-challenge { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 8px 12px; height: auto; min-height: 64px; border-radius: 20px; background: var(--trivia-light); color: var(--trivia-ink); box-shadow: 0 4px 5px #003f4d55; }
 .trivia-next-challenge span { font-size: 13px; font-weight: 800; }
 .trivia-next-challenge strong { font: 900 clamp(18px, 5.7cqw, 25px)/1.2 'Monument Extended', sans-serif; font-variant-numeric: tabular-nums; }

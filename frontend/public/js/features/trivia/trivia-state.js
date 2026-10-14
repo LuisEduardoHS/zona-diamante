@@ -30,6 +30,8 @@ function primeraPreguntaPendiente(attempt, answers) {
 
 export function triviaReducer(state, action) {
     switch (action.type) {
+        case 'SESSION_REQUIRED':
+            return { ...crearEstadoTrivia(), status: 'guest' };
         case 'STATUS_AVAILABLE':
             return { ...crearEstadoTrivia(), status: 'available' };
         case 'STATUS_UNAVAILABLE':
