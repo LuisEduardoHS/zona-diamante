@@ -61,6 +61,7 @@ export async function solicitarBackend(
     body = null,
     headers = {},
     authenticated = true,
+    signal,
   } = {}
 ) {
   const requestHeaders = new Headers(headers);
@@ -94,8 +95,10 @@ export async function solicitarBackend(
       method,
       headers: requestHeaders,
       body: requestBody,
+      signal,
     });
-  } catch {
+  } catch (error) {
+    if (error?.name === "AbortError") throw error;
     throw new BackendApiError(
       "No fue posible conectar con el backend."
     );
