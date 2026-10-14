@@ -39,17 +39,16 @@ async def create_attempt(
             "Could not create activity attempt.",
         )
 
-        attempt = AttemptRead.model_validate(data[0])
+    attempt = AttemptRead.model_validate(data[0])
 
-        logger.info(
-            "activity_attempt_created user_id=%s attempt_id=%s activity_type=%s",
-            user_id,
-            attempt.id,
-            attempt.activity_type,
-        )
+    logger.info(
+        "activity_attempt_created user_id=%s attempt_id=%s activity_type=%s",
+        user_id,
+        attempt.id,
+        attempt.activity_type,
+    )
 
-        return attempt
-
+    return attempt
 
 async def get_attempt_for_user(
     attempt_id: str,
