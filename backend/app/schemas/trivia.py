@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from typing import Literal
 from uuid import UUID
 
@@ -23,6 +23,9 @@ class TriviaDailyStatusRead(BaseModel):
 
     attempt_id: UUID | None = None
     score: int | None = None
+    points_earned: int | None = None
+    points_balance: int | None = None
+    next_available_at: datetime
 
 
 class TriviaOptionRead(BaseModel):
@@ -37,6 +40,7 @@ class TriviaQuestionRead(BaseModel):
     position: int
     category: str | None = None
     difficulty: str | None = None
+    selected_option_id: UUID | None = None
 
     options: list[TriviaOptionRead]
 
@@ -53,3 +57,33 @@ class TriviaDailyStartRead(BaseModel):
     max_points: int
 
     questions: list[TriviaQuestionRead]
+
+
+class TriviaAnswerUpdate(BaseModel):
+    selected_option_id: UUID
+
+
+class TriviaAnswerRead(BaseModel):
+    question_id: UUID
+    selected_option_id: UUID
+    saved: bool
+
+
+class TriviaQuestionReviewRead(BaseModel):
+    question_id: UUID
+    selected_option_id: UUID
+    correct_option_id: UUID
+    is_correct: bool
+    explanation: str
+
+
+class TriviaDailySubmitRead(BaseModel):
+    attempt_id: UUID
+    status: Literal["completed"]
+    score: int
+    question_count: int
+    points_earned: int
+    points_balance: int
+    already_processed: bool
+    next_available_at: datetime
+    review: list[TriviaQuestionReviewRead]
