@@ -9,6 +9,8 @@ class Settings(BaseSettings):
     supabase_secret_key: str = ""
     database_url: str = ""
 
+    trivia_timezone: str = "America/Monterrey"
+
     frontend_origins: str = (
         "http://localhost:5500,"
         "http://127.0.0.1:5500,"
