@@ -26,3 +26,6 @@ frontend/public/js/app/runtime-config.js
 
 # Supabase Studio local snippets
 supabase/snippets/
+
+# Archivos temporales de pruebas y agentes
+.tmp/
