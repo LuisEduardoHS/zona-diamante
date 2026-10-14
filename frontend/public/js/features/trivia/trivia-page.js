@@ -50,7 +50,7 @@ function availableTemplate(completed = false) {
             <h1 id="trivia-title" tabindex="-1">Trivia</h1>
             <p>Reto del día</p>
         </div>
-        <div class="trivia-art-placeholder" aria-hidden="true"></div>
+        <img class="trivia-cover-ball" src="${ruta('assets/img/trivia/pelota-beis.webp')}" alt="" aria-hidden="true">
         ${completed
             ? '<div class="trivia-start trivia-next-challenge"><span>Próxima trivia en</span><strong id="trivia-countdown" role="timer" aria-live="off">--:--:--</strong></div>'
             : '<button class="trivia-button trivia-start" id="start-trivia" type="button">Iniciar</button>'}
