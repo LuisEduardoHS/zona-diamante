@@ -100,21 +100,35 @@ function submittingTemplate() {
     </div></div>`;
 }
 
-function completedTemplate(result) {
-    return `<div class="trivia-screen trivia-screen--center trivia-completed"><div>
-        <button class="trivia-close-result" id="close-trivia-result" type="button" aria-label="Cerrar resultados"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
-        <span class="trivia-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor"><path d="M530.8 134.1C545.1 144.5 548.3 164.5 537.9 178.8L281.9 530.8C276.4 538.4 267.9 543.1 258.5 543.9C249.1 544.7 240 541.2 233.4 534.6L105.4 406.6C92.9 394.1 92.9 373.8 105.4 361.3C117.9 348.8 138.2 348.8 150.7 361.3L252.2 462.8L486.2 141.1C496.6 126.8 516.6 123.6 530.9 134z"/></svg></span>
-        <h2>¡Reto completado!</h2>
-        <div class="trivia-result">
-            <div class="trivia-stat"><strong>${Number(result.correct_count)} / ${Number(result.total_questions)}</strong>respuestas correctas</div>
-            <div class="trivia-stat"><strong>+${Number(result.points_earned)}</strong>puntos ganados</div>
+
+// Add future score-specific artwork here; other scores deliberately show only points.
+const resultIllustrations = [
+    { scores: [4, 5], file: 'PTrivia-PanchoP.webp', alt: 'Pancho celebrando tus aciertos' },
+    { scores: [2, 3], file: 'PTrivia-Pollo.webp', alt: 'Pollo pensando en las respuestas' }
+];
+
+function completedTemplate(result, stage) {
+    const points = Number(result.points_earned) || 0;
+    const artwork = resultIllustrations.find(item => item.scores.includes(Number(result.correct_count)));
+    const reward = `<span aria-hidden="true">+ <span data-count="${points}">${points}</span> puntos</span><span class="sr-only">Ganaste ${points} puntos</span>`;
+    return `<dialog class="trivia-finale" id="trivia-finale" aria-label="${stage === 'reward' ? 'Puntos ganados' : 'Resultado de la trivia'}">
+        <div class="trivia-finale-layout ${stage === 'reward' ? 'is-reward' : 'is-summary'}">
+            ${stage === 'reward' ? `<div class="trivia-celebration">
+                ${artwork ? `<img class="trivia-celebration-art" src="${ruta(`assets/img/trivia/${artwork.file}`)}" alt="${escapeHTML(artwork.alt)}" width="1080" height="1080">` : '<div class="trivia-art-placeholder" aria-hidden="true"></div>'}
+                <div class="trivia-reward-pill">${reward}</div>
+            </div>` : `<div class="trivia-reward-toast">${reward}</div>
+            <section class="trivia-summary" aria-labelledby="trivia-result-title">
+                <h2 id="trivia-result-title">¡Reto completado!</h2>
+                <div class="trivia-summary-stats">
+                    <div><strong><span data-count="${Number(result.correct_count)}">${Number(result.correct_count)}</span> / ${Number(result.total_questions)}</strong><span>respuestas<br>correctas</span></div>
+                    <div><strong data-count="${Number(result.points_balance) || 0}">${Number(result.points_balance) || 0}</strong><span>Balance</span></div>
+                </div>
+                <p>Nueva trivia en:<strong id="trivia-countdown" role="timer" aria-live="off">--:--:--</strong></p>
+                <a class="trivia-collection" href="${ruta(RUTAS.coleccion)}">Mi colección</a>
+            </section>`}
+            <button class="trivia-continue" id="close-trivia-result" type="button">Presiona para continuar<span aria-hidden="true"> ›</span></button>
         </div>
-        ${Number.isFinite(Number(result.points_balance)) ? `<p class="trivia-balance">Balance: <strong>${Number(result.points_balance)} puntos</strong></p>` : ''}
-        <p class="trivia-countdown">Nueva trivia en:<strong id="trivia-countdown">--:--:--</strong></p>
-        <div class="trivia-complete-actions">
-            <a class="trivia-button trivia-button--link" href="${ruta(RUTAS.coleccion)}">Mi colección</a>
-        </div>
-    </div></div>`;
+    </dialog>`;
 }
 
 function unavailableTemplate() {
@@ -142,6 +156,29 @@ export function iniciarTrivia(signal) {
     let state = crearEstadoTrivia();
     let displayedDay = localDateValue(new Date());
     let countdownTimer;
+    let resultStage = 'summary';
+    let resultBackdrop = '';
+    let animationFrame;
+
+    const continueResult = () => {
+        if (state.status !== 'completed') return;
+        if (resultStage === 'reward') resultStage = 'summary';
+        else closedResultId = resultId(state.result);
+        render();
+        if (closedResultId === resultId(state.result)) document.getElementById('trivia-title')?.focus({ preventScroll: true });
+    };
+
+    const animateResult = dialog => {
+        if (!dialog || globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+        const counters = [...dialog.querySelectorAll('[data-count]')];
+        const start = performance.now();
+        const tick = now => {
+            const progress = Math.min(1, (now - start) / 1000);
+            counters.forEach(node => { node.textContent = Math.round(Number(node.dataset.count) * (1 - (1 - progress) ** 3)); });
+            if (progress < 1 && !signal.aborted) animationFrame = requestAnimationFrame(tick);
+        };
+        animationFrame = requestAnimationFrame(tick);
+    };
 
     const setState = action => {
         state = triviaReducer(state, action);
@@ -178,6 +215,7 @@ export function iniciarTrivia(signal) {
 
     const render = () => {
         clearInterval(countdownTimer);
+        if (animationFrame) cancelAnimationFrame(animationFrame);
         const app = document.getElementById('trivia-app');
         app?.setAttribute('data-status', state.status);
         view.setAttribute('aria-busy', String(['loading', 'submitting'].includes(state.status)));
@@ -186,7 +224,7 @@ export function iniciarTrivia(signal) {
             available: availableTemplate,
             in_progress: () => questionTemplate(state),
             submitting: submittingTemplate,
-            completed: () => closedResultId === resultId(state.result) ? availableTemplate(true) : completedTemplate(state.result),
+            completed: () => closedResultId === resultId(state.result) ? availableTemplate(true) : (resultBackdrop || availableTemplate(false)) + completedTemplate(state.result, resultStage),
             unavailable: unavailableTemplate,
             error: () => errorTemplate(state.error)
         };
@@ -196,6 +234,17 @@ export function iniciarTrivia(signal) {
             if (app) app.scrollTop = 0;
         });
         if (state.status === 'completed') startCountdown(state.nextAvailableAt);
+        const finale = view.querySelector('#trivia-finale');
+        if (finale) {
+            finale.showModal();
+            finale.querySelector('.trivia-continue')?.focus({ preventScroll: true });
+            finale.addEventListener('cancel', event => { event.preventDefault(); continueResult(); }, { signal });
+            finale.addEventListener('click', event => {
+                if (event.target.closest('a, button') || event.detail > 1) return;
+                continueResult();
+            }, { signal });
+            animateResult(finale);
+        }
     };
 
     const applyStatus = async status => {
@@ -213,6 +262,8 @@ export function iniciarTrivia(signal) {
 
     const loadStatus = async () => {
         displayedDay = localDateValue(new Date());
+        resultStage = 'summary';
+        resultBackdrop = '';
         state = crearEstadoTrivia();
         render();
         try {
@@ -225,9 +276,8 @@ export function iniciarTrivia(signal) {
 
     view.addEventListener('click', async event => {
         if (event.target.closest('#close-trivia-result') && state.status === 'completed') {
-            closedResultId = resultId(state.result);
-            render();
-            document.getElementById('trivia-title')?.focus({ preventScroll: true });
+            if (event.detail > 1) return;
+            continueResult();
             return;
         }
 
@@ -274,6 +324,8 @@ export function iniciarTrivia(signal) {
         }
         if (event.target.closest('#confirm-submit')) {
             if (!todasRespondidas(state)) return;
+            resultBackdrop = questionTemplate(state);
+            resultStage = 'reward';
             setState({ type: 'SUBMITTING' });
             try {
                 const result = await submitDailyTrivia({ signal });
@@ -294,6 +346,8 @@ export function iniciarTrivia(signal) {
     signal.addEventListener('abort', () => {
         clearInterval(dayTimer);
         clearInterval(countdownTimer);
+        if (animationFrame) cancelAnimationFrame(animationFrame);
+        view.querySelector('#trivia-finale')?.close();
     }, { once: true });
     void loadStatus();
 }
