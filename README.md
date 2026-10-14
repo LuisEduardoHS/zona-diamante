@@ -238,6 +238,7 @@ SUPABASE_URL=http://127.0.0.1:54321
 SUPABASE_SECRET_KEY=<SECRET_KEY_LOCAL>
 DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:54322/postgres
 FRONTEND_ORIGINS=http://localhost:5500,https://zona-diamante.netlify.app
+TRIVIA_TIMEZONE=America/Monterrey
 ```
 
 Obtén los valores locales necesarios con:
@@ -315,6 +316,23 @@ Health check:
 ```text
 http://127.0.0.1:8000/health
 ```
+
+## Trivia diaria
+
+La trivia usa la fecha oficial de `TRIVIA_TIMEZONE` y requiere un JWT de
+Supabase en todos sus endpoints:
+
+```text
+GET  /api/v1/trivia/daily
+POST /api/v1/trivia/daily/start
+PUT  /api/v1/trivia/daily/answers/{question_id}
+POST /api/v1/trivia/daily/submit
+```
+
+Cada selección se persiste al avanzar y `/daily/start` reanuda el único
+intento del usuario para ese día. La evaluación, los 20 puntos por acierto y
+la llave de idempotencia se calculan en backend; las respuestas correctas sólo
+se incluyen en el review posterior a completar la trivia.
 
 Para detenerlo usa:
 
