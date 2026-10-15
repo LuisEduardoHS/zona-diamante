@@ -45,7 +45,7 @@ export async function renderCarousel(signal) {
                             ${index === 0 ? 'src' : 'data-src'}="${equipo.imagenes.jugadorCarrusel}"
                             alt="Jugador ${equipo.nombre}" decoding="async" fetchpriority="${index === 0 ? 'high' : 'low'}"
                             class="h-full object-contain object-bottom drop-shadow-2xl"
-                            style="filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));"
+                            style="filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));${equipo.id === 'charros-jal' ? ' transform: translateY(4%) scale(1.2); transform-origin: top center;' : ''}"
                         >
                     </div>
 

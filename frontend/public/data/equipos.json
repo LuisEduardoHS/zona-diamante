@@ -10,7 +10,7 @@
     },
     "imagenes": {
       "logoFondo": "./assets/img/equipos/sultanes/logo-bg.webp",
-      "jugadorCarrusel": "./assets/img/equipos/sultanes/jugador.webp"
+      "jugadorCarrusel": "./assets/img/equipos/sultanes/jugador-enhanced.webp"
     },
     "detalles": {
       "zona": "Zona Norte de la LMB",
@@ -103,7 +103,7 @@
     },
     "imagenes": {
       "logoFondo": "./assets/img/equipos/Dorados/logo-bg.webp",
-      "jugadorCarrusel": "./assets/img/equipos/Dorados/player.webp"
+      "jugadorCarrusel": "./assets/img/equipos/Dorados/player-enhanced.webp"
     },
     "detalles": {
       "zona": "Zona Norte de la LMB",
@@ -195,7 +195,7 @@
     },
     "imagenes": {
       "logoFondo": "./assets/img/equipos/Charros/logo-bg.webp",
-      "jugadorCarrusel": "./assets/img/equipos/Charros/player.webp"
+      "jugadorCarrusel": "./assets/img/equipos/Charros/player-enhanced.webp"
     },
     "detalles": {
       "zona": "Zona Norte de la LMB",
@@ -287,7 +287,7 @@
     },
     "imagenes": {
       "logoFondo": "./assets/img/equipos/Algonoderos/logo-bg.webp",
-      "jugadorCarrusel": "./assets/img/equipos/Algonoderos/player.webp"
+      "jugadorCarrusel": "./assets/img/equipos/Algonoderos/player-enhanced.webp"
     },
     "detalles": {
       "zona": "Zona Norte de la LMB",
