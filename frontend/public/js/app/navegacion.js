@@ -3,7 +3,8 @@ import { requerirSesion } from '../features/auth/guards.js';
 
 const cache = new Map();
 const estilos = new Map();
-const ordenSecciones = [RUTAS.inicio, RUTAS.trivia, RUTAS.juego, RUTAS.camara, RUTAS.coleccion, RUTAS.informacion, RUTAS.ayuda];
+// Mantener las secciones principales en el orden visual del menú inferior.
+const ordenSecciones = [RUTAS.inicio, RUTAS.trivia, RUTAS.camara, RUTAS.coleccion, RUTAS.informacion, RUTAS.juego, RUTAS.ayuda];
 
 const rutasPrivadas = new Set([
     RUTAS.coleccion,
