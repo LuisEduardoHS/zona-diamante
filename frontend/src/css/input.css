@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./auth-design.css";
 @source "../../public/js";
 @source "../../public";
 
@@ -236,7 +237,7 @@
 .profile-card {
     margin-top: 16px;
     padding: 22px;
-    border: 1px solid rgb(0 130 152 / .13);
+    @apply border border-gray-200;
     border-radius: 24px;
     background: #fff;
     box-shadow: 0 14px 36px rgb(37 37 42 / .07);
@@ -261,7 +262,12 @@
 .profile-avatar-copy { min-width: 0; flex: 1; }
 .profile-avatar-copy h2 { margin: 0; font-size: 1.1rem; }
 .profile-avatar-copy p { margin: 5px 0 12px; color: #74747b; font-size: .76rem; }
-.profile-avatar-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.profile-avatar-actions { @apply flex flex-nowrap items-center gap-1; }
+.profile-avatar-actions svg { @apply size-5 shrink-0 fill-current; }
+.profile-avatar-actions .profile-file-button,
+.profile-avatar-actions .profile-text-button { @apply size-11 shrink-0 border-0 bg-transparent p-0 text-[#008298] shadow-none; }
+.profile-avatar-actions .profile-text-button[hidden] { @apply hidden; }
+.profile-file-button:focus-within { @apply outline-2 outline-offset-2 outline-[#008298]; }
 .profile-file-button,
 .profile-text-button {
     display: inline-flex;
@@ -282,6 +288,7 @@
 .profile-kicker { margin: 0; color: #008298; font-size: .67rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
 .profile-unsaved { padding: 6px 9px; border-radius: 999px; background: rgb(242 123 33 / .12); color: #bd550b; font-size: .67rem; font-weight: 900; }
 .profile-form-actions { display: grid; grid-template-columns: 1fr 1.35fr; gap: 10px; }
+.profile-form-actions .auth-primary { @apply shadow-none; }
 .profile-points { display: flex; align-items: end; justify-content: space-between; padding: 17px 18px; border-radius: 18px; background: linear-gradient(135deg, #007d91, #009bb3); color: #fff; }
 .profile-points span { font-size: .8rem; font-weight: 800; }
 .profile-points strong { font-size: 1.8rem; line-height: 1; }
