@@ -8,6 +8,7 @@ from app.api.routes.attempts import router as attempts_router
 from app.api.routes.rewards import router as rewards_router
 from app.core.logging_config import configure_logging
 from app.api.routes.trivia import router as trivia_router
+from app.api.routes.cards import router as cards_router
 
 configure_logging()
 
@@ -30,6 +31,7 @@ app.include_router(me_router)
 app.include_router(attempts_router)
 app.include_router(rewards_router)
 app.include_router(trivia_router)
+app.include_router(cards_router)
 
 
 @app.get("/")
