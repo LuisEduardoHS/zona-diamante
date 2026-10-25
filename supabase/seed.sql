@@ -281,4 +281,18 @@ values
             )
         )
     )
-);
+)
+-- Fill reference rows on a fresh installation, without replacing editorial
+-- values already maintained in an existing database. Never change team IDs.
+on conflict (slug) do update set
+    city = coalesce(teams.city, excluded.city),
+    zone = coalesce(teams.zone, excluded.zone),
+    history = coalesce(teams.history, excluded.history),
+    colors = coalesce(teams.colors, excluded.colors),
+    details = coalesce(teams.details, excluded.details),
+    updated_at = now()
+where teams.city is null
+   or teams.zone is null
+   or teams.history is null
+   or teams.colors is null
+   or teams.details is null;

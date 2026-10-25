@@ -360,6 +360,12 @@ def _raise_known_rpc_error(error: SupabaseRestError) -> None:
         "Option does not belong to the question.": (422, "Selected option does not belong to the question."),
         "Daily trivia attempt has expired.": (409, "Daily trivia attempt has expired."),
         "Daily trivia attempt cannot be completed.": (409, "Daily trivia cannot be completed."),
+        "Idempotency key belongs to another operation.": (
+            409, "Daily trivia completion conflicts with an existing operation."
+        ),
+        "Economic operation state is inconsistent.": (
+            409, "Daily trivia completion could not be confirmed. Please contact support."
+        ),
     }
     for message, (status_code, detail) in known_errors.items():
         if message in error.detail:

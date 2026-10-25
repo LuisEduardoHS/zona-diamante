@@ -118,6 +118,10 @@ async def purchase_card(
                 status.HTTP_409_CONFLICT,
                 "Idempotency key belongs to another operation.",
             ),
+            "Economic operation state is inconsistent.": (
+                status.HTTP_409_CONFLICT,
+                "The purchase could not be confirmed. Please contact support.",
+            ),
         }
 
         mapped_error = known_errors.get(
