@@ -42,6 +42,12 @@ async def supabase_rest_request(
         "Accept": "application/json",
     }
 
+    # Legacy service_role keys are JWTs: PostgREST needs the bearer token to
+    # select that role, in addition to Kong's apikey. Modern sb_secret_* keys
+    # are opaque gateway keys and must not be used as bearer JWTs.
+    if settings.supabase_secret_key.count(".") == 2:
+        request_headers["Authorization"] = f"Bearer {settings.supabase_secret_key}"
+
     if headers:
         request_headers.update(headers)
 

@@ -318,8 +318,24 @@ def upgrade(project, historical_names):
         raise CheckFailure("Expected 20 recorded migrations after historical gap-fill")
     print("PASS: upgrade from all 18 historical migrations, preserved data and legacy retries", flush=True)
 
+    # Keep the Phase 1 checkpoint above, then verify subsequent forward-only
+    # migrations too. Clean and upgraded environments must run the same schema.
+    known = {Path(name).name for name in historical_names} | {BOOTSTRAP, ECONOMY}
+    additions = sorted(path for path in (ROOT / 'supabase/migrations').glob('*.sql')
+                       if path.name not in known)
+    for path in additions:
+        shutil.copyfile(path, project.supabase / 'migrations' / path.name)
+    if additions:
+        project.run_cli("migration", "up", "--local")
+        if project.value(snapshot_sql) != before:
+            raise CheckFailure("Later migration changed historical economic/editorial data")
+        expected = str(20 + len(additions))
+        if project.sql('select count(*) from supabase_migrations.schema_migrations;') != expected:
+            raise CheckFailure("Missing forward migration in upgraded environment")
+        print(f"PASS: {len(additions)} forward migration(s) preserve existing data", flush=True)
 
-def main():
+
+def main(extra_checks=None):
     cli = ROOT / "node_modules/.bin" / ("supabase.cmd" if os.name == "nt" else "supabase")
     if not cli.exists() or shutil.which("docker") is None:
         print("BLOCKED: installed Supabase CLI and Docker are required; nothing installed", flush=True)
@@ -340,6 +356,8 @@ def main():
         clean.seed_twice()
         clean.tap()
         concurrency(clean)
+        if extra_checks:
+            extra_checks(clean)
         clean.stop()
         projects.remove(clean)
         existing = LocalProject("upgrade", str(cli))
@@ -348,6 +366,8 @@ def main():
         existing.seed_twice()
         existing.tap()
         concurrency(existing)
+        if extra_checks:
+            extra_checks(existing)
         existing.stop()
         projects.remove(existing)
         print("PASS: phase 1 database acceptance in both isolated environments", flush=True)
