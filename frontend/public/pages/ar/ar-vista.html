@@ -2,17 +2,17 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <link rel="icon" type="image/svg+xml" href="../../assets/logo-naranja.svg">
     <title>Zona Diamante | AR</title>
     <link href="../../css/output.css?v=20261014-20" rel="stylesheet">
-    <link href="../../css/camara-foto.css" rel="stylesheet">
+    <link href="../../css/camara-foto.css?v=20261025-2b" rel="stylesheet">
 
     <script src="../../vendor/aframe.min.js"></script>
     <script src="../../vendor/mindar-image-aframe.prod.js"></script>
 
     <style>
-        video, canvas {
+        body > video, a-scene canvas {
             width: 100vw !important;
             height: 100vh !important;
             height: 100dvh !important;
@@ -45,8 +45,8 @@
                     Cargando 3D...
                 </button>
 
-                <button id="btn-reclamar" class="flex-1 bg-[#f27b21] text-white font-bold py-3 rounded-xl shadow-md active:scale-95 transition-transform text-sm">
-                    Reclamar
+                <button id="btn-info-equipo" class="flex-1 bg-[#f27b21] text-white font-bold py-3 rounded-xl shadow-md active:scale-95 transition-transform text-sm">
+                    <svg class="ar-icon" aria-hidden="true"><use href="../../assets/fontawesome-ar.svg#circle-info"/></svg> Equipo y mascota
                 </button>
             </div>
             <p id="modelo-status" role="status" class="text-xs text-gray-500 text-center">Cargando el modelo 3D...</p>
@@ -63,9 +63,11 @@
         </div>
     </div>
 
-    <button id="btn-cerrar-inspector" class="hidden absolute top-24 right-6 z-50 bg-red-500 text-white w-10 h-10 rounded-full font-bold shadow-xl active:scale-95 flex justify-center items-center pointer-events-auto">
-        ✕
+    <button aria-label="Volver al escáner" id="btn-cerrar-inspector" class="hidden absolute top-24 right-6 z-50 bg-red-500 text-white w-10 h-10 rounded-full font-bold shadow-xl active:scale-95 flex justify-center items-center pointer-events-auto">
+        <svg class="ar-icon" aria-hidden="true"><use href="../../assets/fontawesome-ar.svg#xmark"/></svg>
     </button>
+
+    <button id="btn-info-inspector" class="ar-info-inspector hidden" type="button"><svg class="ar-icon" aria-hidden="true"><use href="../../assets/fontawesome-ar.svg#circle-info"/></svg> Equipo y mascota</button>
 
     <div id="foto-controles" class="foto-controles" hidden>
         <p id="foto-camara-status" class="foto-camara-status" role="status" aria-live="polite"></p>
@@ -97,6 +99,7 @@
             </figure>
             <div class="foto-opciones">
                 <p id="foto-descripcion">Guarda este momento o compártelo con tu equipo.</p>
+                <button id="btn-editar-foto" class="foto-boton foto-boton-editar" type="button"><svg class="ar-icon" aria-hidden="true"><use href="../../assets/fontawesome-ar.svg#sliders"/></svg> Editar foto</button>
                 <div class="foto-acciones">
                     <button id="btn-guardar-foto" class="foto-boton foto-boton-guardar" type="button" autofocus>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></svg>
@@ -109,6 +112,24 @@
                 </div>
                 <p id="foto-preview-status" class="foto-preview-status" role="status" aria-live="polite"></p>
             </div>
+            <section id="foto-editor" class="foto-editor" aria-label="Editor de fotografía" hidden>
+                <div class="foto-editor-tabs" aria-label="Herramientas de edición">
+                    <button type="button" data-foto-tab="filtros" aria-pressed="true"><svg class="ar-icon" aria-hidden="true"><use href="../../assets/fontawesome-ar.svg#wand-magic-sparkles"/></svg> Filtros</button>
+                    <button type="button" data-foto-tab="ajustes" aria-pressed="false"><svg class="ar-icon" aria-hidden="true"><use href="../../assets/fontawesome-ar.svg#sliders"/></svg> Ajustes</button>
+                </div>
+                <div id="foto-filtros" class="foto-filtros" aria-label="Filtros disponibles"></div>
+                <div id="foto-ajustes-manuales" class="foto-ajustes-manuales" aria-label="Ajustes manuales" hidden>
+                    <button type="button" data-foto-ajuste="brillo" aria-pressed="true">Brillo</button>
+                    <button type="button" data-foto-ajuste="contraste" aria-pressed="false">Contraste</button>
+                    <button type="button" data-foto-ajuste="saturacion" aria-pressed="false">Saturación</button>
+                    <button type="button" data-foto-ajuste="temperatura" aria-pressed="false">Temperatura</button>
+                </div>
+                <div class="foto-slider"><label id="foto-ajuste-label" for="foto-ajuste">Intensidad</label><output id="foto-ajuste-valor" for="foto-ajuste">100</output>
+                    <input id="foto-ajuste" type="range" min="0" max="100" value="100" aria-labelledby="foto-ajuste-label"></div>
+                <div class="foto-editor-secundarias"><button id="foto-comparar" type="button" aria-pressed="false">Ver original</button><button id="foto-restablecer" type="button"><svg class="ar-icon" aria-hidden="true"><use href="../../assets/fontawesome-ar.svg#arrow-rotate-left"/></svg> Restablecer</button></div>
+                <p id="foto-editor-status" role="status" aria-live="polite"></p>
+                <div class="foto-acciones"><button id="foto-editar-cancelar" class="foto-boton foto-boton-compartir" type="button">Cancelar</button><button id="foto-editar-confirmar" class="foto-boton foto-boton-guardar" type="button"><svg class="ar-icon" aria-hidden="true"><use href="../../assets/fontawesome-ar.svg#check"/></svg> Confirmar</button></div>
+            </section>
         </div>
     </dialog>
 
@@ -121,11 +142,21 @@
         </div>
     </dialog>
 
+    <dialog id="ar-equipo-panel" class="foto-preview ar-equipo-panel" aria-labelledby="ar-equipo-nombre">
+        <header class="foto-cabecera"><p class="foto-etiqueta"><span aria-hidden="true"></span> Equipo reconocido</p><button id="ar-equipo-cerrar" class="foto-cerrar" type="button" aria-label="Cerrar información del equipo"><svg class="ar-icon" aria-hidden="true"><use href="../../assets/fontawesome-ar.svg#xmark"/></svg></button></header>
+        <div class="ar-equipo-identidad"><img id="ar-equipo-logo" alt=""><div><h2 id="ar-equipo-nombre"></h2><p id="ar-equipo-ciudad"></p></div></div>
+        <p id="ar-equipo-historia"></p>
+        <dl class="ar-equipo-datos"><div><dt>Estadio</dt><dd id="ar-equipo-estadio"></dd></div><div><dt>Mascota</dt><dd id="ar-equipo-mascota"></dd></div></dl>
+        <section class="ar-propiedad" aria-label="Estado de la carta mascota"><h3>Tu mascota en la colección</h3><p id="ar-mascota-status" role="status" aria-live="polite"></p><button id="ar-mascota-consultar" type="button">Consultar estado</button></section>
+        <a id="ar-equipo-ficha" class="foto-boton foto-boton-guardar" target="_top">Ver ficha completa del equipo</a>
+        <p class="ar-panel-nota">Es la misma ficha del carrusel de inicio. Puedes cerrar este panel para seguir en AR.</p>
+    </dialog>
+
     <!-- Confirma tras 3 actualizaciones válidas; conserva el suavizado y la tolerancia a pérdidas. -->
     <a-scene mindar-image="imageTargetSrc: ../../ar/targets.mind; autoStart: false; filterMinCF: 0.001; filterBeta: 0.01; warmupTolerance: 2; missTolerance: 8; uiLoading: no; uiScanning: no; uiError: no;" loading-screen="enabled: false" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
 
         <a-camera id="ar-camera" position="0 0 0" look-controls="enabled: false" wasd-controls="enabled: false">
-            <a-gltf-model id="modelo-camara" rotation="0 0 0" visible="false"></a-gltf-model>
+            <a-gltf-model id="modelo-camara" gltf-model="" rotation="0 0 0" visible="false"></a-gltf-model>
         </a-camera>
 
         <!-- Iluminación de estudio: cielo/suelo suave, clave cálida y relleno frío. -->
@@ -152,7 +183,7 @@
     </a-scene>
 
     <script type="module" src="../../js/features/ar/ar-marco.js"></script>
-    <script type="module" src="../../js/features/ar/camara.js?v=20260927-14"></script>
+    <script type="module" src="../../js/features/ar/camara.js?v=20261025-2b"></script>
 
 </body>
 </html>

@@ -1,0 +1,17 @@
+Browser tab: 2, Title: "Fase 2B · validación local", URL: "http://127.0.0.1:4176/__review".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 47-55, 57-60
++					65 container
++						66 image
++						67 image Logo Dorados
++						68 image Jugador Dorados
++						69 image
++						70 text CHIHUAHUA
++						71 heading Dorados, Value: 2
++							72 text Dorados
++						73 link Description: Ver más, Value: 127.0.0.1:4176/pages/equipos/equipo.html?id=dorados-chi
++						74 checkbox Description: Ver equipo Sultanes, Value: 0
++						75 checkbox Description: Ver equipo Dorados, Value: 1
++						76 checkbox Description: Ver equipo Charros, Value: 0
++						77 checkbox Description: Ver equipo Algodoneros, Value: 0
+The focused UI element is 29 button Comprobar salida y recursos, ID: cleanup

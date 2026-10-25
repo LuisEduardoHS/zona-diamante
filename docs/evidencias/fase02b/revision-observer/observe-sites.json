@@ -1,0 +1,32 @@
+[
+  {
+    "file": "frontend/public/js/features/ar/ar-marco.js",
+    "line": 8,
+    "column": 66,
+    "context": "t observador = new MutationObserver(avisar);\ndocument.querySelectorAll('dialog').forEach(dialogo => observador.observe(dialogo, { attributes: true, attributeFilter: ['open'] }));\nwindow.addEventListener('pagehide', () => {\n    document.querySelectorAll('video'"
+  },
+  {
+    "file": "frontend/public/js/features/ar/foto-ar.js",
+    "line": 84,
+    "column": 64,
+    "context": "biarVista(dialogo.open || confirmacion.open));\n        for (const modal of [dialogo, confirmacion]) observador.observe(modal, { attributes: true, attributeFilter: ['open'] });\n        window.addEventListener('pagehide', () => observador.disconnect(), { once: t"
+  },
+  {
+    "file": "frontend/public/vendor/aframe.min.js",
+    "line": 25,
+    "column": 938,
+    "context": "il===T?T:L),ne&&p()}function h(e,t){var r=this;ue.call(r,e,t),C.call(r,{target:r})}function v(e,t){ee(e,t),O?O.observe(e,de):(pe&&(e.setAttribute=h,e[w]=E(e),e.addEventListener(R,C)),e.addEventListener(D,s)),e.createdCallback&&me&&(e.created=!0,e.createdCallba"
+  },
+  {
+    "file": "frontend/public/vendor/aframe.min.js",
+    "line": 25,
+    "column": 5134,
+    "context": "ll(l,a.attributeName))!==a.oldValue&&l.attributeChangedCallback(a.attributeName,a.oldValue,i))})}(o(L),o(T)),O.observe(r,{childList:!0,subtree:!0})):(g=[],he(function e(){for(;g.length;)g.shift().call(null,g.shift());he(e)}),r.addEventListener(\"DOMNodeInserted"
+  },
+  {
+    "file": "frontend/public/vendor/aframe.min.js",
+    "line": 45106,
+    "column": 2957,
+    "context": "ibute(\"line\"),this.clearAllIntersections()},addEventListeners:function(){this.data.autoRefresh&&(this.observer.observe(this.el.sceneEl,OBSERVER_CONFIG),this.el.sceneEl.addEventListener(\"object3dset\",this.setDirty),this.el.sceneEl.addEventListener(\"object3dremo"
+  }
+]

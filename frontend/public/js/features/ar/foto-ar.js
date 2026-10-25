@@ -48,7 +48,7 @@ export async function capturarFotoAR(escena) {
     });
 }
 
-export function iniciarFotoAR({ escena, puedeCapturar, obtenerEquipo }) {
+export function iniciarFotoAR({ escena, puedeCapturar, obtenerEquipo, crearEditor, alCambiarVista }) {
     const controles = document.getElementById('foto-controles');
     const disparador = document.getElementById('btn-tomar-foto');
     const estadoCamara = document.getElementById('foto-camara-status');
@@ -68,6 +68,22 @@ export function iniciarFotoAR({ escena, puedeCapturar, obtenerEquipo }) {
     let archivo = null;
     let url = null;
     let version = 0;
+    const editor = crearEditor?.({ imagen,
+        mostrarConfirmada() { if (url) imagen.src = url; },
+        alConfirmar(nuevoArchivo) {
+            if (url) URL.revokeObjectURL(url);
+            archivo = nuevoArchivo;
+            url = URL.createObjectURL(archivo);
+            imagen.src = url;
+            dialogo.dataset.estado = 'confirmed';
+            estado.textContent = 'Edición confirmada. Guardar y compartir usan esta versión.';
+        }
+    });
+    if (alCambiarVista) {
+        const observador = new MutationObserver(() => alCambiarVista(dialogo.open || confirmacion.open));
+        for (const modal of [dialogo, confirmacion]) observador.observe(modal, { attributes: true, attributeFilter: ['open'] });
+        window.addEventListener('pagehide', () => observador.disconnect(), { once: true });
+    }
 
     const admiteCompartir = () => {
         try {
@@ -78,6 +94,7 @@ export function iniciarFotoAR({ escena, puedeCapturar, obtenerEquipo }) {
     };
 
     const limpiarFoto = () => {
+        editor?.limpiar();
         imagen.removeAttribute('src');
         if (url) URL.revokeObjectURL(url);
         url = null;
@@ -94,7 +111,12 @@ export function iniciarFotoAR({ escena, puedeCapturar, obtenerEquipo }) {
     };
 
     const solicitarDescarte = () => {
-        if (!compartiendo && archivo && !confirmacion.open) confirmacion.showModal();
+        if (editor?.editando) { editor.cancelar(); return; }
+        if (!compartiendo && archivo && !confirmacion.open) {
+            // Only one modal at a time in the editor-enabled experience.
+            if (editor) dialogo.close();
+            confirmacion.showModal();
+        }
     };
 
     disparador.addEventListener('click', async () => {
@@ -115,6 +137,8 @@ export function iniciarFotoAR({ escena, puedeCapturar, obtenerEquipo }) {
             const nombreEquipo = equipo.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/gi, '-').toLowerCase();
             const fecha = new Date().toISOString().replace(/[:.]/g, '-');
             archivo = new File([blob], `zona-diamante-${nombreEquipo}-${fecha}.jpg`, { type: blob.type });
+            editor?.cargar(archivo);
+            if (dialogo.dataset) dialogo.dataset.estado = 'captured';
             url = URL.createObjectURL(archivo);
             imagen.src = url;
             imagen.alt = `Tu foto con el modelo 3D de ${equipo}`;
@@ -174,18 +198,24 @@ export function iniciarFotoAR({ escena, puedeCapturar, obtenerEquipo }) {
 
     cerrar.addEventListener('click', solicitarDescarte);
     confirmarDescarte.addEventListener('click', descartarFoto);
-    conservar.addEventListener('click', () => confirmacion.close());
+    const volverAFoto = () => { confirmacion.close(); if (archivo && !dialogo.open) dialogo.showModal(); };
+    conservar.addEventListener('click', volverAFoto);
     dialogo.addEventListener('cancel', (event) => {
         event.preventDefault();
         solicitarDescarte();
     });
     confirmacion.addEventListener('cancel', (event) => {
         event.preventDefault();
-        confirmacion.close();
+        volverAFoto();
     });
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) ++version;
     });
+    window.addEventListener?.('pagehide', () => {
+        ++version;
+        editor?.limpiar();
+        limpiarFoto();
+    }, { once: true });
 
     return {
         activar(valor) {

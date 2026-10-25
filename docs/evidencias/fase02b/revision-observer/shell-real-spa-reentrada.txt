@@ -1,0 +1,23 @@
+Browser tab: 10, Title: "Zona Diamante | AR", URL: "http://127.0.0.1:4176/pages/experiencias/camara.html".
+0 AXWebArea Zona Diamante | AR, URL: 127.0.0.1:4176/pages/experiencias/camara.html
+	1 container
+		2 container
+			3 pop up button (collapsed) Description: Abrir menú, ID: btn-abrir-menu, Secondary Actions: Expand
+			4 link Description: Iniciar sesión, Value: 127.0.0.1:4176/pages/auth/login.html
+		5 container Navegación inferior
+			6 container
+				7 link Description: Inicio, Value: 127.0.0.1:4176/index.html
+				8 link Description: Trivia, Value: 127.0.0.1:4176/pages/experiencias/trivia.html
+				9 link Description: Cámara AR, Value: 127.0.0.1:4176/pages/experiencias/camara.html
+				10 link Description: Info, Value: 127.0.0.1:4176/pages/contenido/Informacion.html
+				11 link Description: Juego, Value: 127.0.0.1:4176/pages/experiencias/juego.html
+		12 container Cámara de realidad aumentada
+			13 container Description: Escáner y cámara AR, ID: ar-frame
+				14 AXWebArea Zona Diamante | AR, URL: 127.0.0.1:4176/pages/ar/ar-vista.html?v=20261025-2b&app=20260927-14
+					15 container
+						19 text Iniciando cámara...
+						17 image
+						20 container No es posible reproducir los archivos multimedia.
+		18 text Zona Diamante | AR
+
+The focused UI element is 12 container Cámara de realidad aumentada

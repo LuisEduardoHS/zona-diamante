@@ -1,0 +1,63 @@
+Browser tab: 3, Title: "Fase 2B · validación local", URL: "http://127.0.0.1:4174/__review".
+1 AXWebArea Fase 2B · validación local, URL: 127.0.0.1:4174/__review
+	3 container
+		4 text Resolución
+		5 pop up button (collapsed, settable) Resolución, Value: 390x844, ID: size, Secondary Actions: Expand
+			6 menu
+				7 360x740
+				8 (selected) 390x844
+				9 768x1024
+				10 844x390
+				11 1440x900
+	12 container
+		13 text Cuenta
+		14 pop up button (collapsed, settable) Cuenta, Value: guest, ID: account, Secondary Actions: Expand
+			15 menu
+				16 (selected) guest
+				17 pending
+				18 owned
+				19 error
+	20 container
+		21 button Algodoneros
+		22 button Charros
+		23 button Dorados
+		24 button Sultanes
+		25 button Perder marcador, ID: lost
+		26 button Probar editor y exportación, ID: tests
+		27 button Comprobar diseño, ID: layout
+		28 button Vista visual, ID: visual
+		29 button Comprobar salida y recursos, ID: cleanup
+	67 text PASS: viewport 390×844, sin overflow horizontal ni modal/acciones fuera de límites
+Modal: foto-preview
+	31 container Description: Experiencia AR bajo prueba, ID: visor
+		32 AXWebArea Zona Diamante | AR, URL: 127.0.0.1:4174/__ar?estado=guest
+			33 container Edita tu foto, ID: foto-preview
+				34 text ZONA DIAMANTE · FOTO AR
+				35 heading Edita tu foto, Value: 2, ID: foto-titulo
+					63 text Edita tu foto
+				37 button Description: Cancelar edición, ID: btn-cerrar-foto
+					38 image
+				40 image Description: Tu foto con el modelo 3D de Algodoneros, ID: foto-imagen
+				41 container Description: Editor de fotografía, ID: foto-editor
+					42 container Herramientas de edición
+						43 checkbox  Filtros, Value: 1
+						44 checkbox  Ajustes, Value: 0
+					45 container Description: Filtros disponibles, ID: foto-filtros
+						46 checkbox Original, Value: 0
+						47 checkbox Vívido, Value: 1
+						48 checkbox Cálido, Value: 0
+						49 checkbox Frío, Value: 0
+						50 checkbox B/N, Value: 0
+						51 checkbox Vintage, Value: 0
+						52 checkbox Cine, Value: 0
+					64 text Intensidad
+					65 text 100
+					55 slider (settable, integer) Intensidad, Value: 100, ID: foto-ajuste
+					56 checkbox Ver original, Value: 0, ID: foto-comparar
+					57 button  Restablecer, ID: foto-restablecer
+					66 text Vista previa · los cambios se guardan al confirmar.
+					59 container
+						60 button Cancelar, ID: foto-editar-cancelar
+						61 button Confirmar, ID: foto-editar-confirmar
+
+The focused UI element is 27 button Comprobar diseño, ID: layout

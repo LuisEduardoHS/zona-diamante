@@ -1,0 +1,65 @@
+Browser tab: 3, Title: "Fase 2B · validación local", URL: "http://127.0.0.1:4174/__review".
+1 AXWebArea Fase 2B · validación local, URL: 127.0.0.1:4174/__review
+	2 text Cámara y reconocimiento SIMULADOS · modelos GLB y módulos reales
+	3 container
+		4 text Resolución
+		5 pop up button (collapsed, settable) Resolución, Value: 1440x900, ID: size, Secondary Actions: Expand
+			6 menu
+				7 360x740
+				8 390x844
+				9 768x1024
+				10 844x390
+				11 (selected) 1440x900
+	12 container
+		13 text Cuenta
+		14 pop up button (collapsed, settable) Cuenta, Value: guest, ID: account, Secondary Actions: Expand
+			15 menu
+				16 (selected) guest
+				17 pending
+				18 owned
+				19 error
+	20 container
+		21 button Algodoneros
+		22 button Charros
+		23 button Dorados
+		24 button Sultanes
+		25 button Perder marcador, ID: lost
+		26 button Probar editor y exportación, ID: tests
+		27 button Comprobar diseño, ID: layout
+		28 button Vista visual, ID: visual
+		29 button Comprobar salida y recursos, ID: cleanup
+	32 text PASS: navegación fuera detuvo 1 pistas de video. Volver crea un contexto nuevo.
+	31 container Description: Experiencia AR bajo prueba, ID: visor
+		33 AXWebArea Zona Diamante, URL: 127.0.0.1:4174/index.html
+			34 container
+				35 pop up button (collapsed) Description: Abrir menú, ID: btn-abrir-menu, Secondary Actions: Expand
+				36 link Description: Iniciar sesión, Value: 127.0.0.1:4174/pages/auth/login.html
+			37 container Navegación inferior
+				38 container
+					39 link Description: Inicio, Value: 127.0.0.1:4174/index.html
+					40 link Description: Trivia, Value: 127.0.0.1:4174/pages/experiencias/trivia.html
+					41 link Description: Cámara AR, Value: 127.0.0.1:4174/pages/experiencias/camara.html
+					42 link Description: Info, Value: 127.0.0.1:4174/pages/contenido/Informacion.html
+					43 link Description: Juego, Value: 127.0.0.1:4174/pages/experiencias/juego.html
+			44 container
+				45 container carrusel-container
+					64 container
+						65 image
+						66 image Logo Charros
+						67 image Jugador Charros
+						68 image
+						69 text JALISCO
+						70 heading Charros, Value: 2
+							71 text Charros
+						72 link Description: Ver más, Value: 127.0.0.1:4174/pages/equipos/equipo.html?id=charros-jal
+					55 container carousel-dots
+						73 checkbox Description: Ver equipo Sultanes, Value: 0
+						74 checkbox Description: Ver equipo Dorados, Value: 0
+						75 checkbox Description: Ver equipo Charros, Value: 1
+						76 checkbox Description: Ver equipo Algodoneros, Value: 0
+				60 link Description: Colección, Value: 127.0.0.1:4174/pages/coleccion/coleccion.html
+				61 button Partidos
+					62 text Partidos
+					63 image
+
+The focused UI element is 29 button Comprobar salida y recursos, ID: cleanup

@@ -1,0 +1,3 @@
+Browser tab: 2, Title: "Fase 2B · validación local", URL: "http://127.0.0.1:4176/__review".
+There has been no change in the accessibility tree.
+The focused UI element is 34 AXWebArea Zona Diamante | AR, URL: 127.0.0.1:4176/__ar?estado=guest&observer_case=returned

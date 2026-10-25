@@ -1,0 +1,77 @@
+{
+  "traceCounts": [
+    {
+      "kind": "installed",
+      "count": 18
+    },
+    {
+      "kind": "observe-ok",
+      "count": 225
+    }
+  ],
+  "validNodeTypes": [
+    {
+      "nodeType": "1",
+      "count": 212
+    },
+    {
+      "nodeType": "9",
+      "count": 13
+    }
+  ],
+  "runtimeHashes": [
+    {
+      "file": "frontend/public/js/features/ar/ar-marco.js",
+      "unchanged": true
+    },
+    {
+      "file": "frontend/public/js/features/ar/foto-ar.js",
+      "unchanged": true
+    },
+    {
+      "file": "frontend/public/pages/ar/ar-vista.html",
+      "unchanged": true
+    }
+  ],
+  "preservedServices": [
+    {
+      "LocalPort": 5500,
+      "OwningProcess": 24224
+    },
+    {
+      "LocalPort": 4174,
+      "OwningProcess": 49260
+    }
+  ],
+  "regression": {
+    "date": "2026-10-25",
+    "frontend": {
+      "command": "npm test",
+      "cwd": "frontend",
+      "passed": 68,
+      "failed": 0,
+      "skipped": 0,
+      "exit": 0
+    },
+    "backend": {
+      "command": ".\\venv\\Scripts\\python.exe -m pytest -q -p no:cacheprovider",
+      "cwd": "backend",
+      "passed": 111,
+      "failed": 0,
+      "warnings": 1,
+      "exit": 0
+    },
+    "build": {
+      "command": "npm run build",
+      "cwd": "frontend",
+      "exit": 0
+    },
+    "browser": {
+      "editorDistinctChecks": 35,
+      "editorRuns": 3,
+      "iframeChecks": 14,
+      "endedFixtureTracksOnExit": 1
+    },
+    "sqlRerun": false
+  }
+}

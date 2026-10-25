@@ -1,0 +1,57 @@
+Browser tab: 3, Title: "Fase 2B · validación local", URL: "http://127.0.0.1:4174/__review".
+1 AXWebArea Fase 2B · validación local, URL: 127.0.0.1:4174/__review
+	3 container
+		4 text Resolución
+		5 pop up button (collapsed, settable) Resolución, Value: 390x844, ID: size, Secondary Actions: Expand
+			6 menu
+				7 360x740
+				8 (selected) 390x844
+				9 768x1024
+				10 844x390
+				11 1440x900
+	12 container
+		13 text Cuenta
+		14 pop up button (collapsed, settable) Cuenta, Value: guest, ID: account, Secondary Actions: Expand
+			15 menu
+				16 (selected) guest
+				17 pending
+				18 owned
+				19 error
+	20 container
+		21 button Algodoneros
+		22 button Charros
+		23 button Dorados
+		24 button Sultanes
+		25 button Perder marcador, ID: lost
+		26 button Probar editor y exportación, ID: tests
+		27 button Comprobar diseño, ID: layout
+		28 button Vista visual, ID: visual
+		29 button Comprobar salida y recursos, ID: cleanup
+	87 text Detección simulada. No es una prueba de escaneo físico.
+	31 container Description: Experiencia AR bajo prueba, ID: visor
+		83 AXWebArea Zona Diamante | AR, URL: 127.0.0.1:4174/__ar?estado=guest
+			88 container Algodoneros, ID: ar-equipo-panel
+				89 container
+					90 text EQUIPO RECONOCIDO
+					91 button Description: Cerrar información del equipo, ID: ar-equipo-cerrar
+				92 image Description: Logo de Algodoneros, ID: ar-equipo-logo
+				93 heading Algodoneros, Value: 2, ID: ar-equipo-nombre
+					94 text Algodoneros
+				95 text Unión Laguna
+				96 text Fundados en 1940, son el equipo profesional con más arraigo en la Comarca Lagunera. Son conocidos por su histórico y hermoso Estadio Revolución y su apasionada afición guinda.
+				97 definition list
+					98 container ESTADIO
+						99 text ESTADIO
+					100 text Estadio Revolución
+					101 container MASCOTA
+						102 text MASCOTA
+					103 text El Pollo Algodonero
+				104 container Estado de la carta mascota
+					105 heading Tu mascota en la colección, Value: 3
+						106 text Tu mascota en la colección
+					107 text Puedes disfrutar AR sin cuenta. Inicia sesión para consultar tus mascotas. El escaneo no concede cartas automáticamente.
+					108 button Consultar estado, ID: ar-mascota-consultar
+				109 link Description: Ver ficha completa del equipo, Value: 127.0.0.1:4174/pages/equipos/equipo.html?id=algodoneros-ul, ID: ar-equipo-ficha
+				110 text Es la misma ficha del carrusel de inicio. Puedes cerrar este panel para seguir en AR.
+
+The focused UI element is 91 button Description: Cerrar información del equipo, ID: ar-equipo-cerrar

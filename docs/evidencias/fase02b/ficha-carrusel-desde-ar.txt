@@ -1,0 +1,98 @@
+Browser tab: 3, Title: "Algodoneros | Zona Diamante", URL: "http://127.0.0.1:4174/pages/equipos/equipo.html?id=algodoneros-ul".
+1 AXWebArea Algodoneros | Zona Diamante, URL: 127.0.0.1:4174/pages/equipos/equipo.html?id=algodoneros-ul
+	2 container
+		3 container
+			4 pop up button (collapsed) Description: Abrir menú, ID: btn-abrir-menu, Secondary Actions: Expand
+			5 link Description: Iniciar sesión, Value: 127.0.0.1:4174/pages/auth/login.html
+		6 container Navegación inferior
+			7 container
+				8 link Description: Inicio, Value: 127.0.0.1:4174/index.html
+				9 link Description: Trivia, Value: 127.0.0.1:4174/pages/experiencias/trivia.html
+				10 link Description: Cámara AR, Value: 127.0.0.1:4174/pages/experiencias/camara.html
+				11 link Description: Info, Value: 127.0.0.1:4174/pages/contenido/Informacion.html
+				12 link Description: Juego, Value: 127.0.0.1:4174/pages/experiencias/juego.html
+		13 container equipo-detalle-container
+			14 container
+				15 text UNIÓN LAGUNA
+				16 heading Algodoneros, Value: 1
+					17 text Algodoneros
+			18 container Resumen de Algodoneros
+				19 heading Zona Norte de la LMB, Value: 2
+					20 text Zona Norte de la LMB
+				21 text Récord: 52 39 victorias y derrotas 3.° en su zona
+			22 container
+				23 button (expanded) Estadísticas, Secondary Actions: Collapse
+					24 text Estadísticas
+				25 heading Historia y campeonatos, Value: 3
+					26 text Historia y campeonatos
+				27 text Fundados en 1940, son el equipo profesional con más arraigo en la Comarca Lagunera. Son conocidos por su histórico y hermoso Estadio Revolución y su apasionada afición guinda.
+				28 definition list
+					29 container Porcentaje de victorias (PCT)
+						30 text Porcentaje de victorias (PCT)
+					31 text .571
+					32 container Racha (Streak)
+						33 text Racha (Streak)
+					34 text G3
+					35 container Promedio de bateo (AVG)
+						36 text Promedio de bateo (AVG)
+					37 text .288
+					38 container Home runs (HR)
+						39 text Home runs (HR)
+					40 text 75
+					41 container Carreras (CI)
+						42 text Carreras (CI)
+					43 text 420
+			44 container
+				45 image Estadio Revolución
+				46 text Torreón, Coahuila
+				47 heading Estadio Revolución, Value: 2
+					48 text Estadio Revolución
+			49 container Mascota del equipo
+				50 image El Pollo Algodonero
+				51 heading El Pollo Algodonero, Value: 2
+					52 text El Pollo Algodonero
+				53 container
+					54 text La energía de
+					55 text nuestra afición.
+			56 container Palmarés
+				57 content list
+					58 text 2 Campeonatos de LMB (1942, 1950)
+					59 text Campeón Zona Norte (2023)
+			60 container
+				61 image Nick Torres
+				62 text MVP
+				63 heading Nick Torres, Value: 2
+					64 text Nick Torres
+			65 container Calendario de juegos
+				66 heading Calendario de juegos, Value: 2, ID: equipo-calendario
+					67 text Calendario de juegos
+				68 content list
+					69 container
+						70 image Algodoneros
+						71 text Algodoneros vs
+						72 image Charros
+						73 text Charros Por confirmar Por definir
+				74 text Fechas y horarios pendientes de confirmación.
+				75 link Description: Consultar sitio oficial, Value: unionlaguna.mx/
+			76 container Galería y video de Algodoneros
+				77 text DENTRO DEL DIAMANTE
+				78 heading En nuestra casa, Value: 2
+					79 text En nuestra casa
+				80 button Ampliar imagen: Afición y jugadores en el Estadio Revolución
+					81 image Afición y jugadores en el Estadio Revolución
+				82 button Ampliar imagen: Bateador de Unión Laguna en acción
+					83 image Bateador de Unión Laguna en acción
+				84 button Ampliar imagen: Jugadores de Algodoneros celebrando en el diamante
+					85 image Jugadores de Algodoneros celebrando en el diamante
+				86 button Ampliar imagen: Pelotero de Algodoneros durante un turno al bat
+					87 image Pelotero de Algodoneros durante un turno al bat
+				88 button Ampliar imagen: Compañeros de Algodoneros celebrando en Monclova
+					89 image Compañeros de Algodoneros celebrando en Monclova
+				90 container Algodoneros vs. Toros · Playoffs, juego 5
+					91 text EN MOVIMIENTO
+					92 heading Algodoneros vs. Toros · Playoffs, juego 5, Value: 2, ID: equipo-video-title
+						93 text Algodoneros vs. Toros · Playoffs, juego 5
+					94 button Abrir video con filtros
+					95 button Reproducir Algodoneros vs. Toros · Playoffs, juego 5
+
+The focused UI element is 1 AXWebArea Algodoneros | Zona Diamante, URL: 127.0.0.1:4174/pages/equipos/equipo.html?id=algodoneros-ul

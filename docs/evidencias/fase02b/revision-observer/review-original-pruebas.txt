@@ -1,0 +1,73 @@
+Browser tab: 3, Title: "Fase 2B · validación local", URL: "http://127.0.0.1:4174/__review".
+0 AXWebArea Fase 2B · validación local, URL: 127.0.0.1:4174/__review
+	1 text Cámara y reconocimiento SIMULADOS · modelos GLB y módulos reales
+	2 container
+		3 text Resolución
+		4 pop up button (collapsed, settable) Resolución, Value: 390x844, ID: size, Secondary Actions: Expand
+			5 menu
+				6 360x740
+				7 (selected) 390x844
+				8 768x1024
+				9 844x390
+				10 1440x900
+	11 container
+		12 text Cuenta
+		13 pop up button (collapsed, settable) Cuenta, Value: guest, ID: account, Secondary Actions: Expand
+			14 menu
+				15 (selected) guest
+				16 pending
+				17 owned
+				18 error
+	19 container
+		20 button Algodoneros
+		21 button Charros
+		22 button Dorados
+		23 button Sultanes
+		24 button Perder marcador, ID: lost
+		25 button Probar editor y exportación, ID: tests
+		26 button Comprobar diseño, ID: layout
+		27 button Vista visual, ID: visual
+		28 button Comprobar salida y recursos, ID: cleanup
+	37 text PASS: 35 comprobaciones reales de navegador
+Panel usa datos reales
+Panel conserva equipo durante cambio
+Ficha es la ruta del carrusel
+Cierre de panel
+Información también disponible desde el visor 3D
+Captura real video+WebGL con límite de resolución
+Composición contiene imagen no vacía
+Entrada al editor
+Selección filtro original
+Selección filtro vivido
+Selección filtro calido
+Selección filtro frio
+Selección filtro mono
+Selección filtro vintage
+Selección filtro cine
+Comparar original
+Intensidad responde
+Exportación conserva dimensiones
+Exportación contiene filtro en píxeles
+Archivo B/N es neutro tras JPEG
+Slider brillo
+Slider contraste
+Slider saturacion
+Slider temperatura
+Cancelar conserva última confirmación
+Restablecer/confirmar recupera original sin doble procesamiento
+Brillo manual confirmado modifica píxeles exportados
+Guardar exporta archivo preparado
+Compartir recibe el archivo editado confirmado
+Cancelar share conserva foto
+Descarte sin modales anidados
+Conservar vuelve a foto
+Descartar limpia imagen
+Segunda captura sin estado editado residual
+Volver al escáner
+	30 container Description: Experiencia AR bajo prueba, ID: visor
+		31 AXWebArea Zona Diamante | AR, URL: 127.0.0.1:4174/__ar?estado=guest
+			33 container
+				38 text Apunta la cámara a un logo
+				36 image
+
+The focused UI element is 31 AXWebArea Zona Diamante | AR, URL: 127.0.0.1:4174/__ar?estado=guest

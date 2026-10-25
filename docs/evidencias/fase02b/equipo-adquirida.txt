@@ -1,0 +1,57 @@
+Browser tab: 3, Title: "Fase 2B · validación local", URL: "http://127.0.0.1:4174/__review".
+1 AXWebArea Fase 2B · validación local, URL: 127.0.0.1:4174/__review
+	3 container
+		4 text Resolución
+		5 pop up button (collapsed, settable) Resolución, Value: 390x844, ID: size, Secondary Actions: Expand
+			6 menu
+				7 360x740
+				8 (selected) 390x844
+				9 768x1024
+				10 844x390
+				11 1440x900
+	12 container
+		13 text Cuenta
+		14 pop up button (collapsed, settable) Cuenta, Value: owned, ID: account, Secondary Actions: Expand
+			15 menu
+				16 guest
+				17 pending
+				18 (selected) owned
+				19 error
+	20 container
+		21 button Algodoneros
+		22 button Charros
+		23 button Dorados
+		24 button Sultanes
+		25 button Perder marcador, ID: lost
+		26 button Probar editor y exportación, ID: tests
+		27 button Comprobar diseño, ID: layout
+		28 button Vista visual, ID: visual
+		29 button Comprobar salida y recursos, ID: cleanup
+	77 text Detección simulada. No es una prueba de escaneo físico.
+	31 container Description: Experiencia AR bajo prueba, ID: visor
+		73 AXWebArea Zona Diamante | AR, URL: 127.0.0.1:4174/__ar?estado=owned
+			78 container Charros, ID: ar-equipo-panel
+				79 container
+					80 text EQUIPO RECONOCIDO
+					81 button Description: Cerrar información del equipo, ID: ar-equipo-cerrar
+				82 image Description: Logo de Charros, ID: ar-equipo-logo
+				83 heading Charros, Value: 2, ID: ar-equipo-nombre
+					84 text Charros
+				85 text Jalisco
+				86 text Una franquicia emblemática del béisbol mexicano. Los Charros compiten tanto en verano (LMB) como en invierno (LMP), siempre arropados por una de las mejores aficiones del país en Jalisco.
+				87 definition list
+					88 container ESTADIO
+						89 text ESTADIO
+					90 text Estadio Panamericano
+					91 container MASCOTA
+						92 text MASCOTA
+					93 text El Charro
+				94 container Estado de la carta mascota
+					95 heading Tu mascota en la colección, Value: 3
+						96 text Tu mascota en la colección
+					97 text Mascota del equipo ya está en tu colección.
+					98 button Consultar estado, ID: ar-mascota-consultar
+				99 link Description: Ver ficha completa del equipo, Value: 127.0.0.1:4174/pages/equipos/equipo.html?id=charros-jal, ID: ar-equipo-ficha
+				100 text Es la misma ficha del carrusel de inicio. Puedes cerrar este panel para seguir en AR.
+
+The focused UI element is 81 button Description: Cerrar información del equipo, ID: ar-equipo-cerrar

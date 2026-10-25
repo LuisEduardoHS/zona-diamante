@@ -1,0 +1,58 @@
+Browser tab: 3, Title: "Fase 2B · validación local", URL: "http://127.0.0.1:4174/__review".
+1 AXWebArea Fase 2B · validación local, URL: 127.0.0.1:4174/__review
+	3 container
+		4 text Resolución
+		5 pop up button (collapsed, settable) Resolución, Value: 390x844, ID: size, Secondary Actions: Expand
+			6 menu
+				7 360x740
+				8 (selected) 390x844
+				9 768x1024
+				10 844x390
+				11 1440x900
+	12 container
+		13 text Cuenta
+		14 pop up button (collapsed, settable) Cuenta, Value: pending, ID: account, Secondary Actions: Expand
+			15 menu
+				16 guest
+				17 (selected) pending
+				18 owned
+				19 error
+	20 container
+		21 button Algodoneros
+		22 button Charros
+		23 button Dorados
+		24 button Sultanes
+		25 button Perder marcador, ID: lost
+		26 button Probar editor y exportación, ID: tests
+		27 button Comprobar diseño, ID: layout
+		28 button Vista visual, ID: visual
+		29 button Comprobar salida y recursos, ID: cleanup
+	72 text PASS: viewport 390×844, sin overflow horizontal ni modal/acciones fuera de límites
+Modal: ar-equipo-panel
+	31 container Description: Experiencia AR bajo prueba, ID: visor
+		71 AXWebArea Zona Diamante | AR, URL: 127.0.0.1:4174/__ar?estado=pending
+			73 container Sultanes, ID: ar-equipo-panel
+				74 container
+					75 text EQUIPO RECONOCIDO
+					76 button Description: Cerrar información del equipo, ID: ar-equipo-cerrar
+				77 image Description: Logo de Sultanes, ID: ar-equipo-logo
+				78 heading Sultanes, Value: 2, ID: ar-equipo-nombre
+					79 text Sultanes
+				80 text Monterrey
+				81 text Los Sultanes de Monterrey suman 10 campeonatos de la Liga Mexicana de Béisbol en su historia, además de haber obtenido 13 títulos de la Zona Norte.
+				82 definition list
+					83 container ESTADIO
+						84 text ESTADIO
+					85 text Estadio Mobil Super
+					86 container MASCOTA
+						87 text MASCOTA
+					88 text El Perro Sultán
+				89 container Estado de la carta mascota
+					90 heading Tu mascota en la colección, Value: 3
+						91 text Tu mascota en la colección
+					92 text Mascota del equipo: pendiente de verificación. Reconocer el logo no entrega una carta todavía.
+					93 button Consultar estado, ID: ar-mascota-consultar
+				94 link Description: Ver ficha completa del equipo, Value: 127.0.0.1:4174/pages/equipos/equipo.html?id=sultanes-mty, ID: ar-equipo-ficha
+				95 text Es la misma ficha del carrusel de inicio. Puedes cerrar este panel para seguir en AR.
+
+The focused UI element is 27 button Comprobar diseño, ID: layout

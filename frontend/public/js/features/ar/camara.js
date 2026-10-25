@@ -1,8 +1,11 @@
-import { lanzarConfeti } from '../juego/confeti.js';
-import { iniciarFotoAR } from './foto-ar.js';
+import { iniciarFotoAR } from './foto-ar.js?v=20261025-2b';
 import { configurarCalidadCamara } from './calidad-camara.js';
 import { configurarDeteccionAmplia } from './deteccion-amplia.js';
 import { crearEntradaModelo, POSE_REPOSO } from './entradas-modelo.js';
+import { iniciarContextoEquipo } from './contexto-equipo.js';
+import { iniciarEditorFoto } from './editor-foto.js';
+import { crearCargaModelo } from './carga-modelo.js';
+import { detenerRecursosAR } from './recursos-ar.js';
 
 // Inicia cuando el HTML está listo.
 document.addEventListener('DOMContentLoaded', () => {
@@ -46,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Botones, cámara y modelos de las dos vistas.
     const btnInspeccionar = document.getElementById('btn-inspeccionar');
-    const btnReclamar = document.getElementById('btn-reclamar');
+    const contextoEquipo = iniciarContextoEquipo();
     const btnCerrarInspector = document.getElementById('btn-cerrar-inspector');
     const camara = document.getElementById('ar-camera');
     const modelosEnTargets = document.querySelectorAll('.modelo-target');
@@ -65,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let arPausado = false;
     let paginaSuspendida = document.hidden;
     let versionVisibilidad = 0;
+    let fotoAbierta = false;
 
     // Guarda el encuadre y los cambios hechos con los dedos.
     let encuadre = null;
@@ -223,6 +227,34 @@ document.addEventListener('DOMContentLoaded', () => {
     let modeloCargado = false;
     let modeloPreparadoPara = null;
     let modeloSolicitadoPara = null;
+    const cargaModelo = crearCargaModelo({
+        async cargar(ruta) {
+            const componente = modeloCamara.components['gltf-model'];
+            await componente.ready;
+            return new Promise((resolve, reject) => componente.loader.load(ruta, gltf => {
+                const mesh = gltf.scene || gltf.scenes[0];
+                mesh.animations = gltf.animations;
+                resolve(mesh);
+            }, undefined, reject));
+        },
+        aplicar(mesh, index, ruta) {
+            modeloCamara.dataset.modeloSrc = ruta;
+            modeloCamara.setObject3D('mesh', mesh);
+            modeloSolicitadoPara = index;
+            modeloCamara.emit('model-loaded', { format: 'gltf', model: mesh });
+        },
+        error(causa, ruta) { modeloCamara.emit('model-error', { src: ruta, error: causa }); },
+        liberar(mesh) {
+            mesh.traverse(objeto => {
+                objeto.geometry?.dispose();
+                const materiales = Array.isArray(objeto.material) ? objeto.material : [objeto.material];
+                for (const material of materiales.filter(Boolean)) {
+                    for (const valor of Object.values(material)) if (valor?.isTexture) valor.dispose();
+                    material.dispose();
+                }
+            });
+        }
+    });
 
     // Habilita Ver 3D cuando el modelo está listo.
     const actualizarCarga = () => {
@@ -254,8 +286,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const rutaActual = modeloCamara.getAttribute('src');
+        const rutaActual = modeloCamara.dataset.modeloSrc;
         if (rutaActual === rutaModelo && modeloCamara.getObject3D('mesh')) {
+            cargaModelo.cancelar();
             modeloCargado = true;
             modeloPreparadoPara = index;
             actualizarCarga();
@@ -265,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modeloCargado = false;
         modeloPreparadoPara = null;
         actualizarCarga();
-        modeloCamara.setAttribute('src', rutaModelo);
+        void cargaModelo.solicitar(index, rutaModelo);
     };
 
     // Ajusta el modelo para que se vea completo en la cámara.
@@ -447,7 +480,7 @@ document.addEventListener('DOMContentLoaded', () => {
         reajustarInspector();
         // MindAR empieza a procesar justo después de emitir arReady.
         queueMicrotask(() => {
-            if (paginaSuspendida) pausarCamara();
+            if (paginaSuspendida || fotoAbierta) pausarCamara();
         });
     });
     escena.addEventListener('arError', mostrarErrorCamara);
@@ -465,11 +498,12 @@ document.addEventListener('DOMContentLoaded', () => {
         clearTimeout(temporizadorPerdida);
         temporizadorPerdida = null;
         targetResultado = index;
+        contextoEquipo.detectar(index);
 
         const nombreEquipo = equiposAR[index];
         textoEquipo.textContent = nombreEquipo;
         prepararModeloInspector(index);
-        uiStatus.textContent = "¡Escaneo Exitoso!";
+        uiStatus.textContent = 'Logo reconocido en este dispositivo';
         uiStatusContainer.classList.replace('bg-black/50', 'bg-green-500/80');
 
         uiResult.classList.remove('hidden');
@@ -487,6 +521,8 @@ document.addEventListener('DOMContentLoaded', () => {
         clearTimeout(temporizadorPerdida);
         temporizadorPerdida = null;
         targetResultado = null;
+        cargaModelo.cancelar();
+        contextoEquipo.detectar(null);
         actualizarCarga();
 
         uiStatus.textContent = MENSAJE_ESPERA_ESCANEO;
@@ -551,11 +587,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fotoAR = iniciarFotoAR({
         escena,
+        crearEditor: iniciarEditorFoto,
+        alCambiarVista(abierta) {
+            fotoAbierta = abierta;
+            if (abierta) pausarCamara();
+            else if (!paginaSuspendida) void reanudarCamara();
+        },
         puedeCapturar: () => modoInspector && !entradaModelo.activa && arListo && !arPausado && !paginaSuspendida && modeloCargado,
         obtenerEquipo: () => equiposAR[modeloPreparadoPara]
     });
 
-    btnReclamar.addEventListener('click', lanzarConfeti);
 
     // Abre el visor 3D y oculta la interfaz del escáner.
     btnInspeccionar.addEventListener('click', () => {
@@ -584,12 +625,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('ar-ui').classList.add('hidden');
         btnCerrarInspector.classList.remove('hidden');
+        document.getElementById('btn-info-inspector').classList.remove('hidden');
 
         modelosEnTargets.forEach((modelo) => modelo.setAttribute('visible', false));
         if (modeloCamara) modeloCamara.setAttribute('visible', true);
         fotoAR.activar(false);
         entradaModelo.iniciar();
-        lanzarConfeti();
     });
 
     // Cierra el visor 3D y regresa al escáner.
@@ -605,6 +646,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('ar-ui').classList.remove('hidden');
         btnCerrarInspector.classList.add('hidden');
+        document.getElementById('btn-info-inspector').classList.add('hidden');
 
         if (modeloCamara) modeloCamara.setAttribute('visible', false);
         modelosEnTargets.forEach((modelo) => modelo.setAttribute('visible', true));
@@ -667,6 +709,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const reanudarCamara = async () => {
+        if (fotoAbierta) return;
         const version = ++versionVisibilidad;
         escena.play();
         if (!arPausado) {
@@ -725,7 +768,19 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     document.addEventListener('visibilitychange', () => actualizarVisibilidad(document.hidden));
     window.addEventListener('pagehide', () => actualizarVisibilidad(true));
-    window.addEventListener('pageshow', () => actualizarVisibilidad(document.hidden));
+    window.addEventListener('pagehide', () => {
+        clearTimeout(temporizadorInicioCamara);
+        clearTimeout(temporizadorPerdida);
+        clearTimeout(temporizadorOcultar);
+        detenerRotacionAutomatica();
+        entradaModelo.cancelar();
+        cargaModelo.destruir();
+        detenerRecursosAR(escena);
+    }, { once:true });
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) { window.location.reload(); return; }
+        actualizarVisibilidad(document.hidden);
+    });
 
     // Escucha solo la escena para no interferir con los botones y menús.
     escena.addEventListener('touchstart', (e) => {
