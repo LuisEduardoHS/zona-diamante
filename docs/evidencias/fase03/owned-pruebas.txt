@@ -1,0 +1,14 @@
+PASS: 13 comprobaciones (FIXTURE HTTP: owned)
+Catálogo dinámico
+Filtro de tipo
+Filtros de equipo y tipo combinados
+Detalle modal
+Identidad del catálogo
+Cerrar detalle
+Detalle conserva filtros
+Restablecer filtros
+Propiedad existente visible
+Carta adquirida no se paga otra vez
+Mascota jamás comprable
+Acceso a AR
+Ruta AR real

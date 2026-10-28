@@ -1,0 +1,54 @@
+[
+  {
+    "brokenImages": 0,
+    "cards": 20,
+    "dialog": {
+      "bottom": 633.5625,
+      "left": 19,
+      "right": 326,
+      "top": 106.421875
+    },
+    "h": 740,
+    "scroll": 345,
+    "w": 360
+  },
+  {
+    "brokenImages": 0,
+    "cards": 20,
+    "dialog": {
+      "bottom": 685.5625,
+      "left": 19,
+      "right": 356,
+      "top": 158.421875
+    },
+    "h": 844,
+    "scroll": 375,
+    "w": 390
+  },
+  {
+    "brokenImages": 0,
+    "cards": 20,
+    "dialog": {
+      "bottom": 739.84375,
+      "left": 19,
+      "right": 734,
+      "top": 284.140625
+    },
+    "h": 1024,
+    "scroll": 753,
+    "w": 768
+  },
+  {
+    "brokenImages": 0,
+    "cards": 20,
+    "dialog": {
+      "bottom": 677.84375,
+      "left": 342.5,
+      "right": 1082.5,
+      "top": 222.140625
+    },
+    "h": 900,
+    "scroll": 1425,
+    "w": 1440
+  }
+]

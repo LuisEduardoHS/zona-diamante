@@ -34,4 +34,7 @@ export function iniciarLogin() {
             establecerFormularioCargando(formularioLogin, false);
         }
     });
+    // Enable only after the JS handler exists. Native GET submission could
+    // otherwise place credentials in the URL during an early interaction.
+    formularioLogin.querySelector('button[type="submit"]').disabled = false;
 }

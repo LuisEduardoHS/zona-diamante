@@ -4,60 +4,38 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="../../assets/logo-naranja.svg">
-  <link href="../../css/output.css?v=20261014-20" rel="stylesheet">
-  <link rel="stylesheet" href="../../css/Collect-Style.css">
+  <link href="../../css/output.css?v=20261028-3" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/Collect-Style.css?v=20261028-3">
   <title>Colección de cartas | Zona Diamante</title>
 </head>
-<body>
-
-  <!-- MENÚ SUPERIOR -->
+<body class="collection-body">
   <div id="header-superior"></div>
-
-  <main class="collection-page">
-    <header class="hero">
-      <div class="hero__orange"></div>
-      <div class="hero__teal">
-        <h1>Colección de cartas</h1>
-      </div>
+  <main id="coleccion" class="collection-page" aria-busy="true">
+    <header class="col-heading">
+      <div><p class="col-eyebrow">TU AFICIÓN SE COLECCIONA</p><h1>Colección<span aria-hidden="true">.</span></h1></div>
+      <div class="col-wallet"><span id="col-balance-label">PUNTOS DISPONIBLES</span><div><span class="col-coin" aria-hidden="true">D</span><strong id="col-balance">—</strong><span>pts</span></div></div>
     </header>
-
-    <section class="cards-grid" aria-label="Cartas de béisbol">
-      <article class="player-card">
-        <div class="trading-card trading-card--osuna">
-          <img decoding="async" src="../../assets/img/Cartas/CharrosC.webp" alt="Carta coleccionable de Roberto Osuna" style="filter: grayscale(100%);">
-        </div>
-        <h2>Roberto Osuna<br><span>Charros</span></h2>
-      </article>
-
-      <article class="player-card">
-        <div class="trading-card trading-card--loya">
-          <img decoding="async" loading="lazy" src="../../assets/img/Cartas/DoradosC.webp" alt="Carta coleccionable de Jesús Loya">
-        </div>
-        <h2>Jesús Loya<br><span>Dorados</span></h2>
-      </article>
-
-      <article class="player-card player-card--lower">
-        <div class="trading-card trading-card--moore">
-          <img decoding="async" loading="lazy" src="../../assets/img/Cartas/SultanesC.webp" alt="Carta coleccionable de Eddie Moore" style="filter: grayscale(100%);">
-        </div>
-        <h2>Eddie Moore<br><span>Sultanes</span></h2>
-      </article>
-
-      <article class="player-card player-card--lower">
-        <div class="trading-card trading-card--meza">
-          <img decoding="async" loading="lazy" src="../../assets/img/Cartas/AlgodonerosC.webp" alt="Carta coleccionable de Alfredo Meza" style="filter: grayscale(100%);">
-        </div>
-        <h2>Alfredo Meza<br><span>Algodoneros</span></h2>
-      </article>
+    <section class="col-album" aria-label="Progreso de colección">
+      <div><span class="col-album-label">MI ÁLBUM</span><h2 id="col-progress-copy">Cargando tu álbum…</h2><div class="col-progress-row"><progress id="col-progress" value="0" max="100" aria-label="Porcentaje de cartas adquiridas"></progress><span id="col-progress-percent">Tu siguiente gran colección</span></div></div>
+      <div class="col-album-art" aria-hidden="true"><span>ZD</span><span>AR</span><span>MVP</span></div>
     </section>
+    <div id="col-auth" class="col-auth" hidden><span>Tu álbum te espera. Suma puntos y hazlo tuyo.</span><a id="col-login" href="../auth/login.html">Iniciar sesión</a></div>
+    <div class="col-toolbar"><div class="col-segments" aria-label="Propiedad de cartas"><button type="button" data-ownership="all" aria-pressed="true">Todas</button><button type="button" data-ownership="owned" aria-pressed="false">Mis cartas</button><button type="button" data-ownership="locked" aria-pressed="false">Bloqueadas</button></div><button type="button" id="col-refresh" class="col-refresh">↻ Actualizar</button></div>
+    <section class="col-filters" aria-label="Filtros de colección">
+      <div class="col-types" aria-label="Tipos de carta"><button type="button" data-type="" aria-pressed="true">Todo el álbum</button><button type="button" data-type="team" aria-pressed="false">Equipos</button><button type="button" data-type="player" aria-pressed="false">Jugadores</button><button type="button" data-type="mvp_player" aria-pressed="false">MVP</button><button type="button" data-type="mascot" aria-pressed="false">Mascotas <span>AR</span></button></div>
+      <div class="col-selects"><label><span class="sr-only">Equipo</span><select id="col-team"><option value="">Todos los equipos</option></select></label><label><span class="sr-only">Ordenar cartas</span><select id="col-sort"><option value="catalog">Orden del álbum</option><option value="price">Menor precio</option><option value="name">Nombre A–Z</option></select></label></div>
+    </section>
+    <div class="col-list-heading"><h2>Elige tu próxima carta</h2><span id="col-count">Cargando…</span></div>
+    <p id="col-notice" class="col-notice" role="status" hidden></p>
+    <div id="col-recovery" class="col-recovery" hidden><p id="col-recovery-copy"></p><button type="button" id="col-retry-purchase">Confirmar operación pendiente</button></div>
+    <div id="col-grid" class="col-grid" aria-label="Cartas del catálogo"></div>
+    <div id="col-empty" class="col-empty" hidden><span aria-hidden="true">◇</span><h2 id="col-empty-title"></h2><p id="col-empty-copy"></p><button type="button" id="col-reset">Ver todas las cartas</button></div>
+    <dialog id="col-detail" class="col-dialog" aria-labelledby="col-detail-title">
+      <button type="button" id="col-detail-close" class="col-close" aria-label="Cerrar detalle">×</button>
+      <div class="col-detail-layout"><div id="col-detail-art" class="col-detail-art"></div><div class="col-detail-copy"><p id="col-detail-type" class="col-eyebrow"></p><h2 id="col-detail-title"></h2><p id="col-detail-description"></p><strong id="col-detail-price" class="col-detail-price"></strong><p id="col-ar-note" class="col-ar-note" hidden>Explora su experiencia AR. La entrega automática está pendiente; escanear no desbloquea la carta todavía.</p><div class="col-detail-actions"><button type="button" id="col-buy" class="col-primary">Desbloquear carta</button><a id="col-detail-login" class="col-primary" href="../auth/login.html">Iniciar sesión</a><a id="col-detail-ar" class="col-primary" href="../experiencias/camara.html" hidden>Explorar en AR ↗</a><a id="col-detail-trivia" class="col-text-link" href="../experiencias/trivia.html" hidden>Sumar puntos en Trivia ↗</a></div><div id="col-confirm" class="col-confirm" hidden><h3>Una carta más cerca</h3><p id="col-confirm-copy"></p><div><button type="button" id="col-cancel-buy" class="col-secondary">Cancelar</button><button type="button" id="col-confirm-buy" class="col-primary">Confirmar compra</button></div></div><p id="col-detail-state" role="status"></p></div></div>
+    </dialog>
   </main>
-
-  <!-- MENÚ INFERIOR -->
   <div id="menu-inferior"></div>
-
-  <!-- JAVASCRIPT -->
-  <!-- La página vive a dos niveles de la raíz pública. -->
-  <script type="module" src="../../js/app/main.js?v=20260930-1"></script>
-
+  <script type="module" src="../../js/app/main.js?v=20261028-3"></script>
 </body>
 </html>

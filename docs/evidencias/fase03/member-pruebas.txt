@@ -1,0 +1,16 @@
+PASS: 15 comprobaciones (FIXTURE HTTP: member)
+Catálogo dinámico
+Filtro de tipo
+Filtros de equipo y tipo combinados
+Detalle modal
+Identidad del catálogo
+Confirmación antes de gastar
+Cancelar sin compra
+Propiedad confirmada
+Saldo del servidor después de comprar
+Cerrar detalle
+Detalle conserva filtros
+Restablecer filtros
+Mascota jamás comprable
+Acceso a AR
+Ruta AR real

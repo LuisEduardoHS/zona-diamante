@@ -1,0 +1,16 @@
+PASS: 15 comprobaciones (FIXTURE HTTP: expired)
+Catálogo dinámico
+Filtro de tipo
+Filtros de equipo y tipo combinados
+Detalle modal
+Identidad del catálogo
+Confirmación antes de gastar
+Cancelar sin compra
+Respuesta incierta conserva recuperación
+Aviso visible sin éxito ficticio
+Cerrar detalle
+Detalle conserva filtros
+Restablecer filtros
+Mascota jamás comprable
+Acceso a AR
+Ruta AR real

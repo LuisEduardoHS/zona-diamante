@@ -7,7 +7,6 @@ const estilos = new Map();
 const ordenSecciones = [RUTAS.inicio, RUTAS.trivia, RUTAS.camara, RUTAS.coleccion, RUTAS.informacion, RUTAS.juego, RUTAS.ayuda];
 
 const rutasPrivadas = new Set([
-    RUTAS.coleccion,
     RUTAS.perfil
 ]);
 
@@ -88,6 +87,9 @@ async function montarSeccion(archivo, signal) {
     } else if (archivo === RUTAS.trivia) {
         const { iniciarTrivia } = await import('../features/trivia/trivia-page.js');
         if (!signal.aborted) iniciarTrivia(signal);
+    } else if (archivo === RUTAS.coleccion) {
+        const { iniciarColeccion } = await import('../features/coleccion/collection-page.js?v=20261028-3');
+        if (!signal.aborted) iniciarColeccion(signal);
     } else if (archivo === RUTAS.juego) {
         const { iniciarJuego } = await import('../features/juego/ganar_juego.js');
         if (!signal.aborted) iniciarJuego(signal);
@@ -105,7 +107,7 @@ async function montarSeccion(archivo, signal) {
         const { iniciarHistoria } = await import('../features/contenido/historia.js?v=20260927-2');
         if (!signal.aborted) iniciarHistoria();
     } else if (archivo === RUTAS.login) {
-        const { iniciarLogin } = await import('../features/auth/login.js?v=20260927-2');
+        const { iniciarLogin } = await import('../features/auth/login.js?v=20261028-3');
         if (!signal.aborted) iniciarLogin();
     } else if (archivo === RUTAS.registro) {
         const { iniciarRegistro } = await import('../features/auth/registro.js?v=20260927-2');

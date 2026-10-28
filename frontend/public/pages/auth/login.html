@@ -19,7 +19,7 @@
             </header>
 
             <section class="auth-card auth-card--login" aria-label="Inicio de sesión">
-                <form id="login-form" class="auth-form" novalidate>
+                <form id="login-form" class="auth-form" method="post" novalidate>
                     <div class="auth-field">
                         <label class="auth-label" for="login-correo">Correo electrónico</label>
                         <input id="login-correo" class="auth-input" name="correo" type="email" inputmode="email" autocomplete="email" placeholder="tu@correo.com" required>
@@ -34,7 +34,7 @@
                         <a class="auth-inline-link" href="recuperar.html">¿Olvidaste tu contraseña?</a>
                     </div>
 
-                    <button type="submit" class="auth-primary" data-submit-label="Iniciar sesión">Iniciar sesión</button>
+                    <button type="submit" class="auth-primary" data-submit-label="Iniciar sesión" disabled>Iniciar sesión</button>
                     <p id="login-estado" class="auth-status" role="status" aria-live="polite"></p>
                 </form>
 
@@ -45,6 +45,6 @@
     </main>
 
     <div id="menu-inferior"></div>
-    <script type="module" src="../../js/app/main.js?v=20260930-1"></script>
+    <script type="module" src="../../js/app/main.js?v=20261028-3"></script>
 </body>
 </html>

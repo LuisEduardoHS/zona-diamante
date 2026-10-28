@@ -58,3 +58,9 @@ fs.writeFileSync(destination, output, "utf8");
 console.log(
   "Configuración pública generada en public/js/app/runtime-config.js"
 );
+
+// Netlify supplies COMMIT_REF for the exact build. Never include environment
+// dumps or credentials in deployment evidence.
+const revision = /^[a-f0-9]{40}$/.test(process.env.COMMIT_REF || "") ? process.env.COMMIT_REF : null;
+fs.writeFileSync(path.join(__dirname, "..", "public", "build-info.json"),
+  JSON.stringify({ revision, built_at: new Date().toISOString() }) + "\n");

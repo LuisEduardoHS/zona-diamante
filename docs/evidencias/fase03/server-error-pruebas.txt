@@ -1,0 +1,4 @@
+PASS: 3 comprobaciones (FIXTURE HTTP: server-error)
+No inventa cartas ante error HTTP
+Error de carga visible
+Permite actualización segura

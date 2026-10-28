@@ -23,6 +23,7 @@ Thumbs.db
 # Frontend generated files
 frontend/public/vendor/supabase.js
 frontend/public/js/app/runtime-config.js
+frontend/public/build-info.json
 
 # Supabase Studio local snippets
 supabase/snippets/
