@@ -12,10 +12,12 @@ from app.core.security import get_current_user
 from app.db.supabase import SupabaseRestError
 from app.schemas.auth import CurrentUser
 from app.schemas.card import (
+    CardCatalogRead,
     CardCollectionRead,
     CardPurchaseResult,
 )
 from app.services.cards import (
+    get_card_catalog,
     ProfileNotFoundError,
     get_collection_for_user,
     purchase_card_for_user,
@@ -26,6 +28,14 @@ router = APIRouter(
     prefix="/api/v1/cards",
     tags=["cards"],
 )
+
+
+@router.get('/catalog', response_model=CardCatalogRead)
+async def read_public_card_catalog() -> CardCatalogRead:
+    try:
+        return await get_card_catalog()
+    except SupabaseRestError as error:
+        raise HTTPException(status_code=502, detail='Could not retrieve card catalog.') from error
 
 
 @router.get(

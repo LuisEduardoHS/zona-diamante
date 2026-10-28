@@ -18,7 +18,7 @@ UnlockMethod = Literal[
 ]
 
 
-class CardRead(BaseModel):
+class CardCatalogItem(BaseModel):
     id: int
 
     team_id: int
@@ -34,6 +34,8 @@ class CardRead(BaseModel):
     cost: int
     unlock_method: UnlockMethod
 
+
+class CardRead(CardCatalogItem):
     is_owned: bool
 
     source: str | None = None
@@ -47,6 +49,11 @@ class CardCollectionRead(BaseModel):
     owned_cards: int
 
     cards: list[CardRead]
+
+
+class CardCatalogRead(BaseModel):
+    total_cards: int
+    cards: list[CardCatalogItem]
 
 
 class CardPurchaseResult(BaseModel):
