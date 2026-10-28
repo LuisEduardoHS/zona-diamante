@@ -1,6 +1,8 @@
 # Fase 3 — Colección completa
 
-Inicio: 28 de octubre de 2026, America/Mexico_City. Base comprobada tras fetch: `main` y `origin/main` en `efd9ea3`. Árbol limpio; rama creada `feat/collection-ui-complete`. Informe en curso: los resultados finales se completan después de ejecutar las verificaciones.
+Fecha: 28 de octubre de 2026, America/Mexico_City. Base comprobada tras fetch: `main` y `origin/main` en `efd9ea3`. Árbol limpio al inicio; rama creada `feat/collection-ui-complete`.
+
+**Estado global: PARCIAL en verificación final. Implementación, pruebas locales, integración y publicación completadas.** Quedan la atribución externa del TypeError histórico de MutationObserver y la comprobación autenticada de producción con una cuenta de prueba autorizada. No se simula que esas verificaciones se hayan completado.
 
 ## Auditoría y checklist inicial
 
@@ -16,7 +18,7 @@ Inicio: 28 de octubre de 2026, America/Mexico_City. Base comprobada tras fetch: 
 - [x] AR: propiedad persistente disponible; concesión pública deshabilitada. Colección no habilitará premios ni compras de mascotas.
 - [x] Lectura pública del catálogo sin revelar saldo/inventario; ruta de sólo lectura reutilizando el servicio.
 - [x] UI completa, compra/reconciliación, pruebas y evidencias responsive.
-- [ ] Verificar despliegues/configuración efectiva, esquema compatible y publicación del commit final.
+- [x] Verificar esquema compatible y publicación del commit de implementación en Netlify y Render; sin SQL remoto nuevo.
 
 Docker estaba detenido al inicio; se solicitó el arranque de la instalación existente, sin instalar dependencias. No se aplicarán migraciones remotas.
 
@@ -140,9 +142,15 @@ Evidencias en `docs/evidencias/fase03/`: `{360,390,768,1440}-{galeria,detalle}.p
 
 ## 16. Git y publicación
 
-Pendiente completar al observar commits/despliegues. Autorización del usuario: commits, push de rama y fast-forward a main si pasan las condiciones; sin force ni migraciones remotas. Verificación previa: `main/origin/main` coincidentes, árbol limpio al inicio, sin historia ajena descartada.
+Commits de implementación: `abc83c7` (catálogo público/backend/revisión desplegada), `6d456a5` (álbum, compra y recuperación, login seguro, pruebas y evidencias), `d183ffb` (normalización/completitud de evidencia). La comprobación del diff staged detectó dos espacios finales en una captura AX; se quitaron en el tercer commit antes de integrar, sin cambiar mensajes de consola. El diff completo desde `efd9ea3` quedó limpio. No se reescribió historial.
 
-Se añadieron marcadores de revisión del artefacto Netlify y proceso Render para comprobar commits efectivos; las configuraciones privadas de dashboards no se alteran. La configuración pública de frontend apunta al backend correcto. El endpoint nuevo usa el esquema ya aplicado: no necesita SQL remoto. La publicación sólo se declarará confirmada cuando ambas revisiones coincidan y los smoke checks públicos pasen.
+La rama se subió a GitHub. Tras un nuevo fetch se comprobó que `main/origin/main` seguían en `efd9ea3`; integración **fast-forward** hasta `d183ffb` y push de `main` satisfactorios. La comprobación del árbol integrado coincidió con la rama de trabajo; compilación Python y sintaxis del servidor de revisión correctas. Sin force, conflictos ni cambios ajenos descartados. Los contenedores de pruebas y servidores 4180/4181 propios quedaron detenidos; las pestañas de prueba se cerraron.
+
+**Publicación observada:** Netlify `build-info.json` y Render `/version` devolvieron ambos `d183ffb62b8f6206933257f113858f723ed34eb6`. Build Netlify: `2026-10-28T07:07:28.204Z`; smoke completo aprobado a `2026-10-28T07:08:48.116Z`. Evidencia `production.json`. Las primeras consultas, durante despliegue, obtuvieron 404 del marcador y timeout de Render; se esperó al servicio operativo, sin declarar éxito prematuro.
+
+Smoke **no destructivo**: health 200, catálogo público real de 20 activas sin datos personales, colección/AR/me privados 401, CORS para el frontend, JS/CSS/bundle y seis páginas públicas 200. En navegador publicado: 20 cartas, detalle de invitado con login y sin compra, cuatro mascotas filtradas, reentrada SPA con 20 cartas/un diálogo. Trivia mostró el estado invitado; juego cargó sus controles; shell AR cargó el documento y estado de inicio de cámara, sin acreditar hardware. Se guardaron capturas públicas de invitado a 390/1440 y consola completa. No se probó compra ni saldo autenticado de producción.
+
+Las configuraciones privadas de dashboards no se alteraron ni se leyeron directamente; los marcadores acreditan los commits efectivos y el build/publicación resultantes. La configuración pública de frontend apunta al backend correcto. No hay SQL remoto nuevo pendiente para esta colección. Un commit posterior de cierre documental puede contener este informe/evidencias sin cambiar el código publicado; para su revisión efectiva ejecutar el smoke con el HEAD de ese cierre.
 
 ## 17. Límites y aceptación pendiente
 
@@ -152,4 +160,5 @@ Se añadieron marcadores de revisión del artefacto Netlify y proceso Render par
 - Faltan retratos individuales para parte del catálogo; fallback explícito a identidad del equipo, sin información inventada.
 - No se certifican hardware móvil, Safari, cámara/share físicos ni una compra autenticada en producción sin cuenta de prueba autorizada.
 - El acceso a configuraciones privadas de Netlify/Render puede requerir sesión de dashboard; los artefactos/revisiones públicas acreditan el resultado efectivo cuando se desplieguen.
-- Git, despliegue y smoke público se actualizan en el cierre de esta fase. Si un servicio falla o requiere SQL remoto, se conserva la evidencia y se marca pendiente.
+- La consola del navegador integrado publicó nuevamente `TypeError: Failed to execute 'observe' on 'MutationObserver': parameter 1 is not of type 'Node'`, ya desde Colección y antes de entrar a AR. `produccion-consola.json` lo conserva, sin filtros. Ningún módulo nuevo de colección usa MutationObserver. La investigación de Fase 2B ya lo reprodujo en un iframe sin scripts; eso apunta al entorno de inspección, pero no aporta la pila del contexto responsable de este evento. No se declara limpia esta consola ni se parchearon dependencias por suposición. Repetir en Chrome/Safari externo con pausa en excepciones antes de cerrar esa atribución.
+- Las revisiones efectivas de ambas plataformas y el smoke público están comprobados; la compra de producción y el contraste externo de consola quedan expresamente pendientes. No impidieron probar la transacción local real y publicar la integración ya autorizada.

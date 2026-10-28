@@ -1,0 +1,29 @@
+{
+  "checked_at_utc": "2026-10-28T07:08:48.116102+00:00",
+  "revision": "d183ffb62b8f6206933257f113858f723ed34eb6",
+  "netlify": {
+    "revision": "d183ffb62b8f6206933257f113858f723ed34eb6",
+    "built_at": "2026-10-28T07:07:28.204Z"
+  },
+  "render": {
+    "revision": "d183ffb62b8f6206933257f113858f723ed34eb6"
+  },
+  "health": 200,
+  "catalog_cards": 20,
+  "private_routes": {
+    "/api/v1/cards": 401,
+    "/api/v1/ar/mascots": 401,
+    "/api/v1/me": 401
+  },
+  "pages": {
+    "/": 200,
+    "/pages/coleccion/coleccion.html": 200,
+    "/pages/auth/login.html": 200,
+    "/pages/experiencias/camara.html": 200,
+    "/pages/experiencias/trivia.html": 200,
+    "/pages/experiencias/juego.html": 200
+  },
+  "cors": true,
+  "collection_assets": true,
+  "production_purchase_tested": false
+}
