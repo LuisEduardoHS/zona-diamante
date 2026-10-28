@@ -2,7 +2,7 @@ Browser tab: 4, Title: "Colección · QA local", URL: "http://127.0.0.1:4181/__r
 0 AXWebArea Colección · QA local, URL: 127.0.0.1:4181/__review
 	1 text SUPABASE LOCAL + FASTAPI REALES · cuenta sintética · sin producción
 	2 container
-		3 text Viewport 
+		3 text Viewport
 		4 pop up button (collapsed, settable) Viewport, Value: 390x844, ID: size, Secondary Actions: Expand
 			5 menu
 				6 360x740
@@ -10,7 +10,7 @@ Browser tab: 4, Title: "Colección · QA local", URL: "http://127.0.0.1:4181/__r
 				8 768x1024
 				9 1440x900
 	10 container
-		11 text Escenario 
+		11 text Escenario
 		12 pop up button (collapsed, settable) Escenario, Value: member, ID: scenario, Secondary Actions: Expand
 			13 menu
 				14 guest

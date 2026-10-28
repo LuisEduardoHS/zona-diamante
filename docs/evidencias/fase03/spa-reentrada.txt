@@ -1,3 +1,202 @@
 Browser tab: 5, Title: "Colección de cartas | Zona Diamante", URL: "http://127.0.0.1:4180/pages/coleccion/coleccion.html".
-There has been no change in the accessibility tree.
+1 AXWebArea Colección de cartas | Zona Diamante, URL: 127.0.0.1:4180/pages/coleccion/coleccion.html
+	2 container
+		3 pop up button (collapsed) Description: Abrir menú, ID: btn-abrir-menu, Secondary Actions: Expand
+		4 link Description: Abrir mi perfil, Value: 127.0.0.1:4180/pages/auth/perfil.html
+	5 container Navegación inferior
+		6 container
+			7 link Description: Inicio, Value: 127.0.0.1:4180/index.html
+			8 link Description: Trivia, Value: 127.0.0.1:4180/pages/experiencias/trivia.html
+			9 link Description: Cámara AR, Value: 127.0.0.1:4180/pages/experiencias/camara.html
+			10 link Description: Info, Value: 127.0.0.1:4180/pages/contenido/Informacion.html
+			11 link Description: Juego, Value: 127.0.0.1:4180/pages/experiencias/juego.html
+	12 container coleccion
+		13 container
+			14 text TU AFICIÓN SE COLECCIONA
+			15 heading Colección, Value: 1
+				16 text Colección
+			17 text PUNTOS DISPONIBLES
+			18 text 1,000
+			19 text pts
+		20 container Progreso de colección
+			21 container
+				22 text MI ÁLBUM
+				23 heading 5 de 20 cartas, Value: 2, ID: col-progress-copy
+					24 text 5 de 20 cartas
+				25 progress indicator Description: Porcentaje de cartas adquiridas, Value: 25, ID: col-progress
+				26 text 25%
+		27 container Propiedad de cartas
+			28 checkbox Todas, Value: 1
+			29 checkbox Mis cartas, Value: 0
+			30 checkbox Bloqueadas, Value: 0
+		31 button ↻ Actualizar, ID: col-refresh
+		32 container Filtros de colección
+			33 container Tipos de carta
+				34 checkbox Todo el álbum, Value: 1
+				35 checkbox Equipos, Value: 0
+				36 checkbox Jugadores, Value: 0
+				37 checkbox MVP, Value: 0
+				38 checkbox Mascotas AR, Value: 0
+			39 container
+				40 text Equipo
+				41 pop up button (collapsed, settable) Equipo, Value: Todos los equipos, ID: col-team, Secondary Actions: Expand
+					42 menu
+						43 (selected) Todos los equipos
+						44 Sultanes
+						45 Dorados
+						46 Charros
+						47 Algodoneros
+			48 container
+				49 text Ordenar cartas
+				50 pop up button (collapsed, settable) Ordenar cartas, Value: Orden del álbum, ID: col-sort, Secondary Actions: Expand
+					51 menu
+						52 (selected) Orden del álbum
+						53 Menor precio
+						54 Nombre A–Z
+		55 heading Elige tu próxima carta, Value: 2
+			56 text Elige tu próxima carta
+		57 text 20 cartas
+		58 container Description: Cartas del catálogo, ID: col-grid
+			59 button Gustavo Núñez, Adquirida
+				60 container
+					61 text ZONA DIAMANTE Jugador Sultanes
+					62 text Gustavo Núñez
+					63 text CARTAS · ZONA DIAMANTE #01
+				64 text ✓ Adquirida
+				65 text En tu álbum
+			66 button Josh Lester, 300 pts
+				67 container
+					68 text ZONA DIAMANTE Jugador Sultanes
+					69 text Josh Lester
+					70 text CARTAS · ZONA DIAMANTE #02
+				71 text Desbloquear
+				72 text 300 pts
+			73 button Ramiro Peña, 500 pts
+				74 container
+					75 text ZONA DIAMANTE MVP Sultanes
+					76 text Ramiro Peña
+					77 text CARTAS · ZONA DIAMANTE #03
+				78 text Desbloquear
+				79 text 500 pts
+			80 button Perro Sultán, Adquirida
+				81 container
+					82 text ZONA DIAMANTE Mascota Sultanes
+					83 text Perro Sultán
+					84 text CARTAS · ZONA DIAMANTE #04
+				85 text ✓ Adquirida
+				86 text En tu álbum
+			87 button Sultanes de Monterrey, 250 pts
+				88 container
+					89 text ZONA DIAMANTE Equipo Sultanes
+					90 text Sultanes de Monterrey
+					91 text CARTAS · ZONA DIAMANTE #05
+				92 text Desbloquear
+				93 text 250 pts
+			94 button Brainer Bonaci, 300 pts
+				95 container
+					96 text ZONA DIAMANTE Jugador Dorados
+					97 text Brainer Bonaci
+					98 text CARTAS · ZONA DIAMANTE #06
+				99 text Desbloquear
+				100 text 300 pts
+			101 button Jesús Loya, 300 pts
+				102 container
+					103 text ZONA DIAMANTE Jugador Dorados
+					104 text Jesús Loya
+					105 text CARTAS · ZONA DIAMANTE #07
+				106 text Desbloquear
+				107 text 300 pts
+			108 button Ángel Bravo, 500 pts
+				109 container
+					110 text ZONA DIAMANTE MVP Dorados
+					111 text Ángel Bravo
+					112 text CARTAS · ZONA DIAMANTE #08
+				113 text Desbloquear
+				114 text 500 pts
+			115 button Pancho Pistolas, Adquirida
+				116 container
+					117 text ZONA DIAMANTE Mascota Dorados
+					118 text Pancho Pistolas
+					119 text CARTAS · ZONA DIAMANTE #09
+				120 text ✓ Adquirida
+				121 text En tu álbum
+			122 button Dorados de Chihuahua, 250 pts
+				123 container
+					124 text ZONA DIAMANTE Equipo Dorados
+					125 text Dorados de Chihuahua
+					126 text CARTAS · ZONA DIAMANTE #10
+				127 text Desbloquear
+				128 text 250 pts
+			129 button Reynaldo Rodríguez, 300 pts
+				130 container
+					131 text ZONA DIAMANTE Jugador Charros
+					132 text Reynaldo Rodríguez
+					133 text CARTAS · ZONA DIAMANTE #11
+				134 text Desbloquear
+				135 text 300 pts
+			136 button Luis Iván Rodríguez, 300 pts
+				137 container
+					138 text ZONA DIAMANTE Jugador Charros
+					139 text Luis Iván Rodríguez
+					140 text CARTAS · ZONA DIAMANTE #12
+				141 text Desbloquear
+				142 text 300 pts
+			143 button Julián Ornelas, 500 pts
+				144 container
+					145 text ZONA DIAMANTE MVP Charros
+					146 text Julián Ornelas
+					147 text CARTAS · ZONA DIAMANTE #13
+				148 text Desbloquear
+				149 text 500 pts
+			150 button Straiky, Adquirida
+				151 container
+					152 text ZONA DIAMANTE Mascota Charros
+					153 text Straiky
+					154 text CARTAS · ZONA DIAMANTE #14
+				155 text ✓ Adquirida
+				156 text En tu álbum
+			157 button Charros de Jalisco, 250 pts
+				158 container
+					159 text ZONA DIAMANTE Equipo Charros
+					160 text Charros de Jalisco
+					161 text CARTAS · ZONA DIAMANTE #15
+				162 text Desbloquear
+				163 text 250 pts
+			164 button Mason Martin, 300 pts
+				165 container
+					166 text ZONA DIAMANTE Jugador Algodoneros
+					167 text Mason Martin
+					168 text CARTAS · ZONA DIAMANTE #16
+				169 text Desbloquear
+				170 text 300 pts
+			171 button Jacob Barnes, 300 pts
+				172 container
+					173 text ZONA DIAMANTE Jugador Algodoneros
+					174 text Jacob Barnes
+					175 text CARTAS · ZONA DIAMANTE #17
+				176 text Desbloquear
+				177 text 300 pts
+			178 button Nicholas Torres, 500 pts
+				179 container
+					180 text ZONA DIAMANTE MVP Algodoneros
+					181 text Nicholas Torres
+					182 text CARTAS · ZONA DIAMANTE #18
+				183 text Desbloquear
+				184 text 500 pts
+			185 button Pollo Algodonero, Adquirida
+				186 container
+					187 text ZONA DIAMANTE Mascota Algodoneros
+					188 text Pollo Algodonero
+					189 text CARTAS · ZONA DIAMANTE #19
+				190 text ✓ Adquirida
+				191 text En tu álbum
+			192 button Algodoneros de Unión Laguna, 250 pts
+				193 container
+					194 text ZONA DIAMANTE Equipo Algodoneros
+					195 text Algodoneros de Unión Laguna
+					196 text CARTAS · ZONA DIAMANTE #20
+				197 text Desbloquear
+				198 text 250 pts
+	199 text Colección de cartas | Zona Diamante
+
 The focused UI element is 12 container coleccion
