@@ -1,0 +1,19 @@
+Sesión local real iniciada. Saldo sintético inicial: costo de carta menos 60.
+Fallo de respuesta de cierre preparado.
+Racha en curso con reloj real.
+Respuesta perdida simulada después del commit; el reintento conserva la clave.
+OBJETIVO CONSEGUIDO
+Puntos de cuenta · +60
+Recompensa confirmada. Saldo: 250 puntos. 1 de 3 partidas premiadas hoy.
+Racha en curso con reloj real.
+OBJETIVO CONSEGUIDO
+Puntos de cuenta · +60
+Recompensa confirmada. Saldo: 60 puntos. 2 de 3 partidas premiadas hoy.
+Racha en curso con reloj real.
+OBJETIVO CONSEGUIDO
+Puntos de cuenta · +60
+Recompensa confirmada. Saldo: 120 puntos. 3 de 3 partidas premiadas hoy.
+Racha en curso con reloj real.
+OBJETIVO CONSEGUIDO
+Puntos de cuenta · +0
+Límite diario alcanzado. Sin nuevo crédito. Saldo: 120. Puedes seguir jugando.

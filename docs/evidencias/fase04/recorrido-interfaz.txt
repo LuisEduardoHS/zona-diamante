@@ -1,0 +1,17 @@
+Ejecutando
+PASS Inicio y cuenta atrás
+PASS Pausa congela reloj y estadísticas
+PASS Reanudar conserva lanzamiento
+PASS Cancelar reinicio conserva partida pausada
+PASS Confirmar reinicio limpia resultado
+PASS Perfecto y entrada duplicada
+PASS Temprano reinicia racha
+PASS Fallo tardío
+PASS Bateo válido normal suma diez, perfecto veinte
+PASS Victoria Clásica sólo tras diez lanzamientos
+PASS Resultado sin recompensa económica
+PASS Replay y derrota Clásica sin batear
+PASS Victoria Racha en cinco consecutivos
+PASS Derrota Racha tras quince lanzamientos
+PASS Salir confirmado abandona sin victoria
+RECORRIDO COMPLETO APROBADO

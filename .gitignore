@@ -24,9 +24,11 @@ Thumbs.db
 frontend/public/vendor/supabase.js
 frontend/public/js/app/runtime-config.js
 frontend/public/build-info.json
+frontend/public/data/game-beta-rules.json
 
 # Supabase Studio local snippets
 supabase/snippets/
 
 # Archivos temporales de pruebas y agentes
 .tmp/
+.pytest_cache/

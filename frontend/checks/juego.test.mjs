@@ -1,92 +1,31 @@
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
 import test from 'node:test';
+import { loadGame, rules } from './game-module-loader.mjs';
+const { createMatch, advance, swing, pause, resume, abandon } = await loadGame('game-state.js');
+const { createGameEngine } = await loadGame('game-engine.js');
 
-const source = await readFile(new URL('../public/js/features/juego/ganar_juego.js', import.meta.url), 'utf8');
-const { crearEstadoJuego, iniciarJuego } = await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
-
-function pantalla() {
-    const pausa = new EventTarget();
-    const attrs = {};
-    pausa.setAttribute = (key, value) => { attrs[key] = value; };
-    const campo = new EventTarget();
-    campo.querySelector = () => pausa;
-    const clases = new Set(['activo']);
-    const resultado = { classList: { remove: c => clases.delete(c), add: c => clases.add(c) } };
-    globalThis.document = { getElementById: id => ({ pantallaJuego: campo, resultadoOverlay: resultado })[id] };
-    return { campo, pausa, attrs, clases };
-}
-
-test('inicio activo, pausa y reanudación conservan la misma partida', () => {
-    const game = crearEstadoJuego();
-    assert.equal(game.estado, 'active');
-    game.reanudar();
-    game.pausar();
-    game.pausar();
-    assert.equal(game.estado, 'paused');
-    game.reanudar();
-    assert.equal(game.estado, 'active');
+test('inicio cuenta atrás y luego lanzamiento; no hay victoria por montar',()=>{
+ const game=createMatch(rules,'classic','one');assert.equal(game.phase,'countdown');assert.equal(game.stats.resolved,0);
+ assert.equal(advance(game,2999,rules).phase,'countdown');assert.equal(advance(game,3000,rules).phase,'pitch');assert.equal(game.outcome,null);
 });
-
-test('abandonar es terminal e idempotente; una nueva partida comienza limpia', () => {
-    const game = crearEstadoJuego();
-    game.pausar();
-    game.abandonar();
-    game.abandonar();
-    game.reanudar();
-    game.pausar();
-    assert.equal(game.estado, 'abandoned');
-    assert.equal(crearEstadoJuego().estado, 'active');
+test('pausa y reanudación conservan partida, tiempo y estadísticas',()=>{
+ let game=advance(createMatch(rules,'classic','same'),3400,rules);const elapsed=game.elapsed;
+ game=pause(game);assert.equal(advance(game,50000,rules),game);assert.equal(swing(game,rules),game);
+ game=resume(game);assert.equal(game.id,'same');assert.equal(game.elapsed,elapsed);assert.equal(game.stats.hits,0);
 });
-
-test('pausa y clics del campo no anuncian victoria ni cartas', () => {
-    const ui = pantalla();
-    const abort = new AbortController();
-    const game = iniciarJuego(abort.signal);
-    assert.equal(ui.clases.has('activo'), false);
-    ui.pausa.dispatchEvent(new Event('click'));
-    assert.equal(game.estado, 'paused');
-    assert.equal(ui.attrs['aria-label'], 'Reanudar');
-    ui.campo.dispatchEvent(new Event('click'));
-    assert.equal(ui.clases.has('activo'), false);
-    ui.pausa.dispatchEvent(new Event('click'));
-    assert.equal(game.estado, 'active');
-    assert.equal(ui.attrs['aria-label'], 'Pausar');
-    assert.equal(ui.clases.has('activo'), false);
-    abort.abort();
+test('abandonar es terminal e idempotente; la nueva partida comienza limpia',()=>{
+ const old=abandon(advance(createMatch(rules,'classic'),3500,rules));assert.equal(abandon(old),old);assert.equal(resume(old),old);assert.equal(advance(old,1e6,rules),old);
+ const next=createMatch(rules,'classic');assert.equal(next.phase,'countdown');assert.equal(next.stats.score,0);
 });
-
-test('montaje repetido no duplica listeners ni crea otra partida al reanudar', () => {
-    const ui = pantalla();
-    const abort = new AbortController();
-    const game = iniciarJuego(abort.signal);
-    assert.equal(iniciarJuego(abort.signal), game);
-    ui.pausa.dispatchEvent(new Event('click'));
-    assert.equal(game.estado, 'paused');
-    abort.abort();
+test('pausar o intentar batear en pausa nunca anuncia victoria ni puntos',()=>{
+ let game=pause(advance(createMatch(rules,'streak'),4200,rules));game=swing(game,rules);assert.equal(game.outcome,null);assert.equal(game.stats.score,0);assert.equal(game.stats.hits,0);
 });
-
-test('salir abandona, cancela acciones y volver reinicia sin resultado anterior', () => {
-    const ui = pantalla();
-    const abort = new AbortController();
-    const first = iniciarJuego(abort.signal);
-    abort.abort();
-    ui.pausa.dispatchEvent(new Event('click'));
-    assert.equal(first.estado, 'abandoned');
-    ui.clases.add('activo');
-    const secondAbort = new AbortController();
-    const second = iniciarJuego(secondAbort.signal);
-    assert.notEqual(first, second);
-    assert.equal(second.estado, 'active');
-    assert.equal(ui.clases.has('activo'), false);
-    secondAbort.abort();
+test('inicio repetido y reanudación no duplican el loop',()=>{
+ let n=0,time=0;const pending=new Map();
+ const game=createGameEngine({rules,mode:'classic',now:()=>time,requestFrame:fn=>{pending.set(++n,fn);return n;},cancelFrame:id=>pending.delete(id)});
+ game.start();game.start();assert.equal(pending.size,1);time=100;game.pause();assert.equal(pending.size,0);game.resume();game.resume();assert.equal(pending.size,1);game.destroy();
 });
-
-test('montajes ausentes o cancelados no instalan una partida', () => {
-    pantalla();
-    const abort = new AbortController();
-    abort.abort();
-    assert.equal(iniciarJuego(abort.signal), null);
-    globalThis.document = { getElementById: () => null };
-    assert.equal(iniciarJuego(new AbortController().signal), null);
+test('salir cancela callbacks e impide resultados residuales en otra instancia',()=>{
+ let callback,rendered=0;const old=createGameEngine({rules,mode:'classic',now:()=>0,requestFrame:fn=>{callback=fn;return 1;},cancelFrame:()=>{},onFrame:()=>rendered++});
+ old.start();old.destroy();callback();assert.equal(old.state.phase,'abandoned');assert.equal(rendered,1);assert.equal(createMatch(rules,'classic').stats.score,0);
 });

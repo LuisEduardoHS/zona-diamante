@@ -1,0 +1,5 @@
+{
+  "linked_target_matches_production": true,
+  "public_schema_backup_bytes": 62006,
+  "pending_migration": "20261028000100_game_beta_authority.sql"
+}

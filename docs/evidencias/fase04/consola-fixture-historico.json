@@ -1,0 +1,23 @@
+[
+  {
+    "level": "error",
+    "message": "Uncaught TypeError: Failed to execute 'observe' on 'MutationObserver': parameter 1 is not of type 'Node'.",
+    "timestamp": "2026-10-28T13:35:06.596Z"
+  },
+  {
+    "level": "error",
+    "message": "TypeError: Cannot read properties of null (reading 'type')\n    at document.querySelector.onclick (http://127.0.0.1:4191/__review:24:63)",
+    "timestamp": "2026-10-28T13:35:12.144Z",
+    "url": "http://127.0.0.1:4191/__review"
+  },
+  {
+    "level": "error",
+    "message": "Uncaught TypeError: Failed to execute 'observe' on 'MutationObserver': parameter 1 is not of type 'Node'.",
+    "timestamp": "2026-10-28T13:35:27.419Z"
+  },
+  {
+    "level": "error",
+    "message": "Uncaught TypeError: Failed to execute 'observe' on 'MutationObserver': parameter 1 is not of type 'Node'.",
+    "timestamp": "2026-10-28T13:35:56.847Z"
+  }
+]

@@ -4,6 +4,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from app.core.config import settings
+from app.core.http_client import supabase_http_client
 from app.schemas.auth import CurrentUser
 
 bearer_scheme = HTTPBearer(auto_error=False)
@@ -38,7 +39,7 @@ async def get_current_user(
     }
 
     try:
-        async with httpx.AsyncClient(timeout=5.0) as client:
+        async with supabase_http_client(5.0) as client:
             response = await client.get(url, headers=headers)
     except httpx.HTTPError:
         raise HTTPException(

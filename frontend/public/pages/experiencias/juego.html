@@ -1,133 +1,59 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="../../assets/logo-naranja.svg">
-
-    <title>Zona Diamante</title>
-
-    <link href="../../css/output.css?v=20261014-20" rel="stylesheet">
-    <link href="../../css/juego-Style.css" rel="stylesheet">
+    <title>Turno Diamante | Béisbol</title>
+    <link href="../../css/output.css?v=20261028-game4" rel="stylesheet">
+    <link href="../../css/juego-Style.css?v=20261028-game4" rel="stylesheet">
 </head>
-
-<body class="bg-slate-900 min-h-dvh">
-
-
-    
-    <div id="header-superior"></div>
-
-
-    
-    <main class="juego-content">
-
-
-      
-        <svg 
-            class="juego-shape" 
-            width="402" 
-            height="285" 
-            viewBox="0 0 402 285" 
-            fill="none" 
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <path 
-                d="M80.4875 506.636C-190.672 361.803 -143.814 162.83 97.9712 144.662C339.757 126.494 346.014 -9.48099 446.083 0.525466C546.152 10.5319 607.712 116.893 528.319 201.21C464.806 268.664 203.301 432.933 80.4875 506.636Z" 
-                fill="#DF6A16"
-            />
-        </svg>
-
-
-        
-        <div id="pantallaJuego" class="game-image">
-
-            
-            <img 
-                src="../../assets/img/juego/boceto-PI.webp"
-                alt="Imagen del juego"
-            >
-
-
-            
-            <button 
-                class="pause-button" 
-                aria-label="Pausar"
-            >
-                <span></span>
-                <span></span>
-            </button>
-
-
-            
-            <p class="bat-message">
-                Toca la pantalla para batear
-            </p>
-
-
-            
-            <div class="collection-container">
-
-                <a href="../coleccion/coleccion.html" class="collection-button" aria-label="Coleccion">
-                    <img 
-                        style="width: 35px; height: 35px; border-radius: 0%;" 
-                        src="../../assets/img/juego/collect.webp"
-                        alt="colecciones"
-                    >
-                </a>
-
-                <p class="collection-text">
-                    Colección
-                </p>
-
+<body class="game-beta-page">
+<div id="header-superior"></div>
+<main id="game-beta" class="game-beta" data-screen="home">
+    <header class="game-heading"><div><p class="game-eyebrow">TU MOMENTO EN EL DIAMANTE</p><h1 id="game-title" tabindex="-1">Turno Diamante<span>.</span></h1></div><span id="game-practice-badge" class="game-practice">BETA · PRÁCTICA</span></header>
+    <p id="game-loading" class="game-notice" role="status">Preparando el campo y tus dibujos…</p>
+    <p id="game-loading-error" class="game-notice game-warning" role="alert" hidden></p>
+    <button id="game-reconnect" type="button" class="game-secondary" hidden>Reintentar conexión</button><p id="game-network-note" class="game-notice" role="status" hidden></p><p id="game-resource-note" class="game-notice game-warning" role="status" hidden></p>
+    <section class="game-home" data-game-screen="home" aria-label="Inicio del minijuego">
+        <div class="game-intro"><p class="game-eyebrow">UN LANZAMIENTO. UN INSTANTE.</p><h2>Encuentra<br>tu mejor turno.</h2><p>Observa la pelota, espera el momento y conecta. Tu ritmo hace la diferencia.</p><div class="game-home-actions"><button id="game-play" class="game-primary" type="button" disabled>Jugar <span aria-hidden="true">↗</span></button><button type="button" class="game-secondary" data-help>Cómo jugar</button></div><p id="game-home-session" class="game-local-note">Práctica local · sin puntos de cuenta</p><div class="game-records"><div><strong id="game-record-score">—</strong><span>Mejor puntuación</span></div><div><strong id="game-record-streak">—</strong><span>Mejor racha</span></div><small>Récord local · <span id="game-record-mode">Clásica</span></small></div></div>
+        <div class="game-hero-art" aria-hidden="true"><div class="game-hero-orbit"></div><span class="game-hero-number">01</span><img id="game-hero-batter" alt="" hidden><span class="game-hero-tag">LISTO PARA BATEAR</span></div>
+    </section>
+    <section class="game-mode-screen" data-game-screen="modes" aria-label="Seleccionar modalidad" hidden>
+        <button id="game-back" type="button" class="game-text-button">← Volver</button><h2>Elige tu desafío</h2><p>Dos formas de jugar. El mismo momento perfecto.</p>
+        <div class="game-modes"><button type="button" data-mode="classic" aria-pressed="true"><span class="game-mode-number">01</span><strong>Clásica</strong><span id="game-classic-goal">Cargando reglas…</span><span class="game-mode-icon" aria-hidden="true">◇</span></button><button type="button" data-mode="streak" aria-pressed="false"><span class="game-mode-number">02</span><strong>Racha</strong><span id="game-streak-goal">Cargando reglas…</span><span class="game-mode-icon" aria-hidden="true">↗</span></button></div>
+        <p id="game-mode-description" class="game-mode-description"></p><p id="game-planned-rewards" class="game-notice" hidden></p><div class="game-mode-actions"><button type="button" id="game-start" class="game-primary" disabled>Comenzar</button><button type="button" data-help class="game-secondary">Ver instrucciones</button><button type="button" id="game-demo" class="game-secondary" hidden>Practicar sin puntos</button></div><p id="game-access-note" class="game-local-note">Esta demostración no entrega puntos ni cartas.</p><a id="game-login" class="game-text-button" href="../auth/login.html">Iniciar sesión para jugar por puntos</a>
+    </section>
+    <section data-game-screen="play" class="game-play-screen" aria-label="Partida de práctica" hidden>
+        <div class="game-play-toolbar"><span id="game-mode-tag">Clásica</span><div><button id="game-pause" type="button" aria-pressed="false">Pausar</button><button id="game-restart" type="button">Reiniciar</button><button id="game-exit" type="button">Salir</button></div></div>
+        <div class="game-play-layout"><div class="game-arena">
+            <div class="game-hud"><div><span>PUNTUACIÓN</span><strong id="game-score">0</strong></div><div><span>BATEOS</span><strong id="game-hits">0</strong></div><div><span>RACHA</span><strong id="game-streak">0</strong></div><div><span>MEJOR RACHA</span><strong id="game-best-streak">0</strong></div></div>
+            <div id="game-field" class="game-field" tabindex="-1" aria-label="Campo de béisbol. Usa el botón Batear o la barra espaciadora.">
+                <div class="game-stands" aria-hidden="true"><span>ZONA DIAMANTE</span></div><div class="game-outfield" aria-hidden="true"></div>
+                <svg class="game-diamond" viewBox="0 0 600 400" preserveAspectRatio="none" aria-hidden="true"><path d="M310 110L80 250L310 390L550 250Z" fill="#c4a779"/><path d="M310 140L130 250L310 360L500 250Z" fill="#36866c"/><path d="M310 360L80 250M310 360L550 250" stroke="#fff7dd" stroke-width="3" fill="none"/><path d="M300 354h20v13l-10 7-10-7Z" fill="#fff9e9"/><ellipse cx="365" cy="161" rx="22" ry="10" fill="#dbc29a"/></svg>
+                <div id="game-pitcher" class="game-pitcher" aria-hidden="true"><span class="game-pitcher-head"></span><span class="game-pitcher-body"></span><span class="game-pitcher-arm"></span><span class="game-pitcher-legs"></span></div>
+                <div id="game-contact" class="game-contact" aria-hidden="true"><span></span></div>
+                <div id="game-batter" class="game-batter" role="img" aria-label="Bateador de Sultanes, animación con cuatro dibujos originales"></div>
+                <div id="game-ball" class="game-ball" aria-hidden="true" hidden></div>
+                <div id="game-countdown" class="game-countdown" hidden><span>PREPÁRATE</span><strong id="game-countdown-number">3</strong></div>
+                <div id="game-paused" class="game-paused" hidden><strong>Tu turno, en pausa</strong><p>Reanuda cuando estés listo.</p><button type="button" id="game-resume" class="game-primary">Reanudar</button></div>
+                <div class="game-field-caption" aria-hidden="true">EL ARO MARCA EL MOMENTO</div>
             </div>
-
-
-            
-
-            <div id="resultadoOverlay">
-
-                <div class="resultado-contenido">
-
-                    
-                    <div class="mensaje-ganaste">
-                        ¡Ganaste!
-                    </div>
-
-
-                    
-                    <img 
-                        src="../../assets/img/Cartas/DoradosC.webp"
-                        alt="Carta dorados"
-                        class="resultado-imagen"
-                    >
-
-
-                    
-                    <p class="resultado-texto">
-                        “Jesús Loya. Equipo Dorados”<br>
-                        Carta 2 de 4
-                    </p>
-
-                </div>
-
-            </div>
-
-
-        </div>
-
-
-    </main>
-
-
-    <!-- MENÚ INFERIOR -->
-    <div id="menu-inferior"></div>
-
-
-    <!-- JAVASCRIPT -->
-    <script type="module" src="../../js/app/main.js?v=20260930-1"></script>
-
-
+            <div class="game-timing" aria-label="Guía visual del momento de contacto"><span id="game-valid-window"></span><span id="game-perfect-window"></span><span id="game-timing-cursor"></span></div>
+        </div><aside class="game-control-panel">
+            <p id="game-goal" class="game-goal"></p><div class="game-round"><span>Lanzamiento <strong id="game-progress">0 / 10</strong></span><span><strong id="game-remaining">10</strong> restantes</span></div>
+            <p id="game-feedback" class="game-feedback" role="status" aria-live="polite">Prepárate para batear</p>
+            <button id="game-hit" type="button" class="game-hit" disabled><span>Batear</span><small>TOQUE · CLIC · ESPACIO</small></button>
+            <p class="game-control-tip">Batea cuando la pelota llegue al aro.<br>El centro de la franja es un golpe perfecto.</p><button type="button" class="game-text-button" data-help>Consultar instrucciones</button><p class="game-local-note">Puntuación de partida ≠ puntos de cuenta</p>
+        </aside></div>
+    </section>
+    <section data-game-screen="result" class="game-result" aria-label="Resultado final" hidden>
+        <span class="game-result-mark" aria-hidden="true">◇</span><p id="game-result-label" class="game-eyebrow"></p><h2 id="game-result-title"></h2><p id="game-result-rule"></p><div class="game-final-score"><strong id="game-final-score">0</strong><span>PUNTOS DE PARTIDA</span></div><dl class="game-final-stats"><div><dt>Aciertos</dt><dd id="game-final-hits">0</dd></div><div><dt>Fallos</dt><dd id="game-final-misses">0</dd></div><div><dt>Racha máxima</dt><dd id="game-final-streak">0</dd></div><div><dt>Perfectos</dt><dd id="game-final-perfects">0</dd></div></dl><div class="game-reward-state"><strong id="game-account-points">Puntos de cuenta · —</strong><p id="game-result-reward">No disponibles en práctica.</p></div><div class="game-result-actions"><button type="button" id="game-replay" class="game-primary">Volver a jugar</button><button type="button" id="game-change-mode" class="game-secondary">Cambiar modalidad</button><button type="button" id="game-result-home" class="game-text-button">Regresar al inicio</button></div><a id="game-collection" href="../coleccion/coleccion.html">Ir a mi colección ↗</a>
+    </section>
+    <dialog id="game-help" class="game-dialog" aria-labelledby="game-help-title"><button id="game-help-close" class="game-dialog-close" type="button" aria-label="Cerrar instrucciones">×</button><p class="game-eyebrow">EL TIMING LO ES TODO</p><h2 id="game-help-title">Así se batea</h2><ol><li><strong>Observa.</strong> La pelota sale del lanzador y se acerca al aro naranja.</li><li><strong>Espera.</strong> La franja naranja marca un bateo válido. El centro verde es perfecto.</li><li><strong>Batea.</strong> Usa el botón, Espacio o Enter. Tienes una oportunidad por lanzamiento.</li></ol><p id="game-help-score"></p><p id="game-help-official" hidden>Oficial: el tiempo del lanzamiento continúa en el servidor durante una pausa o desconexión. Las pausas detienen el siguiente lanzamiento, no el plazo del actual. Hay 3 partidas premiadas por día (hora de Ciudad de México); se requieren al menos 3 intentos de bateo. Una recarga permite recuperar la partida y su recompensa.</p><p>Muy temprano, muy tarde o no batear cuentan como fallo. Un fallo reinicia la racha.</p><p>Pausa para detener el turno. Reiniciar o salir requiere confirmación. Al ocultar la pestaña se pausa automáticamente.</p><div id="game-help-context" class="game-reward-state">Práctica local: el resultado y el récord de este dispositivo no acreditan puntos de cuenta.</div></dialog>
+    <dialog id="game-confirm" class="game-dialog game-confirm-dialog" aria-labelledby="game-confirm-title"><h2 id="game-confirm-title"></h2><p id="game-confirm-copy"></p><div><button type="button" id="game-confirm-no" class="game-secondary">Conservar partida</button><button type="button" id="game-confirm-yes" class="game-primary">Confirmar</button></div></dialog>
+</main>
+<div id="menu-inferior"></div>
+<script type="module" src="../../js/app/main.js?v=20261028-game4"></script>
 </body>
-
 </html>

@@ -1,0 +1,46 @@
+<!doctype html><html lang="es"><meta charset="utf-8"><title>Fase 4 · revisión determinista local</title>
+<style>body{font:14px system-ui;margin:16px;color:#184d5a}button{padding:10px;margin:3px}iframe{width:100%;height:850px;border:1px solid #ccc}pre{white-space:pre-wrap}aside{background:#eaf4f4;padding:10px}</style>
+<h1>Fixture local · reloj determinista</h1><aside>Interfaz y motor reales. Sólo se inyecta un reloj de pruebas; invitado, sin API ni premios. No mide habilidad humana ni latencia de red.</aside>
+<button id="suite">Ejecutar recorrido completo</button><button id="pose1">Reposo</button><button id="pose2">Carga</button><button id="pose3">Swing</button><button id="pose4">Seguimiento</button><button id="cleanup">Comprobar limpieza</button><button id="navigation">Entradas y ciclo SPA</button><pre id="results" role="status">Preparado</pre>
+<iframe id="game" src="/pages/experiencias/juego.html" title="Juego real con reloj de prueba"></iframe>
+<script type="module">
+const frame=document.querySelector('iframe'),out=document.querySelector('#results');
+const w=()=>frame.contentWindow,d=()=>frame.contentDocument,q=id=>d().getElementById(id),qa=()=>w().__gameQA;
+const click=id=>{if(q(id).disabled)throw Error(id+' disabled');q(id).click()},step=ms=>qa().step(ms),state=()=>qa().handle.state;
+const check=(ok,label)=>{if(!ok)throw Error(label);out.textContent+='\nPASS '+label};
+const wait=()=>new Promise(resolve=>setTimeout(resolve,30));
+async function ready(){for(let i=0;i<100&&!qa();i++)await wait();await qa().handle.ready;}
+function begin(mode='classic'){if(q('game-beta').dataset.screen==='play'){click('game-exit');click('game-confirm-yes')}
+ const screen=q('game-beta').dataset.screen;if(screen==='result')click('game-change-mode');else if(screen==='home')click('game-play');
+ d().querySelector('[data-mode="'+mode+'"]').click();click('game-start');}
+function resolve(type='perfect'){const s=state();step(s.plan.contactMs+(type==='early'?-s.plan.contactMs:type==='late'?s.plan.validWindowMs+1:type==='hit'?s.plan.perfectWindowMs+1:0)-s.elapsed);click('game-hit');const result=state().last;step(result.duration);return result;}
+document.querySelector('#suite').onclick=async()=>{out.textContent='Ejecutando';try{await ready();
+ click('game-help-close'); // closed dialog close is harmless
+ begin();check(state().phase==='countdown','Inicio y cuenta atrás');step(3000);
+ step(400);click('game-pause');const before=JSON.stringify(state());step(8000);check(JSON.stringify(state())===before,'Pausa congela reloj y estadísticas');click('game-resume');check(state().phase==='pitch','Reanudar conserva lanzamiento');
+ click('game-restart');click('game-confirm-no');check(state().phase==='paused','Cancelar reinicio conserva partida pausada');click('game-resume');
+ click('game-restart');click('game-confirm-yes');check(state().stats.resolved===0&&state().phase==='countdown','Confirmar reinicio limpia resultado');step(3000);
+ step(state().plan.contactMs);click('game-hit');const first=state().stats.score;q('game-hit').click();check(state().stats.score===first&&first===20,'Perfecto y entrada duplicada');step(state().last.duration);
+ const early=resolve('early');check(state().stats.streak===0&&early.type==='early','Temprano reinicia racha');check(resolve('late').type==='late','Fallo tardío');
+ check(resolve('hit').type==='hit'&&state().stats.score===30,'Bateo válido normal suma diez, perfecto veinte');
+ while(state().phase!=='finished')resolve();check(q('game-beta').dataset.screen==='result'&&state().outcome==='won'&&state().stats.resolved===10,'Victoria Clásica sólo tras diez lanzamientos');
+ check(q('game-result-reward').textContent.includes('No disponible'),'Resultado sin recompensa económica');click('game-replay');step(100000);check(state().outcome==='lost'&&state().stats.misses===10,'Replay y derrota Clásica sin batear');
+ begin('streak');step(3000);for(let i=0;i<5;i++)resolve();check(state().outcome==='won'&&state().stats.bestStreak===5&&state().stats.resolved===5,'Victoria Racha en cinco consecutivos');
+ click('game-replay');step(100000);check(state().outcome==='lost'&&state().stats.misses===15,'Derrota Racha tras quince lanzamientos');
+ click('game-replay');click('game-exit');click('game-confirm-yes');check(q('game-beta').dataset.screen==='home'&&state().phase==='abandoned','Salir confirmado abandona sin victoria');
+ out.textContent+='\nRECORRIDO COMPLETO APROBADO';
+ }catch(e){out.textContent+='\nFAIL '+e.stack;throw e}};
+async function pose(n){await ready();begin();if(n>0){step(3000);step(state().plan.contactMs);if(n>1){click('game-hit');step(n===2?80:200)}}out.textContent='Pose '+n+' · '+q('game-batter').dataset.pose;}
+for(let i=0;i<4;i++)document.querySelector('#pose'+(i+1)).onclick=()=>pose(i);
+document.querySelector('#cleanup').onclick=async()=>{await ready();begin();step(3000);qa().handle.destroy();step(5000);out.textContent='';check(qa().pending()===0,'Destroy cancela RAF');check(state().phase==='abandoned','Destroy abandona partida');const before=JSON.stringify(state());q('game-hit').click();step(20000);check(before===JSON.stringify(state()),'Sin acciones ni callbacks después de salir');};
+document.querySelector('#navigation').onclick=async()=>{out.textContent='';try{await ready();begin();step(3000);
+ const key=(target,repeat=false)=>target.dispatchEvent(new (w().KeyboardEvent)('keydown',{bubbles:true,cancelable:true,code:'Space',repeat}));
+ const input=d().createElement('input');q('game-field').append(input);key(input);check(state().stats.resolved===0,'Teclado no interfiere con formularios');input.remove();
+ key(q('game-field'));key(q('game-field'),true);check(state().stats.resolved===1,'Espacio resuelve una vez y repetición se ignora');step(state().last.duration);click('game-hit');check(state().stats.resolved===2,'Botón nativo resuelve siguiente lanzamiento');
+ click('game-pause');key(q('game-field'));check(state().stats.resolved===2,'Teclado en pausa no altera métricas');
+ const old=qa();d().querySelector('a[href$="/contenido/Informacion.html"]').click();for(let i=0;i<100&&q('game-beta');i++)await wait();
+ check(!q('game-beta')&&old.pending()===0&&old.handle.state.phase==='abandoned','Navegación SPA desmonta motor');
+ d().querySelector('a[href$="/experiencias/juego.html"]').click();for(let i=0;i<100&&(!q('game-beta')||qa()===old);i++)await wait();await ready();
+ check(qa()!==old&&qa().handle.state===null,'Reentrada SPA crea instancia limpia');begin();step(3000);check(state().stats.resolved===0,'Reentrada no hereda resultado ni entradas');
+ out.textContent+='\nENTRADAS Y SPA APROBADAS';}catch(e){out.textContent+='\nFAIL '+e.stack;throw e}};
+</script></html>

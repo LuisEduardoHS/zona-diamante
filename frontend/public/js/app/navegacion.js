@@ -91,7 +91,7 @@ async function montarSeccion(archivo, signal) {
         const { iniciarColeccion } = await import('../features/coleccion/collection-page.js?v=20261028-3');
         if (!signal.aborted) iniciarColeccion(signal);
     } else if (archivo === RUTAS.juego) {
-        const { iniciarJuego } = await import('../features/juego/ganar_juego.js');
+        const { iniciarJuego } = await import('../features/juego/ganar_juego.js?v=20261028-game4');
         if (!signal.aborted) iniciarJuego(signal);
     } else if (archivo === RUTAS.camara) {
         const frame = document.getElementById('ar-frame');

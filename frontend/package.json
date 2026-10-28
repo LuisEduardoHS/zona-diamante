@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "predev": "npm run build:game",
     "dev": "npx @tailwindcss/cli -i ./src/css/input.css -o ./public/css/output.css --watch",
-    "build": "npm run build:css && npm run build:supabase && npm run build:config",
+    "build": "npm run build:game && npm run build:css && npm run build:supabase && npm run build:config",
+    "build:game": "node ./scripts/generate-game-config.cjs",
     "build:css": "npx @tailwindcss/cli -i ./src/css/input.css -o ./public/css/output.css --minify",
     "build:supabase": "esbuild ./scripts/supabase-entry.mjs --bundle --format=esm --platform=browser --minify --outfile=./public/vendor/supabase.js",
     "build:config": "node ./scripts/generate-runtime-config.cjs",
     "test": "node scripts/test.cjs",
+    "preview:game": "npm run build:game && node checks/phase04-preview.cjs",
     "preview:foto": "node tests/preview-foto-ar.cjs",
     "preview:navegacion": "node tests/preview-foto-ar.cjs --simular-ar"
   },

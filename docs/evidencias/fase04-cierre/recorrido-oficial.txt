@@ -1,0 +1,12 @@
+Sesión local real iniciada. Saldo sintético inicial: costo de carta menos 60.
+Se perderán dos respuestas de inicio después del commit.
+classic / mixed en curso con reloj real.
+OBJETIVO CONSEGUIDO
+Puntos de cuenta · +50
+Recompensa confirmada. Saldo: 240 puntos. 1 de 3 partidas premiadas hoy.
+classic / lose en curso con reloj real.
+PARTIDA TERMINADA · DERROTA
+Puntos de cuenta · +10
+Recompensa confirmada. Saldo: 250 puntos. 2 de 3 partidas premiadas hoy.
+Fallo de respuesta de cierre preparado.
+streak / perfect en curso con reloj real.

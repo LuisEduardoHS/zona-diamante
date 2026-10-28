@@ -1,0 +1,29 @@
+
+> frontend@1.0.0 build
+> npm run build:game && npm run build:css && npm run build:supabase && npm run build:config
+
+
+> frontend@1.0.0 build:game
+> node ./scripts/generate-game-config.cjs
+
+Configuración pública de práctica generada desde backend/core/game_beta_rules.json
+
+> frontend@1.0.0 build:css
+> npx @tailwindcss/cli -i ./src/css/input.css -o ./public/css/output.css --minify
+
+≈ tailwindcss v4.3.3
+
+Done in 213ms
+
+> frontend@1.0.0 build:supabase
+> esbuild ./scripts/supabase-entry.mjs --bundle --format=esm --platform=browser --minify --outfile=./public/vendor/supabase.js
+
+
+  public\vendor\supabase.js  217.1kb
+
+Done in 24ms
+
+> frontend@1.0.0 build:config
+> node ./scripts/generate-runtime-config.cjs
+
+Configuración pública generada en public/js/app/runtime-config.js

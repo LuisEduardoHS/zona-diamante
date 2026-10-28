@@ -1,0 +1,5 @@
+{
+  "keyboardFeedback": "Muy temprano",
+  "pointerFeedback": "Muy temprano",
+  "clock": "requestAnimationFrame/performance.now sin inyección"
+}

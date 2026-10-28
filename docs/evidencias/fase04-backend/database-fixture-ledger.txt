@@ -1,0 +1,7 @@
+PASS: seed twice preserves all team fields and IDs
+PASS: phase01_economy_test.sql: 81 pgTAP assertions
+PASS: phase02a_game_test.sql: 63 pgTAP assertions
+PASS: phase02b_ar_test.sql: 45 pgTAP assertions
+PASS: schema_and_security_test.sql: 14 pgTAP assertions
+PASS: 7 real concurrent-session scenarios and ledger reconciliation
+FAILED: CheckFailure: Beta SQL check: one ledger event

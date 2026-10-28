@@ -1,0 +1,141 @@
+[
+  {
+    "mode": "classic",
+    "phase": "completed",
+    "stats": {
+      "hits": 6,
+      "score": 90,
+      "misses": 4,
+      "streak": 0,
+      "swings": 10,
+      "perfects": 3,
+      "resolved": 10,
+      "bestStreak": 6
+    },
+    "reward": {
+      "status": "confirmed",
+      "event_id": "765cf16f-5dfb-4abf-b156-4648c72343fa",
+      "points_awarded": 50
+    },
+    "outcome": "won"
+  },
+  {
+    "mode": "classic",
+    "phase": "completed",
+    "stats": {
+      "hits": 0,
+      "score": 0,
+      "misses": 10,
+      "streak": 0,
+      "swings": 3,
+      "perfects": 0,
+      "resolved": 10,
+      "bestStreak": 0
+    },
+    "reward": {
+      "status": "confirmed",
+      "event_id": "8fdfcc59-5d52-4cd7-b967-123550e1612b",
+      "points_awarded": 10
+    },
+    "outcome": "lost"
+  },
+  {
+    "mode": "streak",
+    "phase": "completed",
+    "stats": {
+      "hits": 5,
+      "score": 100,
+      "misses": 0,
+      "streak": 5,
+      "swings": 5,
+      "perfects": 5,
+      "resolved": 5,
+      "bestStreak": 5
+    },
+    "reward": {
+      "status": "confirmed",
+      "event_id": "6c58fe1b-1005-43cf-9fdb-6fa843b68bf9",
+      "points_awarded": 60
+    },
+    "outcome": "won"
+  },
+  {
+    "mode": "streak",
+    "phase": "completed",
+    "stats": {
+      "hits": 5,
+      "score": 100,
+      "misses": 0,
+      "streak": 5,
+      "swings": 5,
+      "perfects": 5,
+      "resolved": 5,
+      "bestStreak": 5
+    },
+    "reward": {
+      "status": "daily_limit",
+      "event_id": "3820f003-fbf1-4b39-b07d-af34702e92cf",
+      "points_awarded": 0
+    },
+    "outcome": "won"
+  },
+  {
+    "mode": "streak",
+    "phase": "completed",
+    "stats": {
+      "hits": 5,
+      "score": 100,
+      "misses": 0,
+      "streak": 5,
+      "swings": 5,
+      "perfects": 5,
+      "resolved": 5,
+      "bestStreak": 5
+    },
+    "reward": {
+      "status": "daily_limit",
+      "event_id": "e73f5c95-4cef-4f99-b461-c9b3975d3283",
+      "points_awarded": 0
+    },
+    "outcome": "won"
+  },
+  {
+    "mode": "streak",
+    "phase": "abandoned",
+    "stats": {
+      "hits": 0,
+      "score": 0,
+      "misses": 0,
+      "streak": 0,
+      "swings": 0,
+      "perfects": 0,
+      "resolved": 0,
+      "bestStreak": 0
+    },
+    "reward": {
+      "status": "pending",
+      "points_awarded": null
+    },
+    "outcome": null
+  },
+  {
+    "mode": "streak",
+    "phase": "completed",
+    "stats": {
+      "hits": 0,
+      "score": 0,
+      "misses": 15,
+      "streak": 0,
+      "swings": 15,
+      "perfects": 0,
+      "resolved": 15,
+      "bestStreak": 0
+    },
+    "reward": {
+      "status": "daily_limit",
+      "event_id": "5ba137d4-2b8c-4866-aec4-6e6ae3ea68c9",
+      "points_awarded": 0
+    },
+    "outcome": "lost"
+  }
+]

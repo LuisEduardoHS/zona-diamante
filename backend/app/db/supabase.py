@@ -2,6 +2,7 @@ import httpx
 import logging
 
 from app.core.config import settings
+from app.core.http_client import supabase_http_client
 
 logger = logging.getLogger(
     "zona_diamante.supabase"
@@ -52,7 +53,7 @@ async def supabase_rest_request(
         request_headers.update(headers)
 
     try:
-        async with httpx.AsyncClient(timeout=10.0) as client:
+        async with supabase_http_client(10.0) as client:
             response = await client.request(
                 method=method,
                 url=url,

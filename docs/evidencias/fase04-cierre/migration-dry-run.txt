@@ -1,0 +1,8 @@
+Initialising login role...
+DRY RUN: migrations will *not* be pushed to the database.
+Connecting to remote database...
+Would push these migrations:
+ • 20261028000100_game_beta_authority.sql
+{"upToDate":false,"dryRun":true,"migrations":["20261028000100_game_beta_authority.sql"],"seeds":[],"roles":[],"message":"Finished supabase db push."}
+A new version of Supabase CLI is available: v2.122.0 (currently installed v2.118.0)
+We recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli

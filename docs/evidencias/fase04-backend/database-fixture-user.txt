@@ -1,0 +1,22 @@
+PASS: seed twice preserves all team fields and IDs
+PASS: phase01_economy_test.sql: 81 pgTAP assertions
+PASS: phase02a_game_test.sql: 63 pgTAP assertions
+PASS: phase02b_ar_test.sql: 45 pgTAP assertions
+PASS: schema_and_security_test.sql: 14 pgTAP assertions
+PASS: 7 real concurrent-session scenarios and ledger reconciliation
+PASS: 7 real concurrent game scenarios; zero credit/rewards/inventory
+D:\projects\zona-diamante\backend\venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+2026-10-28 08:18:54,440 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/transition_game_attempt status=400
+2026-10-28 08:18:54,558 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/start_game_attempt status=400
+2026-10-28 08:18:54,792 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/transition_game_attempt status=400
+2026-10-28 08:18:55,157 | INFO | zona_diamante.attempts | activity_attempt_created user_id=45a14457-07dd-4533-9b88-52e4bd1b95da attempt_id=87376321-1376-4300-888f-aa747d7ea41a activity_type=game
+2026-10-28 08:18:55,541 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/start_game_attempt status=400
+2026-10-28 08:18:55,737 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/transition_game_attempt status=400
+2026-10-28 08:18:56,019 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/transition_game_attempt status=400
+PASS: 34 local Auth/FastAPI/PostgREST checks including concurrent HTTP retry
+PASS: 5 concurrent AR scenarios; inventory/ledger atomic and points unchanged
+PASS: local Auth/HTTP AR inventory before/after trusted grant and 4 forbidden browser routes
+FAILED: CheckFailure: Beta SQL: ERROR:  duplicate key value violates unique constraint "users_pkey"
+DETAIL:  Key (id)=(30000000-0000-4000-8000-000000000063) already exists.
+

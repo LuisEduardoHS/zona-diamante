@@ -1,0 +1,9 @@
+
+PASS Teclado no interfiere con formularios
+PASS Espacio resuelve una vez y repetición se ignora
+PASS Botón nativo resuelve siguiente lanzamiento
+PASS Teclado en pausa no altera métricas
+PASS Navegación SPA desmonta motor
+PASS Reentrada SPA crea instancia limpia
+PASS Reentrada no hereda resultado ni entradas
+ENTRADAS Y SPA APROBADAS

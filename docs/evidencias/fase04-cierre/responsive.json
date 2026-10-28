@@ -1,0 +1,154 @@
+[
+  {
+    "controls": [
+      44,
+      44,
+      44
+    ],
+    "height": 740,
+    "hit": {
+      "bottom": 623.09375,
+      "height": 58,
+      "left": 16,
+      "right": 329,
+      "top": 565.09375,
+      "width": 313,
+      "x": 16,
+      "y": 565.09375
+    },
+    "overflow": false,
+    "sprites": [
+      {
+        "loaded": true,
+        "transform": "translate(12.037%, 2.42105%)"
+      },
+      {
+        "loaded": true,
+        "transform": "translate(13.7037%, 0.105263%)"
+      },
+      {
+        "loaded": true,
+        "transform": "translate(0%, -0.105263%)"
+      },
+      {
+        "loaded": true,
+        "transform": "translate(0%, 0%)"
+      }
+    ],
+    "width": 360
+  },
+  {
+    "controls": [
+      44,
+      44,
+      44
+    ],
+    "height": 844,
+    "hit": {
+      "bottom": 711.09375,
+      "height": 58,
+      "left": 16,
+      "right": 359,
+      "top": 653.09375,
+      "width": 343,
+      "x": 16,
+      "y": 653.09375
+    },
+    "overflow": false,
+    "sprites": [
+      {
+        "loaded": true,
+        "transform": "translate(12.037%, 2.42105%)"
+      },
+      {
+        "loaded": true,
+        "transform": "translate(13.7037%, 0.105263%)"
+      },
+      {
+        "loaded": true,
+        "transform": "translate(0%, -0.105263%)"
+      },
+      {
+        "loaded": true,
+        "transform": "translate(0%, 0%)"
+      }
+    ],
+    "width": 390
+  },
+  {
+    "controls": [
+      44,
+      44,
+      44
+    ],
+    "height": 1024,
+    "hit": {
+      "bottom": 552.875,
+      "height": 76,
+      "left": 510.171875,
+      "right": 714.984375,
+      "top": 476.875,
+      "width": 204.8125,
+      "x": 510.171875,
+      "y": 476.875
+    },
+    "overflow": false,
+    "sprites": [
+      {
+        "loaded": true,
+        "transform": "translate(12.037%, 2.42105%)"
+      },
+      {
+        "loaded": true,
+        "transform": "translate(13.7037%, 0.105263%)"
+      },
+      {
+        "loaded": true,
+        "transform": "translate(0%, -0.105263%)"
+      },
+      {
+        "loaded": true,
+        "transform": "translate(0%, 0%)"
+      }
+    ],
+    "width": 768
+  },
+  {
+    "controls": [
+      44,
+      44,
+      44
+    ],
+    "height": 900,
+    "hit": {
+      "bottom": 488.984375,
+      "height": 76,
+      "left": 892.078125,
+      "right": 1249.5,
+      "top": 412.984375,
+      "width": 357.421875,
+      "x": 892.078125,
+      "y": 412.984375
+    },
+    "overflow": false,
+    "sprites": [
+      {
+        "loaded": true,
+        "transform": "translate(12.037%, 2.42105%)"
+      },
+      {
+        "loaded": true,
+        "transform": "translate(13.7037%, 0.105263%)"
+      },
+      {
+        "loaded": true,
+        "transform": "translate(0%, -0.105263%)"
+      },
+      {
+        "loaded": true,
+        "transform": "translate(0%, 0%)"
+      }
+    ],
+    "width": 1440
+  }
+]

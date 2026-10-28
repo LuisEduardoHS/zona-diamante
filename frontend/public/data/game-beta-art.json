@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "canvas": { "width": 540, "height": 950 },
+  "frames": [
+    { "id": "ready", "src": "assets/img/juego/bateador/zd-sultanes-b1.webp", "offsetX": 65, "offsetY": 23 },
+    { "id": "load", "src": "assets/img/juego/bateador/zd-sultanes-b2.webp", "offsetX": 74, "offsetY": 1 },
+    { "id": "swing", "src": "assets/img/juego/bateador/zd-sultanes-b3.webp", "offsetX": 0, "offsetY": -1 },
+    { "id": "follow", "src": "assets/img/juego/bateador/zd-sultanes-b4.webp", "offsetX": 0, "offsetY": 0 }
+  ],
+  "animation": { "anticipateMs": 280, "loadUntilMs": 55, "swingUntilMs": 155, "followUntilMs": 470 }
+}

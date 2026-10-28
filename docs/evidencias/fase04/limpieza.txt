@@ -1,0 +1,4 @@
+
+PASS Destroy cancela RAF
+PASS Destroy abandona partida
+PASS Sin acciones ni callbacks después de salir

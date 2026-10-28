@@ -1,0 +1,11 @@
+{
+  "version": "beta-1",
+  "modes": {
+    "classic": { "name": "Clásica", "maxPitches": 10, "targetHits": 6, "targetStreak": null },
+    "streak": { "name": "Racha", "maxPitches": 15, "targetHits": null, "targetStreak": 5 }
+  },
+  "timing": { "countdownMs": 3000, "flightMs": 1400, "contactMs": 1200, "validWindowMs": 150, "perfectWindowMs": 50, "feedbackMs": 600 },
+  "scoring": { "hit": 10, "perfect": 20, "miss": 0 },
+  "difficulty": { "tierEvery": 5, "tierFactors": [1, 0.94, 0.88], "pitchFactors": [1, 0.96, 1.03, 0.98, 1] },
+  "economy": { "enabled": true, "completion": 10, "classicBonus": 40, "streakBonus": 50, "dailyRewardedGames": 3 }
+}
