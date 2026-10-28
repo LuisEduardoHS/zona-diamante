@@ -1,0 +1,72 @@
+{
+  "checked_at_utc": "2026-10-28T19:17:47.304777+00:00",
+  "expected_revision": "fd1b490b15e186b6d66881f07402169133c83bf9",
+  "authenticated_production_tested": false,
+  "authenticated_reason": "No authorized production test account supplied.",
+  "netlify": {
+    "revision": "fd1b490b15e186b6d66881f07402169133c83bf9",
+    "built_at": "2026-10-28T19:16:58.256Z"
+  },
+  "render": {
+    "revision": "fd1b490b15e186b6d66881f07402169133c83bf9"
+  },
+  "game_protocol": {
+    "compensation_cap_ms": 160,
+    "max_probe_ms": 250,
+    "expires_ms": 480000,
+    "daily_timezone": "America/Mexico_City",
+    "minimum_swings": 3
+  },
+  "economy": {
+    "enabled": true,
+    "completion": 10,
+    "classicBonus": 40,
+    "streakBonus": 50,
+    "dailyRewardedGames": 3
+  },
+  "private_routes": {
+    "/api/v1/games/beta/current": 401,
+    "/api/v1/cards": 401,
+    "/api/v1/me": 401,
+    "/api/v1/ar/mascots": 401
+  },
+  "pages": {
+    "/": 200,
+    "/pages/experiencias/juego.html": 200,
+    "/pages/auth/login.html": 200,
+    "/pages/auth/perfil.html": 200,
+    "/pages/coleccion/coleccion.html": 200,
+    "/pages/experiencias/trivia.html": 200,
+    "/pages/experiencias/camara.html": 200
+  },
+  "public_runtime_safe": true,
+  "sprites": [
+    {
+      "path": "assets/img/juego/bateador/zd-sultanes-b1.webp",
+      "bytes": 98882,
+      "matches_repo": true
+    },
+    {
+      "path": "assets/img/juego/bateador/zd-sultanes-b2.webp",
+      "bytes": 100076,
+      "matches_repo": true
+    },
+    {
+      "path": "assets/img/juego/bateador/zd-sultanes-b3.webp",
+      "bytes": 118254,
+      "matches_repo": true
+    },
+    {
+      "path": "assets/img/juego/bateador/zd-sultanes-b4.webp",
+      "bytes": 113344,
+      "matches_repo": true
+    }
+  ],
+  "catalog_cards": 20,
+  "cors": true,
+  "auth_rejection_latency_ms": [
+    312,
+    125,
+    156
+  ]
+}

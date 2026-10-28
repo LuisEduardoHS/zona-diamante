@@ -4,7 +4,7 @@ Fecha: 28 de octubre de 2026, America/Mexico_City. Base de auditoría `dbc6212`;
 
 ## A. Estado general
 
-Auditoría local aprobada; publicación en curso. Este documento se completará con la comprobación separada de Git, migración y despliegues. El usuario autorizó publicación/merge y migración necesaria; **no autorizó una cuenta autenticada de producción**, por lo que allí sólo se ejecutan comprobaciones públicas. Las recompensas se prueban con cuentas sintéticas y bases locales desechables.
+**Beta funcional implementada, auditada e integrada en main; migración y despliegues públicos verificados.** La prueba económica autenticada en producción y los dispositivos físicos permanecen pendientes, sin presentarlos como aprobados. El usuario autorizó publicación/merge y migración necesaria; **no autorizó una cuenta autenticada de producción**, por lo que allí sólo se ejecutan comprobaciones públicas. Las recompensas se prueban con cuentas sintéticas y bases locales desechables.
 
 ## B. Mecánicas y flujo final
 
@@ -71,7 +71,7 @@ Correcciones de auditoría:
 5. La calibración muestra «Preparando lanzamiento», sin contar un uno ficticio antes del 3–2–1 real.
 6. Confirmar el bateo no reinicia los fotogramas que ya comenzaron durante la espera de red.
 7. El CHECK JSONB de beta exige forma completa y verdadera; NULL/campos ausentes ya no eluden la restricción.
-8. Auth y REST reutilizan conexiones HTTP por loop/lifespan, con cierre explícito y sin cachear identidades ni tokens. La producción anterior tardó ~420 ms en rechazar JWT inválidos; se contrastará la mejora tras desplegar. No se amplió la ventana ni se debilitó Auth.
+8. Auth y REST reutilizan conexiones HTTP por loop/lifespan, con cierre explícito y sin cachear identidades ni tokens. La producción anterior tardó ~420 ms en rechazar JWT inválidos; después del despliegue se midieron 312/125/156 ms en tres peticiones. Son observaciones de rechazo de JWT, no una certificación de latencia de partidas autenticadas ni de todas las regiones. No se amplió la ventana ni se debilitó Auth.
 9. Se versionó la entrada/CSS a `20261028-game4` y se ignora la caché de pytest en Git, sin eliminar archivos del usuario.
 
 Evidencias actuales en `docs/evidencias/fase04-cierre/`; los informes frontend/backend conservan sus evidencias históricas. Las fixtures SQL cambian deadlines sólo en bases propias para cubrir muchos casos; los recorridos HTTP y oficial del navegador usan reloj real. Los fallos controlados 401/red son explícitos y no invalidan JWT de usuarios reales. No se filtraron errores de consola ni se parchearon dependencias vendorizadas.
@@ -88,15 +88,19 @@ Cambios de esta fase: nuevo motor/estado/media/entrada/vista/controlador/cliente
 
 No se incluyen `.env`, node_modules, venv, runtime configs generadas, manifests con credenciales locales, respaldos ni `.tmp`. Revisión de texto actual e historia de Git sin patrones de secretos reales; se identificó y excluyó del detector únicamente el literal falso de una prueba de credenciales existente. Informe del escaneo sin imprimir valores.
 
-Publicación prevista: commits revisables en la rama, push sin force, fetch y fast-forward a main según el procedimiento ya utilizado por el repositorio. Se completará aquí la evidencia de commits y limpieza al terminar.
+Código publicado como `fd1b490b15e186b6d66881f07402169133c83bf9` en `feat/game-beta-playable` y main. Fetch confirmó que main no había recibido trabajo ajeno; integración fast-forward desde `dbc62123a0ac3519484f8e4759979c4a4926cd58`, sin force push ni conflictos. Main local y remoto coincidieron y el árbol quedó limpio antes de generar las evidencias de producción. El commit de cierre posterior contiene exclusivamente documentación/evidencias; la comprobación final de main se informa en el reporte de entrega. No se creó PR: se utilizó el procedimiento fast-forward ya empleado por el repositorio.
 
 ## J. Migración y producción
 
 Nueva `20261028000100_game_beta_authority.sql`; las 22 anteriores se conservan. El proyecto enlazado coincide con el host de Supabase de producción. Se guardó respaldo de esquema público de 62.006 bytes en `.tmp/phase04-close/remote-public-before.sql`, fuera de Git y sin datos de usuarios. Dry-run identifica sólo esta migración pendiente, sin seeds ni roles adicionales.
 
-La aplicación remota se ejecutará después del merge, con el procedimiento CLI enlazado; no se hará reset remoto. Verificar por separado historia, esquema/permisos, `/health`, `/version`, build-info Netlify, CORS, páginas y cuatro imágenes idénticas al repositorio. Las pruebas autenticadas de producción quedan **no ejecutadas por instrucción expresa del usuario: sin cuenta autorizada, sólo públicas**. No se crean usuarios ni se financian cuentas en producción.
+Después del merge se ejecutó `supabase db push --linked --yes`: aplicó únicamente `20261028000100_game_beta_authority.sql`, sin seeds ni roles adicionales. `migration list --linked` confirmó las 23 versiones locales/remotas. Un dump posterior de esquema público (78.758 bytes, ignorado en Git) confirmó CHECK completo, índices únicos, RLS de intentos/eventos y ACL de `game_beta_command`: PUBLIC revocado, sólo service_role autorizado; sin grants a anon/authenticated. No hubo reset ni consultas de datos privados para las pruebas. Evidencia: `migration-apply.txt`, `migration-history.txt`, `migration-verified.json`. Las pruebas autenticadas de producción quedan **no ejecutadas por instrucción expresa del usuario: sin cuenta autorizada, sólo públicas**. No se crean usuarios ni se financian cuentas en producción.
 
-Los marcadores publicados antes del cierre señalaban `d183ffb`; ese antecedente no acredita este despliegue. Se sustituirá por la evidencia observada después de publicar.
+Los marcadores anteriores señalaban `d183ffb`; después del merge se comprobó cada plataforma independientemente. `production.json`, tomado a las 19:17:47 UTC del 28/10, registra **Netlify y Render en `fd1b490b15e186b6d66881f07402169133c83bf9`**. Netlify indica build 19:16:58 UTC. `/health` OK, configuración beta correcta, siete páginas 200, cuatro imágenes byte a byte iguales al repositorio, CSS/JS/vendor disponibles, configuración pública sin credenciales privadas, catálogo de 20 cartas y CORS de Netlify aprobado. Cuatro rutas privadas sin sesión devuelven 401. El JSON público de práctica conserva economía deshabilitada.
+
+El navegador abrió el juego publicado sin sesión, consultó/cerró ayuda, eligió Clásica, observó cuenta atrás y lanzamientos, bateó temprano, pausó y reanudó, terminó con derrota 0/10 sin puntos de cuenta y cambió a Racha. Capturas `produccion-pausa.png` y `produccion-resultado.png`; DOM en `produccion-resultado.txt` y `produccion-modalidad.txt`. Colección pública mostró las 20 cartas y el saldo oculto (—); perfil redirigió correctamente al login con next local, sin iniciar sesión. DOM en `produccion-coleccion.txt` y `produccion-perfil-login.txt`. El registro acumulado del recorrido conserva tres eventos con la misma firma MutationObserver entre juego/Colección/login (`consola-produccion-recorrido.json`); no se omitieron al cambiar de página.
+
+**Estado final de consola del juego público:** un TypeError `MutationObserver.observe` con la firma histórica, guardado sin filtros en `consola-produccion.json`. Fase 2B lo reprodujo también en un iframe sin scripts y apunta al entorno de inspección, pero no se obtuvo pila del evento de producción: no se declara demostrada su atribución ni corregido. No hubo otra entrada capturada en ese recorrido. La consola oficial local quedó vacía; estas observaciones son distintas. Revisión externa con DevTools y pausa en excepciones sigue pendiente.
 
 ## K. Limitaciones y pendientes separados
 
@@ -113,8 +117,9 @@ Los marcadores publicados antes del cierre señalaban `d183ffb`; ese antecedente
 - [x] Colección/precios/AR preservados; compras verificadas en entorno aislado.
 - [x] Recuperación de arranque/red y sesión vencida corregidas y probadas.
 - [x] Suites, build, SQL clean/upgrade y seguridad de archivos revisados.
-- [ ] Push, merge, main local/remoto iguales y árbol limpio.
-- [ ] Migración remota única, Netlify/Render comprobados por separado y smoke público.
-- [ ] Cuenta autorizada para prueba económica de producción (no disponible; no ejecutarla).
+- [x] Push y merge del código, main local/remoto iguales y árbol limpio antes de guardar evidencias públicas; cierre documental posterior sin cambios de producto.
+- [x] Migración remota única, Netlify/Render comprobados por separado y smoke público.
+- [ ] Prueba económica autenticada de producción: **no ejecutada por instrucción del usuario**, sin cuenta autorizada.
+- [ ] Contraste físico móvil y pila externa del MutationObserver histórico.
 
 Revisión recomendada: `game-official.js`, `game-page.js`, `game-state.js`, `game_beta.py` (router/servicio/esquema), `http_client.py`, la migración nueva y los checks `phase04_database.py`, `game-official.test.mjs`, `test_game_beta.py`, `test_http_client.py` y `phase04_deploy_check.py`.

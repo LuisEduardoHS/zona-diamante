@@ -1,0 +1,47 @@
+- banner:
+  - button "Abrir menú":
+  - link "Iniciar sesión":
+    - /url: https://zona-diamante.netlify.app/pages/auth/login.html
+- navigation "Navegación inferior":
+  - link "Inicio":
+    - /url: https://zona-diamante.netlify.app/index.html
+    - generic: Inicio
+  - link "Trivia":
+    - /url: https://zona-diamante.netlify.app/pages/experiencias/trivia.html
+    - generic: Trivia
+  - link "Cámara AR":
+    - /url: https://zona-diamante.netlify.app/pages/experiencias/camara.html
+  - link "Info":
+    - /url: https://zona-diamante.netlify.app/pages/contenido/Informacion.html
+    - generic: Info
+  - link "Juego":
+    - /url: https://zona-diamante.netlify.app/pages/experiencias/juego.html
+    - generic: Juego
+- main:
+  - paragraph: TU MOMENTO EN EL DIAMANTE
+  - heading "Turno Diamante." [level=1]
+  - generic: BETA · PRÁCTICA
+  - region "Seleccionar modalidad":
+    - button "← Volver"
+    - heading "Elige tu desafío" [level=2]
+    - paragraph: Dos formas de jugar. El mismo momento perfecto.
+    - button "01 Clásica 10 lanzamientos · 6 bateos para ganar":
+      - generic: "01"
+      - strong: Clásica
+      - generic: 10 lanzamientos · 6 bateos para ganar
+      - generic: ◇
+    - button "02 Racha 5 bateos consecutivos · hasta 15 lanzamientos" [active] [pressed]:
+      - generic: "02"
+      - strong: Racha
+      - generic: 5 bateos consecutivos · hasta 15 lanzamientos
+      - generic: ↗
+    - paragraph: Hasta 15 lanzamientos. Consigue 5 bateos seguidos; cada fallo reinicia la racha.
+    - button "Comenzar Racha"
+    - button "Ver instrucciones"
+    - paragraph: Esta demostración no entrega puntos ni cartas. Inicia sesión para jugar por puntos.
+    - link "Iniciar sesión para jugar por puntos":
+      - /url: https://zona-diamante.netlify.app/pages/auth/login.html?next=https%3A%2F%2Fzona-diamante.netlify.app%2Fpages%2Fexperiencias%2Fjuego.html
+- iframe [id="nl-badge-frame"]:
+  - button "Powered by Netlify — build your own site":
+    - generic: Powered by Netlify
+- status

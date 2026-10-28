@@ -1,0 +1,49 @@
+- banner:
+  - button "Abrir menú":
+  - link "Iniciar sesión":
+    - /url: https://zona-diamante.netlify.app/pages/auth/login.html
+- navigation "Navegación inferior":
+  - link "Inicio":
+    - /url: https://zona-diamante.netlify.app/index.html
+    - generic: Inicio
+  - link "Trivia":
+    - /url: https://zona-diamante.netlify.app/pages/experiencias/trivia.html
+    - generic: Trivia
+  - link "Cámara AR":
+    - /url: https://zona-diamante.netlify.app/pages/experiencias/camara.html
+  - link "Info":
+    - /url: https://zona-diamante.netlify.app/pages/contenido/Informacion.html
+    - generic: Info
+  - link "Juego":
+    - /url: https://zona-diamante.netlify.app/pages/experiencias/juego.html
+    - generic: Juego
+- main:
+  - paragraph: TU MOMENTO EN EL DIAMANTE
+  - heading "Turno Diamante." [active] [level=1]
+  - generic: BETA · PRÁCTICA
+  - region "Resultado final":
+    - text: ◇
+    - paragraph: PARTIDA TERMINADA · DERROTA
+    - heading "El próximo turno es tuyo" [level=2]
+    - paragraph: 0 de 6 bateos necesarios, en 10 lanzamientos.
+    - strong: "0"
+    - generic: PUNTOS DE PARTIDA
+    - term: Aciertos
+    - definition: "0"
+    - term: Fallos
+    - definition: "10"
+    - term: Racha máxima
+    - definition: "0"
+    - term: Perfectos
+    - definition: "0"
+    - strong: Puntos de cuenta · —
+    - paragraph: No disponible · práctica local. Esta partida no modifica tu saldo ni entrega cartas.
+    - button "Volver a jugar"
+    - button "Cambiar modalidad"
+    - button "Regresar al inicio"
+    - link "Ir a mi colección ↗":
+      - /url: https://zona-diamante.netlify.app/pages/coleccion/coleccion.html
+- iframe [id="nl-badge-frame"]:
+  - button "Powered by Netlify — build your own site":
+    - generic: Powered by Netlify
+- status

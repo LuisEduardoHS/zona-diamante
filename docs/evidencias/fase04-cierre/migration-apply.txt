@@ -1,0 +1,9 @@
+Initialising login role...
+Connecting to remote database...
+Do you want to push these migrations to the remote database?
+ • 20261028000100_game_beta_authority.sql
+ [Y/n] y
+Applying migration 20261028000100_game_beta_authority.sql...
+{"upToDate":false,"dryRun":false,"migrations":["20261028000100_game_beta_authority.sql"],"seeds":[],"roles":[],"message":"Finished supabase db push."}
+A new version of Supabase CLI is available: v2.122.0 (currently installed v2.118.0)
+We recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli

@@ -1,0 +1,13 @@
+{
+  "migration": "20261028000100",
+  "history_local_remote_count": 23,
+  "remote_public_schema_backup_bytes": 78758,
+  "rpc_acl": [
+    "REVOKE ALL ON FUNCTION \"public\".\"game_beta_command\"(\"p_user_id\" \"uuid\", \"p_action\" \"text\", \"p_attempt_id\" \"uuid\", \"p_key\" \"text\", \"p_mode\" \"text\", \"p_revision\" integer, \"p_pitch_id\" \"uuid\", \"p_probe\" \"uuid\", \"p_rules\" \"jsonb\") FROM PUBLIC;",
+    "GRANT ALL ON FUNCTION \"public\".\"game_beta_command\"(\"p_user_id\" \"uuid\", \"p_action\" \"text\", \"p_attempt_id\" \"uuid\", \"p_key\" \"text\", \"p_mode\" \"text\", \"p_revision\" integer, \"p_pitch_id\" \"uuid\", \"p_probe\" \"uuid\", \"p_rules\" \"jsonb\") TO \"service_role\";"
+  ],
+  "activity_attempts_rls": true,
+  "reward_events_rls": true,
+  "shape_and_unique_indexes": true,
+  "user_data_read_or_modified_for_tests": false
+}

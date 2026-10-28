@@ -1,6 +1,6 @@
 {
-  "text_files_reviewed": 337,
-  "historical_text_blobs_reviewed": 696,
+  "text_files_reviewed": 347,
+  "historical_text_blobs_reviewed": 717,
   "issues": [],
   "explicit_fake_fixture_allowed": "sb_secret_test_opaque_key",
   "values_printed": false

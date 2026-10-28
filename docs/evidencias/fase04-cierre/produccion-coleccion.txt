@@ -1,0 +1,261 @@
+- banner:
+  - button "Abrir menú":
+  - link "Iniciar sesión":
+    - /url: https://zona-diamante.netlify.app/pages/auth/login.html
+- navigation "Navegación inferior":
+  - link "Inicio":
+    - /url: https://zona-diamante.netlify.app/index.html
+    - generic: Inicio
+  - link "Trivia":
+    - /url: https://zona-diamante.netlify.app/pages/experiencias/trivia.html
+    - generic: Trivia
+  - link "Cámara AR":
+    - /url: https://zona-diamante.netlify.app/pages/experiencias/camara.html
+  - link "Info":
+    - /url: https://zona-diamante.netlify.app/pages/contenido/Informacion.html
+    - generic: Info
+  - link "Juego":
+    - /url: https://zona-diamante.netlify.app/pages/experiencias/juego.html
+    - generic: Juego
+- main:
+  - paragraph: TU AFICIÓN SE COLECCIONA
+  - heading "Colección" [level=1]: Colección.
+  - generic: INICIA SESIÓN PARA SUMAR
+  - generic: D
+  - strong: —
+  - generic: pts
+  - region "Progreso de colección":
+    - text: MI ÁLBUM
+    - heading "20 cartas por descubrir" [level=2]
+    - progressbar "Porcentaje de cartas adquiridas"
+    - generic: Tu siguiente gran colección
+    - generic: ZD
+    - generic: AR
+    - generic: MVP
+  - generic: Tu álbum te espera. Suma puntos y hazlo tuyo.
+  - link "Iniciar sesión":
+    - /url: https://zona-diamante.netlify.app/pages/auth/login.html?next=https%3A%2F%2Fzona-diamante.netlify.app%2Fpages%2Fcoleccion%2Fcoleccion.html
+  - generic "Propiedad de cartas":
+    - button "Todas" [pressed]
+    - button "Mis cartas"
+    - button "Bloqueadas"
+  - button "↻ Actualizar"
+  - region "Filtros de colección":
+    - generic "Tipos de carta":
+      - button "Todo el álbum" [pressed]
+      - button "Equipos"
+      - button "Jugadores"
+      - button "MVP"
+      - button "Mascotas AR"
+    - generic: Equipo
+    - combobox "Equipo":
+      - option "Todos los equipos" [selected]
+      - option "Sultanes"
+      - option "Dorados"
+      - option "Charros"
+      - option "Algodoneros"
+    - generic: Ordenar cartas
+    - combobox "Ordenar cartas":
+      - option "Orden del álbum" [selected]
+      - option "Menor precio"
+      - option "Nombre A–Z"
+  - heading "Elige tu próxima carta" [level=2]
+  - generic: 20 cartas
+  - generic "Cartas del catálogo":
+    - button "Gustavo Núñez, 300 pts":
+      - generic: ZONA DIAMANTE
+      - generic: Jugador
+      - generic: GN
+      - generic: Sultanes
+      - strong: Gustavo Núñez
+      - generic: CARTAS · ZONA DIAMANTE
+      - generic: "#01"
+      - generic: Desbloquear
+      - strong: 300 pts
+    - button "Josh Lester, 300 pts":
+      - generic: ZONA DIAMANTE
+      - generic: Jugador
+      - generic: JL
+      - generic: Sultanes
+      - strong: Josh Lester
+      - generic: CARTAS · ZONA DIAMANTE
+      - generic: "#02"
+      - generic: Desbloquear
+      - strong: 300 pts
+    - button "Ramiro Peña, 500 pts":
+      - generic: ZONA DIAMANTE
+      - generic: MVP
+      - generic: Sultanes
+      - strong: Ramiro Peña
+      - generic: CARTAS · ZONA DIAMANTE
+      - generic: "#03"
+      - generic: Desbloquear
+      - strong: 500 pts
+    - button "Perro Sultán, Exclusiva AR":
+      - generic: ZONA DIAMANTE
+      - generic: Mascota
+      - generic: Sultanes
+      - strong: Perro Sultán
+      - generic: CARTAS · ZONA DIAMANTE
+      - generic: "#04"
+      - generic: Exclusiva AR
+      - strong: Cámara ↗
+    - button "Sultanes de Monterrey, 250 pts":
+      - generic: ZONA DIAMANTE
+      - generic: Equipo
+      - generic: Sultanes
+      - strong: Sultanes de Monterrey
+      - generic: CARTAS · ZONA DIAMANTE
+      - generic: "#05"
+      - generic: Desbloquear
+      - strong: 250 pts
+    - button "Brainer Bonaci, 300 pts":
+      - generic: ZONA DIAMANTE
+      - generic: Jugador
+      - generic: BB
+      - generic: Dorados
+      - strong: Brainer Bonaci
+      - generic: CARTAS · ZONA DIAMANTE
+      - generic: "#06"
+      - generic: Desbloquear
+      - strong: 300 pts
+    - button "Jesús Loya, 300 pts":
+      - generic: ZONA DIAMANTE
+      - generic: Jugador
+      - generic: JL
+      - generic: Dorados
+      - strong: Jesús Loya
+      - generic: CARTAS · ZONA DIAMANTE
+      - generic: "#07"
+      - generic: Desbloquear
+      - strong: 300 pts
+    - button "Ángel Bravo, 500 pts":
+      - generic: ZONA DIAMANTE
+      - generic: MVP
+      - generic: ÁB
+      - generic: Dorados
+      - strong: Ángel Bravo
+      - generic: CARTAS · ZONA DIAMANTE
+      - generic: "#08"
+      - generic: Desbloquear
+      - strong: 500 pts
+    - button "Pancho Pistolas, Exclusiva AR":
+      - generic: ZONA DIAMANTE
+      - generic: Mascota
+      - generic: AR
+      - generic: Dorados
+      - strong: Pancho Pistolas
+      - generic: CARTAS · ZONA DIAMANTE
+      - generic: "#09"
+      - generic: Exclusiva AR
+      - strong: Cámara ↗
+    - button "Dorados de Chihuahua, 250 pts":
+      - generic: ZONA DIAMANTE
+      - generic: Equipo
+      - generic: Dorados
+      - strong: Dorados de Chihuahua
+      - generic: CARTAS · ZONA DIAMANTE
+      - generic: "#10"
+      - generic: Desbloquear
+      - strong: 250 pts
+    - button "Reynaldo Rodríguez, 300 pts":
+      - generic: ZONA DIAMANTE
+      - generic: Jugador
+      - generic: RR
+      - generic: Charros
+      - strong: Reynaldo Rodríguez
+      - generic: CARTAS · ZONA DIAMANTE
+      - generic: "#11"
+      - generic: Desbloquear
+      - strong: 300 pts
+    - button "Luis Iván Rodríguez, 300 pts":
+      - generic: ZONA DIAMANTE
+      - generic: Jugador
+      - generic: LI
+      - generic: Charros
+      - strong: Luis Iván Rodríguez
+      - generic: CARTAS · ZONA DIAMANTE
+      - generic: "#12"
+      - generic: Desbloquear
+      - strong: 300 pts
+    - button "Julián Ornelas, 500 pts":
+      - generic: ZONA DIAMANTE
+      - generic: MVP
+      - generic: JO
+      - generic: Charros
+      - strong: Julián Ornelas
+      - generic: CARTAS · ZONA DIAMANTE
+      - generic: "#13"
+      - generic: Desbloquear
+      - strong: 500 pts
+    - button "Straiky, Exclusiva AR":
+      - generic: ZONA DIAMANTE
+      - generic: Mascota
+      - generic: AR
+      - generic: Charros
+      - strong: Straiky
+      - generic: CARTAS · ZONA DIAMANTE
+      - generic: "#14"
+      - generic: Exclusiva AR
+      - strong: Cámara ↗
+    - button "Charros de Jalisco, 250 pts":
+      - generic: ZONA DIAMANTE
+      - generic: Equipo
+      - generic: Charros
+      - strong: Charros de Jalisco
+      - generic: CARTAS · ZONA DIAMANTE
+      - generic: "#15"
+      - generic: Desbloquear
+      - strong: 250 pts
+    - button "Mason Martin, 300 pts":
+      - generic: ZONA DIAMANTE
+      - generic: Jugador
+      - generic: MM
+      - generic: Algodoneros
+      - strong: Mason Martin
+      - generic: CARTAS · ZONA DIAMANTE
+      - generic: "#16"
+      - generic: Desbloquear
+      - strong: 300 pts
+    - button "Jacob Barnes, 300 pts":
+      - generic: ZONA DIAMANTE
+      - generic: Jugador
+      - generic: JB
+      - generic: Algodoneros
+      - strong: Jacob Barnes
+      - generic: CARTAS · ZONA DIAMANTE
+      - generic: "#17"
+      - generic: Desbloquear
+      - strong: 300 pts
+    - button "Nicholas Torres, 500 pts":
+      - generic: ZONA DIAMANTE
+      - generic: MVP
+      - generic: NT
+      - generic: Algodoneros
+      - strong: Nicholas Torres
+      - generic: CARTAS · ZONA DIAMANTE
+      - generic: "#18"
+      - generic: Desbloquear
+      - strong: 500 pts
+    - button "Pollo Algodonero, Exclusiva AR":
+      - generic: ZONA DIAMANTE
+      - generic: Mascota
+      - generic: Algodoneros
+      - strong: Pollo Algodonero
+      - generic: CARTAS · ZONA DIAMANTE
+      - generic: "#19"
+      - generic: Exclusiva AR
+      - strong: Cámara ↗
+    - button "Algodoneros de Unión Laguna, 250 pts":
+      - generic: ZONA DIAMANTE
+      - generic: Equipo
+      - generic: Algodoneros
+      - strong: Algodoneros de Unión Laguna
+      - generic: CARTAS · ZONA DIAMANTE
+      - generic: "#20"
+      - generic: Desbloquear
+      - strong: 250 pts
+- iframe [id="nl-badge-frame"]:
+  - button "Powered by Netlify — build your own site":
+    - generic: Powered by Netlify
+- status

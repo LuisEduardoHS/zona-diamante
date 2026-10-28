@@ -1,0 +1,22 @@
+- button "Cerrar":
+- main:
+  - paragraph: Zona Diamante
+  - heading "Inicia sesión" [level=1]
+  - region "Inicio de sesión":
+    - generic: Correo electrónico
+    - textbox "Correo electrónico":
+      - /placeholder: tu@correo.com
+    - generic: Contraseña
+    - textbox "Contraseña":
+      - /placeholder: Escribe tu contraseña
+    - button "Mostrar contraseña":
+    - link "¿Olvidaste tu contraseña?":
+      - /url: /pages/auth/recuperar
+    - button "Iniciar sesión"
+    - generic: ¿Primera vez aquí?
+    - link "Crear una cuenta":
+      - /url: /pages/auth/registro
+- iframe [id="nl-badge-frame"]:
+  - button "Powered by Netlify — build your own site":
+    - generic: Powered by Netlify
+- status
