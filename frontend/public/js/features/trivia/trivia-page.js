@@ -104,10 +104,11 @@ function submittingTemplate() {
 }
 
 
-// Add future score-specific artwork here; other scores deliberately show only points.
+// Artwork for each pair of correct-answer counts (10 points per answer).
 const resultIllustrations = [
     { scores: [4, 5], file: 'PTrivia-PanchoP.webp', alt: 'Pancho celebrando tus aciertos' },
-    { scores: [2, 3], file: 'PTrivia-Pollo.webp', alt: 'Pollo pensando en las respuestas' }
+    { scores: [2, 3], file: 'PTrivia-Pollo.webp', alt: 'Pollo pensando en las respuestas' },
+    { scores: [0, 1], file: 'perrito-sultan.webp', alt: 'Perrito Sultán triste por las respuestas' }
 ];
 
 function completedTemplate(result, stage) {
