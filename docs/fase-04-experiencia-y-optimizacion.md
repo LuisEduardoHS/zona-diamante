@@ -206,7 +206,7 @@ Pruebas versionadas nuevas: `game-experience.test.mjs`, `experience-browser.cjs`
 
 Dependencias añadidas: **ninguna**. No se incluyen `.env`, venv, node_modules, configuraciones públicas generadas ni manifiestos de cuentas locales. Los servidores AR/oficial y los stacks desechables se cierran al entregar; se conserva el Docker/Supabase preexistente del usuario. Se deja la previsualización de práctica en 4190 y la fixture determinista en 4191 para revisión local; pertenecen al proceso `node frontend/checks/phase04-preview.cjs`, sin sesiones ni recompensas oficiales.
 
-Se generará un commit local después de todas las verificaciones; su SHA y el push se registran en el informe de entrega del chat. Rama destinada a GitHub: `feat/phase04-experience-polish`. Se comprobará limpieza y coincidencia local/remota después del push normal. No hay force push, merge automático, migraciones remotas ni despliegue de esta fase.
+Commit de implementación y evidencias: `df05498` (`feat(experience): improve batting input, game feedback and session lifecycle`). Push normal completado a `origin/feat/phase04-experience-polish`; comparación local/remota `0 0` y árbol limpio, verificados después del push. Un commit posterior registra este cierre documental. Main local permanece en `1bc8d73`; no hay force push, merge automático, migraciones remotas ni despliegue de esta fase.
 
 **Recomendación de publicación:** rama apta para revisión visual y funcional; integrar sólo después de aceptar la experiencia y resolver los requisitos físicos del público objetivo. Esta entrega no afirma que main contenga estos cambios.
 
