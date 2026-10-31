@@ -16,7 +16,7 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
     if (mounts.has(root)) return mounts.get(root);
     const lifecycle = new AbortController(), options = {signal:lifecycle.signal};
     const $ = id => root.querySelector('#'+id);
-    let rules, manifest, sprites = [], engine = null, mode = 'classic', screen = 'home', stopped = false;
+    let rules, manifest, sprites = [], engine = null, draw = null, mode = 'classic', screen = 'home', stopped = false;
     let user = 'guest', authenticated = false, pendingAction = null, completionId = null, starting = false, generation = 0, officialRun=false, confirming=false;
     const adapter = createPracticeSession();
     const storage = {getItem:key=>localStorage.getItem(key),setItem:(key,value)=>localStorage.setItem(key,value)};
@@ -85,14 +85,16 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
         if (screen === 'play' && engine?.state.phase !== 'finished' && pendingAction !== 'restart') return;
         fresh=fresh||completionId!==null;engine?.destroy(); completionId = null;starting=true;const ticket=++generation;
         const official=authenticated&&!practice;officialRun=official;$('game-hit').disabled=true;
-        let draw = createGameView(root,rules,sprites,manifest);
+        draw?.destroy(); draw = createGameView(root,rules,sprites,manifest);
+        let viewRules = JSON.stringify(rules);
         const onFrame=state=>{if(stopped||ticket!==generation)return;draw(state);if(state.phase==='finished')finish(state);};
         try{
             if(official){
                 $('game-network-note').hidden=false;$('game-network-note').textContent='Conectando con la partida oficial…';
                 const api=await getGameServerClient();if(stopped||ticket!==generation)return;
                 engine=createOfficialEngine({api,storage,user,mode,rules,fresh,onFrame,
-                    onSnapshot:s=>{if(stopped||ticket!==generation)return;mode=s.mode;rules=s.rules;draw=createGameView(root,rules,sprites,manifest);modeInfo();
+                    onSnapshot:s=>{if(stopped||ticket!==generation)return;mode=s.mode;rules=s.rules;
+                        const nextRules=JSON.stringify(rules);if(nextRules!==viewRules){draw.destroy();draw=createGameView(root,rules,sprites,manifest);viewRules=nextRules;}modeInfo();
                         $('game-network-note').hidden=true;$('game-reconnect').hidden=true;
                         if(['expired','abandoned'].includes(s.phase)){show('home');$('game-network-note').hidden=false;$('game-network-note').textContent=s.phase==='expired'?'La partida expiró sin premio. Puedes comenzar otra.':'Partida abandonada sin premio.';}},
                     onError:error=>{if(stopped||ticket!==generation)return;$('game-network-note').hidden=false;
@@ -100,7 +102,7 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
                         if(error.status===401){$('game-reconnect').hidden=true;$('game-login').hidden=false;$('game-login').textContent='Volver a iniciar sesión';$('game-network-note').textContent='Tu sesión venció. Inicia sesión de nuevo para recuperar esta partida y cualquier premio confirmado.';show('modes');$('game-login').hidden=false;}
                         else if(error.status===429){$('game-network-note').textContent='Alcanzaste el límite temporal de solicitudes. Puedes practicar sin puntos o intentarlo después.';show('modes');}
                         else if(String(error.message).includes('latency')){const note='La conexión supera el límite de latencia para jugar por puntos. Puedes practicar sin puntos o intentarlo cuando mejore.';$('game-network-note').textContent=note;show('modes');void engine.abandon().then(()=>{if(!stopped&&ticket===generation){show('modes');$('game-network-note').hidden=false;$('game-network-note').textContent=note;}});}
-                        else $('game-network-note').textContent='No pudimos confirmar la operación oficial. Reintenta la conexión para recuperar el estado. El tiempo del servidor sigue corriendo; no se inventó un premio.';}});
+                        else $('game-network-note').textContent='El servidor tarda en responder o no hay conexión. Reintenta para recuperar tu partida. Su reloj sigue corriendo; cualquier premio se confirma al reconectar.';}});
             }else{const session=adapter.start(mode);engine=createGameEngine({rules,mode,id:session.id,...clock,onFrame});}
             if(stopped||ticket!==generation)return;
             show('play');modeInfo();const operation=engine.start();if(official)await operation;if(!stopped&&ticket===generation)$('game-field').focus({preventScroll:true});
@@ -129,8 +131,13 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
     $('game-change-mode').addEventListener('click',()=>show('modes'),options);
     $('game-result-home').addEventListener('click',()=>show('home'),options);
     $('game-back').addEventListener('click',()=>show('home'),options);
-    $('game-pause').addEventListener('click',()=>{if(engine?.state.phase==='paused')engine.resume();else engine?.pause();},options);
-    $('game-resume').addEventListener('click',()=>engine?.resume(),options);
+    const resumePlay = async () => {
+        const ticket = generation;
+        await engine?.resume();
+        if (!stopped && ticket === generation && screen === 'play') $('game-field').focus({preventScroll:true});
+    };
+    $('game-pause').addEventListener('click',()=>{if(engine?.state.phase==='paused')void resumePlay();else engine?.pause();},options);
+    $('game-resume').addEventListener('click',resumePlay,options);
     $('game-restart').addEventListener('click',()=>requestConfirmation('restart'),options);
     $('game-exit').addEventListener('click',()=>requestConfirmation('exit'),options);
     $('game-confirm-no').addEventListener('click',()=>$('game-confirm').close(),options);
@@ -151,10 +158,15 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
     $('game-login').href=ruta(RUTAS.login)+'?next='+encodeURIComponent(ruta(RUTAS.juego));
     bindBatInput($('game-hit'),{signal:lifecycle.signal,active:()=>screen==='play',swing:()=>engine?.swing()});
     document.addEventListener('visibilitychange',()=>{if(document.hidden)engine?.pause();},options);
+    window.addEventListener('blur',()=>{if(screen==='play')engine?.pause();},options);
+    // Opening the global navigation menu must not consume the player's turn.
+    document.addEventListener('toggle',event=>{
+        if (screen==='play' && event.target.matches?.('dialog[open]')) engine?.pause();
+    },{...options,capture:true});
     const unsubscribe = observarEstadoSesion(auth=>{
         if(auth.cargando)return;
         const next = auth.user?.id || 'guest';
-        if(next!==user){generation++;engine?.destroy();engine=null;starting=false;confirming=false;pendingAction=null;$('game-confirm-yes').disabled=false;$('game-reconnect').disabled=false;$('game-reconnect').hidden=true;for(const dialog of root.querySelectorAll('dialog[open]'))dialog.close();show('home');user=next;records=practiceRecords(storage,user);}
+        if(next!==user){generation++;engine?.destroy();engine=null;draw?.destroy();draw=null;starting=false;confirming=false;pendingAction=null;$('game-confirm-yes').disabled=false;$('game-reconnect').disabled=false;$('game-reconnect').hidden=true;for(const dialog of root.querySelectorAll('dialog[open]'))dialog.close();show('home');user=next;records=practiceRecords(storage,user);}
         authenticated=Boolean(auth.user);modeInfo();
     });
     const ready = (async()=>{
@@ -183,7 +195,7 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
     })();
     let preservePageShow = false;
     const restored = event => { if(event.persisted && stopped)location.reload(); };
-    function cleanup(){if(stopped)return;stopped=true;generation++;engine?.destroy();unsubscribe();lifecycle.abort();if(!preservePageShow)window.removeEventListener('pageshow',restored);for(const dialog of root.querySelectorAll('dialog[open]'))dialog.close();mounts.delete(root);}
+    function cleanup(){if(stopped)return;stopped=true;generation++;engine?.destroy();draw?.destroy();unsubscribe();lifecycle.abort();if(!preservePageShow)window.removeEventListener('pageshow',restored);for(const dialog of root.querySelectorAll('dialog[open]'))dialog.close();mounts.delete(root);}
     const handle={ready,get state(){return engine?.state||null;},destroy:cleanup};
     mounts.set(root,handle);signal?.addEventListener('abort',cleanup,{once:true});
     window.addEventListener('pagehide',event=>{preservePageShow=event.persisted;cleanup();},options);

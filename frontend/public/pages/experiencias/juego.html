@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="../../assets/logo-naranja.svg">
     <title>Turno Diamante | Béisbol</title>
-    <link href="../../css/output.css?v=20261028-game4" rel="stylesheet">
-    <link href="../../css/juego-Style.css?v=20261028-game4" rel="stylesheet">
+    <link href="../../css/output.css?v=20261031-experience" rel="stylesheet">
+    <link href="../../css/juego-Style.css?v=20261031-experience" rel="stylesheet">
 </head>
 <body class="game-beta-page">
 <div id="header-superior"></div>
@@ -41,10 +41,10 @@
             </div>
             <div class="game-timing" aria-label="Guía visual del momento de contacto"><span id="game-valid-window"></span><span id="game-perfect-window"></span><span id="game-timing-cursor"></span></div>
         </div><aside class="game-control-panel">
-            <p id="game-goal" class="game-goal"></p><div class="game-round"><span>Lanzamiento <strong id="game-progress">0 / 10</strong></span><span><strong id="game-remaining">10</strong> restantes</span></div>
+            <p id="game-goal" class="game-goal"></p><div id="game-goal-progress" class="game-goal-progress" role="img" aria-label="Progreso del objetivo"></div><div class="game-round"><span>Lanzamiento <strong id="game-progress">0 / 10</strong></span><span><strong id="game-remaining">10</strong> restantes</span></div>
             <p id="game-feedback" class="game-feedback" role="status" aria-live="polite">Prepárate para batear</p>
             <button id="game-hit" type="button" class="game-hit" disabled><span>Batear</span><small>TOQUE · CLIC · ESPACIO</small></button>
-            <p class="game-control-tip">Batea cuando la pelota llegue al aro.<br>El centro de la franja es un golpe perfecto.</p><button type="button" class="game-text-button" data-help>Consultar instrucciones</button><p class="game-local-note">Puntuación de partida ≠ puntos de cuenta</p>
+            <p id="game-control-tip" class="game-control-tip">Toca al llegar al aro · Espacio o Enter</p><button type="button" class="game-text-button" data-help>Consultar instrucciones</button><p class="game-local-note">Puntuación de partida ≠ puntos de cuenta</p>
         </aside></div>
     </section>
     <section data-game-screen="result" class="game-result" aria-label="Resultado final" hidden>
@@ -54,6 +54,6 @@
     <dialog id="game-confirm" class="game-dialog game-confirm-dialog" aria-labelledby="game-confirm-title"><h2 id="game-confirm-title"></h2><p id="game-confirm-copy"></p><div><button type="button" id="game-confirm-no" class="game-secondary">Conservar partida</button><button type="button" id="game-confirm-yes" class="game-primary">Confirmar</button></div></dialog>
 </main>
 <div id="menu-inferior"></div>
-<script type="module" src="../../js/app/main.js?v=20261028-game4"></script>
+<script type="module" src="../../js/app/main.js?v=20261031-experience"></script>
 </body>
 </html>

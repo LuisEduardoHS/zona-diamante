@@ -31,10 +31,11 @@ export function projectOfficial(s, time, busy=false, pendingSwing=null, animatio
 
 export function createOfficialEngine({api,storage,user,mode,rules,fresh=false,
     now=()=>performance.now(),requestFrame=fn=>requestAnimationFrame(fn),cancelFrame=id=>cancelAnimationFrame(id),
+    setTimer=(fn,ms)=>setTimeout(fn,ms),clearTimer=id=>clearTimeout(id),
     onFrame=()=>{},onError=()=>{},onSnapshot=()=>{}}) {
     const journal=officialJournal(storage,user),abort=new AbortController(),signal=abort.signal;
     let snap=null,anchor=0,state=null,frame=null,alive=true,busy=false,started=false,fault=false,pendingSwing=null;
-    let inFlight=Promise.resolve(),lastPoll=0,swingAnimation=null;
+    let inFlight=Promise.resolve(),lastPoll=0,swingAnimation=null,wakeTimer=null;
     const serverTime=()=>snap.server_now+Math.max(0,now()-anchor);
     function emit(){if(!alive||!snap)return;const animationElapsed=swingAnimation&&snap.last?.pitch_id===swingAnimation.pitchId?Math.max(0,now()-swingAnimation.started):null;
         state=projectOfficial(snap,serverTime(),busy,pendingSwing,animationElapsed);
@@ -75,7 +76,19 @@ export function createOfficialEngine({api,storage,user,mode,rules,fresh=false,
             lastPoll=now();void send(()=>api.read(snap.id,signal));
         }
     }
-    function schedule(){if(alive&&snap&&!fault&&frame===null&&!['finished','abandoned','expired'].includes(state?.phase))frame=requestFrame(loop);}
+    function schedule(){
+        const idle=!alive||!snap||fault||['finished','abandoned','expired'].includes(state?.phase);
+        if(idle||state?.phase==='paused'){
+            if(frame!==null){cancelFrame(frame);frame=null;}
+            if(idle){if(wakeTimer!==null)clearTimer(wakeTimer);wakeTimer=null;return;}
+            // Keep server expiry/deadline reconciliation, without redrawing a
+            // stationary arena at 60/120 Hz while paused or in the background.
+            if(wakeTimer===null)wakeTimer=setTimer(()=>{wakeTimer=null;loop();},1000);
+            return;
+        }
+        if(wakeTimer!==null){clearTimer(wakeTimer);wakeTimer=null;}
+        if(frame===null)frame=requestFrame(loop);
+    }
     function loop(){frame=null;if(!alive)return;emit();pump();schedule();}
     async function boot(retry=false){
         busy=true;fault=false;const newIntent=fresh&&!retry;
@@ -128,6 +141,6 @@ export function createOfficialEngine({api,storage,user,mode,rules,fresh=false,
             if(fault){fault=false;return send(()=>api.read(snap.id,signal));}
             return transition('resume');},
         abandon(){return transition('abandon');},
-        destroy(){if(!alive)return;alive=false;abort.abort();if(frame!==null)cancelFrame(frame);frame=null;},
+        destroy(){if(!alive)return;alive=false;abort.abort();if(frame!==null)cancelFrame(frame);frame=null;if(wakeTimer!==null)clearTimer(wakeTimer);wakeTimer=null;},
     };
 }

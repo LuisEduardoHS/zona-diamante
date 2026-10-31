@@ -39,6 +39,11 @@ export function usableFrame(index, sprites) {
 }
 // The shared foot anchor is centered on home plate; contact sits on the bat arc.
 export const CONTACT = Object.freeze({x:.43,y:.37});
+export function contactCue(state) {
+    if (state.phase !== 'pitch' || !state.plan) return 'waiting';
+    const distance = state.elapsed - state.plan.contactMs;
+    return distance < -state.plan.validWindowMs ? 'early' : distance > state.plan.validWindowMs ? 'late' : 'contact';
+}
 export function ballPosition(state) {
     const phase = state.phase === 'paused' ? state.pausedFrom : state.phase;
     if (!['pitch','feedback'].includes(phase) || !state.plan) return {visible:false,x:0,y:0,scale:0};

@@ -95,3 +95,18 @@ test('confirmar un bateo no reinicia la animación que ya empezó mientras esper
  const s={...base(),phase:'waiting',last:{type:'perfect',at:1200,resolved_at:2250,duration:600}};
  const draw=projectOfficial(s,2260,false,null,160);assert.equal(draw.phase,'feedback');assert.equal(draw.elapsed,160);assert.equal(draw.stats.score,s.stats.score);
 });
+
+test('pausa oficial deja de pedir RAF, concilia por segundo y libera el timer al reanudar o desmontar',async()=>{
+ let time=0,n=0,reads=0,snapshot=base();const frames=new Map(),timers=new Map();
+ const engine=createOfficialEngine({user:'qa',mode:'streak',rules,storage:memory(),now:()=>time,
+  requestFrame:fn=>{frames.set(++n,fn);return n},cancelFrame:id=>frames.delete(id),
+  setTimer:(fn,ms)=>{assert.equal(ms,1000);timers.set(++n,fn);return n},clearTimer:id=>timers.delete(id),
+  api:{current:async()=>null,start:async()=>snapshot,
+   transition:async(id,action)=>snapshot={...snapshot,phase:action==='pause'?'paused':'pitch',paused_from:'pitch'},
+   read:async()=>{reads++;return snapshot}}});
+ await engine.start();assert.equal(frames.size,1);await engine.pause();assert.equal(frames.size,0);assert.equal(timers.size,1);
+ time=1000;const callbacks=[...timers.values()];timers.clear();callbacks.forEach(fn=>fn());await new Promise(resolve=>setTimeout(resolve,0));
+ assert.equal(reads,1);assert.equal(frames.size,0);assert.equal(timers.size,1);
+ await engine.resume();assert.equal(timers.size,0);assert.equal(frames.size,1);
+ await engine.pause();assert.equal(timers.size,1);engine.destroy();assert.equal(timers.size,0);assert.equal(frames.size,0);
+});

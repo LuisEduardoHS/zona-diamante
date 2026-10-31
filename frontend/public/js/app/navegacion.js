@@ -91,7 +91,7 @@ async function montarSeccion(archivo, signal) {
         const { iniciarColeccion } = await import('../features/coleccion/collection-page.js?v=20261028-3');
         if (!signal.aborted) iniciarColeccion(signal);
     } else if (archivo === RUTAS.juego) {
-        const { iniciarJuego } = await import('../features/juego/ganar_juego.js?v=20261028-game4');
+        const { iniciarJuego } = await import('../features/juego/ganar_juego.js?v=20261031-experience');
         if (!signal.aborted) iniciarJuego(signal);
     } else if (archivo === RUTAS.camara) {
         const frame = document.getElementById('ar-frame');
@@ -120,7 +120,7 @@ async function montarSeccion(archivo, signal) {
         if (!signal.aborted) iniciarRestablecimiento();
     } else if (archivo === RUTAS.perfil) {
         const { iniciarPerfil } = await import('../features/auth/perfil.js?v=20260927-2');
-        if (!signal.aborted) iniciarPerfil();
+        if (!signal.aborted) iniciarPerfil(signal);
     }
 }
 

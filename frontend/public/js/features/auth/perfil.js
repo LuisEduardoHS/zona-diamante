@@ -12,7 +12,7 @@ function iniciales(nombre = '') {
     return (partes.length ? `${partes[0][0]}${partes[1]?.[0] || ''}` : 'ZD').toUpperCase();
 }
 
-export function iniciarPerfil() {
+export function iniciarPerfil(signal) {
     const formulario = document.getElementById('perfil-form');
     const estado = document.getElementById('perfil-estado');
     const sesionEstado = document.getElementById('perfil-sesion-estado');
@@ -27,7 +27,8 @@ export function iniciarPerfil() {
     const cambios = document.getElementById('perfil-cambios');
     const cancelar = document.getElementById('perfil-cancelar');
     const botonCerrarSesion = document.getElementById('perfil-cerrar-sesion');
-    if (!formulario || !estado) return;
+    if (!formulario || !estado || signal?.aborted) return;
+    let activo = true;
 
     configurarNombreUsuario(usuario);
     let original = { displayName: '', username: '', email: '', avatarUrl: '', pointsBalance: 0 };
@@ -40,6 +41,9 @@ export function iniciarPerfil() {
         if (urlTemporal) URL.revokeObjectURL(urlTemporal);
         urlTemporal = '';
     };
+    const limpiar = () => { activo = false; limpiarUrlTemporal(); };
+    signal?.addEventListener('abort', limpiar, {once:true});
+    window.addEventListener('pagehide', limpiar, {once:true, signal});
 
     const mostrarAvatar = (url, texto) => {
         avatarIniciales.textContent = iniciales(texto);
@@ -70,6 +74,7 @@ export function iniciarPerfil() {
     };
 
     const pintar = datos => {
+        if (!activo) return;
         const perfil = datos?.profile || datos || {};
         const user = datos?.user || usuarioSesion || {};
         usuarioSesion = user;
@@ -94,7 +99,7 @@ export function iniciarPerfil() {
     };
 
     const restaurar = () => pintar({
-        user: { email: original.email },
+        user: usuarioSesion,
         profile: {
             displayName: original.displayName,
             username: original.username,
@@ -160,9 +165,11 @@ export function iniciarPerfil() {
                 avatarFile: archivoAvatar,
                 removeAvatar: quitarAvatarSolicitado
             });
+            if (!activo) return;
             pintar(resultado);
             establecerEstado(estado, 'Tu perfil se actualizó correctamente.', 'success');
         } catch (error) {
+            if (!activo) return;
             establecerEstado(estado, mensajeErrorAutenticacion(error), error?.code === 'AUTH_NOT_CONFIGURED' ? 'info' : 'error');
         } finally {
             establecerFormularioCargando(formulario, false);
@@ -184,9 +191,11 @@ export function iniciarPerfil() {
 
     formulario.setAttribute('aria-busy', 'true');
     obtenerPerfil().then(datos => {
+        if (!activo) return;
         pintar(datos);
         establecerEstado(estado);
     }).catch(error => {
+        if (!activo) return;
         if (esErrorSesionRequerida(error)) {
             redirigirAlLogin();
             return;
