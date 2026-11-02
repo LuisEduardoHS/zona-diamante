@@ -1,0 +1,22 @@
+[
+  {
+    "test": "toque sobre HUD",
+    "progress": "1/10"
+  },
+  {
+    "test": "toque sobre aviso inferior",
+    "progress": "1/10"
+  },
+  {
+    "test": "Pausa no batea",
+    "progress": "0/10"
+  },
+  {
+    "test": "toque en centro de la tarjeta",
+    "progress": "1/10"
+  },
+  {
+    "test": "Espacio sobre la superficie",
+    "progress": "1/10"
+  }
+]

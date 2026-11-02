@@ -8,6 +8,16 @@ const base=()=>({id:'official-one',mode:'streak',phase:'pitch',revision:4,rules,
     stats:{resolved:0,hits:0,misses:0,perfects:0,score:0,streak:0,bestStreak:0,swings:0},
     reward:{status:'pending',points_awarded:null},points_balance:0});
 const memory=()=>{const m=new Map();return{getItem:k=>m.get(k),setItem:(k,v)=>m.set(k,v)}};
+test('unificado recupera sesión histórica activa, pero inicia nuevo reto si la anterior ya terminó',async()=>{
+ for(const phase of ['pitch','completed']){
+  const storage=memory();officialJournal(storage,'user').write({id:'historical',mode:'streak',key:'old'});
+  let starts=0;const old={...base(),phase};
+  const engine=createOfficialEngine({api:{read:async()=>old,start:async mode=>{starts++;assert.equal(mode,'unified');return {...base(),id:'new',mode:'unified'};}},
+    storage,user:'user',mode:'unified',rules,now:()=>0,requestFrame:()=>1,cancelFrame:()=>{}});
+  await engine.start();assert.equal(starts,phase==='completed'?1:0);
+  assert.equal(engine.state.id,phase==='completed'?'new':'official-one');engine.destroy();
+ }
+});
 function runtime(api,storage=memory()){
  let time=0,next=0;const queue=new Map(),errors=[],frames=[];
  const engine=createOfficialEngine({api,storage,user:'user',mode:'streak',rules,now:()=>time,
@@ -94,4 +104,19 @@ test('la calibración no muestra un uno ficticio antes de la cuenta atrás real'
 test('confirmar un bateo no reinicia la animación que ya empezó mientras esperaba la red',()=>{
  const s={...base(),phase:'waiting',last:{type:'perfect',at:1200,resolved_at:2250,duration:600}};
  const draw=projectOfficial(s,2260,false,null,160);assert.equal(draw.phase,'feedback');assert.equal(draw.elapsed,160);assert.equal(draw.stats.score,s.stats.score);
+});
+
+test('pausa oficial deja de pedir RAF, concilia por segundo y libera el timer al reanudar o desmontar',async()=>{
+ let time=0,n=0,reads=0,snapshot=base();const frames=new Map(),timers=new Map();
+ const engine=createOfficialEngine({user:'qa',mode:'streak',rules,storage:memory(),now:()=>time,
+  requestFrame:fn=>{frames.set(++n,fn);return n},cancelFrame:id=>frames.delete(id),
+  setTimer:(fn,ms)=>{assert.equal(ms,1000);timers.set(++n,fn);return n},clearTimer:id=>timers.delete(id),
+  api:{current:async()=>null,start:async()=>snapshot,
+   transition:async(id,action)=>snapshot={...snapshot,phase:action==='pause'?'paused':'pitch',paused_from:'pitch'},
+   read:async()=>{reads++;return snapshot}}});
+ await engine.start();assert.equal(frames.size,1);await engine.pause();assert.equal(frames.size,0);assert.equal(timers.size,1);
+ time=1000;const callbacks=[...timers.values()];timers.clear();callbacks.forEach(fn=>fn());await new Promise(resolve=>setTimeout(resolve,0));
+ assert.equal(reads,1);assert.equal(frames.size,0);assert.equal(timers.size,1);
+ await engine.resume();assert.equal(timers.size,0);assert.equal(frames.size,1);
+ await engine.pause();assert.equal(timers.size,1);engine.destroy();assert.equal(timers.size,0);assert.equal(frames.size,0);
 });

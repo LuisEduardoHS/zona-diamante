@@ -1,0 +1,6 @@
+{
+  "scope": "Simulated camera/recognition/share, real GLB/WebGL/Canvas/Blob",
+  "editor": "PASS: 35 comprobaciones reales de navegador\nPanel usa datos reales\nPanel conserva equipo durante cambio\nFicha es la ruta del carrusel\nCierre de panel\nInformación también disponible desde el visor 3D\nCaptura real video+WebGL con límite de resolución\nComposición contiene imagen no vacía\nEntrada al editor\nSelección filtro original\nSelección filtro vivido\nSelección filtro calido\nSelección filtro frio\nSelección filtro mono\nSelección filtro vintage\nSelección filtro cine\nComparar original\nIntensidad responde\nExportación conserva dimensiones\nExportación contiene filtro en píxeles\nArchivo B/N es neutro tras JPEG\nSlider brillo\nSlider contraste\nSlider saturacion\nSlider temperatura\nCancelar conserva última confirmación\nRestablecer/confirmar recupera original sin doble procesamiento\nBrillo manual confirmado modifica píxeles exportados\nGuardar exporta archivo preparado\nCompartir recibe el archivo editado confirmado\nCancelar share conserva foto\nDescarte sin modales anidados\nConservar vuelve a foto\nDescartar limpia imagen\nSegunda captura sin estado editado residual\nVolver al escáner",
+  "cleanup": "PASS: navegación fuera detuvo 1 pistas de video. Volver crea un contexto nuevo.",
+  "errors": []
+}

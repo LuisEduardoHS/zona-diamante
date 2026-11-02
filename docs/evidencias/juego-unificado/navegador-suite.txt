@@ -1,0 +1,10 @@
+PASS inicio directo unificado
+PASS pausa práctica
+PASS doble activación
+PASS fallo rompe racha
+PASS sin final anticipado
+PASS victoria tras diez
+PASS práctica sin puntos inventados
+PASS sin swing diez fallos
+PASS sin overflow horizontal
+PASS abandono vuelve a portada

@@ -1,0 +1,7 @@
+{
+  "scope": "All changed and untracked nonignored files; pattern-based scan, not a security certification",
+  "text_files": 32,
+  "findings": [],
+  "forbidden_paths": [],
+  "backend_or_migrations_changed": false
+}

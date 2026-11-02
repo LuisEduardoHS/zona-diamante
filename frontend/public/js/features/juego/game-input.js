@@ -1,7 +1,12 @@
 export function bindBatInput(button, { signal, swing, active = () => !button.hidden }) {
-    // A native button unifies pointer/touch/assistive activation. Space/Enter
-    // outside inputs are handled once; prevent their synthesized native click.
-    button.addEventListener('click',() => { if (active() && !button.disabled) swing(); },{signal});
+    // Timing is measured on contact, not on release. The subsequent pointer
+    // click must not turn into a second swing if a new pitch has already begun.
+    const hit = () => { if (active() && !button.disabled && !button.hidden) swing(); };
+    button.addEventListener('pointerdown',event => {
+        if (event.button === 0 && event.isPrimary !== false) hit();
+    },{signal});
+    // Native keyboard, assistive technology and programmatic clicks have detail 0.
+    button.addEventListener('click',event => { if (!(event.detail > 0)) hit(); },{signal});
     const keydown = event => {
         if (!active() || !['Space','Enter'].includes(event.code) || event.ctrlKey || event.altKey || event.metaKey) return;
         const target = event.target;

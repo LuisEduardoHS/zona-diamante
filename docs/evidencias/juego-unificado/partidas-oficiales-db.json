@@ -1,0 +1,98 @@
+[
+  {
+    "mode": "unified",
+    "phase": "completed",
+    "stats": {
+      "hits": 8,
+      "score": 160,
+      "misses": 2,
+      "streak": 0,
+      "swings": 10,
+      "perfects": 8,
+      "resolved": 10,
+      "bestStreak": 5
+    },
+    "reward": {
+      "status": "confirmed",
+      "event_id": "28a3bb41-dd89-45bb-b7e2-6b5e70554c16",
+      "base_points": 30,
+      "streak_bonus": 10,
+      "nominal_points": 55,
+      "points_awarded": 55,
+      "extra_hit_bonus": 15
+    },
+    "version": "unified-1"
+  },
+  {
+    "mode": "unified",
+    "phase": "completed",
+    "stats": {
+      "hits": 5,
+      "score": 100,
+      "misses": 5,
+      "streak": 0,
+      "swings": 10,
+      "perfects": 5,
+      "resolved": 10,
+      "bestStreak": 2
+    },
+    "reward": {
+      "status": "confirmed",
+      "event_id": "f1f1e247-953c-400f-a2a9-f897f9efd26d",
+      "base_points": 30,
+      "streak_bonus": 0,
+      "nominal_points": 30,
+      "points_awarded": 30,
+      "extra_hit_bonus": 0
+    },
+    "version": "unified-1"
+  },
+  {
+    "mode": "unified",
+    "phase": "completed",
+    "stats": {
+      "hits": 10,
+      "score": 200,
+      "misses": 0,
+      "streak": 10,
+      "swings": 10,
+      "perfects": 10,
+      "resolved": 10,
+      "bestStreak": 10
+    },
+    "reward": {
+      "status": "confirmed",
+      "event_id": "1b75d292-3058-4ce2-b79c-ed391052d61e",
+      "base_points": 30,
+      "streak_bonus": 10,
+      "nominal_points": 65,
+      "points_awarded": 65,
+      "extra_hit_bonus": 25
+    },
+    "version": "unified-1"
+  },
+  {
+    "mode": "unified",
+    "phase": "completed",
+    "stats": {
+      "hits": 10,
+      "score": 200,
+      "misses": 0,
+      "streak": 10,
+      "swings": 10,
+      "perfects": 10,
+      "resolved": 10,
+      "bestStreak": 10
+    },
+    "reward": {
+      "status": "daily_limit",
+      "event_id": "6d2dc6a0-32d5-4775-b977-0661ae37ac31",
+      "base_points": 30,
+      "streak_bonus": 10,
+      "nominal_points": 65,
+      "points_awarded": 0,
+      "extra_hit_bonus": 25
+    },
+    "version": "unified-1"
+  }
+]

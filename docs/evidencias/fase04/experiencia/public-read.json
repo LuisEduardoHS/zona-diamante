@@ -1,0 +1,34 @@
+{
+  "scope": "Unauthenticated public GET only, no deployment or mutation",
+  "results": [
+    {
+      "url": "https://zona-diamante.netlify.app/",
+      "status": 200
+    },
+    {
+      "url": "https://zona-diamante.netlify.app/pages/experiencias/juego.html",
+      "status": 200
+    },
+    {
+      "url": "https://zona-diamante.onrender.com/health",
+      "status": 200
+    },
+    {
+      "url": "https://zona-diamante.onrender.com/api/v1/games/beta/config",
+      "status": 200
+    },
+    {
+      "url": "https://zona-diamante.onrender.com/api/v1/cards/catalog",
+      "status": 200,
+      "cards": 20
+    },
+    {
+      "url": "https://zona-diamante.onrender.com/api/v1/me",
+      "status": 401
+    },
+    {
+      "url": "https://zona-diamante.onrender.com/api/v1/trivia/daily",
+      "status": 401
+    }
+  ]
+}

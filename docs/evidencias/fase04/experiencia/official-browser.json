@@ -1,0 +1,53 @@
+{
+  "scope": "Real local Auth/FastAPI/PostgreSQL, synthetic account, real clock. No production writes.",
+  "games": [
+    {
+      "mode": "classic",
+      "strategy": "win",
+      "expected": 50,
+      "game-result-label": "OBJETIVO CONSEGUIDO",
+      "game-final-score": "200",
+      "game-final-hits": "10",
+      "game-final-misses": "0",
+      "game-account-points": "Puntos de cuenta · +50",
+      "game-result-reward": "Recompensa confirmada. Saldo: 240 puntos. 1 de 3 partidas premiadas hoy."
+    },
+    {
+      "mode": "streak",
+      "strategy": "win",
+      "expected": 60,
+      "game-result-label": "OBJETIVO CONSEGUIDO",
+      "game-final-score": "100",
+      "game-final-hits": "5",
+      "game-final-misses": "0",
+      "game-account-points": "Puntos de cuenta · +60",
+      "game-result-reward": "Recompensa confirmada. Saldo: 300 puntos. 2 de 3 partidas premiadas hoy."
+    },
+    {
+      "mode": "classic",
+      "strategy": "lose",
+      "expected": 10,
+      "game-result-label": "PARTIDA TERMINADA · DERROTA",
+      "game-final-score": "0",
+      "game-final-hits": "0",
+      "game-final-misses": "10",
+      "game-account-points": "Puntos de cuenta · +10",
+      "game-result-reward": "Recompensa confirmada. Saldo: 310 puntos. 3 de 3 partidas premiadas hoy."
+    },
+    {
+      "mode": "streak",
+      "strategy": "win",
+      "expected": 0,
+      "game-result-label": "OBJETIVO CONSEGUIDO",
+      "game-final-score": "100",
+      "game-final-hits": "5",
+      "game-final-misses": "0",
+      "game-account-points": "Puntos de cuenta · +0",
+      "game-result-reward": "Límite diario alcanzado. Sin nuevo crédito. Saldo: 310. Puedes seguir jugando."
+    }
+  ],
+  "errors": [],
+  "lostResponse": "Completion committed before losing response; retry uses same key",
+  "recovery": "Reload reads persisted result",
+  "collection": "Server balance 310 → 60 after one 250-point synthetic purchase; persisted after reload"
+}

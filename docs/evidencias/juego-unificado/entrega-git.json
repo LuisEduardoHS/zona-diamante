@@ -1,0 +1,12 @@
+{
+  "branch": "feat/unified-batting-game",
+  "implementation_commit": "c669133d0197ecbc449008412d184b54882f33ff",
+  "base_phase04": "7fbcaf4",
+  "main_at_final_fetch": "1bc8d73bf66f851e8910bdb46c8e4d93ee3b1978",
+  "merged": false,
+  "pushed": false,
+  "remote_migration_applied_by_this_task": false,
+  "deployed_by_this_task": false,
+  "pending_migration": "20261101000100_unified_batting_game.sql",
+  "preview": "http://127.0.0.1:4190/pages/experiencias/juego.html"
+}
