@@ -11,6 +11,13 @@ export function iniciarJuego(signal){
  let time=0,next=0;const queue=new Map();
  const handle=mount(signal,{clock:{now:()=>time,requestFrame:fn=>{queue.set(++next,fn);return next},cancelFrame:id=>queue.delete(id)}});
  window.__gameQA={handle,step(ms){time+=ms;const batch=[...queue.values()];queue.clear();batch.forEach(fn=>fn(time))},pending:()=>queue.size};
+ const scene=new URL(location.href).searchParams.get('qa');
+ if(scene)void handle.ready.then(()=>{document.querySelector('#game-start').click();window.__gameQA.step(3000);
+   const shot=hit=>{const s=handle.state;window.__gameQA.step(hit?s.plan.contactMs:0);document.querySelector('#game-hit').click();window.__gameQA.step(handle.state.last.duration)};
+   if(scene==='middle')for(let i=0;i<5;i++)shot(i!==2);
+   if(scene==='win')for(let i=0;i<10;i++)shot(![2,8].includes(i));
+   if(scene==='lose')window.__gameQA.step(60000);
+ });
  return handle;
 }`;
 function serve(port,deterministic) {
@@ -19,7 +26,8 @@ function serve(port,deterministic) {
   res.setHeader('Cache-Control','no-store');
   if(file.startsWith('/api/')) {res.writeHead(501);res.end('No API in local practice review');return;}
   let content;
-  if(file==='/__review'){file='/review.html';content=fs.readFileSync(path.join(__dirname,'phase04-review.html'));}
+  if(file==='/__unified-review'){file='/review.html';content=fs.readFileSync(path.join(__dirname,'phase05-review.html'));}
+  else if(file==='/__review'){file='/review.html';content=fs.readFileSync(path.join(__dirname,'phase04-review.html'));}
   else if(file==='/js/features/auth/supabase-provider.js') content=guest;
   else if(deterministic && file==='/js/features/juego/ganar_juego.js') content=fixture;
   else if(file==='/data/game-beta-art.json' && url.searchParams.has('missing')) {

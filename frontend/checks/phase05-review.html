@@ -1,0 +1,22 @@
+<!doctype html><html lang="es"><meta charset="utf-8"><title>Juego unificado · revisión local</title>
+<style>body{font:14px system-ui;margin:14px;color:#12596a}button{padding:10px;margin:3px}iframe{display:block;border:0;width:390px;height:844px}pre{white-space:pre-wrap}.tools{display:flex;flex-wrap:wrap}</style>
+<p>QA local: motor real, reloj determinista; invitado sin premios.</p><div class="tools"><button id="begin">Partida activa</button><button id="middle">Mitad de partida</button><button id="win">Victoria</button><button id="lose">Derrota</button><button id="suite">Ejecutar comprobaciones</button><button id="portrait">390 × 844</button><button id="small">360 × 740</button><button id="tablet">768 × 1024</button><button id="landscape">844 × 390</button><button id="desktop">1440 × 900</button></div><pre id="status" role="status">Preparado</pre><iframe id="game" title="Juego unificado" src="/pages/experiencias/juego.html"></iframe>
+<script type="module">
+const frame=document.querySelector('#game'),out=document.querySelector('#status'),d=()=>frame.contentDocument,q=id=>d().getElementById(id),qa=()=>frame.contentWindow.__gameQA,state=()=>qa().handle.state,step=ms=>qa().step(ms);
+async function ready(){if(!qa())await new Promise(resolve=>frame.addEventListener('load',resolve,{once:true}));await qa().handle.ready;}
+async function begin(){if(state()&&q('game-beta').dataset.screen==='play'){q('game-pause').click();q('game-exit').click();await Promise.resolve();}
+ if(q('game-beta').dataset.screen==='result')q('game-replay').click();else q('game-start').click();step(3000);}
+function resolve(hit=true){step(hit?state().plan.contactMs:0);q('game-hit').click();step(state().last.duration);}
+document.querySelector('#begin').onclick=async()=>{await ready();await begin();out.textContent='Partida activa';};
+document.querySelector('#middle').onclick=async()=>{await ready();await begin();for(let i=0;i<5;i++)resolve(i!==2);out.textContent='4 hits · 5 tiros · racha ×2';};
+document.querySelector('#win').onclick=async()=>{await ready();await begin();for(let i=0;i<10;i++)resolve(![2,8].includes(i));out.textContent='Victoria 8/10 · sin puntos de cuenta (práctica)';};
+document.querySelector('#lose').onclick=async()=>{await ready();await begin();step(60000);out.textContent='Derrota 0/10';};
+document.querySelector('#suite').onclick=async()=>{out.textContent='';const check=(ok,label)=>{if(!ok)throw Error(label);out.textContent+='PASS '+label+'\n';};try{await ready();await begin();check(state().mode==='unified','inicio directo unificado');
+step(300);q('game-pause').click();const before=JSON.stringify(state());step(10000);check(JSON.stringify(state())===before,'pausa práctica');q('game-resume').click();step(state().plan.contactMs-state().elapsed);q('game-hit').click();const hits=state().stats.hits;q('game-hit').click();check(state().stats.hits===hits,'doble activación');step(state().last.duration);
+resolve(false);check(state().stats.streak===0&&state().stats.bestStreak===1,'fallo rompe racha');while(state().stats.resolved<5)resolve();check(state().outcome===null,'sin final anticipado');while(state().phase!=='finished')resolve();check(state().stats.resolved===10&&state().outcome==='won','victoria tras diez');check(q('game-account-points').textContent==='—'&&q('game-balance').textContent==='—','práctica sin puntos inventados');
+q('game-replay').click();step(60000);check(state().stats.resolved===10&&state().outcome==='lost','sin swing diez fallos');
+check(d().documentElement.scrollWidth===frame.clientWidth,'sin overflow horizontal');
+q('game-replay').click();q('game-pause').click();q('game-exit').click();await Promise.resolve();check(q('game-beta').dataset.screen==='home','abandono vuelve a portada');
+}catch(error){out.textContent+='FAIL '+error.stack;}};
+for(const [id,w,h]of [['portrait',390,844],['small',360,740],['tablet',768,1024],['landscape',844,390],['desktop',1440,900]])document.querySelector('#'+id).onclick=()=>{frame.style.width=w+'px';frame.style.height=h+'px';out.textContent=w+' × '+h;};
+</script></html>

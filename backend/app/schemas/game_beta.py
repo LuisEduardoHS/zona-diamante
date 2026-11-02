@@ -6,7 +6,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 class BetaStart(BaseModel):
     model_config = ConfigDict(extra='forbid')
-    mode: Literal['classic', 'streak']
+    mode: Literal['unified', 'classic', 'streak']
 
 
 class BetaRevision(BaseModel):
@@ -27,9 +27,13 @@ class BetaComplete(BaseModel):
 
 
 class BetaReward(BaseModel):
-    status: Literal['pending', 'confirmed', 'daily_limit', 'no_participation', 'disabled']
+    status: Literal['pending', 'confirmed', 'daily_limit', 'no_participation', 'disabled', 'lost']
     points_awarded: int | None = None
     event_id: UUID | None = None
+    nominal_points: int | None = None
+    base_points: int | None = None
+    extra_hit_bonus: int | None = None
+    streak_bonus: int | None = None
 
 
 class BetaStats(BaseModel):
@@ -45,8 +49,8 @@ class BetaStats(BaseModel):
 
 class BetaRead(BaseModel):
     id: UUID
-    version: Literal['beta-1']
-    mode: Literal['classic', 'streak']
+    version: Literal['beta-1', 'unified-1']
+    mode: Literal['classic', 'streak', 'unified']
     phase: Literal['waiting', 'pitch', 'paused', 'ready', 'completed', 'abandoned', 'expired']
     revision: int
     rules: dict[str, Any]

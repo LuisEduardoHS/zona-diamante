@@ -92,3 +92,22 @@ def test_key_required_and_bounded(key,requests):
     headers={} if key is None else {'Idempotency-Key':key}
     assert client.post(BASE,json={'mode':'classic'},headers=headers).status_code==422
     assert requests==[]
+
+
+def test_unified_start_and_historical_response(requests):
+    result=client.post(BASE,json={'mode':'unified'},headers={'Idempotency-Key':'unified'})
+    assert result.status_code==200
+    assert requests[-1][1]['json']['p_mode']=='unified'
+    assert requests[-1][1]['json']['p_rules']['modes']['unified']==dict(name='Juego',maxPitches=10,targetHits=5,targetStreak=None)
+    # Historical beta-1 replies remain readable.
+    assert result.json()['version']=='beta-1'
+
+
+def test_unified_confirmed_reward_roundtrip():
+    from app.schemas.game_beta import BetaRead
+    data=snapshot()
+    data.update(version='unified-1',mode='unified',phase='completed',outcome='won')
+    data['stats'].update(resolved=10,hits=8,misses=2,bestStreak=5)
+    data['reward']=dict(status='confirmed',points_awarded=55,base_points=30,extra_hit_bonus=15,streak_bonus=10,nominal_points=55)
+    # DTO preserves server breakdown; it does not recalculate or mint rewards.
+    assert BetaRead.model_validate(data).reward.extra_hit_bonus==15

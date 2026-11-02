@@ -8,6 +8,16 @@ const base=()=>({id:'official-one',mode:'streak',phase:'pitch',revision:4,rules,
     stats:{resolved:0,hits:0,misses:0,perfects:0,score:0,streak:0,bestStreak:0,swings:0},
     reward:{status:'pending',points_awarded:null},points_balance:0});
 const memory=()=>{const m=new Map();return{getItem:k=>m.get(k),setItem:(k,v)=>m.set(k,v)}};
+test('unificado recupera sesión histórica activa, pero inicia nuevo reto si la anterior ya terminó',async()=>{
+ for(const phase of ['pitch','completed']){
+  const storage=memory();officialJournal(storage,'user').write({id:'historical',mode:'streak',key:'old'});
+  let starts=0;const old={...base(),phase};
+  const engine=createOfficialEngine({api:{read:async()=>old,start:async mode=>{starts++;assert.equal(mode,'unified');return {...base(),id:'new',mode:'unified'};}},
+    storage,user:'user',mode:'unified',rules,now:()=>0,requestFrame:()=>1,cancelFrame:()=>{}});
+  await engine.start();assert.equal(starts,phase==='completed'?1:0);
+  assert.equal(engine.state.id,phase==='completed'?'new':'official-one');engine.destroy();
+ }
+});
 function runtime(api,storage=memory()){
  let time=0,next=0;const queue=new Map(),errors=[],frames=[];
  const engine=createOfficialEngine({api,storage,user:'user',mode:'streak',rules,now:()=>time,

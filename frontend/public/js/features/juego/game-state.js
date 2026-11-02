@@ -1,11 +1,12 @@
 export function validateRules(rules) {
     if (!rules || typeof rules.version !== 'string' || !rules.version.length) throw new Error('Configuración de juego inválida.');
-    for (const mode of ['classic', 'streak']) {
+    for (const mode of Object.keys(rules.modes || {})) {
         const m = rules.modes?.[mode];
         if (!m || !Number.isInteger(m.maxPitches) || m.maxPitches < 1 || m.maxPitches > 100) throw new Error('Modalidad inválida.');
-        const goal = mode === 'classic' ? m.targetHits : m.targetStreak;
+        const goal = mode === 'streak' ? m.targetStreak : m.targetHits;
         if (!Number.isInteger(goal) || goal < 1 || goal > m.maxPitches) throw new Error('Objetivo inválido.');
     }
+    if (!Object.keys(rules.modes || {}).length) throw new Error('Faltan modalidades.');
     const t = rules.timing;
     if (!t || Object.values(t).some(v => !Number.isFinite(v) || v <= 0 || v > 60000)
         || !(t.perfectWindowMs < t.validWindowMs && t.validWindowMs < t.contactMs && t.contactMs + t.validWindowMs < t.flightMs)) throw new Error('Tiempos de juego inválidos.');
@@ -33,7 +34,7 @@ export function classifySwing(elapsed, plan) {
 }
 export function createMatch(rules, mode, id = 'practice') {
     validateRules(rules);
-    if (!['classic','streak'].includes(mode)) throw new Error('Modalidad desconocida.');
+    if (!['unified','classic','streak'].includes(mode) || !rules.modes[mode]) throw new Error('Modalidad desconocida.');
     return { id, mode, phase:'countdown', elapsed:0, pitchIndex:0, plan:null, last:null, outcome:null,
         stats:{ resolved:0, hits:0, misses:0, perfects:0, score:0, streak:0, bestStreak:0 }, pausedFrom:null };
 }
@@ -47,7 +48,7 @@ function resolve(state, type, rules) {
     const mode = rules.modes[state.mode];
     let outcome = null;
     if (state.mode === 'streak' && streak >= mode.targetStreak) outcome = 'won';
-    else if (stats.resolved === mode.maxPitches) outcome = state.mode === 'classic' && stats.hits >= mode.targetHits ? 'won' : 'lost';
+    else if (stats.resolved === mode.maxPitches) outcome = state.mode !== 'streak' && stats.hits >= mode.targetHits ? 'won' : 'lost';
     return { ...state, phase:'feedback', elapsed:0, stats, outcome,
         last:{ type, at:state.elapsed, duration:Math.max(rules.timing.feedbackMs, hit ? 0 : state.plan.flightMs - state.elapsed) } };
 }

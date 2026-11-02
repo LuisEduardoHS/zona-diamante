@@ -5,9 +5,9 @@ const rules = JSON.parse(fs.readFileSync(source, 'utf8'));
 const { version, modes, timing, scoring, difficulty } = rules;
 // Deliberate whitelist. No environment, credentials or private server settings.
 // This stage can only produce a PRACTICE config, even if server flags change.
-const { completion, classicBonus, streakBonus, dailyRewardedGames } = rules.economy;
+const { completion, classicBonus, streakBonus, dailyRewardedGames, unifiedBase, extraHit, streakThree, streakFive } = rules.economy;
 const output = { version, modes, timing, scoring, difficulty,
-  economy: { enabled: false, completion, classicBonus, streakBonus, dailyRewardedGames } };
+  economy: { enabled: false, completion, classicBonus, streakBonus, dailyRewardedGames, unifiedBase, extraHit, streakThree, streakFive } };
 const destination = path.resolve(__dirname, '../public/data/game-beta-rules.json');
 fs.mkdirSync(path.dirname(destination), { recursive: true });
 fs.writeFileSync(destination, JSON.stringify(output, null, 2) + '\n');

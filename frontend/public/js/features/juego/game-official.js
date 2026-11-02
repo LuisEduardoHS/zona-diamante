@@ -99,6 +99,9 @@ export function createOfficialEngine({api,storage,user,mode,rules,fresh=false,
                 if(row?.id){try{existing=await api.read(row.id,signal);}catch(e){if(![404,422].includes(e.status))throw e;}}
                 else existing=await api.current(signal);
                 if(existing&&['abandoned','expired'].includes(existing.phase))existing=null;
+                // Historical active sessions can be recovered safely. A finished
+                // historical session must not replace the new unified challenge.
+                if(existing?.phase==='completed'&&existing.mode!==mode)existing=null;
             }
             if(!existing){
                 if(newIntent||!row?.key||row.mode!==mode||row.id)row={key:crypto.randomUUID(),mode};

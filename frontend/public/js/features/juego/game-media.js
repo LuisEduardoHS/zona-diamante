@@ -38,7 +38,7 @@ export function usableFrame(index, sprites) {
     return sprites[index]?.available ? index : sprites.findIndex(frame => frame.available);
 }
 // The shared foot anchor is centered on home plate; contact sits on the bat arc.
-export const CONTACT = Object.freeze({x:.43,y:.37});
+export const CONTACT = Object.freeze({x:.5,y:.64});
 export function contactCue(state) {
     if (state.phase !== 'pitch' || !state.plan) return 'waiting';
     const distance = state.elapsed - state.plan.contactMs;
@@ -53,6 +53,6 @@ export function ballPosition(state) {
     }
     const elapsed = phase === 'feedback' ? state.last.at + state.elapsed : state.elapsed;
     const p = Math.max(0,elapsed / state.plan.contactMs), t = Math.min(1,p);
-    return {visible:elapsed <= state.plan.flightMs,x:.67 + (CONTACT.x - .67)*t + (p > 1 ? -.1*(p-1) : 0),
-        y:.23 + (CONTACT.y - .23)*t*t + (p > 1 ? .5*(p-1) : 0),scale:.45 + Math.min(p,1.2)*.85};
+    return {visible:elapsed <= state.plan.flightMs,x:.51 + (CONTACT.x - .51)*t + (p > 1 ? .1*(p-1) : 0),
+        y:.48 + (CONTACT.y - .48)*t*t + (p > 1 ? .5*(p-1) : 0),scale:.3 + Math.min(p,1.2)*.85};
 }
