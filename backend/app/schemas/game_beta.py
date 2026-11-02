@@ -6,7 +6,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 class BetaStart(BaseModel):
     model_config = ConfigDict(extra='forbid')
-    mode: Literal['unified', 'classic', 'streak']
+    mode: Literal['survival', 'unified', 'classic', 'streak']
 
 
 class BetaRevision(BaseModel):
@@ -49,8 +49,8 @@ class BetaStats(BaseModel):
 
 class BetaRead(BaseModel):
     id: UUID
-    version: Literal['beta-1', 'unified-1']
-    mode: Literal['classic', 'streak', 'unified']
+    version: Literal['beta-1', 'unified-1', 'survival-1']
+    mode: Literal['classic', 'streak', 'unified', 'survival']
     phase: Literal['waiting', 'pitch', 'paused', 'ready', 'completed', 'abandoned', 'expired']
     revision: int
     rules: dict[str, Any]

@@ -111,3 +111,26 @@ def test_unified_confirmed_reward_roundtrip():
     data['reward']=dict(status='confirmed',points_awarded=55,base_points=30,extra_hit_bonus=15,streak_bonus=10,nominal_points=55)
     # DTO preserves server breakdown; it does not recalculate or mint rewards.
     assert BetaRead.model_validate(data).reward.extra_hit_bonus==15
+
+
+def test_survival_start_contract(requests):
+    response=client.post(BASE,json={'mode':'survival'},headers={'Idempotency-Key':'survival'})
+    assert response.status_code==200
+    data=requests[-1][1]['json']
+    assert data['p_mode']=='survival' and data['p_rules']['version']=='survival-1'
+    assert data['p_rules']['modes']['survival']==dict(name='Juego',maxPitches=None,targetHits=10,maxMisses=3,targetStreak=None)
+
+
+@pytest.mark.parametrize('extra',[{'hits':100},{'misses':0},{'maxMisses':999},{'points':999}])
+def test_survival_start_rejects_claims(extra,requests):
+    response=client.post(BASE,json={'mode':'survival',**extra},headers={'Idempotency-Key':'survival'})
+    assert response.status_code==422
+    assert not requests
+
+
+def test_survival_response_version_and_unbounded_totals():
+    from app.schemas.game_beta import BetaRead
+    data=snapshot()
+    data.update(version='survival-1',mode='survival')
+    data['stats'].update(resolved=1002,hits=1000,misses=2,bestStreak=1000)
+    assert BetaRead.model_validate(data).stats.hits==1000

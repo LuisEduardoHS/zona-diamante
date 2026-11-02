@@ -26,7 +26,7 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
     };
     function access() {
         $('game-day-label').textContent=authenticated?'Reto del día':'Reto de bateo';
-        $('game-access-note').textContent=authenticated?(rewardsAvailable?'10 lanzamientos · meta de 5 hits':'Práctica · cupo diario agotado'):'Práctica · sin puntos';
+        $('game-access-note').textContent=authenticated?(rewardsAvailable?'Meta: 10 hits · 3 fallos':'Práctica · cupo diario agotado'):'Práctica · sin puntos';
         $('game-start').textContent='Iniciar';
         $('game-start').disabled=!rules||starting;
     }
@@ -38,13 +38,17 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
         if(completionId===state.id)return;
         completionId=state.id;
         const result=resultPresentation(state);
-        $('game-result-label').textContent=state.outcome==='won'?'¡Victoria!':'Derrota';
-        $('game-result-rule').textContent=`${state.stats.hits} hits de ${state.stats.resolved} lanzamientos`;
+        const endless=state.mode==='survival';
+        $('game-result-label').textContent=state.outcome==='won'?(endless?'¡Meta lograda!':'¡Victoria!'):'Derrota';
+        $('game-result-rule').textContent=endless?`${state.stats.hits} hits · ${state.stats.misses} fallos · ${state.stats.resolved} tiros`:`${state.stats.hits} hits de ${state.stats.resolved} lanzamientos`;
         $('game-account-points').textContent=result.credited===null?'—':`+${result.credited}`;
         $('game-balance').textContent=result.balance===null?'—':result.balance;
-        $('game-result-reward').textContent=result.note;
-        $('game-result-bonus').hidden=!result.bonus;
-        $('game-result-bonus').textContent=result.bonus?`Bonus +${result.bonus} · racha máxima ×${state.stats.bestStreak}`:'';
+        $('game-result-reward').textContent=authenticated?result.note:'Inicia sesión o crea una cuenta para jugar por puntos. Esta práctica no acreditó puntos.';
+        $('game-result-reward').classList.toggle('game-auth-prompt',!authenticated);
+        root.classList.toggle('is-guest-result',!authenticated);
+        $('game-result-auth').hidden=authenticated;
+        $('game-result-bonus').hidden=!result.bonus&&!(endless&&state.stats.hits>10);
+        $('game-result-bonus').textContent=endless&&state.stats.hits>10?`Racha extra ×${state.stats.hits}${result.bonus?` · bonus +${result.bonus}`:''}`:result.bonus?`Bonus +${result.bonus} · racha máxima ×${state.stats.bestStreak}`:'';
         $('game-award-toast').hidden=!result.toast;$('game-award-toast').textContent=result.toast||'';
         if(state.official){const auth=obtenerEstadoSesion();if(auth.user?.id===user&&result.balance!==null)establecerEstadoSesion({...auth,profile:{...auth.profile,points_balance:result.balance}});}
         clearNetwork();root.dataset.outcome=state.outcome;show('result');
@@ -62,7 +66,7 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
             if(official){
                 $('game-network-note').hidden=false;$('game-network-note').textContent='Conectando partida…';
                 const api=await getGameServerClient();if(stopped||ticket!==generation)return;
-                engine=createOfficialEngine({api,storage,user,mode:'unified',rules,fresh,onFrame,
+                engine=createOfficialEngine({api,storage,user,mode:'survival',rules,fresh,onFrame,
                     onSnapshot:s=>{if(stopped||ticket!==generation)return;
                         rewardsAvailable=s.rewarded_today<s.daily_limit;
                         $('game-session-note').textContent=!s.rules.economy.enabled?'Práctica · premios desactivados':rewardsAvailable?'Partida oficial':'Práctica · cupo diario agotado';
@@ -78,7 +82,7 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
                             $('game-demo').hidden=false;
                         }else $('game-network-note').textContent='Sin respuesta del servidor. Reintenta para recuperar la partida; su reloj continúa.';
                     }});
-            }else engine=createGameEngine({rules,mode:'unified',id:'practice:'+crypto.randomUUID(),...clock,onFrame});
+            }else engine=createGameEngine({rules,mode:'survival',id:'practice:'+crypto.randomUUID(),...clock,onFrame});
             if(stopped||ticket!==generation)return;
             show('play');const operation=engine.start();if(official)await operation;
             if(!stopped&&ticket===generation&&screen==='play')$('game-field').focus({preventScroll:true});
@@ -110,6 +114,8 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
     },options);
     for(const id of ['game-collection','game-top-collection'])$(id).href=ruta(RUTAS.coleccion);
     $('game-login').href=ruta(RUTAS.login)+'?next='+encodeURIComponent(ruta(RUTAS.juego));
+    $('game-result-login').href=$('game-login').href;
+    $('game-result-register').href=ruta(RUTAS.registro)+'?next='+encodeURIComponent(ruta(RUTAS.juego));
     bindBatInput($('game-hit'),{signal:lifecycle.signal,active:()=>screen==='play',swing:()=>engine?.swing()});
     document.addEventListener('visibilitychange',()=>{if(document.hidden)void engine?.pause();},options);
     window.addEventListener('blur',()=>{if(screen==='play')void engine?.pause();},options);
@@ -124,7 +130,7 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
         const load=async path=>{const response=await fetcher(ruta(path),{signal:lifecycle.signal,cache:'no-cache'});if(!response.ok)throw new Error('Resources unavailable');return response.json();};
         try{
             [rules,manifest]=await Promise.all([load('data/game-beta-rules.json'),load('data/game-beta-art.json')]);
-            validateRules(rules);if(!rules.modes.unified)throw new Error('Unified rules unavailable');validateArt(manifest);
+            validateRules(rules);if(!rules.modes.survival)throw new Error('Survival rules unavailable');validateArt(manifest);
             sprites=await preloadSprites(manifest,{base:baseURL,signal:lifecycle.signal});if(stopped)return;
             installSprites($('game-batter'),sprites,manifest);
             const missing=sprites.filter(s=>!s.available).length;

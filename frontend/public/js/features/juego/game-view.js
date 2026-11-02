@@ -22,7 +22,7 @@ export function resultPresentation(state) {
     const note=!confirmed ? 'Práctica · sin puntos de cuenta.'
         : reward.status==='daily_limit' ? 'Cupo diario agotado · esta partida no genera puntos.'
         : reward.status==='disabled' ? 'Recompensas desactivadas · sin puntos.'
-        : reward.status==='lost' ? 'Necesitas 5 hits para ganar puntos.'
+        : reward.status==='lost' ? `Necesitas ${result.rules?.modes?.[state.mode]?.targetHits || 5} hits para ganar puntos.`
         : reward.status==='no_participation' ? 'Sin premio: faltaron intentos de bateo.'
         : credited>0 ? 'Puntos acreditados en tu cuenta.' : 'Sin puntos en esta partida.';
     return {credited,balance:confirmed?result.points_balance:null,bonus,note,
@@ -39,25 +39,32 @@ export function createGameView(root, rules, sprites, manifest) {
     const draw = state => {
         const paused = state.phase === 'paused', phase = paused ? state.pausedFrom : state.phase;
         const mode = rules.modes[state.mode];
+        const endless=state.mode==='survival';
         root.dataset.phase = state.phase;
         root.dataset.network = state.networkError ? 'error' : '';
         root.dataset.result = phase === 'feedback' ? state.last?.type || '' : '';
         root.dataset.cue = contactCue(state);
         text($('game-hits'),state.stats.hits); text($('game-target'),`/${mode.targetHits || mode.targetStreak}`);
-        text($('game-streak'),`×${state.stats.streak}`);
-        $('game-streak').setAttribute('aria-label',`Racha actual ${state.stats.streak}, máxima ${state.stats.bestStreak}`);
-        text($('game-progress'),`${state.stats.resolved}/${mode.maxPitches}`);
-        if(segments.length!==mode.maxPitches){
-            segments=Array.from({length:mode.maxPitches},()=>document.createElement('span'));
+        text($('game-misses'),endless?`${state.stats.misses}/${mode.maxMisses}`:state.stats.misses);
+        text($('game-streak'),endless?`Extras ×${state.stats.hits}`:`Racha ×${state.stats.streak}`);
+        $('game-streak').hidden=endless?state.stats.hits<=mode.targetHits:state.stats.streak===0;
+        $('game-streak').setAttribute('aria-label',endless?`${state.stats.hits} hits, racha máxima ${state.stats.bestStreak}`:`Racha actual ${state.stats.streak}, máxima ${state.stats.bestStreak}`);
+        text($('game-progress'),endless?state.stats.resolved:`${state.stats.resolved}/${mode.maxPitches}`);
+        root.dataset.extras=String(endless&&state.stats.hits>mode.targetHits);
+        const segmentCount=endless?mode.targetHits:mode.maxPitches;
+        if(segments.length!==segmentCount){
+            segments=Array.from({length:segmentCount},()=>document.createElement('span'));
             $('game-goal-progress').replaceChildren(...segments);lastProgress='';
         }
         const progress=`${state.id}:${state.stats.resolved}`;
         if(progress!==lastProgress){
-            // A recent hit is orange; previous completed pitches stay visible.
-            if(state.stats.resolved===0)segments.forEach(s=>{s.className='';});
-            segments.forEach((s,i)=>{if(i<state.stats.resolved&&!s.className)s.className='is-complete';});
-            if(state.stats.resolved&&['hit','perfect'].includes(state.last?.type))segments[state.stats.resolved-1].className='is-hit';
-            $('game-goal-progress').setAttribute('aria-label',`${state.stats.resolved} de ${mode.maxPitches} lanzamientos completados`);lastProgress=progress;
+            if(endless){segments.forEach((s,i)=>{s.className=i<state.stats.hits?'is-hit':'';});}
+            else {
+                if(state.stats.resolved===0)segments.forEach(s=>{s.className='';});
+                segments.forEach((s,i)=>{if(i<state.stats.resolved&&!s.className)s.className='is-complete';});
+                if(state.stats.resolved&&['hit','perfect'].includes(state.last?.type))segments[state.stats.resolved-1].className='is-hit';
+            }
+            $('game-goal-progress').setAttribute('aria-label',endless?`${state.stats.hits} de ${mode.targetHits} hits. ${state.stats.misses} de ${mode.maxMisses} fallos.`:`${state.stats.resolved} de ${mode.maxPitches} lanzamientos completados`);lastProgress=progress;
         }
         $('game-hit').disabled = state.phase !== 'pitch' || state.serverBusy;
         $('game-pause').disabled = Boolean(state.networkError) || ['finished','abandoned'].includes(state.phase);

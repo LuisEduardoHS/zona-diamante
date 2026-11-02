@@ -2,9 +2,11 @@ export function validateRules(rules) {
     if (!rules || typeof rules.version !== 'string' || !rules.version.length) throw new Error('Configuración de juego inválida.');
     for (const mode of Object.keys(rules.modes || {})) {
         const m = rules.modes?.[mode];
-        if (!m || !Number.isInteger(m.maxPitches) || m.maxPitches < 1 || m.maxPitches > 100) throw new Error('Modalidad inválida.');
+        const endless = mode === 'survival' && m?.maxPitches === null;
+        if (!m || (!endless && (!Number.isInteger(m.maxPitches) || m.maxPitches < 1 || m.maxPitches > 100))) throw new Error('Modalidad inválida.');
+        if (endless && (!Number.isInteger(m.maxMisses) || m.maxMisses !== 3)) throw new Error('Fallos permitidos inválidos.');
         const goal = mode === 'streak' ? m.targetStreak : m.targetHits;
-        if (!Number.isInteger(goal) || goal < 1 || goal > m.maxPitches) throw new Error('Objetivo inválido.');
+        if (!Number.isInteger(goal) || goal < 1 || goal > (endless ? 100 : m.maxPitches)) throw new Error('Objetivo inválido.');
     }
     if (!Object.keys(rules.modes || {}).length) throw new Error('Faltan modalidades.');
     const t = rules.timing;
@@ -14,16 +16,19 @@ export function validateRules(rules) {
     const d = rules.difficulty;
     if (!d || !Number.isInteger(d.tierEvery) || d.tierEvery < 1 || !d.tierFactors?.length || !d.pitchFactors?.length
         || [...d.tierFactors,...d.pitchFactors].some(v => !Number.isFinite(v) || v < .5 || v > 1.5)) throw new Error('Dificultad inválida.');
+    if (rules.modes.survival && (!d.survival || !Number.isFinite(d.survival.perPitchStep) || d.survival.perPitchStep <= 0 || d.survival.perPitchStep > 1
+        || !Number.isFinite(d.survival.minimumFactor) || d.survival.minimumFactor < .3 || d.survival.minimumFactor >= 1)) throw new Error('Progresión de velocidad inválida.');
     if (!rules.scoring || ['hit','perfect','miss'].some(k => !Number.isInteger(rules.scoring[k]) || rules.scoring[k] < 0)) throw new Error('Puntuación inválida.');
     return rules;
 }
 
-export function pitchPlan(rules, index) {
+export function pitchPlan(rules, index, mode = 'classic') {
     const d = rules.difficulty;
     const tier = Math.min(Math.floor((index - 1) / d.tierEvery), d.tierFactors.length - 1);
-    const factor = d.tierFactors[tier] * d.pitchFactors[(index - 1) % d.pitchFactors.length];
+    const factor = mode === 'survival' ? d.survival.minimumFactor + (1-d.survival.minimumFactor)/(1+d.survival.perPitchStep*(index-1))
+        : d.tierFactors[tier] * d.pitchFactors[(index - 1) % d.pitchFactors.length];
     const timing = Object.fromEntries(['flightMs','contactMs','validWindowMs','perfectWindowMs'].map(k => [k,rules.timing[k] * factor]));
-    return { ...timing, index, tier: tier + 1 };
+    return { ...timing, index, tier: mode === 'survival' ? index : tier + 1 };
 }
 export function classifySwing(elapsed, plan) {
     if (!Number.isFinite(elapsed) || elapsed < 0) return 'invalid';
@@ -34,7 +39,7 @@ export function classifySwing(elapsed, plan) {
 }
 export function createMatch(rules, mode, id = 'practice') {
     validateRules(rules);
-    if (!['unified','classic','streak'].includes(mode) || !rules.modes[mode]) throw new Error('Modalidad desconocida.');
+    if (!['survival','unified','classic','streak'].includes(mode) || !rules.modes[mode]) throw new Error('Modalidad desconocida.');
     return { id, mode, phase:'countdown', elapsed:0, pitchIndex:0, plan:null, last:null, outcome:null,
         stats:{ resolved:0, hits:0, misses:0, perfects:0, score:0, streak:0, bestStreak:0 }, pausedFrom:null };
 }
@@ -47,7 +52,9 @@ function resolve(state, type, rules) {
         streak, bestStreak:Math.max(old.bestStreak,streak) };
     const mode = rules.modes[state.mode];
     let outcome = null;
-    if (state.mode === 'streak' && streak >= mode.targetStreak) outcome = 'won';
+    if (state.mode === 'survival') {
+        if(stats.misses >= mode.maxMisses) outcome = stats.hits >= mode.targetHits ? 'won' : 'lost';
+    } else if (state.mode === 'streak' && streak >= mode.targetStreak) outcome = 'won';
     else if (stats.resolved === mode.maxPitches) outcome = state.mode !== 'streak' && stats.hits >= mode.targetHits ? 'won' : 'lost';
     return { ...state, phase:'feedback', elapsed:0, stats, outcome,
         last:{ type, at:state.elapsed, duration:Math.max(rules.timing.feedbackMs, hit ? 0 : state.plan.flightMs - state.elapsed) } };
@@ -65,10 +72,10 @@ export function advance(state, delta, rules) {
         const step = Math.min(remaining, duration - next.elapsed);
         next = { ...next, elapsed:next.elapsed + step }; remaining -= step;
         if (next.elapsed < duration) return next;
-        if (next.phase === 'countdown') next = { ...next,phase:'pitch',elapsed:0,pitchIndex:1,plan:pitchPlan(rules,1) };
+        if (next.phase === 'countdown') next = { ...next,phase:'pitch',elapsed:0,pitchIndex:1,plan:pitchPlan(rules,1,next.mode) };
         else if (next.phase === 'pitch') next = resolve(next,'no_swing',rules);
         else if (next.outcome) return { ...next, phase:'finished', elapsed:0 };
-        else next = { ...next,phase:'pitch',elapsed:0,pitchIndex:next.pitchIndex + 1,plan:pitchPlan(rules,next.pitchIndex + 1),last:null };
+        else next = { ...next,phase:'pitch',elapsed:0,pitchIndex:next.pitchIndex + 1,plan:pitchPlan(rules,next.pitchIndex + 1,next.mode),last:null };
         if (!remaining) return next;
     }
     throw new Error('Límite de pasos de simulación.');

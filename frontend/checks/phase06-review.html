@@ -1,0 +1,21 @@
+<!doctype html><html lang="es"><meta charset="utf-8"><title>Supervivencia · revisión local</title>
+<style>body{font:14px system-ui;color:#12596a;margin:14px}button{padding:10px;margin:3px}iframe{display:block;border:0;width:390px;height:844px}pre{white-space:pre-wrap}</style>
+<p>QA local: motor real, reloj determinista; invitado sin premios.</p><button id="suite">Ejecutar comprobaciones</button><button id="goal">Meta de 10</button><button id="extras">Extras ×12</button><button id="win">Resultado con extras</button><button id="lose">Derrota</button><pre id="status" role="status">Preparado</pre><iframe id="game" title="Juego supervivencia" src="/pages/experiencias/juego.html"></iframe>
+<script type="module">
+const frame=document.querySelector('#game'),out=document.querySelector('#status'),d=()=>frame.contentDocument,q=id=>d().getElementById(id),qa=()=>frame.contentWindow.__gameQA,state=()=>qa().handle.state,step=ms=>qa().step(ms);
+async function ready(){while(!qa())await new Promise(resolve=>setTimeout(resolve,20));await qa().handle.ready;}
+async function begin(){if(state()&&q('game-beta').dataset.screen==='play'){q('game-pause').click();q('game-exit').click();await Promise.resolve();}if(q('game-beta').dataset.screen==='result')q('game-replay').click();else q('game-start').click();step(3000);}
+function shot(hit=true){step(hit?state().plan.contactMs:0);q('game-hit').click();step(state().last.duration+0.001);}
+document.querySelector('#goal').onclick=async()=>{await ready();await begin();for(let i=0;i<10;i++)shot();out.textContent='10 hits: la partida sigue';};
+document.querySelector('#extras').onclick=async()=>{await ready();await begin();for(let i=0;i<12;i++)shot();shot(false);shot(false);out.textContent='Extras ×12 · 2 fallos: la partida sigue';};
+document.querySelector('#win').onclick=async()=>{await ready();await begin();for(let i=0;i<12;i++)shot();for(let i=0;i<3;i++)shot(false);out.textContent='12 hits · 3 fallos: meta lograda';};
+document.querySelector('#lose').onclick=async()=>{await ready();await begin();step(60000);out.textContent='0 hits · 3 fallos';};
+document.querySelector('#suite').onclick=async()=>{out.textContent='';const check=(ok,label)=>{if(!ok)throw Error(label);out.textContent+='PASS '+label+'\n';};try{await ready();await begin();check(state().mode==='survival','inicio directo supervivencia');
+step(300);q('game-pause').click();const before=JSON.stringify(state());step(10000);check(JSON.stringify(state())===before,'pausa conserva vidas y tiempo');q('game-resume').click();step(state().plan.contactMs-state().elapsed);q('game-hit').click();q('game-hit').click();check(state().stats.hits===1,'doble toque resuelve una vez');step(state().last.duration+0.001);
+const speed=state().plan.flightMs;shot(false);check(state().stats.misses===1&&state().stats.streak===0,'fallo rompe racha sin acabar');check(state().plan.flightMs<speed,'aumenta velocidad con cada tiro');
+while(state().stats.hits<10)shot();check(state().phase==='pitch'&&state().outcome===null,'10 hits no terminan la partida');shot();shot();check(q('game-streak').textContent==='Extras ×12'&&!q('game-streak').hidden,'extra ×12 visible');
+shot(false);check(state().stats.misses===2&&state().phase==='pitch','dos fallos acumulados permiten seguir');shot();shot(false);check(state().phase==='finished'&&state().stats.hits===13&&state().stats.misses===3,'tercer fallo termina y conserva extras');
+check(!q('game-result-auth').hidden&&q('game-result-reward').textContent.includes('Inicia sesión'),'aviso de acceso al terminar invitado');check(q('game-account-points').textContent==='—'&&q('game-balance').textContent==='—','sin puntos ni saldo inventados');
+q('game-result-close').click();check(q('game-beta').dataset.screen==='home','cerrar vuelve a portada');q('game-start').click();step(60000);check(state().stats.resolved===3&&state().stats.misses===3&&state().outcome==='lost','sin tocar: tres tiros y derrota');check(d().documentElement.scrollWidth===frame.clientWidth,'sin overflow horizontal');
+}catch(error){out.textContent+='FAIL '+error.stack;}};
+</script></html>

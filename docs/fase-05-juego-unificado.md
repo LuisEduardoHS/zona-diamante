@@ -2,6 +2,10 @@
 
 Fecha: 1 de noviembre de 2026, America/Mexico_City.
 
+Actualización: las partidas nuevas ahora siguen la [fase 06](fase-06-juego-supervivencia.md):
+meta de 10 hits, tiros ilimitados y tres fallos acumulados. Esta fase conserva
+la especificación histórica del protocolo `unified-1`.
+
 ## Estado y alcance
 
 Implementación local del juego nuevo. Publicación pendiente de la migración
