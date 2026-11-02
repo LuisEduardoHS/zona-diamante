@@ -31,7 +31,7 @@ export function resultPresentation(state) {
 export function createGameView(root, rules, sprites, manifest) {
     const $ = id => root.querySelector('#'+id), images = [...$('game-batter').querySelectorAll('[data-frame]')];
     let lastPose = -2, lastProgress = '', segments=[];
-    const field = $('game-field');
+    const field = $('game-scene');
     let fieldWidth = field.clientWidth, fieldHeight = field.clientHeight;
     const resize = new ResizeObserver(([entry]) => { fieldWidth = entry.contentRect.width; fieldHeight = entry.contentRect.height; });
     resize.observe(field);

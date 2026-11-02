@@ -100,7 +100,8 @@ con sombra y trayectoria coherente con el montículo.
 
 La portada lleva fondo oscurecido/desenfocado, título grande «Juego», etiqueta
 y botón Iniciar. Partida: HUD pequeño de hits/meta, tiros resueltos/10, racha
-y diez segmentos; botón al presionar, Espacio/Enter y activación accesible.
+y diez segmentos; toda la tarjeta admite bateo al presionar, Espacio/Enter y
+activación accesible. «Presiona para batear» es un aviso de texto.
 Resultado: estadio desenfocado, tarjeta turquesa, números grandes para premio
 y saldo, resultado/hits/bonus y Mi colección, como la referencia.
 El diamante superior conduce a Colección; menú y navegación inferior usan la
@@ -117,7 +118,7 @@ Capturas reales del navegador integrado en `docs/evidencias/juego-unificado/`.
 Primera revisión: se aumentó el título para ocupar la portada, se desplazó el
 bateador a la izquierda para revelar el lanzador y se ajustó el apoyo cerca del
 plato. Segunda revisión: estadio completo y escalas, botón visible, tarjeta
-de resultado y HUD comprobados; controles laterales en horizontal para conservar
+de resultado y HUD comprobados; HUD compacto en horizontal para conservar
 el estadio vertical. Se corrigió una superposición en el estado de reconexión.
 
 Tamaños requeridos: 360×740, 390×844, 768×1024, 844×390 y 1440×900.
@@ -235,3 +236,29 @@ recompensa local de este informe se atribuye a producción.
 **Reporte final: PARCIAL para la entrega publicada; implementación y validación
 locales completas.** Render y Netlify no se modificaron ni se declara un
 despliegue nuevo verificado. Main remoto seguía en `1bc8d73` tras el fetch final.
+
+## Ajuste posterior — tamaño de tarjeta y toque completo
+
+Se aplicaron las nuevas referencias del usuario: tarjeta a casi todo el ancho
+útil, marco exterior hasta los bordes y fondo prolongado hasta la navegación
+inferior. La anchura deja de depender de la altura del dispositivo: en la vista
+compacta de 365×570 ahora mide 341 px, frente a unos 219 px del diseño anterior.
+En escritorio se limita al ancho de la carcasa; en horizontal conserva el campo
+completo al centro de la tarjeta amplia. El arte sigue en un plano 9:16, sin
+deformación; en vistas cortas se recorta cielo para conservar el plato.
+
+El aviso inferior es un párrafo, sin forma de botón. Una superficie de botón
+transparente y accesible cubre toda la tarjeta durante la partida, incluso HUD
+y aviso. Pausa, reanudar, mensajes de red y resultados quedan por encima y
+conservan sus acciones. Se reutilizan las guardas de un swing por tiro y los
+eventos al presionar; no cambia backend, economía ni migración.
+
+Comprobaciones reales de toque en marcador, centro y aviso: un tiro resuelto
+por cada activación; segundo toque durante feedback sin duplicados. Pausa
+conservó 0/10 sin registrar bateo. Espacio también resolvió un único tiro.
+Medidas verificadas en 360×740, 365×570, 390×844, 768×1024, 844×390 y 1440×900,
+sin overflow horizontal, con superficie que cubre toda la tarjeta. El recorrido
+determinista de diez comprobaciones volvió a pasar tras el ajuste.
+
+Capturas, métricas y resultados actualizados en
+`docs/evidencias/juego-unificado/ajuste-tarjeta/`.

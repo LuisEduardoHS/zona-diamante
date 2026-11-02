@@ -38,4 +38,6 @@ test('el HTML contiene sólo portada, partida y resultado, y usa el estadio real
  assert.deepEqual([...html.matchAll(/data-game-screen="(.*?)"/g)].map(m=>m[1]),['home','play','result']);
  assert.doesNotMatch(html,/data-mode=|data-help|game-help|Clásica|Seleccionar modalidad/);
  assert.match(html,/assets\/img\/juego\/estadio.png/);
+ assert.match(html,/<p id="game-bat-hint"[^>]*>Presiona para batear<\/p>/);
+ assert.match(html,/<button id="game-hit"[^>]*aria-label="Batear"[^>]*><\/button>/);
 });
