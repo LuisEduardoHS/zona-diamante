@@ -88,9 +88,9 @@
 }
 @media (orientation:landscape) and (max-height:550px) {
  .game-beta { padding:16px 100px calc(var(--bottom-nav-height,80px) + 8px); }
- .game-beta-page .site-header { max-width:none; padding:16px 22px; pointer-events:none; }.game-beta-page .site-header button { pointer-events:auto; }
- .game-collection-icon { top:16px; right:24px; }
- .game-stage { width:calc((100dvh - 104px)*9/16); border-radius:20px; box-shadow:0 -7px 0 2px #00758a; }
+ .game-beta-page .site-header { max-width:none; padding:16px max(22px,env(safe-area-inset-right,0px)) 16px max(22px,env(safe-area-inset-left,0px)); pointer-events:none; }.game-beta-page .site-header button { pointer-events:auto; }
+ .game-collection-icon { top:16px; right:max(24px,env(safe-area-inset-right,0px)); }
+ .game-stage { width:calc((100dvh - 104px - env(safe-area-inset-bottom,0px))*9/16); border-radius:20px; box-shadow:0 -7px 0 2px #00758a; }
  [data-screen=play] .game-stage { transform:translateX(-94px); }
  .game-hud { top:6px; left:calc(100% + 18px); right:auto; width:170px; background:#00647f; padding:12px; }.game-pitch-progress { left:calc(100% + 22px); right:auto; width:162px; top:70px; }
  .game-pause { top:87px; right:-65px; }.game-controls { left:calc(100% + 18px); right:auto; width:170px; bottom:10px; }.game-feedback { font-size:14px; }
