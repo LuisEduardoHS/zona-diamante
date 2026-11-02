@@ -51,7 +51,9 @@
 .game-pitch-progress span { height:4px; border-radius:8px; flex:1; background:#fff5; }
 .game-pitch-progress .is-complete { background:#fff; }.game-pitch-progress .is-hit { background:#ff8321; }
 .game-session-note { position:absolute; top:18%; left:6%; font-size:10px; font-weight:800; color:#fff; text-shadow:0 1px 5px #00657e; pointer-events:none; }
-.game-pause { position:absolute; z-index:3; top:4%; right:4%; width:44px; height:44px; border:0; border-radius:50%; display:grid; place-items:center; color:#ff7b13; background:#fff; font-weight:900 !important; font-size:22px !important; }
+.game-pause { position:absolute; z-index:5; top:4%; right:4%; width:44px; height:44px; padding:0; border:0; border-radius:50%; display:grid; place-items:center; color:#ff7b13; background:#fff; }
+.game-pause svg { width:26px; height:26px; fill:currentColor; pointer-events:none; }
+.game-pause[aria-pressed=false] .game-icon-play,.game-pause[aria-pressed=true] .game-icon-pause { display:none; }
 .game-countdown { position:absolute; inset:26% 0 auto; text-align:center; color:#fff; text-shadow:0 2px 15px #00546c; pointer-events:none; }
 .game-countdown span { display:block; font-size:16px; font-weight:800; }.game-countdown strong { display:block; font-size:70px; line-height:1.1; }
 .game-controls { position:absolute; z-index:2; left:6%; right:6%; bottom:4%; text-align:center; pointer-events:none; }
