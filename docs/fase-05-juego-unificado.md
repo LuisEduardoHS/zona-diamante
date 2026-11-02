@@ -276,3 +276,12 @@ informativos mantienen Urbanist. Se comprobó la composición en la vista normal
 365×570 y 844×390, sin recortes ni superposición con la navegación. Las 147
 pruebas frontend siguen pasando. Evidencia: `portada-monument.jpg`,
 `resultado-monument-cerrar.jpg` y variantes por tamaño en la carpeta de evidencias.
+
+## Ajuste posterior — curva naranja original
+
+Se reemplazó la franja poligonal por el SVG proporcionado, conservando el path,
+viewBox 402×275 y color `#DF6A16` en `assets/img/juego/curva-naranja.svg`.
+Se ubica en la parte inferior, a partir del 68 % de la altura de pantalla,
+entre el marco y el campo para que resulte visible en los laterales como en la
+referencia. Es decorativa y no intercepta toques. Revisión visual en la vista
+normal, 365×570 y 844×390, sin desbordamiento; captura `curva-naranja.jpg`.

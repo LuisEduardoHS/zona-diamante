@@ -1,12 +1,11 @@
 @font-face { font-family:'Monument Extended'; src:url('../assets/fonts/Monument.otf') format('opentype'); font-weight:400 900; font-style:normal; font-display:swap; }
 .game-beta-page { background:#078caa; color:white; }
 .game-beta :is(h1,h2,.game-result-label,.game-paused>strong) { font-family:'Monument Extended',sans-serif; }
-.game-beta-page::before { content:''; position:fixed; inset:60% 0 0; background:#f58020; clip-path:polygon(0 65%,100% 15%,100% 100%,0 100%); pointer-events:none; }
 .game-beta-page .site-header { max-width:480px; left:50%; transform:translateX(-50%); pointer-events:none; }
 .game-beta-page .site-header .shell-menu-button { pointer-events:auto; }
 .game-beta-page .shell-brand { visibility:hidden; }
 .game-beta-page .site-bottom-nav { max-width:480px; left:50%; right:auto; transform:translateX(-50%); }
-.game-beta { --game-teal:#14899b; --game-orange:#ff7d18; position:relative; display:grid; place-items:center; box-sizing:border-box; height:100dvh; min-height:0; padding:clamp(88px,15dvh,128px) 12px var(--bottom-nav-height,80px); isolation:isolate; }
+.game-beta { --game-teal:#14899b; --game-orange:#ff7d18; --game-top:clamp(88px,15dvh,128px); position:relative; display:grid; place-items:center; box-sizing:border-box; height:100dvh; min-height:0; padding:var(--game-top) 12px var(--bottom-nav-height,80px); overflow:clip; isolation:isolate; }
 .game-beta * { box-sizing:border-box; }
 .game-beta [hidden] { display:none !important; }
 .game-beta :is(button,a):focus-visible { outline:3px solid #ffb46e; outline-offset:4px; }
@@ -15,7 +14,8 @@
 .game-collection-icon { position:fixed; z-index:51; top:calc(20px + env(safe-area-inset-top,0px)); right:max(24px,calc((100vw - 432px)/2)); display:grid; place-items:center; width:48px; height:48px; border-radius:50%; background:#e5f7fa; color:#2b2b31; box-shadow:0 3px 10px #0002; }
 .game-collection-icon svg { width:34px; height:34px; }
 .game-stage { position:relative; container-type:inline-size; width:100%; height:100%; max-width:456px; border-radius:34px 34px 0 0; box-shadow:0 -13px 0 12px #00758a; background:#0085a0; }
-.game-field { position:absolute; inset:0; container-type:size; border-radius:inherit; overflow:hidden; outline:none; }
+.game-stage::before { content:''; position:absolute; top:calc(68dvh - var(--game-top)); left:50%; width:calc(100% + 24px); aspect-ratio:402/275; transform:translateX(-50%); background:url('../assets/img/juego/curva-naranja.svg') center/100% 100% no-repeat; pointer-events:none; }
+.game-field { position:absolute; inset:0; container-type:size; border-radius:inherit; overflow:hidden; outline:none; background:#0085a0; }
 .game-scene { position:absolute; bottom:0; left:50%; width:max(100cqw,calc(100cqh*9/16)); aspect-ratio:9/16; transform:translateX(-50%); }
 .game-stadium { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; pointer-events:none; }
 .game-home,.game-play-screen,.game-result { position:absolute; inset:0; border-radius:inherit; }
@@ -92,7 +92,7 @@
  .game-hud { padding:7px 10px; }.game-hud strong { font-size:17px; }.game-pause { width:44px; height:44px; top:3%; right:3%; }.game-pitch-progress { top:15.5%; }
 }
 @media (orientation:landscape) and (max-height:550px) {
- .game-beta { padding:16px 100px calc(var(--bottom-nav-height,80px) + 8px); }
+ .game-beta { --game-top:16px; padding:var(--game-top) 100px calc(var(--bottom-nav-height,80px) + 8px); }
  .game-beta-page .site-header { max-width:none; padding:16px max(22px,env(safe-area-inset-right,0px)) 16px max(22px,env(safe-area-inset-left,0px)); pointer-events:none; }.game-beta-page .site-header button { pointer-events:auto; }
  .game-collection-icon { top:16px; right:max(24px,env(safe-area-inset-right,0px)); }
  .game-stage { width:100%; max-width:560px; border-radius:20px; box-shadow:0 -7px 0 2px #00758a; }
