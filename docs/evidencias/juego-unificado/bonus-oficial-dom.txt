@@ -1,0 +1,37 @@
+- banner:
+  - button "Abrir menú":
+- navigation "Navegación inferior":
+  - link "Inicio":
+    - /url: http://127.0.0.1:4211/index.html
+    - generic: Inicio
+  - link "Trivia":
+    - /url: http://127.0.0.1:4211/pages/experiencias/trivia.html
+    - generic: Trivia
+  - link "Cámara AR":
+    - /url: http://127.0.0.1:4211/pages/experiencias/camara.html
+  - link "Info":
+    - /url: http://127.0.0.1:4211/pages/contenido/Informacion.html
+    - generic: Info
+  - link "Juego":
+    - /url: http://127.0.0.1:4211/pages/experiencias/juego.html
+    - generic: Juego
+- main:
+  - link "Mi colección":
+    - /url: http://127.0.0.1:4211/pages/coleccion/coleccion.html
+  - generic "Campo de béisbol. Batea con el botón o la barra espaciadora.":
+    - img "Bateador de Sultanes"
+  - region "Resultado final":
+    - generic: + 55 puntos
+    - heading "¡Juego terminado!" [active] [level=2]
+    - definition: "+55"
+    - term: Puntos ganados
+    - definition: "245"
+    - term: Balance
+    - paragraph: ¡Victoria!
+    - paragraph: 8 hits de 10 lanzamientos
+    - paragraph: Bonus +25 · racha máxima ×5
+    - paragraph: Puntos acreditados en tu cuenta.
+    - link "Mi colección":
+      - /url: http://127.0.0.1:4211/pages/coleccion/coleccion.html
+    - button "Volver a jugar"
+- status

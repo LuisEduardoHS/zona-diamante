@@ -1,0 +1,40 @@
+- banner:
+  - button "Abrir menú":
+- navigation "Navegación inferior":
+  - link "Inicio":
+    - /url: http://127.0.0.1:4211/index.html
+    - generic: Inicio
+  - link "Trivia":
+    - /url: http://127.0.0.1:4211/pages/experiencias/trivia.html
+    - generic: Trivia
+  - link "Cámara AR":
+    - /url: http://127.0.0.1:4211/pages/experiencias/camara.html
+  - link "Info":
+    - /url: http://127.0.0.1:4211/pages/contenido/Informacion.html
+    - generic: Info
+  - link "Juego":
+    - /url: http://127.0.0.1:4211/pages/experiencias/juego.html
+    - generic: Juego
+- main:
+  - link "Mi colección":
+    - /url: http://127.0.0.1:4211/pages/coleccion/coleccion.html
+  - generic "Campo de béisbol. Batea con el botón o la barra espaciadora." [active]:
+    - img "Bateador de Sultanes"
+  - region "Partida oficial":
+    - generic "Marcador":
+      - generic: Hits
+      - strong: 0/5
+      - generic: Tiros
+      - strong: 0/10
+      - generic: Racha
+      - strong: ×0
+    - img "0 de 10 lanzamientos completados"
+    - generic: Partida oficial
+    - button "Pausar":
+      - generic: Ⅱ
+    - status: Prepárate
+    - button "Presiona para batear" [disabled]
+  - status: Tu sesión venció. Inicia sesión para recuperar tu partida.
+  - link "Iniciar sesión":
+    - /url: http://127.0.0.1:4211/pages/auth/login.html?next=http%3A%2F%2F127.0.0.1%3A4211%2Fpages%2Fexperiencias%2Fjuego.html
+- status

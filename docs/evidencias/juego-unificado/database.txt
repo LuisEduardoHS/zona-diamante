@@ -1,0 +1,53 @@
+PASS: seed twice preserves all team fields and IDs
+PASS: phase01_economy_test.sql: 81 pgTAP assertions
+PASS: phase02a_game_test.sql: 63 pgTAP assertions
+PASS: phase02b_ar_test.sql: 45 pgTAP assertions
+PASS: schema_and_security_test.sql: 14 pgTAP assertions
+PASS: 7 real concurrent-session scenarios and ledger reconciliation
+PASS: 7 real concurrent game scenarios; zero credit/rewards/inventory
+D:\projects\zona-diamante\backend\venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+2026-11-01 21:28:48,132 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/transition_game_attempt status=400
+2026-11-01 21:28:48,216 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/start_game_attempt status=400
+2026-11-01 21:28:48,406 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/transition_game_attempt status=400
+2026-11-01 21:28:48,733 | INFO | zona_diamante.attempts | activity_attempt_created user_id=371e6e76-a960-4522-8af2-d5f5976d8607 attempt_id=d3261273-08e4-4b7e-89ce-0cdbc70b5be3 activity_type=game
+2026-11-01 21:28:49,084 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/start_game_attempt status=400
+2026-11-01 21:28:49,262 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/transition_game_attempt status=400
+2026-11-01 21:28:49,533 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/transition_game_attempt status=400
+PASS: 34 local Auth/FastAPI/PostgREST checks including concurrent HTTP retry
+PASS: 5 concurrent AR scenarios; inventory/ledger atomic and points unchanged
+PASS: local Auth/HTTP AR inventory before/after trusted grant and 4 forbidden browser routes
+PASS: 38 beta SQL checks, 5 concurrent scenarios, reward/collection/rollback
+2026-11-01 21:30:30,592 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/game_beta_command status=400
+2026-11-01 21:30:30,690 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/game_beta_command status=400
+2026-11-01 21:30:30,850 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/game_beta_command status=400
+PASS: 47 real local Auth/FastAPI/PostgREST beta checks, real-time five-hit victory, persistent 60 points
+PASS: 417 unified SQL checks, 2 concurrency scenarios; canonical rewards 0/30/35/45/55/65
+PASS: unified real HTTP/Auth/DB, 10 real-time hits, 65 points, idempotent close, collection balance
+PASS: upgrade from all 18 historical migrations, preserved data and legacy retries
+PASS: 4 forward migration(s) preserve existing data
+PASS: seed twice preserves all team fields and IDs
+PASS: phase01_economy_test.sql: 81 pgTAP assertions
+PASS: phase02a_game_test.sql: 63 pgTAP assertions
+PASS: phase02b_ar_test.sql: 45 pgTAP assertions
+PASS: schema_and_security_test.sql: 14 pgTAP assertions
+PASS: 7 real concurrent-session scenarios and ledger reconciliation
+PASS: 7 real concurrent game scenarios; zero credit/rewards/inventory
+2026-11-01 21:34:51,969 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/transition_game_attempt status=400
+2026-11-01 21:34:52,071 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/start_game_attempt status=400
+2026-11-01 21:34:52,292 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/transition_game_attempt status=400
+2026-11-01 21:34:52,632 | INFO | zona_diamante.attempts | activity_attempt_created user_id=c1948a97-3012-40f6-b8f2-abe103306510 attempt_id=5d7e8fde-cf8c-4f89-a43a-9b7618d28168 activity_type=game
+2026-11-01 21:34:53,030 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/start_game_attempt status=400
+2026-11-01 21:34:53,219 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/transition_game_attempt status=400
+2026-11-01 21:34:53,501 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/transition_game_attempt status=400
+PASS: 34 local Auth/FastAPI/PostgREST checks including concurrent HTTP retry
+PASS: 5 concurrent AR scenarios; inventory/ledger atomic and points unchanged
+PASS: local Auth/HTTP AR inventory before/after trusted grant and 4 forbidden browser routes
+PASS: 38 beta SQL checks, 5 concurrent scenarios, reward/collection/rollback
+2026-11-01 21:36:33,748 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/game_beta_command status=400
+2026-11-01 21:36:33,852 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/game_beta_command status=400
+2026-11-01 21:36:34,039 | WARNING | zona_diamante.supabase | supabase_request_failed method=POST path=rpc/game_beta_command status=400
+PASS: 47 real local Auth/FastAPI/PostgREST beta checks, real-time five-hit victory, persistent 60 points
+PASS: 417 unified SQL checks, 2 concurrency scenarios; canonical rewards 0/30/35/45/55/65
+PASS: unified real HTTP/Auth/DB, 10 real-time hits, 65 points, idempotent close, collection balance
+PASS: phase 1 database acceptance in both isolated environments

@@ -1,0 +1,35 @@
+- banner:
+  - button "Abrir menú":
+- navigation "Navegación inferior":
+  - link "Inicio":
+    - /url: http://127.0.0.1:4211/index.html
+    - generic: Inicio
+  - link "Trivia":
+    - /url: http://127.0.0.1:4211/pages/experiencias/trivia.html
+    - generic: Trivia
+  - link "Cámara AR":
+    - /url: http://127.0.0.1:4211/pages/experiencias/camara.html
+  - link "Info":
+    - /url: http://127.0.0.1:4211/pages/contenido/Informacion.html
+    - generic: Info
+  - link "Juego":
+    - /url: http://127.0.0.1:4211/pages/experiencias/juego.html
+    - generic: Juego
+- main:
+  - link "Mi colección":
+    - /url: http://127.0.0.1:4211/pages/coleccion/coleccion.html
+  - generic "Campo de béisbol. Batea con el botón o la barra espaciadora.":
+    - img "Bateador de Sultanes"
+  - region "Resultado final":
+    - heading "¡Juego terminado!" [active] [level=2]
+    - definition: "+0"
+    - term: Puntos ganados
+    - definition: "340"
+    - term: Balance
+    - paragraph: ¡Victoria!
+    - paragraph: 10 hits de 10 lanzamientos
+    - paragraph: Cupo diario agotado · esta partida no genera puntos.
+    - link "Mi colección":
+      - /url: http://127.0.0.1:4211/pages/coleccion/coleccion.html
+    - button "Volver a jugar"
+- status

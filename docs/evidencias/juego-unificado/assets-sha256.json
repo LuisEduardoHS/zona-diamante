@@ -1,0 +1,27 @@
+[
+  {
+    "file": "frontend/public/assets/img/juego/estadio.png",
+    "sha256": "bfdf98484b73b40aa19f784def53107c5c2bada265287494b4ab8635c9f8bf29",
+    "bytes": 3046362
+  },
+  {
+    "file": "frontend/public/assets/img/juego/bateador/zd-sultanes-b1.webp",
+    "sha256": "1cbff624d4b72b592d75d95174b7c8256cffd97f121d88a41feb267eabd41300",
+    "bytes": 98882
+  },
+  {
+    "file": "frontend/public/assets/img/juego/bateador/zd-sultanes-b2.webp",
+    "sha256": "da4ffd0dc833b90e4a7cba4185397a3cea7c73b97a229134aadd4a6dbab4f8d2",
+    "bytes": 100076
+  },
+  {
+    "file": "frontend/public/assets/img/juego/bateador/zd-sultanes-b3.webp",
+    "sha256": "420489a75ba31eb9f34e57a9bcfbc5871c6b56de2f57b49d835d8c8c2e843b05",
+    "bytes": 118254
+  },
+  {
+    "file": "frontend/public/assets/img/juego/bateador/zd-sultanes-b4.webp",
+    "sha256": "f08a605d206536da54a655f9b312d436634ce723e2246c5a7c459f5ebc93960c",
+    "bytes": 113344
+  }
+]
