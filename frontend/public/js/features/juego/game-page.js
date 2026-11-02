@@ -89,6 +89,9 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
     }
     $('game-start').addEventListener('click',()=>start(),options);
     $('game-replay').addEventListener('click',()=>start({fresh:true,practice:!officialRun}),options);
+    const closeResult=()=>{if(screen==='result'){show('home');access();}};
+    $('game-result-close').addEventListener('click',closeResult,options);
+    root.addEventListener('keydown',event=>{if(event.key==='Escape'&&screen==='result'){event.preventDefault();closeResult();}},options);
     $('game-demo').addEventListener('click',()=>{engine?.destroy();show('home');void start({practice:true,fresh:true});},options);
     $('game-reconnect').addEventListener('click',async()=>{
         const ticket=generation;$('game-reconnect').disabled=true;

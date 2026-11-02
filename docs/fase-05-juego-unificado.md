@@ -262,3 +262,17 @@ determinista de diez comprobaciones volvió a pasar tras el ajuste.
 
 Capturas, métricas y resultados actualizados en
 `docs/evidencias/juego-unificado/ajuste-tarjeta/`.
+
+## Ajuste posterior — cierre y tipografía
+
+El resultado incorpora la X SVG proporcionada, con área táctil de 44×44 px.
+Clic o Escape cierran el resultado, vuelven a la portada y restauran el foco
+en «Juego»; Iniciar abre una partida nueva con contadores a cero. Cerrar no
+modifica el premio ni el saldo confirmado.
+
+Los títulos de portada, resultado, victoria/derrota y pausa usan el archivo
+local `Monument.otf` como Monument Extended. Botones, marcador, cifras y textos
+informativos mantienen Urbanist. Se comprobó la composición en la vista normal,
+365×570 y 844×390, sin recortes ni superposición con la navegación. Las 147
+pruebas frontend siguen pasando. Evidencia: `portada-monument.jpg`,
+`resultado-monument-cerrar.jpg` y variantes por tamaño en la carpeta de evidencias.
