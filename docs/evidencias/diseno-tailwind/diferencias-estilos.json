@@ -1,0 +1,9 @@
+[
+  {
+    "page": "equipo",
+    "selector": ".equipo-card",
+    "property": "transform",
+    "before": "matrix(1, 0, 0, 1, 0, 10.3358)",
+    "after": "matrix(1, 0, 0, 1, 0, 11.5536)"
+  }
+]

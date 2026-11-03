@@ -1,0 +1,53 @@
+PASS Inicio: una sola hoja Tailwind
+PASS Inicio: sin desbordamiento horizontal
+PASS carrusel cambia de equipo
+PASS Equipo: una sola hoja Tailwind
+PASS Equipo: sin desbordamiento horizontal
+PASS detalle corresponde al equipo
+PASS Info: una sola hoja Tailwind
+PASS Info: sin desbordamiento horizontal
+PASS SPA conserva documento y navegación
+PASS Info usa fotografía real y elimina la portada anterior
+PASS filtro Expansión muestra dos etapas
+PASS Todas restaura las cuatro etapas
+PASS Trivia invitado: una sola hoja Tailwind
+PASS Trivia invitado: sin desbordamiento horizontal
+PASS Juego: una sola hoja Tailwind
+PASS Juego: sin desbordamiento horizontal
+PASS se elimina el diamante del encabezado del juego
+PASS cuenta visible en el encabezado del juego
+PASS pausa funciona con el CSS compartido
+PASS reanudar funciona
+PASS Login: una sola hoja Tailwind
+PASS Login: sin desbordamiento horizontal
+PASS salir del juego desmonta la partida
+PASS Registro: una sola hoja Tailwind
+PASS Registro: sin desbordamiento horizontal
+PASS Recuperación: una sola hoja Tailwind
+PASS Recuperación: sin desbordamiento horizontal
+PASS Restablecimiento: una sola hoja Tailwind
+PASS Restablecimiento: sin desbordamiento horizontal
+PASS Colección: una sola hoja Tailwind
+PASS Colección: sin desbordamiento horizontal
+PASS catálogo completo
+PASS filtro de mascotas
+PASS detalle de carta abre
+PASS detalle cierra
+PASS Ayuda: una sola hoja Tailwind
+PASS Ayuda: sin desbordamiento horizontal
+PASS acordeón de ayuda
+PASS Juego autenticado: una sola hoja Tailwind
+PASS Juego autenticado: sin desbordamiento horizontal
+PASS perfil y avatar conservados en el juego
+PASS Perfil: una sola hoja Tailwind
+PASS Perfil: sin desbordamiento horizontal
+PASS la navegación conserva el encabezado y la sesión
+PASS trivia guarda cinco respuestas y abre confirmación
+PASS resultado de trivia conserva su presentación
+PASS contador de siguiente trivia visible
+PASS Foto AR simulada: una sola hoja Tailwind
+PASS Foto AR simulada: sin desbordamiento horizontal
+PASS superficie AR conserva la posición de pantalla
+PASS vista previa de foto cierra
+PASS sin errores JavaScript de las páginas
+TERMINADO

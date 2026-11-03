@@ -8,7 +8,7 @@ export function lanzarConfeti() {
 
     const capa = document.createElement('div');
     capa.setAttribute('aria-hidden', 'true');
-    capa.style.cssText = 'position:fixed;inset:0;z-index:9999;pointer-events:none;overflow:hidden;';
+    capa.className = 'fixed inset-0 z-[9999] pointer-events-none overflow-hidden';
     document.body.appendChild(capa);
     capaActiva = capa;
 
@@ -20,7 +20,12 @@ export function lanzarConfeti() {
     for (let i = 0; i < cantidad; i++) {
         const pieza = document.createElement('span');
         const giro = Math.random() * 360;
-        pieza.style.cssText = `position:absolute;left:${Math.random() * 100}%;top:${movimientoReducido ? 10 + Math.random() * 75 + '%' : '-20px'};width:${6 + Math.random() * 5}px;height:${9 + Math.random() * 7}px;background:${colores[i % colores.length]};border-radius:${i % 3 === 0 ? '50%' : '2px'};`;
+        pieza.className = `absolute left-[var(--particle-left)] top-[var(--particle-top)] w-[var(--particle-width)] h-[var(--particle-height)] bg-[var(--particle-color)] ${i % 3 === 0 ? 'rounded-full' : 'rounded-[2px]'}`;
+        pieza.style.setProperty('--particle-left', `${Math.random() * 100}%`);
+        pieza.style.setProperty('--particle-top', movimientoReducido ? `${10 + Math.random() * 75}%` : '-20px');
+        pieza.style.setProperty('--particle-width', `${6 + Math.random() * 5}px`);
+        pieza.style.setProperty('--particle-height', `${9 + Math.random() * 7}px`);
+        pieza.style.setProperty('--particle-color', colores[i % colores.length]);
         capa.appendChild(pieza);
 
         // Con movimiento reducido, las piezas aparecen y se desvanecen sin caer.

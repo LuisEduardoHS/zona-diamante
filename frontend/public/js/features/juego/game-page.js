@@ -117,7 +117,7 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
             engine?.destroy();show('home');clearNetwork();access();
         }finally{if(!stopped&&ticket===generation)$('game-exit').disabled=false;}
     },options);
-    for(const id of ['game-collection','game-top-collection'])$(id).href=ruta(RUTAS.coleccion);
+    $('game-collection').href=ruta(RUTAS.coleccion);
     $('game-login').href=ruta(RUTAS.login)+'?next='+encodeURIComponent(ruta(RUTAS.juego));
     $('game-result-login').href=$('game-login').href;
     $('game-result-register').href=ruta(RUTAS.registro)+'?next='+encodeURIComponent(ruta(RUTAS.juego));
