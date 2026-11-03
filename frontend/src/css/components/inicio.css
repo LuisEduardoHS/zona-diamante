@@ -1,0 +1,35 @@
+/* Tailwind components for inicio. Runtime variables retain team/game state. */
+.inicio-page { @apply bg-canvas overflow-x-hidden; }
+
+.inicio-page #header-superior,
+.inicio-page #menu-inferior { @apply relative; }
+
+.inicio-page main { @apply relative; }
+
+/* Reserva los botones y el menú; el carrusel ocupa únicamente el espacio restante. */
+.inicio-layout { @apply flex flex-col w-full h-dvh min-h-[320px] pb-[var(--bottom-clearance)]; }
+
+#carrusel-container { @apply [flex:1_1_0] min-h-0; }
+.inicio-acciones { @apply flex [flex:0_0_auto] flex-col gap-[clamp(8px,_2dvh,_16px)] p-[0_clamp(16px,_5vw,_32px)] mt-[clamp(12px,_3dvh,_24px)]; }
+.inicio-acciones > * { @apply min-h-[44px]; }
+.carrusel-info { @apply bottom-[max(56px,_15%)]; }
+.carrusel-info h2 { @apply max-w-full text-[clamp(38px,_9vw,_52px)] wrap-anywhere; }
+
+@media (orientation: portrait) and (max-height: 480px) {
+    .inicio-acciones { @apply flex-row gap-2; }
+    .inicio-acciones > * { @apply min-w-0; }
+    .inicio-acciones span { @apply pr-[18px]; }
+    .inicio-acciones svg { @apply right-[12px]; }
+    .carrusel-info { @apply bottom-[44px]; }
+    .carrusel-info h2 { @apply text-[31px]; }
+    #carousel-dots { @apply bottom-[10px]; }
+ }
+
+@media (orientation: landscape) and (max-height: 540px) {
+    .inicio-layout { @apply grid [grid-template-columns:minmax(0,_1fr)_minmax(220px,_34%)] min-h-[320px]; }
+    .inicio-acciones { @apply justify-center mt-0 p-[60px_20px_16px] gap-3; }
+    .carrusel-info { @apply bottom-[48px]; }
+    .carrusel-info h2 { @apply text-[31px]; }
+    .carrusel-info > div { @apply pt-[3px] pb-[3px]; }
+    #carousel-dots { @apply bottom-[12px]; }
+ }

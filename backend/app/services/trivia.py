@@ -34,23 +34,24 @@ def get_trivia_timezone() -> ZoneInfo:
         ) from error
 
 
-def get_current_trivia_date() -> date:
-    return datetime.now(get_trivia_timezone()).date()
+def get_current_trivia_period() -> tuple[date, int]:
+    now = datetime.now(get_trivia_timezone())
+    return now.date(), int(now.hour >= 12)
 
 
-def get_next_available_at(trivia_date: date) -> datetime:
+def get_next_available_at(trivia_date: date, trivia_slot: int) -> datetime:
     return datetime.combine(
-        trivia_date + timedelta(days=1),
-        time.min,
+        trivia_date + timedelta(days=trivia_slot),
+        time(hour=12) if trivia_slot == 0 else time.min,
         tzinfo=get_trivia_timezone(),
     )
 
 
-async def get_or_create_daily_trivia(trivia_date: date) -> dict:
+async def get_or_create_daily_trivia(trivia_date: date, trivia_slot: int) -> dict:
     data = await supabase_rest_request(
         "POST",
         "rpc/get_or_create_daily_trivia",
-        json={"p_trivia_date": trivia_date.isoformat()},
+        json={"p_trivia_date": trivia_date.isoformat(), "p_trivia_slot": trivia_slot},
     )
 
     if not isinstance(data, list) or len(data) != 1:
@@ -81,8 +82,8 @@ def _validated_daily_trivia(trivia: dict) -> tuple[str, int, int]:
 
 
 async def _get_current_daily_trivia() -> tuple[date, dict]:
-    trivia_date = get_current_trivia_date()
-    trivia = await get_or_create_daily_trivia(trivia_date)
+    trivia_date, trivia_slot = get_current_trivia_period()
+    trivia = await get_or_create_daily_trivia(trivia_date, trivia_slot)
     _validated_daily_trivia(trivia)
     return trivia_date, trivia
 
@@ -162,7 +163,7 @@ async def get_daily_trivia_status_for_user(
         "question_count": question_count,
         "points_per_correct": points_per_correct,
         "max_points": question_count * points_per_correct,
-        "next_available_at": get_next_available_at(trivia_date),
+        "next_available_at": get_next_available_at(trivia_date, trivia["trivia_slot"]),
     }
 
     if attempt is None:
@@ -532,7 +533,7 @@ async def submit_daily_trivia_for_user(user_id: str) -> TriviaDailySubmitRead:
         points_earned=data["points_earned"],
         points_balance=data["points_balance"],
         already_processed=data["already_processed"],
-        next_available_at=get_next_available_at(trivia_date),
+        next_available_at=get_next_available_at(trivia_date, trivia["trivia_slot"]),
         review=review,
     )
 

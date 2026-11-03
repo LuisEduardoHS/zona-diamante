@@ -6,7 +6,7 @@ const reducer = asModule(await readFile(new URL('../public/js/features/trivia/tr
 let source = await readFile(new URL('../public/js/features/trivia/trivia-page.js', import.meta.url), 'utf8');
 source = source.replace(
     /^import .*trivia-client.js';/m,
-    'const getDailyTriviaStatus = async () => globalThis.triviaFixture; const startDailyTrivia = async () => globalThis.triviaAttempt; const saveDailyTriviaAnswer = async () => ({ saved: true }); const submitDailyTrivia = async () => globalThis.triviaResult;'
+    'const getDailyTriviaStatus = async () => { globalThis.triviaLoads = (globalThis.triviaLoads || 0) + 1; return globalThis.triviaFixture; }; const startDailyTrivia = async () => globalThis.triviaAttempt; const saveDailyTriviaAnswer = async () => ({ saved: true }); const submitDailyTrivia = async () => globalThis.triviaResult;'
 );
 source = source.replace(/^import .*rutas.js';/m, "const RUTAS = { coleccion: '/coleccion' }; const ruta = value => value;");
 source = source.replace("'./trivia-state.js'", JSON.stringify(reducer));
@@ -84,5 +84,45 @@ test('actualiza calendario, mes y reto al cruzar medianoche sin recargar', async
         now += 86400000;
         visibilityChanged();
         assert.equal(view.innerHTML, html);
+    } finally { controller.abort(); globalThis.Date = OriginalDate; }
+});
+
+for (const status of ['completed', 'available']) test(`renueva a mediodía según el servidor desde ${status}, sin depender de la zona del dispositivo`, async () => {
+    const OriginalDate = Date;
+    // UTC device: local trivia noon is 18:00Z. Both instants share a device date.
+    let now = new OriginalDate('2026-11-02T17:59:59Z').getTime();
+    globalThis.Date = class extends OriginalDate {
+        constructor(...args) { super(...(args.length ? args : [now])); }
+        static now() { return now; }
+    };
+    const view = { innerHTML: '', setAttribute() {}, querySelector() { return null; }, addEventListener() {} };
+    let refresh;
+    globalThis.document = {
+        addEventListener(type, callback) { if (type === 'visibilitychange') refresh = callback; },
+        getElementById(id) { return id === 'trivia-view' ? view : null; }
+    };
+    const target = '2026-11-02T12:00:00-06:00';
+    globalThis.triviaFixture = { status, next_available_at: target,
+        last_result: { attempt_id: 'morning', correct_count: 4, total_questions: 5, points_earned: 80, next_available_at: target } };
+    globalThis.triviaLoads = 0;
+    const controller = new AbortController();
+    try {
+        iniciarTrivia(controller.signal);
+        await nextTurn();
+        refresh();
+        assert.equal(globalThis.triviaLoads, 1, 'no refresh before the boundary');
+        globalThis.triviaFixture = { status: 'available', next_available_at: '2026-11-03T00:00:00-06:00' };
+        now = new OriginalDate('2026-11-02T18:00:00Z').getTime();
+        refresh(); refresh();
+        await nextTurn();
+        assert.equal(globalThis.triviaLoads, 2, 'one request at the boundary');
+        assert.match(view.innerHTML, /id="start-trivia"/);
+        assert.doesNotMatch(view.innerHTML, /id="trivia-finale"/);
+        refresh();
+        assert.equal(globalThis.triviaLoads, 2, 'next boundary updated');
+        controller.abort();
+        now += 12 * 3600000;
+        refresh();
+        assert.equal(globalThis.triviaLoads, 2, 'aborted page stays disposed');
     } finally { controller.abort(); globalThis.Date = OriginalDate; }
 });

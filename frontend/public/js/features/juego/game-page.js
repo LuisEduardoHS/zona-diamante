@@ -7,6 +7,7 @@ import { installSprites, createGameView, resultPresentation } from './game-view.
 import { bindBatInput } from './game-input.js';
 import { createOfficialEngine } from './game-official.js';
 import { getGameServerClient } from '../../api/game-client.js';
+import { createGameMotion } from './game-motion.js';
 
 const mounts = new WeakMap();
 export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
@@ -15,12 +16,13 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
     if (mounts.has(root)) return mounts.get(root);
     const lifecycle = new AbortController(), options = {signal:lifecycle.signal};
     const $ = id => root.querySelector('#'+id);
+    const motion=createGameMotion();
     let rules, manifest, sprites=[], engine=null, draw=null, screen='home', stopped=false;
     let user='guest', authenticated=false, completionId=null, starting=false, generation=0, officialRun=false, rewardsAvailable=true;
     const storage = {getItem:key=>localStorage.getItem(key),setItem:(key,value)=>localStorage.setItem(key,value)};
     const show = next => {
         screen=next; root.dataset.screen=next;
-        for (const panel of root.querySelectorAll('[data-game-screen]')) panel.hidden=panel.dataset.gameScreen!==next;
+        for (const panel of root.querySelectorAll('[data-game-screen]')) motion.visible(panel,panel.dataset.gameScreen===next);
         if(next==='home')$('game-title').focus({preventScroll:true});
         if(next==='result')$('game-result-title').focus({preventScroll:true});
     };
@@ -52,13 +54,16 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
         $('game-award-toast').hidden=!result.toast;$('game-award-toast').textContent=result.toast||'';
         if(state.official){const auth=obtenerEstadoSesion();if(auth.user?.id===user&&result.balance!==null)establecerEstadoSesion({...auth,profile:{...auth.profile,points_balance:result.balance}});}
         clearNetwork();root.dataset.outcome=state.outcome;show('result');
+        if(result.credited!==null)motion.count($('game-account-points'),result.credited,{prefix:'+'});
+        if(result.balance!==null)motion.count($('game-balance'),result.balance,{from:Math.max(0,result.balance-(result.credited||0)),delay:260});
     }
     async function start({fresh=false,practice=false}={}) {
         if(!rules||stopped||starting||screen==='play')return;
         fresh=fresh||completionId!==null; engine?.destroy();engine=null;draw?.destroy();completionId=null;
+        motion.reset();
         starting=true;const ticket=++generation;const official=authenticated&&!practice;officialRun=official;access();clearNetwork();
         $('game-hit').disabled=true;
-        draw=createGameView(root,rules,sprites,manifest);let viewRules=JSON.stringify(rules);
+        draw=createGameView(root,rules,sprites,manifest,motion);let viewRules=JSON.stringify(rules);
         $('game-session-note').textContent=official?'Partida oficial':'Práctica · sin puntos';
         root.querySelector('[data-game-screen="play"]').setAttribute('aria-label',official?'Partida oficial':'Partida de práctica');
         const onFrame=state=>{if(stopped||ticket!==generation)return;draw(state);if(state.phase==='finished')finish(state);};
@@ -70,7 +75,7 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
                     onSnapshot:s=>{if(stopped||ticket!==generation)return;
                         rewardsAvailable=s.rewarded_today<s.daily_limit;
                         $('game-session-note').textContent=!s.rules.economy.enabled?'Práctica · premios desactivados':rewardsAvailable?'Partida oficial':'Práctica · cupo diario agotado';
-                        const next=JSON.stringify(s.rules);if(next!==viewRules){draw.destroy();draw=createGameView(root,s.rules,sprites,manifest);viewRules=next;}
+                        const next=JSON.stringify(s.rules);if(next!==viewRules){draw.destroy();draw=createGameView(root,s.rules,sprites,manifest,motion);viewRules=next;}
                         clearNetwork();
                         if(['expired','abandoned'].includes(s.phase)){show('home');$('game-network-note').hidden=false;$('game-network-note').textContent=s.phase==='expired'?'La partida expiró sin premio. Puedes iniciar otra.':'Partida abandonada sin premio.';}
                     },
@@ -112,7 +117,7 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
             engine?.destroy();show('home');clearNetwork();access();
         }finally{if(!stopped&&ticket===generation)$('game-exit').disabled=false;}
     },options);
-    for(const id of ['game-collection','game-top-collection'])$(id).href=ruta(RUTAS.coleccion);
+    $('game-collection').href=ruta(RUTAS.coleccion);
     $('game-login').href=ruta(RUTAS.login)+'?next='+encodeURIComponent(ruta(RUTAS.juego));
     $('game-result-login').href=$('game-login').href;
     $('game-result-register').href=ruta(RUTAS.registro)+'?next='+encodeURIComponent(ruta(RUTAS.juego));
@@ -140,7 +145,7 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
     })();
     let preservePageShow=false;
     const restored=event=>{if(event.persisted&&stopped)location.reload();};
-    function cleanup(){if(stopped)return;stopped=true;generation++;engine?.destroy();draw?.destroy();unsubscribe();lifecycle.abort();if(!preservePageShow)window.removeEventListener('pageshow',restored);mounts.delete(root);}
+    function cleanup(){if(stopped)return;stopped=true;generation++;engine?.destroy();draw?.destroy();motion.destroy();unsubscribe();lifecycle.abort();if(!preservePageShow)window.removeEventListener('pageshow',restored);mounts.delete(root);}
     const handle={ready,get state(){return engine?.state||null;},destroy:cleanup};
     mounts.set(root,handle);signal?.addEventListener('abort',cleanup,{once:true});
     window.addEventListener('pagehide',event=>{preservePageShow=event.persisted;cleanup();},options);window.addEventListener('pageshow',restored);

@@ -36,7 +36,7 @@ export function configurarCalidadCamara(sistemaAR) {
         video.setAttribute('muted', '');
         video.setAttribute('playsinline', '');
         video.muted = true;
-        video.style.cssText = 'position:absolute;top:0;left:0;z-index:-2;';
+        video.className = 'absolute top-0 left-0 -z-[2]';
         this.video = video;
         this.container.appendChild(video);
 

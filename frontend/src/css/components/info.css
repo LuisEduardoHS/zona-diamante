@@ -1,0 +1,9 @@
+/* Reusable Tailwind components shared by the history filters and timeline. */
+.historia-filtro { @apply min-h-11 cursor-pointer rounded-full border border-[#d9e0e2] bg-white px-4 py-2 text-xs font-extrabold text-[#52646a] transition-colors hover:border-brand hover:text-brand-deep focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand motion-reduce:transition-none; }
+.historia-filtro[aria-pressed=true] { @apply border-brand bg-brand text-white; }
+.historia-evento { @apply flex items-start gap-4 rounded-[24px] bg-white p-5 shadow-[0_3px_12px_#0000000a]; }
+.historia-evento.hidden { @apply hidden; }
+.historia-ano { @apply inline-flex min-h-10 min-w-16 shrink-0 items-center justify-center rounded-full bg-[#fff0e3] px-3 py-2 text-sm font-black text-[#a64d0c]; }
+.historia-evento:nth-child(even) .historia-ano { @apply bg-[#e4f0f1] text-brand-deep; }
+.historia-evento h3 { @apply text-base leading-tight font-black text-ink; }
+.historia-evento p { @apply mt-2 text-sm leading-relaxed text-[#62666e]; }

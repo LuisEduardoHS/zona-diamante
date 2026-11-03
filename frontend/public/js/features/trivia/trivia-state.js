@@ -33,7 +33,7 @@ export function triviaReducer(state, action) {
         case 'SESSION_REQUIRED':
             return { ...crearEstadoTrivia(), status: 'guest' };
         case 'STATUS_AVAILABLE':
-            return { ...crearEstadoTrivia(), status: 'available' };
+            return { ...crearEstadoTrivia(), status: 'available', nextAvailableAt: action.nextAvailableAt || null };
         case 'STATUS_UNAVAILABLE':
             return { ...crearEstadoTrivia(), status: 'unavailable', nextAvailableAt: action.nextAvailableAt || null };
         case 'START': {

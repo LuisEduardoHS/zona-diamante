@@ -16,17 +16,11 @@ export async function renderCarousel(signal) {
         equipos.forEach((equipo, index) => {
             slidesHTML += `
                 <div
-                    class="absolute inset-0 overflow-hidden rounded-b-[3rem]"
+                    class="absolute inset-0 overflow-hidden rounded-b-[3rem] bg-[var(--club-primary)] will-change-[opacity,transform] ${index ? 'opacity-0 z-0 [transform:translateX(100%)]' : 'opacity-100 z-[1] [transform:translateX(0)]'}"
                     data-slide="${index}" ${index ? 'inert' : ''}
-                    style="
-                        background-color: ${equipo.colores.primario};
-                        opacity: ${index === 0 ? 1 : 0};
-                        z-index: ${index === 0 ? 1 : 0};
-                        transform: ${index === 0 ? 'translateX(0)' : 'translateX(100%)'};
-                        will-change: opacity, transform;
-                    "
+                    style="--club-primary:${equipo.colores.primario};--club-secondary:${equipo.colores.secundario}"
                 >
-                    <div class="absolute top-0 left-0 w-[95%] pointer-events-none" style="color: ${equipo.colores.secundario};">
+                    <div class="absolute top-0 left-0 w-[95%] pointer-events-none text-[color:var(--club-secondary)]">
                         <svg class="fill-current w-full h-auto" viewBox="0 0 385 281" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M184.212 -251.171C465.464 -127.069 433.652 74.8564 193.908 111.096C-45.8354 147.335 -41.8832 283.396 -142.421 280.918C-242.959 278.44 -312.317 176.992 -239.468 86.9618C-181.189 14.9373 67.2685 -168.47 184.212 -251.171Z" fill="currentColor" fill-opacity="0.85"/>
                         </svg>
@@ -44,8 +38,7 @@ export async function renderCarousel(signal) {
                         <img
                             ${index === 0 ? 'src' : 'data-src'}="${equipo.imagenes.jugadorCarrusel}"
                             alt="Jugador ${equipo.nombre}" decoding="async" fetchpriority="${index === 0 ? 'high' : 'low'}"
-                            class="h-full object-contain object-bottom drop-shadow-2xl"
-                            style="filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));${equipo.id === 'charros-jal' ? ' transform: translateY(4%) scale(1.2); transform-origin: top center;' : ''}"
+                            class="h-full object-contain object-bottom [filter:drop-shadow(0_20px_40px_rgba(0,0,0,.6))] ${equipo.id === 'charros-jal' ? '[transform:translateY(4%)_scale(1.2)] origin-top' : ''}"
                         >
                     </div>
 
@@ -53,21 +46,19 @@ export async function renderCarousel(signal) {
 
                     <div class="carrusel-info absolute left-0 w-full flex flex-col items-end px-5 z-40 gap-1">
                         <div class="inline-flex items-center gap-2 mb-1 px-3 py-1 rounded-lg bg-[#2b2b31b8] text-white drop-shadow-lg">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="block shrink-0" style="width:13px;height:13px;fill:white;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="block size-[13px] shrink-0 fill-white">
                                 <path d="M128 252.6C128 148.4 214 64 320 64C426 64 512 148.4 512 252.6C512 371.9 391.8 514.9 341.6 569.4C329.8 582.2 310.1 582.2 298.3 569.4C248.1 514.9 127.9 371.9 127.9 252.6zM320 320C355.3 320 384 291.3 384 256C384 220.7 355.3 192 320 192C284.7 192 256 220.7 256 256C256 291.3 284.7 320 320 320z"/>
                             </svg>
                             <span class="text-white text-[11px] font-bold uppercase tracking-widest">${equipo.ciudad}</span>
                         </div>
 
-                        <h2 class="text-3xl leading-none font-urbanist font-black text-white tracking-tight drop-shadow-2xl capitalize text-right"
-                            style="text-shadow: 0 4px 30px rgba(0,0,0,0.8);">
+                        <h2 class="text-3xl leading-none font-urbanist font-black text-white tracking-tight drop-shadow-2xl capitalize text-right [text-shadow:0_4px_30px_rgba(0,0,0,.8)]">
                             ${equipo.nombre}
                         </h2>
 
                         <a
                             href="${ruta(RUTAS.equipo)}?id=${equipo.id}"
-                            class="mt-2 px-7 py-2 rounded-full font-bold text-sm border-0 cursor-pointer transition-transform active:scale-95 inline-block text-center no-underline"
-                            style="background-color: ${equipo.colores.secundario}; color: ${equipo.colores.primario}; font-weight: 800;"
+                            class="mt-2 px-7 py-2 rounded-full font-extrabold text-sm border-0 cursor-pointer transition-transform active:scale-95 inline-block text-center no-underline bg-[var(--club-secondary)] text-[color:var(--club-primary)]"
                         >
                             Ver más
                         </a>
@@ -99,40 +90,18 @@ export async function renderCarousel(signal) {
                 wrapper.type = 'button';
                 wrapper.setAttribute('aria-label', `Ver equipo ${equipos[i].nombre}`);
                 wrapper.setAttribute('aria-pressed', String(i === activeIndex));
-                wrapper.style.cssText = 'position:relative; width:24px; height:24px; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;';
+                wrapper.className = 'relative size-6 flex items-center justify-center cursor-pointer shrink-0';
 
                 if (i === activeIndex) {
                     const halo = document.createElement('div');
-                    halo.style.cssText = `
-                        position: absolute;
-                        width: 22px;
-                        height: 22px;
-                        border-radius: 50%;
-                        background: rgba(255, 185, 30, 0.55);
-                        transition: all 0.35s ease;
-                    `;
+                    halo.className = 'absolute size-[22px] rounded-full bg-[#ffb91e]/55 transition-all duration-[350ms] motion-reduce:transition-none';
                     const dot = document.createElement('div');
-                    dot.style.cssText = `
-                        position: relative;
-                        width: 16px;
-                        height: 16px;
-                        border-radius: 50%;
-                        background: #f27b21;
-                        box-shadow: 0 2px 8px rgba(242,123,33,0.8);
-                        transition: all 0.35s ease;
-                        z-index: 1;
-                    `;
+                    dot.className = 'relative size-4 rounded-full bg-accent shadow-[0_2px_8px_rgba(242,123,33,.8)] transition-all duration-[350ms] z-[1] motion-reduce:transition-none';
                     wrapper.appendChild(halo);
                     wrapper.appendChild(dot);
                 } else {
                     const dot = document.createElement('div');
-                    dot.style.cssText = `
-                        width: 16px;
-                        height: 16px;
-                        border-radius: 50%;
-                        background: rgba(242, 123, 33, 0.5);
-                        transition: all 0.35s ease;
-                    `;
+                    dot.className = 'size-4 rounded-full bg-accent/50 transition-all duration-[350ms] motion-reduce:transition-none';
                     wrapper.appendChild(dot);
                     wrapper.addEventListener('click', () => {
                         goTo(i, i > current ? 1 : -1);

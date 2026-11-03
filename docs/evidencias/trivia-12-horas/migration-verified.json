@@ -1,0 +1,7 @@
+{
+  "migration": "20261102000100",
+  "all_26_migrations_match": true,
+  "trivia_slot_visible": true,
+  "period_rpc_visible": true,
+  "verification": "read-only PostgREST schema metadata; no gameplay or rewards invoked"
+}

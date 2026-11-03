@@ -2,7 +2,6 @@ import { RUTAS, rutaInterna } from './rutas.js?v=20260930-1';
 import { requerirSesion } from '../features/auth/guards.js';
 
 const cache = new Map();
-const estilos = new Map();
 // Mantener las secciones principales en el orden visual del menú inferior.
 const ordenSecciones = [RUTAS.inicio, RUTAS.trivia, RUTAS.camara, RUTAS.coleccion, RUTAS.informacion, RUTAS.juego, RUTAS.ayuda];
 
@@ -18,9 +17,6 @@ async function permitirRuta(info) {
     return requerirSesion(info.url.href);
 }
 
-function esEstiloBase(href) {
-    return new URL(href, location.href).pathname.endsWith('/css/output.css');
-}
 
 function posicionSeccion(url) {
     const archivo = rutaInterna(url)?.archivo;
@@ -40,10 +36,7 @@ function prepararPagina(doc, url) {
     return {
         html: contenido.innerHTML,
         clase: doc.body.className,
-        titulo: doc.title,
-        estilos: [...doc.querySelectorAll('link[rel="stylesheet"]')]
-            .map(node => new URL(node.getAttribute('href'), url).href)
-            .filter(href => !esEstiloBase(href))
+        titulo: doc.title
     };
 }
 
@@ -61,21 +54,6 @@ async function obtenerPagina(url) {
     return cache.get(key);
 }
 
-function cargarEstilo(href) {
-    if (!estilos.has(href)) {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.media = 'not all';
-        const lista = new Promise((resolve, reject) => {
-            link.onload = resolve;
-            link.onerror = () => { estilos.delete(href); link.remove(); reject(new Error('Error al cargar los estilos.')); };
-        });
-        link.href = href;
-        estilos.set(href, { link, lista });
-        document.head.append(link);
-    }
-    return estilos.get(href).lista;
-}
 
 async function montarSeccion(archivo, signal) {
     if (archivo === RUTAS.inicio) {
@@ -104,8 +82,8 @@ async function montarSeccion(archivo, signal) {
         const { iniciarAyuda } = await import('../features/contenido/ayuda.js');
         if (!signal.aborted) iniciarAyuda();
     } else if (archivo === RUTAS.informacion) {
-        const { iniciarHistoria } = await import('../features/contenido/historia.js?v=20260927-2');
-        if (!signal.aborted) iniciarHistoria();
+        const { iniciarHistoria } = await import('../features/contenido/historia.js?v=20261102-design');
+        if (!signal.aborted) iniciarHistoria(signal);
     } else if (archivo === RUTAS.login) {
         const { iniciarLogin } = await import('../features/auth/login.js?v=20261028-3');
         if (!signal.aborted) iniciarLogin();
@@ -127,9 +105,6 @@ async function montarSeccion(archivo, signal) {
 export function iniciarNavegacion(actualizarShell) {
     const inicial = prepararPagina(document, location.href);
     cache.set(location.origin + location.pathname, Promise.resolve(inicial));
-    for (const link of document.querySelectorAll('link[rel="stylesheet"]')) {
-        if (!esEstiloBase(link.href)) estilos.set(link.href, { link, lista: Promise.resolve() });
-    }
     const vista = document.createElement('div');
     vista.id = 'contenido-pagina';
     const nodos = [...document.body.childNodes].filter(node =>
@@ -171,7 +146,6 @@ export function iniciarNavegacion(actualizarShell) {
         }, 180);
         try {
             const pagina = await obtenerPagina(info.url);
-            await Promise.all(pagina.estilos.map(cargarEstilo));
             if (solicitud !== version) return;
             const posicion = pop ? posiciones.get(history.state?.zdEntrada) || [0, 0] : [0, 0];
             restaurando = true;
@@ -181,7 +155,6 @@ export function iniciarNavegacion(actualizarShell) {
                 entrada = nuevaEntrada();
                 history.pushState({ zdEntrada: entrada }, '', info.url);
             } else entrada = history.state?.zdEntrada || nuevaEntrada();
-            for (const [href, { link }] of estilos) link.media = pagina.estilos.includes(href) ? 'all' : 'not all';
             document.body.className = pagina.clase;
             document.title = pagina.titulo;
             const direccion = posicionSeccion(info.url) >= seccionActual ? 1 : -1;

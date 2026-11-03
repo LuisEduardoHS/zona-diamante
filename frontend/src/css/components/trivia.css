@@ -1,0 +1,143 @@
+/* Tailwind components for trivia. Runtime variables retain team/game state. */
+/* La navegación utiliza los estilos compartidos de todas las secciones. */
+.trivia-page { --trivia-sky: #098eaa; --trivia-deep: #005C6C; --trivia-cyan: #87d2df; --trivia-light: #c1e8ef; --trivia-orange: #e76b10; --trivia-ink: #007b9b; --trivia-width: 480px; --trivia-header: 88px; @apply [background:var(--trivia-sky)] text-[var(--trivia-ink)]; }
+.trivia-content { @apply relative overflow-hidden w-[min(100%,_var(--trivia-width))] h-dvh min-h-[560px] mx-auto pt-[calc(var(--trivia-header)_+_env(safe-area-inset-top,_0px))] pb-[var(--bottom-nav-height)] box-border font-sans; }
+.trivia-panel { @apply relative h-full min-h-0 overflow-visible isolate [container-type:size] rounded-[46px_46px_0_0] [background:var(--trivia-deep)]; }
+.trivia-panel::before { @apply [content:''] absolute [inset:0_0_calc(-1_*_var(--bottom-nav-height))] z-[-2] rounded-[inherit] [background:var(--trivia-deep)] pointer-events-none; }
+.trivia-panel::after { @apply [content:''] absolute [inset:auto_0_calc(-1_*_var(--bottom-nav-height))] h-[calc(35%_+_var(--bottom-nav-height))] z-[-1] [background:url("data:image/svg+xml,%3Csvg_xmlns='http://www.w3.org/2000/svg'_viewBox='0_0_400_200'_preserveAspectRatio='none'%3E%3Cpath_d='M0_174C72_141_114_164_205_124C293_86_319_30_400_0V200H0Z'_fill='%23e76b10'/%3E%3C/svg%3E")_center_/_100%_100%_no-repeat] pointer-events-none; }
+.trivia-screen { @apply relative w-full h-full box-border; }
+.trivia-cover { @apply text-center; }
+.trivia-calendar { @apply absolute top-[2.5%] left-[10%] w-[80%] text-[var(--trivia-light)]; }
+.trivia-calendar > p { @apply m-[0_0_10px] [font:900_clamp(13px,_4.7cqw,_19px)/1_'Monument_Extended',_sans-serif] capitalize; }
+.calendar-days { @apply grid [grid-template-columns:repeat(3,_1fr)_1.5fr_repeat(3,_1fr)] items-center gap-[2cqw]; }
+.calendar-day { @apply grid min-w-0 h-[8cqw] max-h-[34px] place-items-center rounded-[10px] [background:#d1d3d4] text-[#55565c] [box-shadow:0_3px_3px_#002f3b50]; }
+.calendar-day strong { @apply [font:900_clamp(10px,_3.4cqw,_15px)/1_'Monument_Extended',_sans-serif]; }
+.calendar-day.is-today { @apply h-[9cqw] max-h-[38px] [background:#fff]; }
+.calendar-day.is-today strong { @apply text-[clamp(13px,_4.4cqw,_19px)]; }
+.trivia-cover-title { @apply absolute top-[22%] left-[8%] w-[84%]; }
+.trivia-cover-title h1 { @apply m-0 text-white [font:900_18.5cqw/1_'Monument_Extended',_sans-serif] tracking-[-.055em]; }
+.trivia-cover-title p { @apply w-[78%] m-[12px_auto_0] p-[5px_10px] rounded-[99px] [background:var(--trivia-light)] text-[var(--trivia-ink)] text-[clamp(12px,_4cqw,_16px)] font-black leading-[1] [box-shadow:0_3px_4px_#003e4c55]; }
+.trivia-cover-ball { @apply absolute top-[44%] left-[-65%] w-[135%] max-w-[none] aspect-square object-contain [transform:rotate(-18deg)] [transform-origin:center] pointer-events-none [user-select:none]; }
+.trivia-button { @apply inline-flex justify-center items-center min-h-[48px] p-[12px_24px] [border:0] rounded-[20px] [background:var(--trivia-light)] text-[var(--trivia-ink)] [font:900_1rem/1.15_'Urbanist',_sans-serif] cursor-pointer [box-shadow:0_4px_5px_#003f4d55] [transition:transform_.16s,_background_.16s]; }
+.trivia-start { @apply absolute left-[17.5%] bottom-[12%] w-[65%] h-[10%] min-h-[46px] text-[clamp(22px,_7.3cqw,_30px)]; }
+.trivia-guest-actions { @apply absolute left-[10%] bottom-[10%] grid gap-[14px] w-[80%] p-[18px] box-border [border:1px_solid_#87d2df55] rounded-[26px] [background:#005c6cf2] [box-shadow:0_6px_18px_#003a4830]; }
+.trivia-guest-actions p { @apply m-0 text-white text-[clamp(14px,_4cqw,_17px)] font-semibold leading-[1.4] text-balance; }
+.trivia-guest-actions .trivia-button { @apply w-full text-[clamp(20px,_5.5cqw,_24px)]; }
+.trivia-next-challenge { @apply flex flex-col items-center justify-center gap-[3px] p-[8px_12px] h-auto min-h-[64px] rounded-[20px] [background:var(--trivia-light)] text-[var(--trivia-ink)] [box-shadow:0_4px_5px_#003f4d55]; }
+.trivia-next-challenge span { @apply text-[13px] font-extrabold; }
+.trivia-next-challenge strong { @apply [font:900_clamp(18px,_5.7cqw,_25px)/1.2_'Monument_Extended',_sans-serif] tabular-nums; }
+.trivia-button:active { @apply [transform:translateY(2px)]; }
+.trivia-button:disabled { @apply cursor-wait opacity-[.6]; }
+.trivia-button--secondary { @apply [background:#e0f4f7]; }
+.trivia-button--link { @apply no-underline; }
+
+.trivia-game { @apply grid [grid-template-rows:6fr_29fr_54fr] gap-[4%] p-[5.3cqh_10.5%_12cqh]; }
+.trivia-progress-row { @apply flex items-center justify-between gap-3 min-h-[clamp(28px,_5.4cqh,_38px)] p-[6px_12px] rounded-[11px] [background:#fff] text-[#56565c] [box-shadow:0_3px_4px_#003a4850]; }
+.trivia-progress-row strong { @apply text-[#00657e] text-[clamp(12px,_3.8cqw,_16px)]; }
+.trivia-progress-row span { @apply text-[clamp(11px,_3.2cqw,_14px)] font-extrabold; }
+.question-card { @apply relative min-h-0 p-[10px] rounded-[17px] [background:#59a9b7] [box-shadow:0_4px_5px_#003a4860]; }
+.question-image { @apply relative grid w-full h-full min-h-[112px] place-items-center overflow-hidden rounded-[11px]; }
+.question-image img { @apply absolute [inset:0] w-full h-full object-cover; }
+.question-overlay { @apply absolute [inset:0] [background:#0055658c]; }
+.question-image h2 { @apply relative w-[92%] m-0 p-[14px_0] text-white [font:900_clamp(16px,_5.3cqw,_23px)/1.02_'Urbanist',_sans-serif] text-center text-balance [text-shadow:0_1px_3px_#003e4c55]; }
+.question-position { @apply absolute right-[15px] bottom-[12px] text-white text-[10px] font-extrabold; }
+.answers { @apply grid [grid-template-rows:repeat(4,_minmax(44px,_1fr))] gap-[6%] min-h-0 p-[5%_9%] rounded-[24px] [background:var(--trivia-cyan)] [box-shadow:0_4px_5px_#003a4850]; }
+.trivia-save-error { @apply absolute right-[11%] bottom-[4%] left-[11%] m-0 text-[#7a2417] text-[.75rem] font-extrabold text-center; }
+.answer { @apply w-full min-h-[44px] p-[6px_12px] [border:2px_solid_transparent] rounded-[22px] [background:var(--trivia-light)] text-[#006e8a] [font:900_clamp(13px,_4.1cqw,_17px)/1.15_'Urbanist',_sans-serif] text-center cursor-pointer [transition:transform_.15s,_background_.15s]; }
+.answer.selected { @apply [border-color:#fff] [background:#ff7d20] text-[#263e45] [transform:scale(.98)]; }
+@media (hover: hover) {  .answer:hover { @apply [background:#e3f5f8]; } .answer.selected:hover { @apply [background:#ff7d20]; } .trivia-button:hover { @apply [background:#dcf4f8] [transform:translateY(-2px)]; }  }
+
+.trivia-screen--center { @apply grid items-center [justify-items:center] p-[25px] overflow-y-auto text-center; }
+.trivia-screen--center > div { @apply w-full p-[clamp(20px,_6cqw,_30px)] rounded-[26px] [background:var(--trivia-cyan)] [box-shadow:0_4px_5px_#003a4850]; }
+.trivia-icon { @apply grid w-[58px] h-[58px] m-[0_auto_15px] place-items-center rounded-[50%] [background:var(--trivia-light)] text-[var(--trivia-ink)] text-[2rem]; }
+.trivia-screen--center h2 { @apply m-0 text-[#005a70] text-[clamp(22px,_6cqw,_28px)] font-black; }
+.trivia-copy { @apply m-[12px_auto_20px] text-[#225b69] leading-[1.45]; }
+.trivia-result { @apply grid [grid-template-columns:1fr_1fr] gap-[10px] m-[20px_0]; }
+.trivia-stat { @apply p-[12px_8px] rounded-[15px] [background:var(--trivia-light)] text-[#225b69] text-[.75rem] font-extrabold; }
+.trivia-stat strong { @apply block text-[#00657e] text-[1.5rem] font-black; }
+.trivia-countdown { @apply m-[18px_0] text-[#225b69] font-extrabold; }
+.trivia-countdown strong { @apply block mt-[6px] text-[#005a70] [font:900_1.2rem_'Monument_Extended',_sans-serif] tabular-nums; }
+.trivia-complete-actions { @apply flex justify-center; }
+/* Resultado compacto: una sola fila de métricas dentro del espacio visible. */
+.trivia-completed { @apply p-[clamp(16px,_4cqh,_26px)_7%] [align-items:safe_center]; }
+.trivia-completed > div { @apply relative grid gap-[clamp(8px,_2cqh,_14px)] p-[clamp(16px,_4cqh,_26px)]; }
+.trivia-close-result { @apply absolute top-[5px] right-[5px] grid place-items-center w-[44px] h-[44px] p-[10px] [border:0] rounded-[50%] [background:transparent] text-[#005C6C] cursor-pointer; }
+.trivia-close-result svg { @apply w-[22px] h-[22px]; }
+.trivia-close-result:hover { @apply [background:var(--trivia-light)]; }
+.trivia-completed .trivia-icon { @apply w-[clamp(36px,_9cqh,_52px)] h-[clamp(36px,_9cqh,_52px)] m-[0_auto]; }
+.trivia-completed .trivia-icon svg { @apply w-[65%] h-[65%]; }
+.trivia-completed h2 { @apply text-[clamp(20px,_5.5cqw,_26px)]; }
+.trivia-completed .trivia-result { @apply m-0; }
+.trivia-completed .trivia-stat { @apply p-[10px_6px] text-[.72rem]; }
+.trivia-completed .trivia-stat strong { @apply text-[clamp(22px,_6cqw,_28px)]; }
+.trivia-balance { @apply m-0 text-[#225b69] font-extrabold; }
+.trivia-completed .trivia-countdown { @apply m-0 text-[.85rem]; }
+.trivia-completed .trivia-countdown strong { @apply text-[clamp(16px,_4.5cqw,_20px)]; }
+.trivia-completed .trivia-button { @apply min-h-[44px] p-[10px_22px]; }
+.trivia-loading { @apply grid h-full [align-content:center] [justify-items:center] gap-[15px] p-[30px]; }
+.skeleton { @apply block rounded-[12px] [background:linear-gradient(90deg,_#58aeba_25%,_#87d5e3_50%,_#58aeba_75%)] [background-size:200%_100%] [animation:trivia-shimmer_1.5s_infinite]; }
+.skeleton-badge { @apply w-[72px] h-[72px] rounded-[50%]; }
+.skeleton-title { @apply w-[80%] h-[34px]; }
+.skeleton-copy { @apply w-[95%] h-[58px]; }
+.skeleton-button { @apply w-[175px] h-[52px]; }
+.trivia-spinner { @apply w-[52px] h-[52px] m-[0_auto_20px] [border:6px_solid_var(--trivia-light)] [border-top-color:var(--trivia-orange)] rounded-[50%] [animation:trivia-spin_.8s_linear_infinite]; }
+.trivia-dialog { @apply fixed [inset:0] w-[min(400px,_calc(100%_-_32px))] max-h-[calc(100dvh_-_32px)] m-auto p-0 overflow-y-auto [border:0] rounded-[24px] [background:#d9f0f3] text-[#225b69] [box-shadow:0_12px_45px_#002e4960]; }
+.trivia-dialog::backdrop { @apply [background:#00343ecf]; }
+.trivia-dialog-content { @apply p-[28px_24px] text-center; }
+.trivia-dialog h2 { @apply m-0 text-[#005a70] text-[1.5rem]; }
+.trivia-dialog p { @apply m-[12px_0_24px] leading-[1.5]; }
+.trivia-dialog-actions { @apply flex justify-center flex-wrap gap-3; }
+.trivia-dialog .trivia-button { @apply [background:#87d2df]; }
+.trivia-button:focus-visible, .answer:focus-visible, .trivia-close-result:focus-visible { @apply [outline:3px_solid_#ffba6c] [outline-offset:4px]; }
+@keyframes trivia-shimmer {  to { background-position: -200% 0; }  }
+@keyframes trivia-spin {  to { transform: rotate(360deg); }  }
+.trivia-finale { @apply fixed [inset:0] w-full max-w-[none] h-full max-h-[none] m-0 p-0 [border:0] [background:transparent] text-white overflow-y-auto font-sans; }
+.trivia-finale::backdrop { @apply [background:#001014bd] [backdrop-filter:blur(7px)] [-webkit-backdrop-filter:blur(7px)]; }
+.trivia-finale-layout { @apply relative flex flex-col items-center justify-center gap-[26px] w-[min(100%,_480px)] min-h-full mx-auto p-[64px_28px_36px] box-border text-center; }
+.trivia-celebration { @apply w-full flex flex-col items-center; }
+.trivia-celebration-art { @apply w-[min(100%,_310px)] h-[min(43dvh,_330px)] object-contain [filter:drop-shadow(0_12px_16px_#0004)] [transform-origin:center_bottom] [animation:trivia-art-pop_.8s_cubic-bezier(.2,.8,.2,1)_both]; }
+.trivia-art-placeholder { @apply h-[min(32dvh,_240px)]; }
+.trivia-reward-pill, .trivia-reward-toast { @apply [background:#4db600] text-white font-black tabular-nums [box-shadow:0_5px_0_#337e00,_0_10px_25px_#0003]; }
+.trivia-reward-pill { @apply relative w-[min(100%,_280px)] p-[20px_16px] rounded-[24px] text-[26px] [animation:trivia-reward-pop_.7s_.12s_both]; }
+.trivia-reward-pill::before, .trivia-reward-pill::after { @apply [content:'✦'] absolute top-[-24px] text-[#ffe060] text-[26px] [animation:trivia-spark_.9s_.25s_both]; }
+.trivia-reward-pill::before { @apply left-[-8px]; } .trivia-reward-pill::after { @apply right-[-8px] [animation-delay:.4s]; }
+.trivia-finale-layout.is-summary { @apply pt-6 pb-6 gap-5; }
+.trivia-reward-toast { @apply relative [align-self:flex-end] mr-[-28px] p-[11px_24px] rounded-[99px_0_0_99px] text-[17px] [animation:trivia-toast-in_.55s_cubic-bezier(.2,.9,.2,1)_both]; }
+.trivia-summary { @apply w-[min(100%,_320px)] p-[30px_22px_24px] rounded-[26px] [background:#108a9d] [box-shadow:0_12px_38px_#0004] [animation:trivia-reward-pop_.55s_both]; }
+.trivia-summary h2 { @apply m-[0_0_16px] text-[24px] font-black; }
+.trivia-summary-stats { @apply grid [grid-template-columns:1fr_1fr] gap-[14px]; }
+.trivia-summary-stats > div { @apply flex flex-col justify-between gap-3 min-w-0 min-h-[112px] p-[20px_8px_14px] [background:#1caac1] rounded-[21px] [animation:trivia-stat-in_.5s_.14s_both]; }
+.trivia-summary-stats > div + div { @apply [animation-delay:.24s]; }
+.trivia-summary-stats strong { @apply text-[clamp(22px,_7vw,_30px)] font-black tabular-nums wrap-anywhere; }
+.trivia-summary-stats span { @apply text-[12px] font-extrabold leading-[1.1]; }
+.trivia-summary-stats strong span { @apply [font:inherit]; }
+.trivia-summary p { @apply m-[22px_0] text-[20px] font-black; }
+.trivia-summary p strong { @apply block mt-[7px] [font:900_21px/1.3_'Monument_Extended',_sans-serif] tabular-nums; }
+.trivia-collection { @apply inline-flex items-center justify-center min-h-[44px] p-[10px_30px] [background:#1caac1] rounded-[99px] text-white no-underline font-extrabold; }
+.trivia-continue { @apply [border:0] [background:transparent] text-white p-[12px_16px] min-h-[44px] [font:700_16px/1.4_'Urbanist',_sans-serif] cursor-pointer [animation:trivia-stat-in_.5s_.35s_both]; }
+.trivia-continue span { @apply inline-block ml-2 text-[24px] [vertical-align:-1px]; }
+.trivia-continue:focus-visible, .trivia-collection:focus-visible { @apply [outline:3px_solid_#ffe060] [outline-offset:4px] rounded-[20px]; }
+@keyframes trivia-reward-pop {  0% { opacity: 0; transform: translateY(26px) scale(.7); } 65% { opacity: 1; transform: translateY(-5px) scale(1.06); } 100% { opacity: 1; transform: none; }  }
+@keyframes trivia-art-pop {  0% { opacity: 0; transform: translateY(45px) scale(.65) rotate(-8deg); } 65% { opacity: 1; transform: scale(1.04) rotate(3deg); } 100% { opacity: 1; transform: none; }  }
+@keyframes trivia-stat-in {  from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; }  }
+@keyframes trivia-toast-in {  from { opacity: 0; transform: translateX(100%); } to { opacity: 1; transform: none; }  }
+@keyframes trivia-spark {  0% { opacity: 0; transform: scale(0); } 60% { opacity: 1; transform: scale(1.3) rotate(25deg); } 100% { opacity: 1; transform: scale(1); }  }
+@media (max-height: 650px) {  .trivia-finale-layout.is-summary { @apply py-4 gap-3; } .trivia-summary { @apply p-5; } .trivia-summary-stats > div { @apply min-h-[85px] p-[14px_8px]; } .trivia-summary p { @apply m-[16px_0]; }  }
+@media (prefers-reduced-motion: reduce) {  .trivia-finale *, .trivia-finale *::before, .trivia-finale *::after { @apply [animation:none]!; }  }
+@media (min-width: 600px) {
+    .trivia-page { @apply [background:#064957]; }
+    .trivia-content { @apply [background:var(--trivia-sky)]; }
+ }
+@media (max-height: 650px) {
+    .trivia-panel { @apply rounded-[36px_36px_0_0]; }
+    .trivia-calendar > p { @apply mb-[7px]; }
+    .trivia-game { @apply [grid-template-rows:30px_minmax(110px,_1fr)_minmax(230px,_1.8fr)] gap-[14px] p-[20px_10.5%_20px]; }
+    .question-card { @apply p-2; }
+    .question-image { @apply min-h-0; }
+    .question-image h2 { @apply text-[clamp(16px,_4.7cqw,_21px)]; }
+    .answers { @apply gap-[10px] p-[12px_9%]; }
+ }
+@media (prefers-reduced-motion: reduce) {
+    .skeleton, .trivia-spinner { @apply [animation:none]; }
+    .trivia-button, .answer { @apply [transition:none]; }
+ }

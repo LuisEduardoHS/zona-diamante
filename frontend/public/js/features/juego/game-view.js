@@ -28,9 +28,10 @@ export function resultPresentation(state) {
     return {credited,balance:confirmed?result.points_balance:null,bonus,note,
         toast:confirmed&&reward.status==='confirmed'&&credited>0?`+ ${credited} puntos`:null};
 }
-export function createGameView(root, rules, sprites, manifest) {
+export function createGameView(root, rules, sprites, manifest, motion) {
     const $ = id => root.querySelector('#'+id), images = [...$('game-batter').querySelectorAll('[data-frame]')];
     let lastPose = -2, lastProgress = '', segments=[];
+    let previousStats=null, previousCountdown=null, lastFeedback=null;
     const field = $('game-scene');
     let fieldWidth = field.clientWidth, fieldHeight = field.clientHeight;
     const resize = new ResizeObserver(([entry]) => { fieldWidth = entry.contentRect.width; fieldHeight = entry.contentRect.height; });
@@ -50,6 +51,12 @@ export function createGameView(root, rules, sprites, manifest) {
         $('game-streak').hidden=endless?state.stats.hits<=mode.targetHits:state.stats.streak===0;
         $('game-streak').setAttribute('aria-label',endless?`${state.stats.hits} hits, racha máxima ${state.stats.bestStreak}`:`Racha actual ${state.stats.streak}, máxima ${state.stats.bestStreak}`);
         text($('game-progress'),endless?state.stats.resolved:`${state.stats.resolved}/${mode.maxPitches}`);
+        if(previousStats){
+            if(state.stats.hits>previousStats.hits){motion?.pulse($('game-hits'));if(state.stats.hits>mode.targetHits)motion?.pulse($('game-streak'));}
+            if(state.stats.misses>previousStats.misses)motion?.pulse($('game-misses'),'miss');
+            if(state.stats.resolved>previousStats.resolved)motion?.pulse($('game-progress'));
+        }
+        previousStats={...state.stats};
         root.dataset.extras=String(endless&&state.stats.hits>mode.targetHits);
         const segmentCount=endless?mode.targetHits:mode.maxPitches;
         if(segments.length!==segmentCount){
@@ -70,10 +77,12 @@ export function createGameView(root, rules, sprites, manifest) {
         $('game-pause').disabled = Boolean(state.networkError) || ['finished','abandoned'].includes(state.phase);
         $('game-pause').setAttribute('aria-label',paused ? 'Reanudar' : 'Pausar');
         $('game-pause').setAttribute('aria-pressed',String(paused));
-        $('game-paused').hidden = !paused || Boolean(state.networkError);
+        if(motion)motion.visible($('game-paused'),paused&&!state.networkError);
+        else $('game-paused').hidden = !paused || Boolean(state.networkError);
         text($('game-paused').querySelector('p'),state.networkError?'Reconecta para recuperar la partida.':state.official?'El lanzamiento actual sigue corriendo en el servidor.':'Reanuda cuando estés listo.');
         $('game-countdown').hidden = phase !== 'countdown' || paused;
         text($('game-countdown-number'),Math.max(1,Math.ceil((rules.timing.countdownMs - state.elapsed)/1000)));
+        if(phase==='countdown'&&!paused){const number=$('game-countdown-number').textContent;if(number!==previousCountdown)motion?.pulse($('game-countdown-number'),'countdown');previousCountdown=number;}
         const pose = usableFrame(frameFor(state,manifest),sprites);
         if (pose !== lastPose) { images.forEach(img => { img.hidden = Number(img.dataset.frame) !== pose; }); lastPose = pose; }
         $('game-batter').dataset.pose = String(pose);
@@ -85,6 +94,15 @@ export function createGameView(root, rules, sprites, manifest) {
         const message=paused?'En pausa':phase==='preparing'?'Prepárate':phase==='countdown'?'Prepárate':phase==='feedback'?RESULT_LABELS[state.last.type]:cue==='contact'?'¡Batea!':cue==='late'?'Muy tarde':'Espera…';
         text($('game-feedback'),message);
         $('game-feedback').dataset.result = phase === 'feedback' ? state.last.type : '';
+        const feedback=phase==='feedback'?`${state.id}:${state.stats.resolved}:${state.last.type}`:null;
+        if(feedback&&feedback!==lastFeedback){
+            motion?.pulse($('game-feedback'),['hit','perfect'].includes(state.last.type)?'score':'miss');
+            if(['hit','perfect'].includes(state.last.type))motion?.effect($('game-contact'),[
+                {transform:'translate(-50%,-50%) scale(1)',opacity:1},
+                {transform:'translate(-50%,-50%) scale(1.65)',opacity:0}
+            ],{duration:430});
+        }
+        lastFeedback=feedback;
     };
     draw.destroy = () => resize.disconnect();
     return draw;

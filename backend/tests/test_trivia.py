@@ -31,6 +31,57 @@ TEST_OPTION_ID = "55555555-5555-5555-5555-555555555555"
 NEXT_AVAILABLE = datetime.fromisoformat("2026-10-15T00:00:00-06:00")
 
 
+@pytest.mark.parametrize(("instant", "slot", "next_at"), [
+    ("2026-11-02T00:00:00-06:00", 0, "2026-11-02T12:00:00-06:00"),
+    ("2026-11-02T11:59:59-06:00", 0, "2026-11-02T12:00:00-06:00"),
+    ("2026-11-02T12:00:00-06:00", 1, "2026-11-03T00:00:00-06:00"),
+    ("2026-11-02T23:59:59-06:00", 1, "2026-11-03T00:00:00-06:00"),
+    ("2026-12-31T12:00:00-06:00", 1, "2027-01-01T00:00:00-06:00"),
+    ("2026-12-31T18:00:00+00:00", 1, "2027-01-01T00:00:00-06:00"),
+])
+def test_twelve_hour_period_boundaries(monkeypatch, instant, slot, next_at):
+    now = datetime.fromisoformat(instant)
+
+    class Clock(datetime):
+        @classmethod
+        def now(cls, tz=None):
+            return now.astimezone(tz)
+
+    monkeypatch.setattr(trivia_service, "datetime", Clock)
+    day, actual_slot = trivia_service.get_current_trivia_period()
+    assert actual_slot == slot
+    assert trivia_service.get_next_available_at(day, actual_slot).isoformat() == next_at
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize("slot", [0, 1])
+async def test_period_is_selected_by_server_and_users_keep_independent_attempts(monkeypatch, slot):
+    captured = []
+
+    async def request(method, path, *, json):
+        captured.append((path, json))
+        return [{"daily_trivia_id": TEST_TRIVIA_ID, "question_count": 5,
+                 "points_per_correct": 20, "trivia_slot": slot}]
+
+    async def attempt(user_id, trivia_id):
+        assert trivia_id == TEST_TRIVIA_ID
+        return {"id": TEST_ATTEMPT_ID, "status": "completed", "score": 4} if user_id == TEST_USER_ID else None
+
+    async def completion(*args):
+        return 80, 320
+
+    monkeypatch.setattr(trivia_service, "get_current_trivia_period", lambda: (date(2026, 11, 2), slot))
+    monkeypatch.setattr(trivia_service, "supabase_rest_request", request)
+    monkeypatch.setattr(trivia_service, "_get_daily_attempt", attempt)
+    monkeypatch.setattr(trivia_service, "_get_completion_values", completion)
+    completed = await trivia_service.get_daily_trivia_status_for_user(TEST_USER_ID)
+    available = await trivia_service.get_daily_trivia_status_for_user("another-user")
+    assert completed.status == "completed" and completed.points_earned == 80
+    assert available.status == "available" and available.points_earned is None
+    assert completed.next_available_at == trivia_service.get_next_available_at(date(2026, 11, 2), slot)
+    assert captured == [("rpc/get_or_create_daily_trivia", {"p_trivia_date": "2026-11-02", "p_trivia_slot": slot})] * 2
+
+
 async def override_current_user():
     return CurrentUser(id=TEST_USER_ID, email="test@example.com")
 
@@ -292,7 +343,7 @@ async def test_start_service_uses_atomic_rpc_and_recovers_progress(monkeypatch):
     async def fake_request(method, path, *, params=None, json=None, headers=None):
         calls.append((method, path, params, json))
         if path == "rpc/get_or_create_daily_trivia":
-            return [{"daily_trivia_id": TEST_TRIVIA_ID, "question_count": 5, "points_per_correct": 20}]
+            return [{"daily_trivia_id": TEST_TRIVIA_ID, "question_count": 5, "points_per_correct": 20, "trivia_slot": 0}]
         if path == "rpc/get_or_create_daily_trivia_attempt":
             return [{"attempt_id": TEST_ATTEMPT_ID, "attempt_status": "started", "attempt_score": None}]
         if path == "daily_trivia_questions":
@@ -310,7 +361,7 @@ async def test_start_service_uses_atomic_rpc_and_recovers_progress(monkeypatch):
         raise AssertionError(path)
 
     monkeypatch.setattr(trivia_service, "supabase_rest_request", fake_request)
-    monkeypatch.setattr(trivia_service, "get_current_trivia_date", lambda: date(2026, 10, 14))
+    monkeypatch.setattr(trivia_service, "get_current_trivia_period", lambda: (date(2026, 10, 14), 0))
     result = await trivia_service.start_daily_trivia_for_user(TEST_USER_ID)
 
     assert result.attempt_id == UUID(TEST_ATTEMPT_ID)
@@ -323,7 +374,7 @@ async def test_start_service_uses_atomic_rpc_and_recovers_progress(monkeypatch):
 @pytest.mark.anyio
 async def test_save_service_replaces_answer_through_rpc(monkeypatch):
     async def fake_current():
-        return date(2026, 10, 14), {"daily_trivia_id": TEST_TRIVIA_ID, "question_count": 5, "points_per_correct": 20}
+        return date(2026, 10, 14), {"daily_trivia_id": TEST_TRIVIA_ID, "question_count": 5, "points_per_correct": 20, "trivia_slot": 0}
 
     async def fake_attempt(user_id, trivia_id):
         return {"id": TEST_ATTEMPT_ID, "status": "started", "score": None}
@@ -353,7 +404,7 @@ async def test_save_service_replaces_answer_through_rpc(monkeypatch):
 )
 async def test_save_service_rejects_foreign_question_or_option(monkeypatch, database_message, status_code):
     async def fake_current():
-        return date(2026, 10, 14), {"daily_trivia_id": TEST_TRIVIA_ID, "question_count": 5, "points_per_correct": 20}
+        return date(2026, 10, 14), {"daily_trivia_id": TEST_TRIVIA_ID, "question_count": 5, "points_per_correct": 20, "trivia_slot": 0}
 
     async def fake_attempt(user_id, trivia_id):
         return {"id": TEST_ATTEMPT_ID, "status": "started"}
@@ -372,7 +423,7 @@ async def test_save_service_rejects_foreign_question_or_option(monkeypatch, data
 @pytest.mark.anyio
 async def test_submit_service_does_not_send_client_controlled_score_or_points(monkeypatch):
     async def fake_current():
-        return date(2026, 10, 14), {"daily_trivia_id": TEST_TRIVIA_ID, "question_count": 5, "points_per_correct": 20}
+        return date(2026, 10, 14), {"daily_trivia_id": TEST_TRIVIA_ID, "question_count": 5, "points_per_correct": 20, "trivia_slot": 0}
 
     async def fake_attempt(user_id, trivia_id):
         return {"id": TEST_ATTEMPT_ID, "status": "started"}
@@ -406,7 +457,7 @@ async def test_submit_service_does_not_send_client_controlled_score_or_points(mo
 @pytest.mark.anyio
 async def test_submit_service_requires_all_answers(monkeypatch):
     async def fake_current():
-        return date(2026, 10, 14), {"daily_trivia_id": TEST_TRIVIA_ID, "question_count": 5, "points_per_correct": 20}
+        return date(2026, 10, 14), {"daily_trivia_id": TEST_TRIVIA_ID, "question_count": 5, "points_per_correct": 20, "trivia_slot": 0}
 
     async def fake_attempt(user_id, trivia_id):
         return {"id": TEST_ATTEMPT_ID, "status": "started"}

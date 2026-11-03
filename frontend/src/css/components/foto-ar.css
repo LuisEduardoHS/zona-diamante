@@ -1,0 +1,136 @@
+/* Tailwind components for foto-ar. Runtime variables retain team/game state. */
+.foto-controles[hidden] { @apply hidden; }
+
+.ar-page { @apply min-h-dvh; }
+.ar-page #ar-ui { @apply fixed h-[100dvh] pt-[calc(88px_+_env(safe-area-inset-top,_0px))] pb-[var(--bottom-clearance)]; }
+.ar-page #ar-result { @apply max-h-[calc(100dvh_-_var(--bottom-clearance)_-_132px)] overflow-y-auto [flex-shrink:0]; }
+
+.foto-controles { @apply fixed bottom-[calc(112px_+_env(safe-area-inset-bottom,_0px))] left-[50%] [transform:translateX(-50%)] z-[60] flex flex-col items-center gap-2 w-[min(88vw,_360px)] pointer-events-none text-white; }
+
+.foto-disparador { @apply pointer-events-auto grid place-items-center w-[78px] h-[78px] p-[5px] [border:3px_solid_#fff] rounded-[50%] [background:#2b2b3159] [box-shadow:0_4px_24px_#0005] cursor-pointer [transition:transform_150ms,_opacity_150ms]; }
+
+.foto-disparador-interior { @apply grid place-items-center w-full h-full rounded-[50%] [background:#fff] text-accent; }
+
+.foto-disparador svg { @apply w-[28px] h-[28px]; }
+.foto-disparador:active { @apply [transform:scale(.92)]; }
+.foto-disparador:disabled { @apply opacity-[.6] cursor-wait; }
+.foto-disparador-texto, .foto-camara-status { @apply p-[5px_12px] rounded-[12px] [background:#2b2b31d9] text-[12px] font-bold text-center; }
+.foto-camara-status:empty { @apply hidden; }
+
+.foto-preview { @apply box-border w-[min(440px,_calc(100vw_-_24px))] max-h-[calc(100vh_-_24px)] max-h-[calc(100dvh_-_24px)] m-auto p-[22px] overflow-y-auto overscroll-contain [border:0] rounded-[28px] [background:#fff] text-ink [box-shadow:0_24px_80px_#0006]; }
+.foto-preview::backdrop { @apply [background:#11181dcc] [backdrop-filter:blur(8px)]; }
+.foto-cabecera { @apply flex justify-between items-center gap-3 mb-4; }
+.foto-etiqueta { @apply flex items-center gap-[6px] m-[0_0_7px] text-[#62626b] text-[10px] font-extrabold uppercase tracking-[.06em]; }
+.foto-etiqueta span { @apply w-[6px] h-[6px] rounded-[50%] [background:#f27b21] [flex-shrink:0]; }
+.foto-cabecera h2, .foto-confirmacion h2 { @apply m-0 font-sans font-extrabold text-[clamp(20px,_5.6vw,_24px)] leading-[1.3] text-brand; }
+.foto-cerrar { @apply grid place-items-center w-[44px] h-[44px] [flex-shrink:0] [border:0] rounded-[50%] [background:#f1f1f3] text-ink cursor-pointer; }
+.foto-cerrar svg { @apply w-[20px] h-[20px]; }
+.foto-marco { @apply relative flex justify-center m-0 overflow-hidden rounded-[18px] [background:#1a1a1a]; }
+.foto-marco img { @apply block w-full h-auto max-h-[46dvh] object-contain; }
+.foto-marco figcaption { @apply absolute left-[12px] bottom-[12px] max-w-[calc(100%_-_24px)] p-[6px_10px] [border:1px_solid_#ffffff30] rounded-[10px] [background:#2b2b31cc] text-white text-[11px] font-bold; }
+.foto-opciones > p:first-child { @apply m-[16px_0] text-[13px] leading-[1.5] text-[#62626b]; }
+.foto-acciones { @apply grid [grid-template-columns:1fr_1fr] gap-[10px]; }
+.foto-boton { @apply flex items-center justify-center gap-2 min-h-[48px] [border:0] rounded-[14px] p-[12px_8px] text-white text-[14px] font-bold cursor-pointer [transition:transform_150ms]; }
+.foto-boton svg { @apply w-[19px] h-[19px] [flex-shrink:0]; }
+.foto-boton-guardar { @apply [background:#f27b21]; }
+.foto-boton-compartir { @apply [background:#2b2b31]; }
+.foto-boton:active { @apply [transform:scale(.97)]; }
+.foto-boton:disabled, .foto-cerrar:disabled { @apply opacity-[.55] cursor-default; }
+.foto-preview-status { @apply m-[12px_0_0] text-[12px] leading-[1.5] text-[#62626b]; }
+.foto-preview-status:empty { @apply hidden; }
+.foto-confirmacion { @apply w-[min(380px,_calc(100vw_-_32px))]; }
+.foto-confirmacion p { @apply m-[14px_0_22px] text-[#62626b] text-[14px] leading-[1.5]; }
+.foto-preview button:focus-visible, .foto-disparador:focus-visible { @apply [outline:3px_solid_#008298] [outline-offset:4px]; }
+
+@media (orientation: landscape) and (max-height: 540px) {
+    .foto-controles { @apply left-auto right-[22px] bottom-[110px] transform-none w-[110px]; }
+    .foto-disparador { @apply w-[66px] h-[66px]; }
+    .foto-preview { @apply w-[min(740px,_calc(100vw_-_32px))] p-[18px]; }
+    .foto-contenido { @apply grid [grid-template-columns:1.2fr_1fr] gap-5 items-center; }
+    .foto-marco img { @apply max-h-[58dvh]; }
+    .foto-opciones > p:first-child { @apply mt-0; }
+    .foto-confirmacion { @apply w-[min(380px,_calc(100vw_-_32px))]; }
+ }
+
+@media (prefers-reduced-motion: reduce) {
+    .foto-disparador, .foto-boton { @apply [transition:none]; }
+ }
+
+/* AR tools, team context and photo editor share Zona Diamante's controls. */
+.ar-icon { @apply inline-block w-[20px] h-[20px] [fill:currentColor] [flex-shrink:0] [vertical-align:middle]; }
+.ar-page button, .ar-page a { @apply [-webkit-tap-highlight-color:transparent]; }
+.ar-page [hidden] { @apply hidden!; }
+.ar-page button:focus-visible, .ar-page a:focus-visible, .ar-page input:focus-visible { @apply [outline:3px_solid_#008298] [outline-offset:3px]; }
+.ar-page #ar-result { @apply w-[min(420px,calc(100vw_-_32px))] p-[18px] gap-1 [border:1px_solid_#00829818]; }
+.ar-page #ar-result > div { @apply mt-2; }
+.ar-page #ar-result button { @apply min-h-[48px] p-[10px_8px]; }
+.ar-page #ar-status-container { @apply max-w-[calc(100vw_-_32px)] text-center; }
+.ar-page #ar-error > div { @apply w-[min(100%,440px)] p-6; }
+.ar-page #btn-cerrar-inspector { @apply top-[calc(88px_+_env(safe-area-inset-top,0px))] w-[44px] h-[44px] [background:#2b2b31e6]; }
+.ar-info-inspector { @apply fixed top-[calc(88px_+_env(safe-area-inset-top,0px))] left-[16px] z-[60] min-h-[44px] p-[10px_14px] [border:1px_solid_#ffffff80] rounded-[14px] [background:#fffffff0] text-[#006d80] [font:inherit] text-[12px] font-extrabold [box-shadow:0_4px_18px_#0002]; }
+.foto-boton-editar { @apply w-full [background:#008298] mb-[10px]; }
+.foto-preview:not(.foto-confirmacion):not(.ar-equipo-panel) { @apply w-[min(620px,calc(100vw_-_24px))] p-[18px]; }
+.foto-preview[data-modo="editing"] { @apply w-[min(860px,calc(100vw_-_20px))]; }
+.foto-preview[data-modo="editing"] .foto-opciones { @apply hidden; }
+.foto-preview[data-modo="editing"] .foto-marco img { @apply max-h-[36dvh]; }
+.foto-preview[data-modo="editing"] .foto-marco figcaption { @apply hidden; }
+.foto-editor { @apply min-w-0 mt-[14px]; }
+.foto-editor button { @apply cursor-pointer [font:inherit]; }
+.foto-editor-tabs { @apply flex gap-2 p-1 rounded-[16px] [background:#f0f3f4]; }
+.foto-editor-tabs button { @apply [flex:1] min-h-[44px] p-2 [border:0] rounded-[12px] [background:transparent] text-[#62626b] font-extrabold; }
+.foto-editor-tabs button[aria-pressed="true"] { @apply [background:#fff] text-[#006d80] [box-shadow:0_2px_6px_#003a4714]; }
+.foto-filtros, .foto-ajustes-manuales { @apply flex gap-2 overflow-x-auto p-[12px_3px] [overscroll-behavior-x:contain] [scrollbar-width:thin]; }
+.foto-filtros button { @apply [flex:0_0_64px] [border:2px_solid_transparent] p-[3px] rounded-[13px] [background:#f1f1f3] text-[#494951] text-[11px] font-extrabold; }
+.foto-filtros img { @apply block w-[54px] h-[60px] rounded-[8px] object-cover mb-[5px] [background:#dce5e6]; }
+.foto-filtros button[aria-pressed="true"] { @apply [border-color:#008298] text-[#006d80] [background:#e4f4f6]; }
+.foto-ajustes-manuales button { @apply [flex:0_0_auto] min-h-[44px] p-[8px_14px] [border:1px_solid_#d7e2e4] rounded-[12px] text-[#494951] [background:#f4f6f6] text-[12px] font-bold; }
+.foto-ajustes-manuales button[aria-pressed="true"] { @apply text-white [background:#008298]; }
+.foto-slider { @apply grid [grid-template-columns:1fr_auto] gap-2 items-center m-[3px_4px_10px] text-[12px] font-bold; }
+.foto-slider output { @apply tabular-nums text-[#006d80]; }
+.foto-slider input { @apply [grid-column:1/-1] w-full min-h-[36px] [accent-color:#008298] [touch-action:pan-x]; }
+.foto-editor-secundarias { @apply flex justify-between gap-2; }
+.foto-editor-secundarias button { @apply min-h-[44px] p-[8px_10px] [border:0] rounded-[12px] [background:#edf2f3] text-[#334d53] text-[12px] font-bold; }
+.foto-editor-secundarias button[aria-pressed="true"] { @apply [background:#d4edf1] text-[#00596b]; }
+#foto-editor-status { @apply min-h-[18px] text-[11px] leading-[1.5] text-[#62626b] m-[8px_0]; }
+.ar-equipo-panel { @apply p-[22px] w-[min(460px,calc(100vw_-_24px))]; }
+.ar-equipo-identidad { @apply flex items-center gap-4 m-[12px_0_20px]; }
+.ar-equipo-identidad img { @apply w-[72px] h-[72px] object-contain p-2 rounded-[18px] [background:#005c6c] box-border; }
+.ar-equipo-identidad h2 { @apply m-[0_0_4px] [font-family:Urbanist,sans-serif] text-[26px] font-black leading-[1.1] text-brand; }
+.ar-equipo-identidad p { @apply m-0 text-[#62626b] text-[13px]; }
+#ar-equipo-historia { @apply text-[14px] leading-[1.7]; }
+.ar-equipo-datos { @apply grid [grid-template-columns:1fr_1fr] gap-3 m-[20px_0]; }
+.ar-equipo-datos div { @apply p-3 [background:#f0f5f6] rounded-[14px]; }
+.ar-equipo-datos dt { @apply mb-[6px] text-[10px] font-extrabold uppercase text-[#62777b]; }
+.ar-equipo-datos dd { @apply m-0 text-[13px] font-bold; }
+.ar-propiedad { @apply p-4 m-[16px_0] [background:#fff4e9] [border:1px_solid_#f27b2126] rounded-[16px]; }
+.ar-propiedad h3 { @apply text-[13px] m-[0_0_8px] font-extrabold; }
+.ar-propiedad p { @apply text-[12px] leading-[1.6] m-0; }
+.ar-propiedad [data-estado="owned"] { @apply text-[#146338] font-bold; }
+.ar-propiedad button { @apply mt-[10px] min-h-[44px] [border:0] rounded-[10px] p-[8px_12px] [background:#fff] [font:inherit] text-[12px] font-bold text-[#9c470b]; }
+.ar-panel-nota { @apply m-[12px_0_0] text-[#62626b] text-[11px] leading-[1.5]; }
+
+@media (max-width:480px) {
+    .foto-preview:not(.foto-confirmacion):not(.ar-equipo-panel) { @apply rounded-[22px] p-[14px]; }
+    .foto-preview[data-modo="editing"] { @apply max-h-[calc(100dvh_-_12px_-_env(safe-area-inset-top,0px)_-_env(safe-area-inset-bottom,0px))]; }
+    .foto-cabecera { @apply mb-[10px]; }
+    .foto-preview[data-modo="editing"] .foto-cabecera h2 { @apply text-[20px]; }
+    .foto-preview[data-modo="editing"] .foto-marco img { @apply max-h-[28dvh]; }
+    .foto-editor { @apply mt-2; }
+    .foto-editor .foto-acciones { @apply sticky bottom-[-1px] pt-2 [background:#fff]; }
+ }
+@media (min-width:700px) and (min-height:600px) {
+    .foto-preview[data-modo="editing"] .foto-contenido { @apply grid [grid-template-columns:1fr_1fr] gap-[22px] items-center; }
+    .foto-preview[data-modo="editing"] .foto-marco img { @apply max-h-[68dvh]; }
+ }
+@media (orientation:landscape) and (max-height:540px) {
+    .foto-preview[data-modo="editing"] .foto-contenido { @apply grid [grid-template-columns:1fr_1fr] [align-items:start] gap-4; }
+    .foto-preview[data-modo="editing"] .foto-marco { @apply sticky top-0; }
+    .foto-preview[data-modo="editing"] .foto-marco img { @apply max-h-[66dvh]; }
+    .foto-filtros img { @apply h-[38px]; }
+    .foto-cabecera { @apply mb-2; }
+    .foto-editor { @apply mt-0; }
+ }
+
+/* The AR renderer owns the video/canvas; keep its surface inside the camera route. */
+.ar-page > video, .ar-page a-scene canvas { @apply w-screen! h-dvh! object-cover! absolute! top-0! left-0!; }
+.ar-page a-scene { @apply fixed! inset-0!; }

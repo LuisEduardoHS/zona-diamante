@@ -1,0 +1,14 @@
+PASS inicio directo supervivencia
+PASS pausa conserva vidas y tiempo
+PASS doble toque resuelve una vez
+PASS fallo rompe racha sin acabar
+PASS aumenta velocidad con cada tiro
+PASS 10 hits no terminan la partida
+PASS extra ×12 visible
+PASS dos fallos acumulados permiten seguir
+PASS tercer fallo termina y conserva extras
+PASS aviso de acceso al terminar invitado
+PASS sin puntos ni saldo inventados
+PASS cerrar vuelve a portada
+PASS sin tocar: tres tiros y derrota
+PASS sin overflow horizontal

@@ -1,0 +1,16 @@
+{
+  "browser_checks": {
+    "1440x900": 53,
+    "320x568": 53,
+    "390x844": 53,
+    "844x390": 53
+  },
+  "frontend_tests": 167,
+  "backend_tests": 164,
+  "pages_single_tailwind_bundle": 15,
+  "css_assets_resolve": 4,
+  "visual_style_diff": "one transient team-card animation frame; measured static properties match",
+  "production_mutations": false,
+  "ar_validation": "presentation fixture without camera or marker tracking",
+  "scope": "Local UI review of the Info/header/Tailwind migration"
+}
