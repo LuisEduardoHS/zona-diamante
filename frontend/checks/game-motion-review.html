@@ -1,0 +1,42 @@
+<!doctype html><html lang="es"><meta charset="utf-8"><title>Movimiento del juego · revisión local</title>
+<style>body{font:14px system-ui;color:#12596a;margin:14px}button{padding:10px;margin:3px}iframe{display:block;border:0;width:390px;height:844px}pre{white-space:pre-wrap}.numbers{display:flex;gap:24px;padding:12px;font-size:28px;font-variant-numeric:tabular-nums}</style>
+<p>Revisión local de movimiento. Invitado sin premios. Las cifras de demostración son sintéticas.</p>
+<button id="check">Comprobar transiciones</button><button id="pause">Pausa / reanudar</button><button id="hit">Hit</button><button id="result">Resultado</button><button id="count">Animar cifras de demostración</button>
+<div class="numbers"><span id="points">+50</span><span id="balance">240</span></div><pre id="status" role="status">Preparado</pre><iframe id="game" title="Juego con transiciones" src="/pages/experiencias/juego.html"></iframe>
+<script type="module">
+import {createGameMotion} from '/js/features/juego/game-motion.js';
+const frame=document.querySelector('#game'),out=document.querySelector('#status'),doc=()=>frame.contentDocument,q=id=>doc().getElementById(id),qa=()=>frame.contentWindow.__gameQA,state=()=>qa().handle.state,step=ms=>qa().step(ms),nextFrame=()=>new Promise(requestAnimationFrame);
+const motion=createGameMotion();
+async function ready(){while(!qa())await new Promise(resolve=>setTimeout(resolve,20));await qa().handle.ready;}
+async function begin(){await ready();if(q('game-beta').dataset.screen==='play'){if(state().phase!=='paused')q('game-pause').click();q('game-exit').click();await Promise.resolve();}if(q('game-beta').dataset.screen==='result')q('game-replay').click();else q('game-start').click();step(3000);}
+function shot(hit=true){step(hit?state().plan.contactMs-state().elapsed:0);q('game-hit').click();step(state().last.duration+0.001);}
+document.querySelector('#pause').onclick=async()=>{await ready();if(q('game-beta').dataset.screen!=='play')await begin();q('game-pause').click();};
+document.querySelector('#hit').onclick=async()=>{await ready();if(q('game-beta').dataset.screen!=='play')await begin();if(state().phase==='paused')q('game-resume').click();shot();};
+document.querySelector('#result').onclick=async()=>{await begin();for(let i=0;i<12;i++)shot();for(let i=0;i<3;i++)shot(false);};
+document.querySelector('#count').onclick=()=>{motion.count(document.querySelector('#points'),50,{prefix:'+'});motion.count(document.querySelector('#balance'),240,{from:190});};
+document.querySelector('#check').onclick=async()=>{
+ out.textContent='';const check=(ok,label)=>{if(!ok)throw Error(label);out.textContent+='PASS '+label+'\n';};
+ try{
+  await begin();await nextFrame();q('game-pause').click();const frozen=JSON.stringify(state());
+  check(state().phase==='paused','pausa lógica inmediata');
+  const overlay=q('game-paused'),reduced=frame.contentWindow.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduced){check(overlay.getAnimations().some(a=>a.effect.getTiming().duration===280),'entrada de pausa animada');await Promise.all(overlay.getAnimations().map(a=>a.finished.catch(()=>{})));}
+  check(JSON.stringify(state())===frozen,'la transición no avanza el reloj');
+  q('game-resume').click();check(state().phase==='pitch'&&overlay.inert,'reanuda al instante y desactiva panel saliente');
+  q('game-pause').click();q('game-resume').click();q('game-pause').click();
+  await Promise.all(overlay.getAnimations().map(a=>a.finished.catch(()=>{})));
+  check(!overlay.hidden&&!overlay.inert&&state().phase==='paused','alternar rápido conserva la última pausa');
+  q('game-resume').click();shot();check(state().stats.hits===1,'un hit durante las transiciones resuelve una vez');
+  if(!reduced)check(q('game-hits').getAnimations().length>0,'el marcador responde al hit');
+  while(state().stats.hits<12)shot();for(let i=0;i<3;i++)shot(false);
+  check(q('game-beta').dataset.screen==='result'&&state().stats.hits===12&&state().stats.misses===3,'resultados conservan estadísticas');
+  const panel=doc().querySelector('.game-result-card');
+  if(!reduced){check(panel.getAnimations().length>0,'tarjeta de resultado entra con animación');await Promise.all(panel.getAnimations().map(a=>a.finished.catch(()=>{})));}
+  check(q('game-account-points').textContent==='—'&&q('game-balance').textContent==='—','invitado no recibe cifras de cuenta simuladas');
+  document.querySelector('#count').click();
+  const deadline=performance.now()+1400;while(document.querySelector('#points').textContent!=='+50'&&performance.now()<deadline)await nextFrame();
+  check(document.querySelector('#points').textContent==='+50'&&document.querySelector('#balance').textContent==='240','conteo de demostración termina en cifras exactas');
+  q('game-result-close').click();check(q('game-beta').dataset.screen==='home'&&doc().querySelector('[data-game-screen=result]').inert,'cerrar resultados devuelve foco y libera interacción');
+ }catch(error){out.textContent+='FAIL '+error.stack;}
+};
+</script></html>

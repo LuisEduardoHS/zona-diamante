@@ -29,6 +29,7 @@ function serve(port,deterministic) {
   if(file.startsWith('/api/')) {res.writeHead(501);res.end('No API in local practice review');return;}
   let content;
   if(file==='/__unified-review'){file='/review.html';content=fs.readFileSync(path.join(__dirname,'phase06-review.html'));}
+  else if(file==='/__motion-review'){file='/review.html';content=fs.readFileSync(path.join(__dirname,'game-motion-review.html'));}
   else if(file==='/__review'){file='/review.html';content=fs.readFileSync(path.join(__dirname,'phase04-review.html'));}
   else if(file==='/js/features/auth/supabase-provider.js') content=guest;
   else if(deterministic && file==='/js/features/juego/ganar_juego.js') content=fixture;

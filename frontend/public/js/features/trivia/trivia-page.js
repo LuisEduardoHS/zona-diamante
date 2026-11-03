@@ -266,7 +266,7 @@ export function iniciarTrivia(signal) {
             const attempt = await startDailyTrivia({ signal });
             if (!signal.aborted) setState({ type: 'START', attempt });
         } else if (status.status === 'available') {
-            setState({ type: 'STATUS_AVAILABLE' });
+            setState({ type: 'STATUS_AVAILABLE', nextAvailableAt: status.next_available_at });
         } else {
             setState({ type: 'STATUS_UNAVAILABLE', nextAvailableAt: status.next_available_at });
         }
@@ -351,7 +351,8 @@ export function iniciarTrivia(signal) {
 
     const refreshDay = () => {
         if (signal.aborted || ['loading', 'in_progress', 'submitting'].includes(state.status)) return;
-        if (displayedDay !== localDateValue(new Date())) void loadStatus();
+        const periodEnded = state.nextAvailableAt && Date.now() >= new Date(state.nextAvailableAt).getTime();
+        if (periodEnded || displayedDay !== localDateValue(new Date())) void loadStatus();
     };
     const dayTimer = setInterval(refreshDay, 1000);
     document.addEventListener('visibilitychange', refreshDay, { signal });

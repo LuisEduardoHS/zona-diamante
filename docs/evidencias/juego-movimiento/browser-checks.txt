@@ -1,0 +1,12 @@
+PASS pausa lógica inmediata
+PASS entrada de pausa animada
+PASS la transición no avanza el reloj
+PASS reanuda al instante y desactiva panel saliente
+PASS alternar rápido conserva la última pausa
+PASS un hit durante las transiciones resuelve una vez
+PASS el marcador responde al hit
+PASS resultados conservan estadísticas
+PASS tarjeta de resultado entra con animación
+PASS invitado no recibe cifras de cuenta simuladas
+PASS conteo de demostración termina en cifras exactas
+PASS cerrar resultados devuelve foco y libera interacción

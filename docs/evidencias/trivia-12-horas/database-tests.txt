@@ -1,0 +1,26 @@
+PASS: phase01_economy_test.sql: 81 pgTAP assertions
+PASS: phase02a_game_test.sql: 63 pgTAP assertions
+PASS: phase02b_ar_test.sql: 45 pgTAP assertions
+PASS: schema_and_security_test.sql: 14 pgTAP assertions
+PASS: 20 trivia-period SQL checks; upgrade preservation, concurrency, independent users, exactly two rewards
+D:\projects\zona-diamante\backend\venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+2026-11-02 17:30:00,301 | INFO | zona_diamante.trivia | daily_trivia_started user_id=21f78eeb-da58-4bd8-8792-7b534edf7c37 daily_trivia_id=eaf3420a-3e06-4aa3-a875-0f4fbd6c2669 attempt_id=9fd49fe6-b13c-4931-90de-27d1826db5e5
+2026-11-02 17:30:00,629 | INFO | zona_diamante.trivia | daily_trivia_answer_saved user_id=21f78eeb-da58-4bd8-8792-7b534edf7c37 daily_trivia_id=eaf3420a-3e06-4aa3-a875-0f4fbd6c2669 attempt_id=9fd49fe6-b13c-4931-90de-27d1826db5e5 question_id=b08182c8-cdde-46af-abeb-8469598f8fbc
+2026-11-02 17:30:00,745 | INFO | zona_diamante.trivia | daily_trivia_answer_saved user_id=21f78eeb-da58-4bd8-8792-7b534edf7c37 daily_trivia_id=eaf3420a-3e06-4aa3-a875-0f4fbd6c2669 attempt_id=9fd49fe6-b13c-4931-90de-27d1826db5e5 question_id=74bc782b-ec48-4f10-baae-a550b9c332fb
+2026-11-02 17:30:00,864 | INFO | zona_diamante.trivia | daily_trivia_answer_saved user_id=21f78eeb-da58-4bd8-8792-7b534edf7c37 daily_trivia_id=eaf3420a-3e06-4aa3-a875-0f4fbd6c2669 attempt_id=9fd49fe6-b13c-4931-90de-27d1826db5e5 question_id=2e621073-48b4-47f6-a789-15fb988b749e
+2026-11-02 17:30:00,984 | INFO | zona_diamante.trivia | daily_trivia_answer_saved user_id=21f78eeb-da58-4bd8-8792-7b534edf7c37 daily_trivia_id=eaf3420a-3e06-4aa3-a875-0f4fbd6c2669 attempt_id=9fd49fe6-b13c-4931-90de-27d1826db5e5 question_id=22650476-c3fd-4bd7-9f2f-524c1befd623
+2026-11-02 17:30:01,106 | INFO | zona_diamante.trivia | daily_trivia_answer_saved user_id=21f78eeb-da58-4bd8-8792-7b534edf7c37 daily_trivia_id=eaf3420a-3e06-4aa3-a875-0f4fbd6c2669 attempt_id=9fd49fe6-b13c-4931-90de-27d1826db5e5 question_id=154bc6ff-3419-49f2-8f98-96e352806c7b
+2026-11-02 17:30:01,311 | INFO | zona_diamante.trivia | daily_trivia_completed user_id=21f78eeb-da58-4bd8-8792-7b534edf7c37 daily_trivia_id=eaf3420a-3e06-4aa3-a875-0f4fbd6c2669 attempt_id=9fd49fe6-b13c-4931-90de-27d1826db5e5 score=5 already_processed=False
+2026-11-02 17:30:01,515 | INFO | zona_diamante.trivia | daily_trivia_completed user_id=21f78eeb-da58-4bd8-8792-7b534edf7c37 daily_trivia_id=eaf3420a-3e06-4aa3-a875-0f4fbd6c2669 attempt_id=9fd49fe6-b13c-4931-90de-27d1826db5e5 score=5 already_processed=True
+2026-11-02 17:30:01,655 | INFO | zona_diamante.trivia | daily_trivia_status user_id=21f78eeb-da58-4bd8-8792-7b534edf7c37 daily_trivia_id=eaf3420a-3e06-4aa3-a875-0f4fbd6c2669 status=completed
+2026-11-02 17:30:02,028 | INFO | zona_diamante.trivia | daily_trivia_started user_id=21f78eeb-da58-4bd8-8792-7b534edf7c37 daily_trivia_id=ec1777f8-0a81-4e65-9e8c-80bc202543aa attempt_id=c195ba97-86ce-4711-8747-5b5fcdd7a0ab
+2026-11-02 17:30:02,345 | INFO | zona_diamante.trivia | daily_trivia_answer_saved user_id=21f78eeb-da58-4bd8-8792-7b534edf7c37 daily_trivia_id=ec1777f8-0a81-4e65-9e8c-80bc202543aa attempt_id=c195ba97-86ce-4711-8747-5b5fcdd7a0ab question_id=4c041329-49df-499b-9b22-1af413bb1ead
+2026-11-02 17:30:02,465 | INFO | zona_diamante.trivia | daily_trivia_answer_saved user_id=21f78eeb-da58-4bd8-8792-7b534edf7c37 daily_trivia_id=ec1777f8-0a81-4e65-9e8c-80bc202543aa attempt_id=c195ba97-86ce-4711-8747-5b5fcdd7a0ab question_id=c7cc2242-68ab-4646-bab0-27f5097af74b
+2026-11-02 17:30:02,577 | INFO | zona_diamante.trivia | daily_trivia_answer_saved user_id=21f78eeb-da58-4bd8-8792-7b534edf7c37 daily_trivia_id=ec1777f8-0a81-4e65-9e8c-80bc202543aa attempt_id=c195ba97-86ce-4711-8747-5b5fcdd7a0ab question_id=82d92c7a-4be9-430f-8c36-7ab319c06b47
+2026-11-02 17:30:02,704 | INFO | zona_diamante.trivia | daily_trivia_answer_saved user_id=21f78eeb-da58-4bd8-8792-7b534edf7c37 daily_trivia_id=ec1777f8-0a81-4e65-9e8c-80bc202543aa attempt_id=c195ba97-86ce-4711-8747-5b5fcdd7a0ab question_id=d156cc30-5896-4d22-86b6-b8d28919998d
+2026-11-02 17:30:02,826 | INFO | zona_diamante.trivia | daily_trivia_answer_saved user_id=21f78eeb-da58-4bd8-8792-7b534edf7c37 daily_trivia_id=ec1777f8-0a81-4e65-9e8c-80bc202543aa attempt_id=c195ba97-86ce-4711-8747-5b5fcdd7a0ab question_id=983e7167-a23e-4dd2-9e74-def4a08546d0
+2026-11-02 17:30:03,041 | INFO | zona_diamante.trivia | daily_trivia_completed user_id=21f78eeb-da58-4bd8-8792-7b534edf7c37 daily_trivia_id=ec1777f8-0a81-4e65-9e8c-80bc202543aa attempt_id=c195ba97-86ce-4711-8747-5b5fcdd7a0ab score=5 already_processed=False
+2026-11-02 17:30:03,255 | INFO | zona_diamante.trivia | daily_trivia_completed user_id=21f78eeb-da58-4bd8-8792-7b534edf7c37 daily_trivia_id=ec1777f8-0a81-4e65-9e8c-80bc202543aa attempt_id=c195ba97-86ce-4711-8747-5b5fcdd7a0ab score=5 already_processed=True
+2026-11-02 17:30:03,401 | INFO | zona_diamante.trivia | daily_trivia_status user_id=21f78eeb-da58-4bd8-8792-7b534edf7c37 daily_trivia_id=ec1777f8-0a81-4e65-9e8c-80bc202543aa status=completed
+PASS: real local Auth/FastAPI/PostgREST, morning and noon trivia, completed lock, 100 points each, idempotent retries
