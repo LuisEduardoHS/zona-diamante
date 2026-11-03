@@ -11,5 +11,6 @@
   "css_assets_resolve": 4,
   "visual_style_diff": "one transient team-card animation frame; measured static properties match",
   "production_mutations": false,
-  "ar_validation": "presentation fixture without camera or marker tracking"
+  "ar_validation": "presentation fixture without camera or marker tracking",
+  "scope": "Local UI review of the Info/header/Tailwind migration"
 }

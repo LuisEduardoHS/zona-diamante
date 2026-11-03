@@ -42,7 +42,7 @@
 .foto-confirmacion p { @apply m-[14px_0_22px] text-[#62626b] text-[14px] leading-[1.5]; }
 .foto-preview button:focus-visible, .foto-disparador:focus-visible { @apply [outline:3px_solid_#008298] [outline-offset:4px]; }
 
-@media (orientation: landscape) and (max-height: 540px) { 
+@media (orientation: landscape) and (max-height: 540px) {
     .foto-controles { @apply left-auto right-[22px] bottom-[110px] transform-none w-[110px]; }
     .foto-disparador { @apply w-[66px] h-[66px]; }
     .foto-preview { @apply w-[min(740px,_calc(100vw_-_32px))] p-[18px]; }
@@ -52,7 +52,7 @@
     .foto-confirmacion { @apply w-[min(380px,_calc(100vw_-_32px))]; }
  }
 
-@media (prefers-reduced-motion: reduce) { 
+@media (prefers-reduced-motion: reduce) {
     .foto-disparador, .foto-boton { @apply [transition:none]; }
  }
 
@@ -109,7 +109,7 @@
 .ar-propiedad button { @apply mt-[10px] min-h-[44px] [border:0] rounded-[10px] p-[8px_12px] [background:#fff] [font:inherit] text-[12px] font-bold text-[#9c470b]; }
 .ar-panel-nota { @apply m-[12px_0_0] text-[#62626b] text-[11px] leading-[1.5]; }
 
-@media (max-width:480px) { 
+@media (max-width:480px) {
     .foto-preview:not(.foto-confirmacion):not(.ar-equipo-panel) { @apply rounded-[22px] p-[14px]; }
     .foto-preview[data-modo="editing"] { @apply max-h-[calc(100dvh_-_12px_-_env(safe-area-inset-top,0px)_-_env(safe-area-inset-bottom,0px))]; }
     .foto-cabecera { @apply mb-[10px]; }
@@ -118,11 +118,11 @@
     .foto-editor { @apply mt-2; }
     .foto-editor .foto-acciones { @apply sticky bottom-[-1px] pt-2 [background:#fff]; }
  }
-@media (min-width:700px) and (min-height:600px) { 
+@media (min-width:700px) and (min-height:600px) {
     .foto-preview[data-modo="editing"] .foto-contenido { @apply grid [grid-template-columns:1fr_1fr] gap-[22px] items-center; }
     .foto-preview[data-modo="editing"] .foto-marco img { @apply max-h-[68dvh]; }
  }
-@media (orientation:landscape) and (max-height:540px) { 
+@media (orientation:landscape) and (max-height:540px) {
     .foto-preview[data-modo="editing"] .foto-contenido { @apply grid [grid-template-columns:1fr_1fr] [align-items:start] gap-4; }
     .foto-preview[data-modo="editing"] .foto-marco { @apply sticky top-0; }
     .foto-preview[data-modo="editing"] .foto-marco img { @apply max-h-[66dvh]; }

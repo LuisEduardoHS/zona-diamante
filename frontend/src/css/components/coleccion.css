@@ -105,7 +105,7 @@
 @keyframes col-unlock {  0% { transform:scale(.94) rotate(-3deg); filter:brightness(1.6); } 55% { transform:scale(1.04) rotate(1deg); } 100% { transform:none; filter:none; }  }
 @keyframes col-loading {  to { background-position:-200% 0; }  }
 @media(max-width:1050px) {  .col-grid { @apply [grid-template-columns:repeat(4,minmax(0,1fr))]; } .col-filters { @apply flex-wrap; } .col-selects { @apply ml-auto; }  }
-@media(max-width:650px) { 
+@media(max-width:650px) {
  .collection-page { @apply p-[94px_18px_var(--bottom-clearance,120px)]; }
  .col-heading { @apply mb-5 gap-2; } .col-heading h1 { @apply text-[34px]; } .col-eyebrow { @apply text-[8px] tracking-[.11em]; }
  .col-wallet { @apply min-w-[120px] p-[10px_12px] rounded-[14px]; } .col-wallet>span { @apply text-[7px]; } .col-wallet strong { @apply text-[22px]; } .col-wallet>div { @apply gap-[6px]; }

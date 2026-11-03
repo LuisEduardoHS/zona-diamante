@@ -1,5 +1,5 @@
 /* Shared Tailwind components: shell, profile, forms, help and AR frame. */
-@layer base { 
+@layer base {
     html, body { @apply m-0 max-w-full overflow-x-clip; }
     body { @apply font-sans; }
     button, input, select, textarea { @apply [font-family:inherit]; }
@@ -151,23 +151,23 @@
 .profile-file-button:hover,
 .profile-logout:hover { @apply [transform:translateY(-1px)]; }
 
-@media (max-width: 390px) { 
+@media (max-width: 390px) {
     .profile-identity { @apply items-start; }
     .profile-avatar { @apply [flex-basis:78px] w-[78px] h-[78px]; }
     .profile-form-actions { @apply grid-cols-1; }
  }
 
-@media (max-height: 680px) { 
+@media (max-height: 680px) {
     .auth-layout { @apply pt-[calc(72px_+_env(safe-area-inset-top,_0px))]; }
     .auth-heading { @apply mb-[18px]; }
     .auth-heading p:last-child { @apply mt-[7px]; }
     .auth-card { @apply py-5; }
  }
-@media (min-width: 760px) { 
+@media (min-width: 760px) {
     .auth-layout { @apply grid items-center py-[calc(72px_+_env(safe-area-inset-top,_0px))]; }
     .profile-layout { @apply px-7; }
  }
-@media (prefers-reduced-motion: reduce) { 
+@media (prefers-reduced-motion: reduce) {
     .auth-input, .auth-primary, .auth-secondary, .auth-progress span,
     .profile-form-actions button, .profile-logout, .profile-file-button, .profile-text-button, .profile-row-link { @apply [transition:none]; }
  }
@@ -175,7 +175,7 @@
 .ayuda-pregunta[open] > p { @apply max-h-[180px] opacity-[1] pb-5; }
 .ayuda-pregunta > summary span { @apply inline-block [transition:transform_240ms_ease,_color_240ms_ease]; }
 .ayuda-pregunta[open] > summary span { @apply [transform:rotate(45deg)] text-brand; }
-@media (prefers-reduced-motion: reduce) { 
+@media (prefers-reduced-motion: reduce) {
     .ayuda-pregunta > p,
     .ayuda-pregunta > summary span { @apply [transition:none]; }
  }
@@ -206,12 +206,12 @@
 .site-menu-icon { @apply grid place-items-center [flex:0_0_26px]; }
 .site-menu-icon svg { @apply w-[26px] h-[26px]; }
 .site-menu a:focus-visible, .site-menu button:focus-visible, .shell-menu-button:focus-visible { @apply [outline:3px_solid_#2b2b31] [outline-offset:2px]; }
-@media (max-height: 600px) { 
+@media (max-height: 600px) {
     .site-menu { @apply pb-[calc(16px_+_env(safe-area-inset-bottom,_0px))]; }
     .site-menu-links { @apply gap-3; }
     .site-menu-link { @apply py-[6px] text-[23px]; }
  }
-@media (max-height: 480px) { 
+@media (max-height: 480px) {
     .site-menu { @apply w-[min(650px,_calc(100vw_-_24px))] pt-[calc(80px_+_env(safe-area-inset-top,_0px))] px-5; }
     .site-menu-links { @apply grid [grid-template-columns:1fr_1fr] [align-content:center] gap-[12px_24px]; }
     .site-menu-group:first-child { @apply [grid-row:span_2] [align-self:center]; }
@@ -221,4 +221,3 @@
     .site-menu-icon svg { @apply w-[21px] h-[21px]; }
  }
 @media (prefers-reduced-motion: reduce) {  .site-menu-link { @apply [transition:none]; }  }
-

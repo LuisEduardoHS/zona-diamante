@@ -141,7 +141,7 @@
 @keyframes equipo-dialog-in {  from { opacity: 0; transform: translateY(12px) scale(.98); } to { opacity: 1; transform: none; }  }
 @keyframes equipo-backdrop-in {  from { opacity: 0; } to { opacity: 1; }  }
 @keyframes equipo-content-in {  from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; }  }
-@supports (interpolate-size: allow-keywords) { 
+@supports (interpolate-size: allow-keywords) {
     .equipo-statistics { @apply [interpolate-size:allow-keywords]; }
     .equipo-statistics::details-content { @apply [block-size:0] overflow-clip [transition:block-size_.3s_ease,_content-visibility_.3s_allow-discrete]; }
     .equipo-statistics[open]::details-content { @apply [block-size:auto]; }

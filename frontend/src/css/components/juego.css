@@ -90,14 +90,14 @@
 .game-notices :is(button,a) { @apply inline-flex items-center min-h-[44px] p-[8px_12px] mt-[5px] [border:0] rounded-[12px] [background:#c4e9ef] text-[#006479] font-extrabold; }
 [data-network=error] .game-play-screen::before { @apply [content:''] absolute z-[3] [inset:0] rounded-[inherit] [background:#003f50d9] [backdrop-filter:blur(5px)]; }
 [data-network=error] .game-notices { @apply top-[30%]; }
-@media (max-height:760px) and (orientation:portrait) { 
+@media (max-height:760px) and (orientation:portrait) {
  .game-result-card { @apply p-[46px_14px_8px]; }.game-result h2 { @apply mb-3; }.game-result-numbers { @apply gap-[10px] mb-3; }.game-result-numbers>div { @apply min-h-[68px] p-[8px_4px]; }.game-result-numbers dd { @apply text-[27px]; }.game-result-label { @apply text-[21px]; }.game-result-reward { @apply m-[8px_0]; }
  .game-hud { @apply p-[7px_10px]; }.game-hud strong { @apply text-[17px]; }.game-pause { @apply w-[44px] h-[44px] top-[3%] right-[3%]; }.game-pitch-progress { @apply top-[15.5%]; }
  }
-@media (max-height:650px) and (orientation:portrait) { 
+@media (max-height:650px) and (orientation:portrait) {
  .is-guest-result .game-result-numbers { @apply hidden; }
  }
-@media (orientation:landscape) and (max-height:550px) { 
+@media (orientation:landscape) and (max-height:550px) {
  .game-beta { --game-top: 16px; @apply p-[var(--game-top)_100px_calc(var(--bottom-nav-height,80px)_+_8px)]; }
  .game-stage { @apply w-full max-w-[560px] rounded-[20px] [box-shadow:0_-7px_0_2px_#00758a]; }
  .game-scene { @apply w-[calc(100cqh*9/16)]; }
@@ -113,7 +113,7 @@
 /* Animation stays in the presentation layer; inputs and the pitch clock are immediate. */
 .game-beta [data-motion-leaving] { @apply pointer-events-none!; }
 .game-beta :is(.game-primary,.game-pause,.game-result-close,.game-collection-link,.game-result-auth a,.game-text-button) { @apply [transition:transform_170ms_ease,background-color_170ms_ease,box-shadow_170ms_ease]; }
-@media (hover:hover) { 
+@media (hover:hover) {
  .game-beta :is(.game-primary,.game-pause,.game-collection-link,.game-result-auth a):hover:not(:disabled) { @apply [transform:translateY(-2px)]; }
  }
 .game-beta :is(.game-primary,.game-pause,.game-result-close,.game-collection-link,.game-result-auth a,.game-text-button):active:not(:disabled) { @apply [transform:translateY(1px)_scale(.96)]; }
