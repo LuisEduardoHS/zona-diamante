@@ -1,0 +1,2 @@
+# Storage artwork uses content hashes; preserve SVG bytes across OS checkouts.
+supabase/assets/card-images/**/*.svg text eol=lf

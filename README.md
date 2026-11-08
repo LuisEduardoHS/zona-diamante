@@ -422,6 +422,10 @@ su texto o su etiqueta accesible.
 
 ### Cartas del escáner AR
 
+Las 20 cartas tienen imágenes publicadas en Supabase Storage y asociadas por
+`image_path`. Fuentes, créditos, copias de los archivos y pasos de publicación:
+[Imágenes del catálogo](docs/imagenes-cartas.md).
+
 Detectar un logo muestra un aviso que abre directamente la ficha del equipo.
 El botón **Reclamar carta AR** guarda la mascota exclusiva en la colección de
 la cuenta; si ya se posee, queda solamente **Ver 3D** a todo el ancho. Invitados
