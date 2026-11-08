@@ -19,6 +19,7 @@ class MatchSide(BaseModel):
 
 class MatchRead(BaseModel):
     id: int
+    date: str
     starts_at: str
     time_tbd: bool
     status: Literal['scheduled', 'live', 'final', 'delayed', 'postponed', 'cancelled', 'suspended']
@@ -39,3 +40,9 @@ class MatchSchedule(BaseModel):
     stale: bool = False
     teams: list[MatchTeam]
     games: list[MatchRead]
+
+
+class TeamMatchSchedule(MatchSchedule):
+    from_date: str
+    team_id: int
+    participating: bool

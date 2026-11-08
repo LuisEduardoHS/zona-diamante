@@ -142,3 +142,90 @@ def test_cache_is_bounded():
         matches._remember(('test', i), i, 60)
     assert len(matches._cache) == matches.MAX_ENTRIES
     assert ('test', 0) not in matches._cache
+
+
+def test_next_pending_day_skips_finished_cancelled_and_other_teams(monkeypatch):
+    pending = {'abstractGameState': 'Preview', 'detailedState': 'Scheduled'}
+    other = game(99, '2026-07-01T20:00:00Z', status=pending)
+    other['teams']['away']['team']['id'] = 999
+    calls = provider(monkeypatch, schedule(
+        game(), game(2, '2026-07-02T20:00:00Z', status={'detailedState': 'Cancelled'}), other,
+        game(3, '2026-07-04T01:00:00Z', status=pending),
+        game(4, '2026-07-04T04:00:00Z', status=pending, doubleHeader='Y', gameNumber=2),
+        game(5, '2026-07-06T01:00:00Z', status=pending)))
+    result = TestClient(app).get('/api/v1/matches/next?league=lmb&team_id=496&date=2026-07-01')
+    assert result.status_code == 200
+    body = result.json()
+    assert body['date'] == '2026-07-03' and body['from_date'] == '2026-07-01'
+    assert [game['id'] for game in body['games']] == [3, 4]
+    assert body['participating'] and body['team_id'] == 496
+    assert result.headers['cache-control'] == 'no-store'
+    assert calls[1][1]['teamId'] == 496
+    assert calls[1][1]['endDate'] == '2027-07-03'
+
+
+def test_pending_today_wins_over_later_games_and_tbd_uses_official_day(monkeypatch):
+    calls = provider(monkeypatch, schedule(
+        game(1, status={'abstractGameState': 'Live'}),
+        game(2, '2026-07-02T12:00:00Z', status={'startTimeTBD': True}),
+        game(3, '2026-07-03T01:00:00Z', status={'abstractGameState': 'Preview'})))
+    result = asyncio.run(matches.get_next_team_schedule('lmp', 496, date(2026, 7, 1)))
+    assert result.date == '2026-07-01'
+    assert [game.id for game in result.games] == [1, 2]
+    assert result.games[1].time_tbd
+    assert calls[1][1]['sportId'] == 17 and calls[1][1]['leagueId'] == 132
+
+
+def test_nonparticipating_team_never_queries_another_club(monkeypatch):
+    calls = provider(monkeypatch)
+    result = asyncio.run(matches.get_next_team_schedule('lmp', 5483, date(2027, 1, 10)))
+    assert not result.participating and result.games == []
+    assert calls == [('teams', {'sportId': 17, 'leagueIds': 132, 'season': 2026})]
+
+
+def test_next_schedule_can_be_empty_and_shared_by_concurrent_guests(monkeypatch):
+    calls = provider(monkeypatch, schedule())
+    async def run():
+        results = await asyncio.gather(*(matches.get_next_team_schedule('lmb', 496, date(2026, 11, 8)) for _ in range(6)))
+        assert all(result == results[0] for result in results)
+        assert results[0].participating and not results[0].games
+    asyncio.run(run())
+    assert len(calls) == 2
+
+
+def test_offseason_search_reaches_next_year_without_daily_requests(monkeypatch):
+    calls = provider(monkeypatch, schedule(
+        game(8, '2027-04-16T01:00:00Z', status={'abstractGameState': 'Preview'}),
+        game(9, '2027-11-10T01:00:00Z', status={'abstractGameState': 'Preview'})))
+    result = asyncio.run(matches.get_next_team_schedule('lmb', 496, date(2026, 11, 8)))
+    assert result.date == '2027-04-15'
+    assert [game.id for game in result.games] == [8]
+    assert len(calls) == 2
+    assert calls[1][1]['startDate'] == '2026-11-08'
+
+
+def test_next_schedule_stale_cache_and_safe_errors(monkeypatch):
+    provider(monkeypatch)
+    day = date(2026, 7, 1)
+    original = asyncio.run(matches.get_next_team_schedule('lmb', 496, day))
+    key = ('next-team', 'lmb', 496, day.isoformat())
+    matches._cache[key] = (matches.monotonic() - 400, 300, original)
+    async def fail(*args, **kwargs):
+        raise matches.MatchProviderError('private upstream information')
+    monkeypatch.setattr(matches, '_get_json', fail)
+    # Expire the team roster as well.
+    matches._cache.pop(('teams', 'lmb', 2026))
+    stale = asyncio.run(matches.get_next_team_schedule('lmb', 496, day))
+    assert stale.stale and stale.updated_at == original.updated_at
+    matches._cache[key] = (matches.monotonic() - 86401, 300, original)
+    response = TestClient(app).get('/api/v1/matches/next?league=lmb&team_id=496&date=2026-07-01')
+    assert response.status_code == 502 and 'private' not in response.text
+
+
+@pytest.mark.parametrize('query', ['team_id=0&date=2026-11-08', 'team_id=x&date=2026-11-08',
+                                 'team_id=496&date=2099-01-01', 'team_id=496&league=other&date=2026-11-08',
+                                 'team_id=496', 'date=2026-11-08'])
+def test_invalid_next_request_never_calls_provider(monkeypatch, query):
+    calls = provider(monkeypatch)
+    assert TestClient(app).get('/api/v1/matches/next?' + query).status_code == 422
+    assert not calls

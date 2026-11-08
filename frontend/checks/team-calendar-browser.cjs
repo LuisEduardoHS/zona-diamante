@@ -24,7 +24,7 @@ const output = path.resolve(__dirname, '../../.tmp/team-calendar-review');
         page.on('request', request => { if (request.url().includes('/api/v1/matches?') && request.headers().authorization) authenticated = true; });
         const ready = () => page.waitForFunction(() => document.querySelector('[data-equipo-calendar=juegos]')?.getAttribute('aria-busy') === 'false', null, { timeout: 15000 });
         const go = async (slug = 'sultanes-mty', date = '2026-07-01') => {
-            await page.goto(`${base}/pages/equipos/equipo.html?id=${slug}&fecha=${date}`);
+            await page.goto(`${base}/pages/equipos/equipo.html?id=${slug}&liga=lmb&fecha=${date}`);
             try { await ready(); }
             catch (error) { console.error('Page errors:', errors); console.error((await page.locator('body').innerText()).slice(0, 600)); throw error; }
         };
@@ -65,7 +65,7 @@ const output = path.resolve(__dirname, '../../.tmp/team-calendar-review');
         }
         await setDate('2026-11-08'); await ready();
         assert.equal(await cards().count(), 0);
-        assert.match(await page.locator('[data-equipo-calendar=juegos]').textContent(), /no tiene partidos programados en LMB/);
+        assert.match(await page.locator('[data-equipo-calendar=juegos]').textContent(), /no hay próximos partidos/);
         await page.locator('[data-equipo-calendar=anterior]').click(); await ready();
         assert.equal(await dateField().inputValue(), '2026-11-07');
         await page.locator('[data-equipo-calendar=siguiente]').click(); await ready();
@@ -101,6 +101,13 @@ const output = path.resolve(__dirname, '../../.tmp/team-calendar-review');
         await page.clock.install({ time: new Date('2026-07-01T18:00:00Z') });
         let requests = 0;
         await page.route(pattern, route => { requests++; return route.fulfill({ contentType: 'application/json', body: JSON.stringify(snapshot) }); });
+        await page.route('**/api/v1/matches/next?*', route => {
+            requests++;
+            return route.fulfill({ contentType: 'application/json', body: JSON.stringify({ ...snapshot,
+                from_date: '2026-07-01', team_id: 562, participating: true,
+                games: snapshot.games.filter(game => [game.away.team.id, game.home.team.id].includes(562)).map(game => ({ ...game, status: 'live' })),
+            }) });
+        });
         await go(); const initial = requests;
         await page.clock.fastForward(60001); await ready();
         assert.equal(requests, initial + 1);

@@ -22,6 +22,10 @@ const backend = process.env.MATCHES_BACKEND || 'http://127.0.0.1:8000';
             const query = new URL(route.request().url()).searchParams;
             return route.fulfill({ contentType: 'application/json', body: JSON.stringify({ ...snapshot, league: query.get('league'), date: query.get('date') }) });
         });
+        await context.route('**/api/v1/matches/next?*', route => route.fulfill({ contentType: 'application/json', body: JSON.stringify({
+            ...snapshot, from_date: '2026-07-01', team_id: 562, participating: true,
+            games: snapshot.games.filter(game => [game.away.team.id, game.home.team.id].includes(562)).map(game => ({ ...game, status: 'live' })),
+        }) }));
         const page = await context.newPage(); page.setDefaultTimeout(10000);
         page.on('pageerror', error => errors.push(error.message));
         await page.clock.install({ time: new Date('2026-07-01T18:00:00Z') });

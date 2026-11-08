@@ -12,6 +12,19 @@ export async function obtenerCalendarioPartidos(league, date, { signal } = {}) {
     return result;
 }
 
+export async function obtenerProximosPartidosEquipo(league, teamId, date, { signal } = {}) {
+    const result = await solicitarBackend(`/api/v1/matches/next?${new URLSearchParams({ league, team_id: teamId, date })}`, {
+        authenticated: false,
+        signal: AbortSignal.any([...(signal ? [signal] : []), AbortSignal.timeout(25000)]),
+    });
+    if (!Array.isArray(result?.games) || !Array.isArray(result?.teams) || result.from_date !== date
+        || result.league !== league || result.team_id !== teamId || typeof result.participating !== 'boolean'
+        || !/^\d{4}-\d{2}-\d{2}$/.test(result.date) || result.date < date) {
+        throw new Error('No pudimos consultar los próximos partidos.');
+    }
+    return result;
+}
+
 let logoManifest;
 export function obtenerLogosPartidos() {
     logoManifest ||= fetch(ruta('data/match-logos.json')).then(response => {

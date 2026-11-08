@@ -71,8 +71,13 @@ function calendarioTemplate() {
     return `<section class="equipo-calendar equipo-card" aria-labelledby="equipo-calendario">
         <h2 class="equipo-section-bar" id="equipo-calendario">Calendario de juegos</h2>
         <div class="equipo-calendar-body">
-            <p class="equipo-calendar-league">LMB · Horarios de Ciudad de México</p>
+            <div class="equipo-calendar-leagues" role="group" aria-label="Liga del calendario del equipo">
+                <button type="button" data-calendar-league="lmb" aria-pressed="true">LMB</button>
+                <button type="button" data-calendar-league="lmp" aria-pressed="false">LMP</button>
+            </div>
+            <p class="equipo-calendar-league">Horarios de Ciudad de México</p>
             <div class="equipo-calendar-controls" data-equipo-calendar="controles">
+                <p class="equipo-calendar-mode" data-equipo-calendar="modo"></p>
                 <p class="equipo-calendar-date" data-equipo-calendar="titulo-fecha">Consultando jornada…</p>
                 <div class="equipo-calendar-date-actions">
                     <button type="button" data-equipo-calendar="anterior" aria-label="Día anterior">${calIcon('arrow-left')}</button>

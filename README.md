@@ -393,9 +393,16 @@ Para publicar esta sección deben desplegarse tanto el frontend como el backend
 actualizado. El frontend utiliza el `BACKEND_API_URL` configurado durante el build.
 
 Las fichas de equipos consultan el mismo calendario público y reutilizan sus
-tarjetas, logos, estados y horarios. Cada ficha muestra la jornada de su equipo
-de LMB, permite cambiar la fecha y abre el calendario general con ese equipo y
-esa fecha seleccionados. Los calendarios estáticos del catálogo no se muestran.
+tarjetas, logos, estados y horarios. Cada ficha permite elegir LMB o LMP y cambiar
+la fecha. Al abrirla o pulsar Hoy, `/api/v1/matches/next` busca el primer día con
+partidos pendientes del equipo, desde hoy hasta 366 días adelante; incluye los
+dos juegos si hay doble cartelera. Si aún no hay calendario publicado, lo indica.
+El enlace al calendario general conserva liga, equipo y fecha del partido.
+Charros usa su ID correspondiente a cada liga; la ficha de Unión Laguna no se
+confunde con Guasave. Sultanes conserva su ID histórico de LMP para consultar
+temporadas anteriores. Si el equipo no participa en la liga y temporada
+seleccionadas, se indica y el enlace abre esa liga sin filtrar por otro club.
+Los calendarios estáticos del catálogo no se muestran.
 La correspondencia entre las cuatro fichas y los IDs de la liga se mantiene en
 `frontend/public/js/features/equipos/calendario-equipo.js`.
 
