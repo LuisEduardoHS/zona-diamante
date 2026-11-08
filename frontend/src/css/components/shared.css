@@ -194,7 +194,8 @@
 .shell-menu-button, .shell-brand { @apply grid place-items-center w-[48px] h-[48px] [border:0] rounded-[50%] [box-shadow:0_3px_10px_#0002]; }
 .shell-menu-button.hidden, .shell-brand.hidden { @apply hidden!; }
 .shell-menu-button { @apply [background:#f27b21] text-white cursor-pointer; }
-.shell-brand { @apply box-border [flex:0_0_48px] min-w-[48px] max-w-[48px] min-h-[48px] max-h-[48px] p-0 overflow-hidden aspect-square [background:#c8c8c8] text-ink leading-0; }
+/* The menu button moves into the modal; keep the account anchored without it. */
+.shell-brand { @apply ml-auto box-border [flex:0_0_48px] min-w-[48px] max-w-[48px] min-h-[48px] max-h-[48px] p-0 overflow-hidden aspect-square [background:#c8c8c8] text-ink leading-0; }
 .shell-menu-button svg { @apply w-[22px] h-[22px] [stroke-width:3]; }
 .shell-brand svg { @apply w-[30px] h-[30px]; }
 .shell-account-avatar { @apply block w-full min-w-full max-w-full h-full min-h-full max-h-[100%] aspect-square rounded-[inherit] object-cover [object-position:center]; }
