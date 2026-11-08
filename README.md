@@ -361,3 +361,33 @@ No abras los HTML directamente con `file://`, porque el proyecto utiliza módulo
 ---
 
 El sitio puede servirse directamente desde `frontend/public/` con un servidor estatico. La navegacion compartida mantiene el header y la barra inferior, y carga el contenido y los estilos de cada seccion sin reconstruir el documento completo.
+
+## Calendario de partidos
+
+El botón **Partidos** del inicio y del menú abre el calendario público de LMB y
+LMP. Usa MLB Stats API sin API key ni sesión de usuario, a través de FastAPI:
+
+```text
+GET /api/v1/matches?league=lmb&date=2026-07-01
+GET /api/v1/matches?league=lmp&date=2026-11-07
+```
+
+La fecha y los horarios corresponden a `America/Mexico_City`. Se pueden elegir
+liga, día, equipo y estado; los filtros quedan en la URL para compartir la
+jornada. Enero de LMP consulta la temporada que comenzó el año anterior.
+
+El backend comparte una caché en memoria por proceso (máximo 128 entradas):
+60 segundos para hoy o partidos en juego, 5 minutos para fechas futuras y
+6 horas para fechas pasadas. Si el proveedor falla, puede devolver una jornada
+guardada hace menos de 24 horas, marcada como desactualizada en la interfaz.
+Sin datos disponibles se muestra un error con reintento. No se inventan partidos.
+La vista vuelve a consultar cada minuto mientras está visible y muestra hoy o
+partidos en curso. El proveedor puede tener retrasos en sus marcadores.
+
+Los 30 logos de la temporada 2026 están guardados en
+`frontend/public/assets/img/partidos/`; su procedencia está en
+`frontend/public/data/match-logos.json`. La página usa iniciales como alternativa
+para equipos sin logo. No hacen falta variables de entorno nuevas.
+
+Para publicar esta sección deben desplegarse tanto el frontend como el backend
+actualizado. El frontend utiliza el `BACKEND_API_URL` configurado durante el build.

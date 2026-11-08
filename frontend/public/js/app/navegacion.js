@@ -1,9 +1,9 @@
-import { RUTAS, rutaInterna } from './rutas.js?v=20260930-1';
+import { RUTAS, rutaInterna } from './rutas.js?v=20261108-partidos';
 import { requerirSesion } from '../features/auth/guards.js';
 
 const cache = new Map();
 // Mantener las secciones principales en el orden visual del menú inferior.
-const ordenSecciones = [RUTAS.inicio, RUTAS.trivia, RUTAS.camara, RUTAS.coleccion, RUTAS.informacion, RUTAS.juego, RUTAS.ayuda];
+const ordenSecciones = [RUTAS.inicio, RUTAS.partidos, RUTAS.trivia, RUTAS.camara, RUTAS.coleccion, RUTAS.informacion, RUTAS.juego, RUTAS.ayuda];
 
 const rutasPrivadas = new Set([
     RUTAS.perfil
@@ -59,6 +59,9 @@ async function montarSeccion(archivo, signal) {
     if (archivo === RUTAS.inicio) {
         const { renderCarousel } = await import('../components/CarouselEquipos.js');
         if (!signal.aborted) await renderCarousel(signal);
+    } else if (archivo === RUTAS.partidos) {
+        const { iniciarPartidos } = await import('../features/partidos/partidos-page.js');
+        if (!signal.aborted) iniciarPartidos(signal);
     } else if (archivo === RUTAS.equipo) {
         const { cargarDetalleEquipo } = await import('../features/equipos/equipo.js');
         if (!signal.aborted) await cargarDetalleEquipo(signal);

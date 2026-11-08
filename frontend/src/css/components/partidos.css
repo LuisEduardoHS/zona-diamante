@@ -1,0 +1,97 @@
+.partidos-page { @apply min-h-dvh; }
+.partidos-layout { @apply mx-auto w-full max-w-5xl pb-[var(--bottom-clearance)]; }
+.partidos-hero { @apply relative isolate flex items-center justify-between overflow-hidden rounded-b-[42px] bg-brand px-6 pb-9 pt-[calc(100px+env(safe-area-inset-top,0px))] text-white sm:px-10 md:rounded-b-[52px] md:pb-11; }
+.partidos-hero::after { @apply pointer-events-none absolute -right-20 -bottom-48 -z-10 size-72 rounded-full bg-accent [content:'']; }
+.partidos-hero-copy { @apply relative z-10 min-w-0; }
+.partidos-volver { @apply mb-7 inline-flex min-h-9 items-center gap-2 text-xs font-bold text-white/90 hover:text-white; }
+.partidos-eyebrow { @apply mb-3 text-[10px] font-extrabold uppercase tracking-[.18em] text-[#c1e8ef]; }
+.partidos-hero h1 { @apply font-display text-[clamp(27px,6.6vw,44px)] leading-[1.12] tracking-[-.045em]; }
+.partidos-intro { @apply mt-4 max-w-[38ch] text-sm leading-relaxed text-white/90; }
+.partidos-diamante { @apply hidden w-[300px] shrink-0 text-white md:block; }
+.partidos-diamante svg { @apply w-full; }
+.partidos-diamante span { @apply block text-center text-[10px] font-extrabold uppercase tracking-[.16em] text-white/75; }
+.partidos-content { @apply space-y-8 px-4 pt-6 sm:space-y-10 sm:px-10 sm:pt-8; }
+.partidos-controles { @apply rounded-[28px] border border-[#e2e8e9] bg-white p-4 shadow-[0_4px_20px_#003c4705] sm:p-6; }
+.partidos-league-row { @apply flex flex-wrap items-center justify-between gap-3 border-b border-[#edf0f0] pb-5; }
+.partidos-ligas { @apply flex gap-1 rounded-full bg-[#edf3f3] p-1; }
+.partidos-ligas button { @apply flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-full px-4 text-sm font-black text-[#586d72] transition-colors sm:px-5; }
+.partidos-ligas button span { @apply text-[10px] font-bold; }
+.partidos-ligas button[aria-pressed=true] { @apply bg-brand text-white shadow-sm; }
+.partidos-zona { @apply flex items-center gap-1.5 text-[11px] font-semibold text-[#65757a]; }
+.partidos-zona > span { @apply text-lg text-brand; }
+.partidos-jornada { @apply flex flex-wrap items-center justify-between gap-4 py-5; }
+.partidos-kicker { @apply mb-1.5 text-[10px] font-extrabold uppercase tracking-[.12em] text-brand; }
+.partidos-jornada h2 { @apply text-[clamp(18px,4.8vw,24px)] leading-tight tracking-[-.025em]; }
+.partidos-date-actions { @apply flex items-center gap-1.5; }
+.partidos-icon-button, .partidos-hoy, .partidos-calendario { @apply relative grid size-11 cursor-pointer place-items-center rounded-full border border-[#dce5e6] bg-white text-lg font-bold text-brand-deep transition-colors hover:bg-[#edf5f5]; }
+.partidos-hoy { @apply w-auto px-4 text-xs; }
+.partidos-calendario svg { @apply size-5; }
+.partidos-calendario input { @apply absolute inset-0 size-full min-w-0 cursor-pointer opacity-0; }
+.partidos-calendario input::-webkit-calendar-picker-indicator { @apply absolute inset-0 size-full cursor-pointer; }
+.partidos-calendario:focus-within { @apply outline-3 outline-offset-2 outline-brand; }
+.partidos-semana { @apply grid grid-cols-7 gap-1.5; }
+.partidos-dia { @apply flex min-h-[68px] min-w-0 cursor-pointer flex-col items-center justify-center gap-1 rounded-2xl text-[#637378] transition-colors hover:bg-[#edf5f5]; }
+.partidos-dia span { @apply text-[10px] font-bold; }
+.partidos-dia strong { @apply text-lg font-black; }
+.partidos-dia[data-today=true] strong { @apply underline decoration-accent decoration-2 underline-offset-4; }
+.partidos-dia[aria-pressed=true] { @apply bg-brand text-white shadow-[0_4px_10px_#00829825]; }
+.partidos-dia:disabled, .partidos-icon-button:disabled { @apply cursor-default opacity-30; }
+.partidos-results-heading { @apply flex flex-wrap items-center justify-between gap-3; }
+.partidos-results-heading h2 { @apply font-display text-[clamp(21px,5.5vw,28px)] tracking-[-.04em]; }
+.partidos-equipo-label { @apply max-w-full; }
+.partidos-equipo-label select { @apply min-h-11 max-w-full cursor-pointer rounded-full border border-[#dce5e6] bg-white py-2 pl-4 pr-8 text-xs font-bold text-[#465b61] sm:max-w-[250px]; }
+.partidos-filtros { @apply mt-5 mb-5 flex flex-wrap gap-2; }
+.partidos-filtros button { @apply inline-flex min-h-11 cursor-pointer items-center justify-center gap-1.5 rounded-full border border-[#dce5e6] bg-white px-3.5 text-[11px] font-extrabold text-[#56696f] transition-colors hover:border-brand hover:text-brand-deep; }
+.partidos-filtros button[aria-pressed=true] { @apply border-brand bg-[#e4f0f1] text-brand-deep; }
+#partidos-total { @apply rounded-full bg-brand/10 px-1.5 py-0.5 text-[10px]; }
+.partidos-live-dot { @apply inline-block size-1.5 shrink-0 rounded-full bg-[#187f64]; }
+.partidos-lista { @apply grid gap-4 md:grid-cols-2; }
+.partido-card { @apply min-w-0 overflow-hidden rounded-[24px] border border-[#e2e8e9] bg-white shadow-[0_3px_12px_#00000004]; }
+.partido-card[data-status=live] { @apply border-[#81bbb0]; }
+.partido-card-top { @apply flex min-h-12 items-center justify-between gap-2 border-b border-[#eef1f1] px-4 py-3; }
+.partido-status { @apply inline-flex items-center gap-1.5 rounded-full bg-[#f0f3f3] px-2.5 py-1 text-[10px] font-extrabold text-[#56696f]; }
+.partido-card[data-status=live] .partido-status { @apply bg-[#e8f5ef] text-[#17654c]; }
+.partido-card[data-status=scheduled] .partido-status { @apply bg-[#e9f3f5] text-brand-deep; }
+.partido-card[data-status=delayed] .partido-status,
+.partido-card[data-status=postponed] .partido-status,
+.partido-card[data-status=suspended] .partido-status { @apply bg-[#fff0e3] text-[#94470d]; }
+.partido-inning { @apply text-[11px] font-bold text-[#64767b]; }
+.partido-scoreboard { @apply px-4 pt-3 pb-4; }
+.partido-columns { @apply mb-1 grid grid-cols-[minmax(0,1fr)_28px_28px_28px] gap-1 text-center text-[9px] font-extrabold text-[#7b898d]; }
+.partido-columns span:first-child { @apply text-left; }
+.partido-team { @apply grid min-h-[66px] grid-cols-[minmax(0,1fr)_28px_28px_28px] items-center gap-1; }
+.partido-team + .partido-team { @apply mt-1; }
+.partido-team-name { @apply flex min-w-0 items-center gap-2.5; }
+.partido-logo { @apply relative grid size-12 shrink-0 place-items-center rounded-2xl bg-[#f5f7f7] p-1.5 text-xs font-black text-brand; }
+.partido-logo img { @apply relative z-10 size-full object-contain; }
+.partido-logo > span { @apply absolute inset-0 grid place-items-center; }
+.partido-logo:has(img) > span { @apply invisible; }
+.partido-name { @apply min-w-0; }
+.partido-name strong { @apply block text-[13px] leading-snug font-extrabold; }
+.partido-name small { @apply mt-0.5 block text-[9px] font-semibold text-[#7b898d]; }
+.partido-number { @apply text-center text-xs font-semibold tabular-nums text-[#7b898d]; }
+.partido-runs { @apply rounded-lg bg-[#f3f6f6] py-1 text-xl font-black text-ink; }
+.partido-team[data-winner=true] .partido-runs { @apply bg-[#e4f0f1] text-brand-deep; }
+.partido-venue { @apply flex items-center gap-1.5 border-t border-[#eef1f1] px-4 py-3 text-[10px] font-semibold text-[#6b7c80]; }
+.partido-venue svg { @apply size-3.5 shrink-0 text-brand; }
+.partidos-empty { @apply col-span-full flex min-h-60 flex-col items-center justify-center rounded-[24px] border border-dashed border-[#cddbdd] bg-white px-5 py-8 text-center; }
+.partidos-empty svg { @apply mb-4 size-12 text-brand/65; }
+.partidos-empty h3 { @apply text-lg font-black; }
+.partidos-empty p { @apply mt-2 max-w-[42ch] text-sm leading-relaxed text-[#65757a]; }
+.partidos-empty button { @apply mt-5 min-h-11 cursor-pointer rounded-full bg-brand px-5 py-2.5 text-xs font-extrabold text-white hover:bg-brand-deep; }
+.partidos-aviso { @apply mb-4 rounded-2xl border border-[#efd1b4] bg-[#fff5eb] px-4 py-3 text-xs leading-relaxed text-[#89440f]; }
+.partidos-aviso[hidden] { @apply hidden; }
+.partidos-fuente { @apply mt-5 flex flex-wrap items-center justify-between gap-2 text-[10px] font-semibold text-[#6b7c80]; }
+.partidos-fuente button { @apply inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full px-3 text-xs font-extrabold text-brand-deep hover:bg-[#e4f0f1]; }
+.partidos-fuente button:disabled { @apply cursor-wait opacity-50; }
+.partidos-creditos { @apply mt-1 text-[10px] leading-relaxed text-[#6b7c80]; }
+.partidos-explora { @apply flex flex-wrap items-center justify-between gap-5 rounded-[24px] bg-[#ffe9d8] p-6 text-[#763a0d]; }
+.partidos-explora .partidos-kicker { @apply text-[#98501c]; }
+.partidos-explora h2 { @apply text-xl tracking-[-.02em]; }
+.partidos-explora p:last-child { @apply mt-2 text-xs leading-relaxed; }
+.partidos-explora a { @apply flex min-h-11 items-center justify-center gap-4 rounded-full bg-white px-5 py-3 text-xs font-extrabold text-[#763a0d] transition-colors hover:bg-[#fff8f2]; }
+.partidos-skeleton { @apply h-[251px] animate-pulse rounded-[24px] border border-[#e2e8e9] bg-white p-5 motion-reduce:animate-none; }
+.partidos-skeleton span { @apply mb-5 block h-4 w-24 rounded-full bg-[#edf2f2]; }
+.partidos-skeleton div { @apply mt-4 h-12 rounded-2xl bg-[#f2f5f5]; }
+.partidos-page button:focus-visible, .partidos-page a:focus-visible, .partidos-page select:focus-visible { @apply outline-3 outline-offset-3 outline-brand; }
+.partidos-hero a:focus-visible { @apply outline-white; }

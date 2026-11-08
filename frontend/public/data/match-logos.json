@@ -1,0 +1,186 @@
+{
+  "provider": "MLB / MLBstatic",
+  "downloaded_at": "2026-11-08T15:15:40.855785+00:00",
+  "logos": [
+    {
+      "id": 434,
+      "name": "Bravos de Leon",
+      "source": "https://www.mlbstatic.com/team-logos/434.svg",
+      "path": "assets/img/partidos/434.svg"
+    },
+    {
+      "id": 442,
+      "name": "Olmecas de Tabasco",
+      "source": "https://www.mlbstatic.com/team-logos/442.svg",
+      "path": "assets/img/partidos/442.svg"
+    },
+    {
+      "id": 447,
+      "name": "Algodoneros Union Laguna",
+      "source": "https://www.mlbstatic.com/team-logos/447.svg",
+      "path": "assets/img/partidos/447.svg"
+    },
+    {
+      "id": 496,
+      "name": "Leones de Yucatan",
+      "source": "https://www.mlbstatic.com/team-logos/496.svg",
+      "path": "assets/img/partidos/496.svg"
+    },
+    {
+      "id": 502,
+      "name": "Saraperos de Saltillo",
+      "source": "https://www.mlbstatic.com/team-logos/502.svg",
+      "path": "assets/img/partidos/502.svg"
+    },
+    {
+      "id": 520,
+      "name": "Pericos de Puebla",
+      "source": "https://www.mlbstatic.com/team-logos/520.svg",
+      "path": "assets/img/partidos/520.svg"
+    },
+    {
+      "id": 523,
+      "name": "Piratas de Campeche",
+      "source": "https://www.mlbstatic.com/team-logos/523.svg",
+      "path": "assets/img/partidos/523.svg"
+    },
+    {
+      "id": 528,
+      "name": "Rieleros de Aguascalientes",
+      "source": "https://www.mlbstatic.com/team-logos/528.svg",
+      "path": "assets/img/partidos/528.svg"
+    },
+    {
+      "id": 532,
+      "name": "Diablos Rojos del Mexico",
+      "source": "https://www.mlbstatic.com/team-logos/532.svg",
+      "path": "assets/img/partidos/532.svg"
+    },
+    {
+      "id": 536,
+      "name": "Tecos de los Dos Laredos",
+      "source": "https://www.mlbstatic.com/team-logos/536.svg",
+      "path": "assets/img/partidos/536.svg"
+    },
+    {
+      "id": 560,
+      "name": "Acereros del Norte",
+      "source": "https://www.mlbstatic.com/team-logos/560.svg",
+      "path": "assets/img/partidos/560.svg"
+    },
+    {
+      "id": 562,
+      "name": "Sultanes de Monterrey",
+      "source": "https://www.mlbstatic.com/team-logos/562.svg",
+      "path": "assets/img/partidos/562.svg"
+    },
+    {
+      "id": 569,
+      "name": "Tigres de Quintana Roo",
+      "source": "https://www.mlbstatic.com/team-logos/569.svg",
+      "path": "assets/img/partidos/569.svg"
+    },
+    {
+      "id": 575,
+      "name": "Dorados de Chihuahua",
+      "source": "https://www.mlbstatic.com/team-logos/575.svg",
+      "path": "assets/img/partidos/575.svg"
+    },
+    {
+      "id": 579,
+      "name": "Guerreros de Oaxaca",
+      "source": "https://www.mlbstatic.com/team-logos/579.svg",
+      "path": "assets/img/partidos/579.svg"
+    },
+    {
+      "id": 673,
+      "name": "Aguilas de Mexicali",
+      "source": "https://www.mlbstatic.com/team-logos/673.svg",
+      "path": "assets/img/partidos/673.svg"
+    },
+    {
+      "id": 674,
+      "name": "Charros de Jalisco",
+      "source": "https://www.mlbstatic.com/team-logos/674.svg",
+      "path": "assets/img/partidos/674.svg"
+    },
+    {
+      "id": 675,
+      "name": "Caneros de los Mochis",
+      "source": "https://www.mlbstatic.com/team-logos/675.svg",
+      "path": "assets/img/partidos/675.svg"
+    },
+    {
+      "id": 676,
+      "name": "Mayos de Navojoa",
+      "source": "https://www.mlbstatic.com/team-logos/676.svg",
+      "path": "assets/img/partidos/676.svg"
+    },
+    {
+      "id": 677,
+      "name": "Naranjeros de Hermosillo",
+      "source": "https://www.mlbstatic.com/team-logos/677.svg",
+      "path": "assets/img/partidos/677.svg"
+    },
+    {
+      "id": 678,
+      "name": "Tomateros de Culiacan",
+      "source": "https://www.mlbstatic.com/team-logos/678.svg",
+      "path": "assets/img/partidos/678.svg"
+    },
+    {
+      "id": 679,
+      "name": "Venados de Mazatlan",
+      "source": "https://www.mlbstatic.com/team-logos/679.svg",
+      "path": "assets/img/partidos/679.svg"
+    },
+    {
+      "id": 680,
+      "name": "Yaquis de Obregon",
+      "source": "https://www.mlbstatic.com/team-logos/680.svg",
+      "path": "assets/img/partidos/680.svg"
+    },
+    {
+      "id": 4444,
+      "name": "Caliente de Durango",
+      "source": "https://www.mlbstatic.com/team-logos/4444.svg",
+      "path": "assets/img/partidos/4444.svg"
+    },
+    {
+      "id": 5010,
+      "name": "Toros de Tijuana",
+      "source": "https://www.mlbstatic.com/team-logos/5010.svg",
+      "path": "assets/img/partidos/5010.svg"
+    },
+    {
+      "id": 5482,
+      "name": "Algodoneros de Guasave",
+      "source": "https://www.mlbstatic.com/team-logos/5482.svg",
+      "path": "assets/img/partidos/5482.svg"
+    },
+    {
+      "id": 5567,
+      "name": "El Aguila de Veracruz",
+      "source": "https://www.mlbstatic.com/team-logos/5567.svg",
+      "path": "assets/img/partidos/5567.svg"
+    },
+    {
+      "id": 6303,
+      "name": "Conspiradores de Queretaro",
+      "source": "https://www.mlbstatic.com/team-logos/6303.svg",
+      "path": "assets/img/partidos/6303.svg"
+    },
+    {
+      "id": 6304,
+      "name": "Charros de Jalisco",
+      "source": "https://www.mlbstatic.com/team-logos/6304.svg",
+      "path": "assets/img/partidos/6304.svg"
+    },
+    {
+      "id": 6483,
+      "name": "Jaguares de Nayarit",
+      "source": "https://www.mlbstatic.com/team-logos/6483.svg",
+      "path": "assets/img/partidos/6483.svg"
+    }
+  ]
+}

@@ -8,6 +8,7 @@
 @import "./components/juego.css";
 @import "./components/foto-ar.css";
 @import "./components/info.css";
+@import "./components/partidos.css";
 
 @source "../../public";
 

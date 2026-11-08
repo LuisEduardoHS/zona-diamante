@@ -1,4 +1,4 @@
-import { RUTAS, ruta, rutaInterna } from '../app/rutas.js?v=20260930-1';
+import { RUTAS, ruta, rutaInterna } from '../app/rutas.js?v=20261108-partidos';
 import { observarEstadoSesion } from '../features/auth/session.js';
 
 const secciones = [
@@ -106,7 +106,7 @@ export function renderHeader() {
         <dialog id="menu-overlay" class="site-menu" aria-labelledby="menu-titulo">
             <h2 id="menu-titulo" class="sr-only">Menú principal</h2>
             <nav class="site-menu-links" aria-label="Menú principal">
-                ${[['Principal', secciones.slice(0, 3)], ['Experiencia', secciones.slice(3, 5)], ['Información', secciones.slice(5)]].map(([grupo, enlaces]) => `
+                ${[['Principal', [...secciones.slice(0, 3), [RUTAS.partidos, 'Partidos', 'Calendario y resultados', 'M8 3v4m8-4v4M3 10h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z']]], ['Experiencia', secciones.slice(3, 5)], ['Información', secciones.slice(5)]].map(([grupo, enlaces]) => `
                     <section class="site-menu-group" aria-label="${grupo}">
                         <p class="site-menu-group-title">${grupo}</p>
                         ${enlaces.map(([path, nombre, , dibujo, relleno]) => `<a class="site-menu-link${path === RUTAS.camara ? ' site-menu-link--ar' : ''}" href="${ruta(path)}"><span class="site-menu-icon">${path === RUTAS.camara ? iconoCamara() : icono(dibujo, relleno)}</span><span>${path === RUTAS.informacion ? 'Info' : nombre}</span></a>`).join('')}

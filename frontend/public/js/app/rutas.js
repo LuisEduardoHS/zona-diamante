@@ -8,6 +8,7 @@ export const RUTAS = Object.freeze({
     juego: 'pages/experiencias/juego.html',
     camara: 'pages/experiencias/camara.html',
     informacion: 'pages/contenido/Informacion.html',
+    partidos: 'pages/contenido/partidos.html',
     ayuda: 'pages/contenido/Ayuda.html',
     equipo: 'pages/equipos/equipo.html',
     coleccion: 'pages/coleccion/coleccion.html',
