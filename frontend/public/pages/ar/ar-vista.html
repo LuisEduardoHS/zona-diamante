@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <link rel="icon" type="image/svg+xml" href="../../assets/logo-naranja.svg">
     <title>Zona Diamante | AR</title>
-    <link href="../../css/output.css?v=20261108-ar-claim" rel="stylesheet">
+    <link href="../../css/output.css?v=20261108-ar-compact" rel="stylesheet">
 
     <script src="../../vendor/aframe.min.js"></script>
     <script src="../../vendor/mindar-image-aframe.prod.js"></script>
@@ -18,11 +18,10 @@
         <div id="ar-status-container" class="bg-black/50 backdrop-blur-md px-6 py-2 rounded-full border-white/20 shadow-lg">
             <span id="ar-status" role="status" aria-live="polite" class="font-bold text-sm text-white">Iniciando cámara...</span>
         </div>
-        <a id="ar-equipo-aviso" class="ar-equipo-aviso" target="_top" hidden><span><small>Equipo reconocido</small><strong id="ar-aviso-equipo"></strong></span><span class="ar-aviso-action">Ver equipo <svg class="lucide-icon" aria-hidden="true"><use href="../../assets/icons/lucide.svg#arrow-right"/></svg></span></a>
+        <a id="ar-equipo-aviso" class="ar-equipo-aviso" target="_top" hidden><strong id="ar-aviso-equipo"></strong><span class="ar-aviso-action">Ver equipo <svg class="lucide-icon" aria-hidden="true"><use href="../../assets/icons/lucide.svg#arrow-right"/></svg></span></a>
         </div>
 
         <div id="ar-result" class="hidden bg-white text-[#2b2b31] px-8 py-6 rounded-[2rem] shadow-2xl flex-col items-center gap-2 w-10/12 pointer-events-auto transition-all transform translate-y-10 opacity-0 duration-300">
-            <p class="text-xs text-gray-500 font-bold uppercase tracking-wider">Objeto detectado</p>
             <h2 id="equipo-detectado" class="font-urbanist font-black text-2xl uppercase tracking-tighter text-center text-[#008298]">Equipo</h2>
 
             <div class="flex gap-3 w-full mt-4">

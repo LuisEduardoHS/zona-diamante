@@ -435,7 +435,15 @@ acepta `team_slug`: el servidor resuelve usuario y carta, y reutiliza las RPC
 `authorize_ar_mascot` y `grant_verified_ar_mascot` de la migración
 `20261025000200_verified_ar_mascot_grants.sql`. La referencia estable
 `ar-self-service:v1:<usuario>:<equipo>` permite reintentar sin duplicar la carta
-ni conceder puntos. No requiere una migración nueva.
+ni conceder puntos. La migración `20261108000100_ar_catalog_row_lock_permissions.sql`
+concede al rol del backend `UPDATE (is_active)` sobre equipos y cartas: PostgreSQL
+requiere ese permiso para los bloqueos `FOR SHARE` de la entrega. Los roles del
+navegador conservan el catálogo de sólo lectura. Sin esos permisos, consultar
+la colección funciona pero reclamar devuelve un error.
+
+La prueba transaccional `backend/checks/ar_claim_permissions.sql` verifica las
+cuatro mascotas y sus reintentos usando permisos de catálogo restringidos,
+comprueba que los puntos no cambian y revierte todos los datos de prueba.
 
 La política actual permite reclamar la carta desde el escáner con una cuenta.
 El reconocimiento ocurre en el dispositivo; este flujo no certifica presencia

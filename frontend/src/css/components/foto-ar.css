@@ -61,18 +61,16 @@
 .ar-page button, .ar-page a { @apply [-webkit-tap-highlight-color:transparent]; }
 .ar-page [hidden] { @apply hidden!; }
 .ar-page button:focus-visible, .ar-page a:focus-visible, .ar-page input:focus-visible { @apply [outline:3px_solid_#008298] [outline-offset:3px]; }
-.ar-page #ar-result { @apply w-[min(420px,calc(100vw_-_32px))] p-[18px] gap-1 [border:1px_solid_#00829818]; }
+.ar-page #ar-result { @apply w-[min(420px,calc(100vw_-_32px))] rounded-3xl px-4 py-3 gap-1 [border:1px_solid_#00829818]; }
 .ar-page #ar-result > div { @apply mt-2; }
 .ar-page #ar-result button { @apply min-h-[48px] p-[10px_8px]; }
 .ar-page #ar-status-container { @apply max-w-[calc(100vw_-_32px)] text-center; }
 .ar-page #ar-ui { @apply pt-[calc(88px_+_env(safe-area-inset-top,0px))]; }
-.ar-scan-feedback { @apply grid w-[min(420px,calc(100vw_-_32px))] justify-items-center gap-3; }
-.ar-equipo-aviso { @apply pointer-events-auto flex w-full items-center justify-between gap-3 rounded-2xl border border-[#ffffff60] bg-white/95 px-4 py-3 text-[#006d80] shadow-lg; }
-.ar-equipo-aviso > span:first-child { @apply grid min-w-0 gap-1; }
-.ar-equipo-aviso small { @apply text-[9px] font-bold uppercase tracking-wider text-[#61717a]; }
-.ar-equipo-aviso strong { @apply text-sm font-extrabold; }
+.ar-scan-feedback { @apply grid w-[min(420px,calc(100vw_-_32px))] justify-items-center gap-2; }
+.ar-equipo-aviso { @apply pointer-events-auto flex w-full min-h-11 items-center justify-between gap-3 rounded-xl border border-[#ffffff60] bg-white/95 px-3 py-2 text-[#006d80] shadow-lg; }
+.ar-equipo-aviso strong { @apply min-w-0 text-xs font-extrabold; }
 .ar-aviso-action { @apply inline-flex shrink-0 items-center gap-1 text-[11px] font-extrabold; }
-.ar-carta-status { @apply mt-2 text-center text-[11px] leading-relaxed text-[#61717a]; }
+.ar-carta-status { @apply mt-1 text-center text-[11px] leading-snug text-[#61717a]; }
 .ar-carta-status:empty, .ar-page #modelo-status:empty { @apply hidden; }
 .ar-carta-login { @apply inline-flex min-h-11 items-center text-xs font-extrabold text-[#008298] underline; }
 .ar-confeti { @apply pointer-events-none fixed inset-0 z-[70] overflow-hidden; }

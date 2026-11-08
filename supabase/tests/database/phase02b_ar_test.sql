@@ -1,6 +1,11 @@
 begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path=public,extensions;
+-- Match hosted catalog permissions: table-wide UPDATE can mask missing
+-- column grants required by SELECT ... FOR SHARE inside AR reward functions.
+revoke update on public.teams, public.cards from service_role;
+grant update (is_active) on public.teams to service_role;
+grant update (is_active) on public.cards to service_role;
 select no_plan();
 create function pg_temp.au(n int) returns uuid language sql immutable as $$
 select ('50000000-0000-4000-8000-' || lpad(n::text,12,'0'))::uuid;
