@@ -6,6 +6,7 @@ const names = [
     'arrow-down', 'arrow-left', 'arrow-right', 'arrow-up-right', 'at-sign', 'badge-check',
     'calendar-days', 'calendar-off', 'camera', 'chevron-down', 'chevron-right',
     'clock-3', 'coins', 'layers-3', 'map-pin', 'plus', 'refresh-cw', 'search', 'trash-2', 'x',
+    'sparkles', 'sliders-horizontal', 'sun', 'contrast', 'droplets', 'thermometer', 'split-square-horizontal', 'rotate-ccw',
 ];
 const source = path.dirname(require.resolve('lucide-static/package.json'));
 const destination = path.resolve(__dirname, '../public/assets/icons');

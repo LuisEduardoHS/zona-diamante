@@ -6,6 +6,8 @@ const source = (await readFile(new URL('../public/js/services/datos-equipos.js',
 const service = await import(moduleURL(source));
 let pageSource = await readFile(new URL('../public/js/features/equipos/equipo.js', import.meta.url), 'utf8');
 pageSource = pageSource.replace(/^import.*$/mg, '') + '\n';
+const filtrosURL = moduleURL(await readFile(new URL('../public/js/features/equipos/filtros-video.js', import.meta.url), 'utf8'));
+pageSource = `import { FILTROS_VIDEO, AJUSTES_VIDEO, HERRAMIENTAS_VIDEO, normalizarVideo, filtroCSSVideo, temperaturaVideo } from '${filtrosURL}';\n` + pageSource;
 pageSource = "const ruta = p => p; const RUTAS = { inicio: 'index.html', coleccion: 'coleccion' };\n" + pageSource;
 const { detalleTemplate, fuenteVideo, FILTROS_VIDEO, iniciarRevelado } = await import(moduleURL(pageSource));
 const rows = JSON.parse(await readFile(new URL('../public/data/equipos.json', import.meta.url), 'utf8'));

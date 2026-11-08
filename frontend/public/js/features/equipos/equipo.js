@@ -1,5 +1,7 @@
 import { obtenerEquipos } from '../../services/datos-equipos.js?v=20261010-2';
 import { RUTAS, ruta } from '../../app/rutas.js';
+import { FILTROS_VIDEO, AJUSTES_VIDEO, HERRAMIENTAS_VIDEO, normalizarVideo, filtroCSSVideo, temperaturaVideo } from './filtros-video.js';
+export { FILTROS_VIDEO };
 
 const html = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 // Font Awesome Free, Classic Solid — CC BY 4.0. See assets/icons/fontawesome/LICENSE.txt
@@ -53,15 +55,9 @@ const icon = name => { const item = FA_ICONS[name]; return `<svg viewBox="${item
 const closeIcon = icon('xmark');
 const playIcon = icon('play');
 const magicIcon = icon('wand-magic-sparkles');
+const videoIcon = name => `<svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="${ruta('assets/icons/lucide.svg?v=20261108-video')}#${name}"></use></svg>`;
 const image = (src, alt, cls = '', eager = false) => src ? `<img class="${cls}" src="${html(src)}" alt="${html(alt)}" loading="${eager ? 'eager' : 'lazy'}" decoding="async">` : `<span class="equipo-image-empty ${cls}">Imagen por confirmar</span>`;
 const value = data => data === undefined || data === null || data === '' ? '—' : html(data);
-export const FILTROS_VIDEO = Object.freeze({
-    original: { nombre: 'Original', css: 'none' },
-    cine: { nombre: 'Cine', css: 'contrast(1.18) saturate(.8) brightness(.95)' },
-    calido: { nombre: 'Cálido', css: 'sepia(.3) saturate(1.35)' },
-    blancoNegro: { nombre: 'Blanco y negro', css: 'grayscale(1)' },
-    retro: { nombre: 'Retro', css: 'sepia(.6) contrast(.9) saturate(.8)' }
-});
 
 export function fuenteVideo(video) {
     if (video?.tipo === 'youtube' && /^[\w-]{11}$/.test(video.id || '')) return `https://www.youtube-nocookie.com/embed/${video.id}?playsinline=1&rel=0`;
@@ -134,9 +130,17 @@ export function detalleTemplate(equipo, equipos) {
     </section>
     <dialog class="equipo-dialog equipo-video-dialog" id="equipo-video-dialog" aria-labelledby="video-dialog-title">
         <div class="equipo-dialog-head"><h2 id="video-dialog-title">${html(video?.titulo || 'Video del equipo')}</h2><button type="button" class="equipo-close" data-close-dialog aria-label="Cerrar video">${closeIcon}</button></div>
-        <div class="equipo-video-stage" id="equipo-video-stage"></div>
-        <fieldset class="equipo-video-filters"><legend>Elige tu filtro</legend><div>${Object.entries(FILTROS_VIDEO).map(([key, filter]) => `<button type="button" data-filter="${key}" aria-pressed="${key === 'original'}">${filter.nombre}</button>`).join('')}</div></fieldset>
-        <p class="equipo-filter-note">Los filtros se quitan al cerrar el video.</p>
+        <div class="equipo-video-editor">
+            <div class="equipo-video-preview"><div class="equipo-video-stage" id="equipo-video-stage"></div><p class="equipo-video-look" id="equipo-video-look">Original</p></div>
+            <section class="equipo-video-panel" aria-label="Editor de video">
+                <div class="equipo-video-tabs" role="group" aria-label="Herramientas de video"><button type="button" data-video-tab="filtros" aria-pressed="true">${videoIcon('sparkles')} Filtros</button><button type="button" data-video-tab="ajustes" aria-pressed="false">${videoIcon('sliders-horizontal')} Ajustes</button></div>
+                <fieldset class="equipo-video-filters" id="equipo-video-filtros"><legend class="sr-only">Filtros predefinidos</legend><div>${Object.entries(FILTROS_VIDEO).map(([key, filter]) => `<button type="button" data-filter="${key}" aria-pressed="${key === 'original'}"><span class="equipo-filter-sample" data-filter-preview="${key}">${image(video?.poster || d.estadio.imagen, '')}</span><span>${filter.nombre}</span></button>`).join('')}</div></fieldset>
+                <div class="equipo-video-tools" id="equipo-video-ajustes" role="group" aria-label="Ajustes manuales" hidden>${Object.entries(HERRAMIENTAS_VIDEO).map(([key, nombre]) => `<button type="button" data-video-tool="${key}" aria-pressed="${key === 'brillo'}">${videoIcon(({ brillo: 'sun', contraste: 'contrast', saturacion: 'droplets', temperatura: 'thermometer' })[key])}<span>${nombre}</span></button>`).join('')}</div>
+                <div class="equipo-video-slider"><div><label id="equipo-video-ajuste-label" for="equipo-video-ajuste">Intensidad</label><output id="equipo-video-ajuste-valor" for="equipo-video-ajuste">100%</output></div><input id="equipo-video-ajuste" type="range" min="0" max="100" value="100" aria-labelledby="equipo-video-ajuste-label" disabled></div>
+                <div class="equipo-video-editor-actions"><button type="button" id="equipo-video-comparar" aria-pressed="false">${videoIcon('split-square-horizontal')} <span>Ver original</span></button><button type="button" id="equipo-video-restablecer">${videoIcon('rotate-ccw')} Restablecer</button></div>
+                <p class="equipo-filter-note" id="equipo-video-editor-status" role="status">Ajusta el video mientras lo ves. Los cambios se quitan al cerrar.</p>
+            </section>
+        </div>
         ${video?.fuente ? `<a class="equipo-text-link" href="${html(video.fuente)}" target="_blank" rel="noopener noreferrer">Ver en la fuente original ${icon('arrow-up-right-from-square')}</a>` : ''}
     </dialog>
     <dialog class="equipo-dialog equipo-photo-dialog" id="equipo-photo-dialog" aria-labelledby="photo-dialog-title"><div class="equipo-dialog-head"><h2 id="photo-dialog-title">Galería de ${html(equipo.nombre)}</h2><button type="button" class="equipo-close" data-close-dialog aria-label="Cerrar imagen">${closeIcon}</button></div><figure><img id="equipo-photo" alt=""><figcaption id="equipo-photo-caption"></figcaption><a id="equipo-photo-credit" class="equipo-text-link" target="_blank" rel="noopener noreferrer" hidden></a></figure><div class="equipo-photo-controls"><button type="button" data-photo-step="-1" aria-label="Imagen anterior">${icon('chevron-left')}</button><span id="equipo-photo-count"></span><button type="button" data-photo-step="1" aria-label="Imagen siguiente">${icon('chevron-right')}</button></div></dialog>`;
@@ -149,14 +153,39 @@ function iniciarMedios(container, equipo, signal) {
     const gallery = equipo.detalles.galeria;
     let photoIndex = 0;
     let opener;
-    const setFilter = key => {
-        stage.style.filter = FILTROS_VIDEO[key]?.css || 'none';
-        videoDialog.querySelectorAll('[data-filter]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === key)));
+    const slider = container.querySelector('#equipo-video-ajuste');
+    const comparar = container.querySelector('#equipo-video-comparar');
+    let ajustes = { ...AJUSTES_VIDEO }, tab = 'filtros', herramienta = 'brillo', comparando = false;
+    const actualizarVideo = () => {
+        ajustes = normalizarVideo(ajustes);
+        const manual = tab === 'ajustes', key = manual ? herramienta : 'intensidad';
+        const temperatura = temperaturaVideo(comparando ? 0 : ajustes.temperatura);
+        stage.style.setProperty('--video-temperature-color', temperatura.color);
+        stage.style.setProperty('--video-temperature-opacity', temperatura.opacidad);
+        stage.style.filter = comparando ? 'none' : filtroCSSVideo(ajustes);
+        videoDialog.querySelectorAll('[data-filter]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === ajustes.filtro)));
+        videoDialog.querySelectorAll('[data-video-tab]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.videoTab === tab)));
+        videoDialog.querySelectorAll('[data-video-tool]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.videoTool === herramienta)));
+        container.querySelector('#equipo-video-filtros').hidden = manual;
+        container.querySelector('#equipo-video-ajustes').hidden = !manual;
+        container.querySelector('#equipo-video-ajuste-label').textContent = manual ? HERRAMIENTAS_VIDEO[key] : 'Intensidad';
+        slider.min = manual ? '-100' : '0'; slider.value = ajustes[key];
+        slider.disabled = !manual && ajustes.filtro === 'original';
+        const value = `${manual && ajustes[key] > 0 ? '+' : ''}${ajustes[key]}${manual ? '' : '%'}`;
+        container.querySelector('#equipo-video-ajuste-valor').textContent = value;
+        slider.setAttribute('aria-valuetext', value);
+        comparar.setAttribute('aria-pressed', String(comparando));
+        comparar.querySelector('span').textContent = comparando ? 'Volver a edición' : 'Ver original';
+        const tieneAjustes = Object.keys(HERRAMIENTAS_VIDEO).some(key => ajustes[key] !== 0);
+        container.querySelector('#equipo-video-look').textContent = comparando ? 'Comparando · Original' : `${FILTROS_VIDEO[ajustes.filtro].nombre}${tieneAjustes ? ' · ajustes manuales' : ''}`;
     };
+    for (const sample of videoDialog.querySelectorAll('[data-filter-preview]')) sample.style.filter = FILTROS_VIDEO[sample.dataset.filterPreview].css;
     const resetVideo = () => {
         stage.querySelector('video')?.pause();
         stage.replaceChildren(); // Destruye el iframe y detiene su audio.
-        setFilter('original');
+        ajustes = { ...AJUSTES_VIDEO }; tab = 'filtros'; herramienta = 'brillo'; comparando = false;
+        actualizarVideo();
+        videoDialog.querySelector('.equipo-video-filters > div').scrollLeft = 0;
     };
     const showPhoto = index => {
         photoIndex = (index + gallery.length) % gallery.length;
@@ -194,7 +223,11 @@ function iniciarMedios(container, equipo, signal) {
         const button = event.target.closest('button');
         if (!button) return;
         if (button.hasAttribute('data-close-dialog')) return button.closest('dialog').close();
-        if (button.dataset.filter) return setFilter(button.dataset.filter);
+        if (button.dataset.filter) { ajustes.filtro = button.dataset.filter; comparando = false; actualizarVideo(); return; }
+        if (button.dataset.videoTab) { tab = button.dataset.videoTab; actualizarVideo(); return; }
+        if (button.dataset.videoTool) { herramienta = button.dataset.videoTool; actualizarVideo(); return; }
+        if (button.id === 'equipo-video-comparar') { comparando = !comparando; actualizarVideo(); return; }
+        if (button.id === 'equipo-video-restablecer') { ajustes = { ...AJUSTES_VIDEO }; comparando = false; actualizarVideo(); return; }
         if (button.dataset.galleryIndex !== undefined) {
             showPhoto(Number(button.dataset.galleryIndex));
             openDialog(photoDialog, button);
@@ -225,8 +258,13 @@ function iniciarMedios(container, equipo, signal) {
             }
             stage.append(player);
             openDialog(videoDialog, button);
+            videoDialog.scrollTop = 0;
             if (button.dataset.openVideo === 'filters') videoDialog.querySelector('[data-filter="original"]').focus();
         }
+    }, signal ? { signal } : undefined);
+    slider.addEventListener('input', () => {
+        ajustes[tab === 'ajustes' ? herramienta : 'intensidad'] = Number(slider.value);
+        comparando = false; actualizarVideo();
     }, signal ? { signal } : undefined);
     photoDialog.addEventListener('keydown', event => {
         if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); showPhoto(photoIndex + (event.key === 'ArrowRight' ? 1 : -1)); }
@@ -299,6 +337,7 @@ export async function cargarDetalleEquipo(signal) {
         document.title = `${equipo.nombre} | Zona Diamante`;
         iniciarMedios(container, equipo, signal);
         iniciarRevelado(container, signal);
+        if (new URLSearchParams(location.search).get('video') === 'filtros') container.querySelector('[data-open-video="filters"]')?.click();
     } catch (error) {
         if (signal?.aborted || !container.isConnected) return;
         console.error('No se pudo cargar el detalle del equipo:', error);
