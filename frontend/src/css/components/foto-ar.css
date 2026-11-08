@@ -65,11 +65,23 @@
 .ar-page #ar-result > div { @apply mt-2; }
 .ar-page #ar-result button { @apply min-h-[48px] p-[10px_8px]; }
 .ar-page #ar-status-container { @apply max-w-[calc(100vw_-_32px)] text-center; }
+.ar-page #ar-ui { @apply pt-[calc(88px_+_env(safe-area-inset-top,0px))]; }
+.ar-scan-feedback { @apply grid w-[min(420px,calc(100vw_-_32px))] justify-items-center gap-3; }
+.ar-equipo-aviso { @apply pointer-events-auto flex w-full items-center justify-between gap-3 rounded-2xl border border-[#ffffff60] bg-white/95 px-4 py-3 text-[#006d80] shadow-lg; }
+.ar-equipo-aviso > span:first-child { @apply grid min-w-0 gap-1; }
+.ar-equipo-aviso small { @apply text-[9px] font-bold uppercase tracking-wider text-[#61717a]; }
+.ar-equipo-aviso strong { @apply text-sm font-extrabold; }
+.ar-aviso-action { @apply inline-flex shrink-0 items-center gap-1 text-[11px] font-extrabold; }
+.ar-carta-status { @apply mt-2 text-center text-[11px] leading-relaxed text-[#61717a]; }
+.ar-carta-status:empty, .ar-page #modelo-status:empty { @apply hidden; }
+.ar-carta-login { @apply inline-flex min-h-11 items-center text-xs font-extrabold text-[#008298] underline; }
+.ar-confeti { @apply pointer-events-none fixed inset-0 z-[70] overflow-hidden; }
+.ar-confeti i { @apply absolute left-0 top-0 h-3 w-2 rounded-[1px]; }
 .ar-page #ar-error > div { @apply w-[min(100%,440px)] p-6; }
 .ar-page #btn-cerrar-inspector { @apply top-[calc(88px_+_env(safe-area-inset-top,0px))] w-[44px] h-[44px] [background:#2b2b31e6]; }
-.ar-info-inspector { @apply fixed top-[calc(88px_+_env(safe-area-inset-top,0px))] left-[16px] z-[60] min-h-[44px] p-[10px_14px] [border:1px_solid_#ffffff80] rounded-[14px] [background:#fffffff0] text-[#006d80] [font:inherit] text-[12px] font-extrabold [box-shadow:0_4px_18px_#0002]; }
+.ar-info-inspector { @apply fixed top-[calc(88px_+_env(safe-area-inset-top,0px))] left-[16px] z-[60] inline-flex items-center gap-2 min-h-[44px] p-[10px_14px] [border:1px_solid_#ffffff80] rounded-[14px] [background:#fffffff0] text-[#006d80] [font:inherit] text-[12px] font-extrabold [box-shadow:0_4px_18px_#0002]; }
 .foto-boton-editar { @apply w-full [background:#008298] mb-[10px]; }
-.foto-preview:not(.foto-confirmacion):not(.ar-equipo-panel) { @apply w-[min(620px,calc(100vw_-_24px))] p-[18px]; }
+.foto-preview:not(.foto-confirmacion) { @apply w-[min(620px,calc(100vw_-_24px))] p-[18px]; }
 .foto-preview[data-modo="editing"] { @apply w-[min(860px,calc(100vw_-_20px))]; }
 .foto-preview[data-modo="editing"] .foto-opciones { @apply hidden; }
 .foto-preview[data-modo="editing"] .foto-marco img { @apply max-h-[36dvh]; }
@@ -92,25 +104,9 @@
 .foto-editor-secundarias button { @apply min-h-[44px] p-[8px_10px] [border:0] rounded-[12px] [background:#edf2f3] text-[#334d53] text-[12px] font-bold; }
 .foto-editor-secundarias button[aria-pressed="true"] { @apply [background:#d4edf1] text-[#00596b]; }
 #foto-editor-status { @apply min-h-[18px] text-[11px] leading-[1.5] text-[#62626b] m-[8px_0]; }
-.ar-equipo-panel { @apply p-[22px] w-[min(460px,calc(100vw_-_24px))]; }
-.ar-equipo-identidad { @apply flex items-center gap-4 m-[12px_0_20px]; }
-.ar-equipo-identidad img { @apply w-[72px] h-[72px] object-contain p-2 rounded-[18px] [background:#005c6c] box-border; }
-.ar-equipo-identidad h2 { @apply m-[0_0_4px] [font-family:Urbanist,sans-serif] text-[26px] font-black leading-[1.1] text-brand; }
-.ar-equipo-identidad p { @apply m-0 text-[#62626b] text-[13px]; }
-#ar-equipo-historia { @apply text-[14px] leading-[1.7]; }
-.ar-equipo-datos { @apply grid [grid-template-columns:1fr_1fr] gap-3 m-[20px_0]; }
-.ar-equipo-datos div { @apply p-3 [background:#f0f5f6] rounded-[14px]; }
-.ar-equipo-datos dt { @apply mb-[6px] text-[10px] font-extrabold uppercase text-[#62777b]; }
-.ar-equipo-datos dd { @apply m-0 text-[13px] font-bold; }
-.ar-propiedad { @apply p-4 m-[16px_0] [background:#fff4e9] [border:1px_solid_#f27b2126] rounded-[16px]; }
-.ar-propiedad h3 { @apply text-[13px] m-[0_0_8px] font-extrabold; }
-.ar-propiedad p { @apply text-[12px] leading-[1.6] m-0; }
-.ar-propiedad [data-estado="owned"] { @apply text-[#146338] font-bold; }
-.ar-propiedad button { @apply mt-[10px] min-h-[44px] [border:0] rounded-[10px] p-[8px_12px] [background:#fff] [font:inherit] text-[12px] font-bold text-[#9c470b]; }
-.ar-panel-nota { @apply m-[12px_0_0] text-[#62626b] text-[11px] leading-[1.5]; }
 
 @media (max-width:480px) {
-    .foto-preview:not(.foto-confirmacion):not(.ar-equipo-panel) { @apply rounded-[22px] p-[14px]; }
+    .foto-preview:not(.foto-confirmacion) { @apply rounded-[22px] p-[14px]; }
     .foto-preview[data-modo="editing"] { @apply max-h-[calc(100dvh_-_12px_-_env(safe-area-inset-top,0px)_-_env(safe-area-inset-bottom,0px))]; }
     .foto-cabecera { @apply mb-[10px]; }
     .foto-preview[data-modo="editing"] .foto-cabecera h2 { @apply text-[20px]; }
@@ -134,3 +130,13 @@
 /* The AR renderer owns the video/canvas; keep its surface inside the camera route. */
 .ar-page > video, .ar-page a-scene canvas { @apply w-screen! h-dvh! object-cover! absolute! top-0! left-0!; }
 .ar-page a-scene { @apply fixed! inset-0!; }
+
+@media (prefers-reduced-motion:reduce) {
+    .ar-page #ar-result { @apply transition-none; }
+}
+
+@media (orientation:landscape) and (max-height:540px) {
+    .ar-page #ar-ui { @apply flex-row items-start gap-3 px-4; }
+    .ar-scan-feedback, .ar-page #ar-result { @apply w-[min(320px,calc(50vw_-_24px))]; }
+    .ar-page #ar-result { @apply p-3; }
+}

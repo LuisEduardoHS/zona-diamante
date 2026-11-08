@@ -42,17 +42,13 @@ document.getElementById('tests').addEventListener('click',async()=>{
     try{
         await esperar(()=>$('ar-status').textContent.includes('Apunta'));
         $('target-0').emit('targetFound'); await esperar(()=>!$('btn-inspeccionar').disabled);
-        $('btn-info-equipo').click(); await esperar(()=>$('ar-equipo-panel').open);
-        check($('ar-equipo-nombre').textContent==='Algodoneros','Panel usa datos reales');
+        check(!$('ar-equipo-aviso').hidden&&!doc.querySelector('dialog[open]'),'Aviso de equipo sin modal');
         $('target-1').emit('targetFound'); $('target-0').emit('targetLost');
-        check($('ar-equipo-nombre').textContent==='Algodoneros','Panel conserva equipo durante cambio');
-        check($('ar-equipo-ficha').href.endsWith('pages/equipos/equipo.html?id=algodoneros-ul'),'Ficha es la ruta del carrusel');
-        $('ar-equipo-cerrar').click(); check(!$('ar-equipo-panel').open,'Cierre de panel');
+        check($('ar-aviso-equipo').textContent.includes('Charros'),'Aviso sigue al equipo detectado');
         $('target-0').emit('targetFound'); await esperar(()=>!$('btn-inspeccionar').disabled);
+        check($('ar-equipo-aviso').href.endsWith('pages/equipos/equipo.html?id=algodoneros-ul'),'Ficha es la ruta del carrusel');
         $('btn-inspeccionar').click(); await esperar(()=>!$('foto-controles').hidden);
-        $('btn-info-inspector').click();await esperar(()=>$('ar-equipo-panel').open);
-        check($('ar-equipo-nombre').textContent==='Algodoneros','Información también disponible desde el visor 3D');
-        $('ar-equipo-cerrar').click();
+        check(!$('ar-equipo-inspector').hidden&&$('ar-equipo-inspector').href.endsWith('id=algodoneros-ul'),'Enlace a equipo disponible desde el visor 3D');
         $('btn-tomar-foto').click(); await esperar(()=>$('foto-preview').open);
         const originalBlob=await fetch($('foto-imagen').src).then(r=>r.blob());
         const original=await leerFoto(originalBlob);
@@ -139,7 +135,7 @@ ciclos.addEventListener('click',async()=>{
             const anteriores=tracks(); visor.src='/__ar?estado=guest&observer_case=reload-'+i;
             await esperar(()=>visor.contentWindow.location.search.includes('reload-'+i)&&listo());
             const doc=visor.contentDocument,win=visor.contentWindow;
-            verificar(['foto-preview','foto-confirmar-descarte','ar-equipo-panel'].every(id=>{
+            verificar(['foto-preview','foto-confirmar-descarte'].every(id=>{
                 const node=doc.getElementById(id);return node instanceof win.Node&&node.isConnected;
             }),'dialogs must be connected Nodes');
             await esperar(()=>anteriores.every(t=>t.readyState==='ended'));

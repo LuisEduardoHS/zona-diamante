@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <link rel="icon" type="image/svg+xml" href="../../assets/logo-naranja.svg">
     <title>Zona Diamante | AR</title>
-    <link href="../../css/output.css?v=20261108-team-leagues" rel="stylesheet">
+    <link href="../../css/output.css?v=20261108-ar-claim" rel="stylesheet">
 
     <script src="../../vendor/aframe.min.js"></script>
     <script src="../../vendor/mindar-image-aframe.prod.js"></script>
@@ -14,8 +14,11 @@
 <body class="ar-page bg-[#1a1a1a] font-sans overflow-hidden">
 
     <div id="ar-ui" class="absolute top-0 left-0 w-full h-full pointer-events-none z-40 flex flex-col items-center justify-between pb-28 pt-12">
+        <div class="ar-scan-feedback">
         <div id="ar-status-container" class="bg-black/50 backdrop-blur-md px-6 py-2 rounded-full border-white/20 shadow-lg">
             <span id="ar-status" role="status" aria-live="polite" class="font-bold text-sm text-white">Iniciando cámara...</span>
+        </div>
+        <a id="ar-equipo-aviso" class="ar-equipo-aviso" target="_top" hidden><span><small>Equipo reconocido</small><strong id="ar-aviso-equipo"></strong></span><span class="ar-aviso-action">Ver equipo <svg class="lucide-icon" aria-hidden="true"><use href="../../assets/icons/lucide.svg#arrow-right"/></svg></span></a>
         </div>
 
         <div id="ar-result" class="hidden bg-white text-[#2b2b31] px-8 py-6 rounded-[2rem] shadow-2xl flex-col items-center gap-2 w-10/12 pointer-events-auto transition-all transform translate-y-10 opacity-0 duration-300">
@@ -27,10 +30,12 @@
                     Cargando 3D...
                 </button>
 
-                <button id="btn-info-equipo" class="flex-1 bg-[#f27b21] text-white font-bold py-3 rounded-xl shadow-md active:scale-95 transition-transform text-sm">
-                    <svg class="ar-icon" aria-hidden="true"><use href="../../assets/fontawesome-ar.svg#circle-info"/></svg> Equipo y mascota
+                <button id="btn-reclamar-ar" type="button" disabled class="flex-1 bg-[#f27b21] text-white font-bold py-3 rounded-xl shadow-md active:scale-95 transition-transform text-sm">
+                    Reclamar carta AR
                 </button>
             </div>
+            <p id="ar-carta-status" class="ar-carta-status" role="status" aria-live="polite"></p>
+            <a id="ar-carta-login" class="ar-carta-login" target="_top" hidden>Iniciar sesión</a>
             <p id="modelo-status" role="status" class="text-xs text-gray-500 text-center">Cargando el modelo 3D...</p>
         </div>
     </div>
@@ -49,7 +54,7 @@
         <svg class="ar-icon" aria-hidden="true"><use href="../../assets/fontawesome-ar.svg#xmark"/></svg>
     </button>
 
-    <button id="btn-info-inspector" class="ar-info-inspector hidden" type="button"><svg class="ar-icon" aria-hidden="true"><use href="../../assets/fontawesome-ar.svg#circle-info"/></svg> Equipo y mascota</button>
+    <a id="ar-equipo-inspector" class="ar-info-inspector hidden" target="_top" hidden>Ver equipo <svg class="lucide-icon" aria-hidden="true"><use href="../../assets/icons/lucide.svg#arrow-right"/></svg></a>
 
     <div id="foto-controles" class="foto-controles" hidden>
         <p id="foto-camara-status" class="foto-camara-status" role="status" aria-live="polite"></p>
@@ -124,16 +129,6 @@
         </div>
     </dialog>
 
-    <dialog id="ar-equipo-panel" class="foto-preview ar-equipo-panel" aria-labelledby="ar-equipo-nombre">
-        <header class="foto-cabecera"><p class="foto-etiqueta"><span aria-hidden="true"></span> Equipo reconocido</p><button id="ar-equipo-cerrar" class="foto-cerrar" type="button" aria-label="Cerrar información del equipo"><svg class="ar-icon" aria-hidden="true"><use href="../../assets/fontawesome-ar.svg#xmark"/></svg></button></header>
-        <div class="ar-equipo-identidad"><img id="ar-equipo-logo" alt=""><div><h2 id="ar-equipo-nombre"></h2><p id="ar-equipo-ciudad"></p></div></div>
-        <p id="ar-equipo-historia"></p>
-        <dl class="ar-equipo-datos"><div><dt>Estadio</dt><dd id="ar-equipo-estadio"></dd></div><div><dt>Mascota</dt><dd id="ar-equipo-mascota"></dd></div></dl>
-        <section class="ar-propiedad" aria-label="Estado de la carta mascota"><h3>Tu mascota en la colección</h3><p id="ar-mascota-status" role="status" aria-live="polite"></p><button id="ar-mascota-consultar" type="button">Consultar estado</button></section>
-        <a id="ar-equipo-ficha" class="foto-boton foto-boton-guardar" target="_top">Ver ficha completa del equipo</a>
-        <p class="ar-panel-nota">Es la misma ficha del carrusel de inicio. Puedes cerrar este panel para seguir en AR.</p>
-    </dialog>
-
     <!-- Confirma tras 3 actualizaciones válidas; conserva el suavizado y la tolerancia a pérdidas. -->
     <a-scene mindar-image="imageTargetSrc: ../../ar/targets.mind; autoStart: false; filterMinCF: 0.001; filterBeta: 0.01; warmupTolerance: 2; missTolerance: 8; uiLoading: no; uiScanning: no; uiError: no;" loading-screen="enabled: false" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
 
@@ -165,7 +160,7 @@
     </a-scene>
 
     <script type="module" src="../../js/features/ar/ar-marco.js"></script>
-    <script type="module" src="../../js/features/ar/camara.js?v=20261025-2b"></script>
+    <script type="module" src="../../js/features/ar/camara.js?v=20261108-ar-claim"></script>
 
 </body>
 </html>

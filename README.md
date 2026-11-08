@@ -419,3 +419,25 @@ Para reutilizarlos en otra sección, añade el nombre a la lista de
 clase compartida `lucide-icon` y un `<use href="…/assets/icons/lucide.svg#nombre">`.
 Los iconos decorativos deben tener `aria-hidden="true"`; los botones conservan
 su texto o su etiqueta accesible.
+
+### Cartas del escáner AR
+
+Detectar un logo muestra un aviso que abre directamente la ficha del equipo.
+El botón **Reclamar carta AR** guarda la mascota exclusiva en la colección de
+la cuenta; si ya se posee, queda solamente **Ver 3D** a todo el ancho. Invitados
+pueden usar AR y abrir la ficha, y reciben un enlace para iniciar sesión al
+intentar guardar una carta. El confeti se ejecuta al reconocer cada equipo por
+primera vez en la visita y al confirmar una carta nueva, respetando movimiento
+reducido. Se cancela al perder el resultado, ocultar o abandonar la página.
+
+`GET /api/v1/ar/mascots` y `POST /api/v1/ar/claim` requieren sesión. El POST sólo
+acepta `team_slug`: el servidor resuelve usuario y carta, y reutiliza las RPC
+`authorize_ar_mascot` y `grant_verified_ar_mascot` de la migración
+`20261025000200_verified_ar_mascot_grants.sql`. La referencia estable
+`ar-self-service:v1:<usuario>:<equipo>` permite reintentar sin duplicar la carta
+ni conceder puntos. No requiere una migración nueva.
+
+La política actual permite reclamar la carta desde el escáner con una cuenta.
+El reconocimiento ocurre en el dispositivo; este flujo no certifica presencia
+física ni agrega un verificador de imágenes en el servidor. La autorización de
+la carta se decide en backend y sus RPC siguen restringidas a `service_role`.

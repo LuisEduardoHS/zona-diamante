@@ -46,12 +46,11 @@ test('marcadores coinciden exactamente con los IDs del carrusel',async()=>{
     assert.equal(EQUIPOS_MARCADOR.length,4);
     for(const id of EQUIPOS_MARCADOR)assert.ok(equipos.some(e=>e.id===id));
 });
-test('el panel conserva su equipo al perder, recuperar o cambiar marcador',()=>{
+test('el contexto sigue al equipo detectado sin conservar información de un modal',()=>{
     const contexto=crearContextoEquipo();
-    contexto.detectar(3); assert.equal(contexto.abrir(),'sultanes-mty');
-    contexto.detectar(null); assert.equal(contexto.lectura,'sultanes-mty');
-    contexto.detectar(1); assert.equal(contexto.lectura,'sultanes-mty');
-    contexto.cerrar(); assert.equal(contexto.lectura,null); assert.equal(contexto.abrir(),'charros-jal');
+    contexto.detectar(3); assert.equal(contexto.actual,'sultanes-mty');
+    contexto.detectar(null); assert.equal(contexto.actual,null);
+    contexto.detectar(1); assert.equal(contexto.actual,'charros-jal');
 });
 test('marcadores inválidos no seleccionan un equipo',()=>{
     const contexto=crearContextoEquipo(); for(const index of [-1,4,null,undefined,'invalid']) { contexto.detectar(index); assert.equal(contexto.actual,null); }

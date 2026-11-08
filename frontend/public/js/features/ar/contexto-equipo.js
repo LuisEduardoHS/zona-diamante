@@ -1,90 +1,107 @@
-import { obtenerEquipos } from '../../services/datos-equipos.js';
 import { ruta, RUTAS } from '../../app/rutas.js';
+import { crearConfetiAR } from './confeti.js';
 
 export const EQUIPOS_MARCADOR = Object.freeze(['algodoneros-ul', 'charros-jal', 'dorados-chi', 'sultanes-mty']);
+const NOMBRES = ['Algodoneros', 'Charros', 'Dorados', 'Sultanes'];
 export const fichaEquipo = id => `${ruta(RUTAS.equipo)}?id=${encodeURIComponent(id)}`;
 
-// Reading is a snapshot: intermittent/new targets never replace an open panel.
 export function crearContextoEquipo() {
     let actual = null;
-    let lectura = null;
     return {
-        get actual() { return actual; }, get lectura() { return lectura; },
-        detectar(index) { actual = EQUIPOS_MARCADOR[index] || null; },
-        abrir() { lectura = actual; return lectura; },
-        cerrar() { lectura = null; },
+        get actual() { return actual; },
+        detectar(index) { actual = Number.isInteger(index) ? EQUIPOS_MARCADOR[index] || null : null; },
     };
 }
 
 export function iniciarContextoEquipo({ consultar = async () => {
     const { solicitarBackend } = await import('../../api/backend-client.js');
-    return solicitarBackend('/api/v1/ar/mascots');
-} } = {}) {
+    return solicitarBackend('/api/v1/ar/mascots', { signal: AbortSignal.timeout(15000) });
+}, reclamar = async team_slug => {
+    const { solicitarBackend } = await import('../../api/backend-client.js');
+    return solicitarBackend('/api/v1/ar/claim', { method: 'POST', body: { team_slug }, signal: AbortSignal.timeout(20000) });
+}, confeti = crearConfetiAR() } = {}) {
     const contexto = crearContextoEquipo();
-    const boton = document.getElementById('btn-info-equipo');
-    const botones = [boton, document.getElementById('btn-info-inspector')].filter(Boolean);
-    let origen = boton;
-    const panel = document.getElementById('ar-equipo-panel');
-    const cerrar = document.getElementById('ar-equipo-cerrar');
-    const estado = document.getElementById('ar-mascota-status');
-    const refrescar = document.getElementById('ar-mascota-consultar');
-    let inventario = null;
-    let mensaje = 'Consulta tu colección para conocer el estado de esta mascota.';
-    let version = 0;
-    let vivo = true;
-    const mostrarEstado = () => {
-        const mascota = inventario?.mascots?.find(row => row.team_slug === contexto.lectura);
-        estado.textContent = mascota?.is_owned
-            ? `${mascota.card_name} ya está en tu colección.`
-            : mascota ? `${mascota.card_name}: pendiente de verificación. Reconocer el logo no entrega una carta todavía.` : mensaje;
-        estado.dataset.estado = mascota?.is_owned ? 'owned' : mascota ? 'pending' : 'unknown';
+    const boton = document.getElementById('btn-reclamar-ar');
+    const estado = document.getElementById('ar-carta-status');
+    const aviso = document.getElementById('ar-equipo-aviso');
+    const nombre = document.getElementById('ar-aviso-equipo');
+    const login = document.getElementById('ar-carta-login');
+    const inspector = document.getElementById('ar-equipo-inspector');
+    const inventario = new Map(), operaciones = new Map(), mensajes = new Map(), celebrados = new Set();
+    let consulta = null, consultando = false, vivo = true;
+    login.href = ruta(RUTAS.login);
+
+    function mostrar() {
+        const id = contexto.actual, carta = inventario.get(id), mensaje = mensajes.get(id);
+        boton.hidden = !id || carta?.is_owned === true;
+        boton.disabled = consultando || operaciones.has(id);
+        boton.textContent = operaciones.has(id) ? 'Reclamando…' : consultando ? 'Consultando carta…' : 'Reclamar carta AR';
+        estado.textContent = mensaje?.texto || '';
+        login.hidden = !mensaje?.login;
+    }
+    async function consultarEstado() {
+        if (consulta) return consulta;
+        consultando = true; mostrar();
+        consulta = (async () => {
+            try {
+                const data = await consultar();
+                if (!vivo) return;
+                if (!Array.isArray(data?.mascots)) throw Error('Invalid inventory');
+                for (const carta of data.mascots) {
+                    // A late read must never undo a successfully claimed card.
+                    if (!inventario.get(carta.team_slug)?.is_owned) inventario.set(carta.team_slug, carta);
+                }
+            } catch (error) {
+                if (!vivo) return;
+                mensajes.set(contexto.actual, error.status === 401
+                    ? { texto: 'Inicia sesión para guardar tu carta AR.', login: true }
+                    : { texto: 'No pudimos consultar tu colección. Puedes volver a intentar reclamar la carta.' });
+            } finally {
+                consultando = false; consulta = null; if (vivo) mostrar();
+            }
+        })();
+        return consulta;
+    }
+    async function reclamarCarta() {
+        const id = contexto.actual;
+        if (!id || inventario.get(id)?.is_owned || operaciones.has(id)) return;
+        const operation = (async () => {
+            mensajes.delete(id);
+            try {
+                const result = await reclamar(id);
+                if (!vivo) return;
+                if (result?.mascot?.team_slug !== id || result.mascot.is_owned !== true) throw Error('Unconfirmed card');
+                inventario.set(id, result.mascot);
+                mensajes.delete(id);
+                if (contexto.actual === id && !result.already_owned && !result.already_processed) confeti.lanzar();
+            } catch (error) {
+                if (!vivo) return;
+                mensajes.set(id, error.status === 401
+                    ? { texto: 'Inicia sesión para guardar tu carta AR.', login: true }
+                    : { texto: 'No pudimos confirmar tu carta. Vuelve a intentarlo; no se duplicará.' });
+            } finally {
+                operaciones.delete(id); if (vivo) mostrar();
+            }
+        })();
+        operaciones.set(id, operation); mostrar();
+        return operation;
+    }
+    boton.addEventListener('click', reclamarCarta);
+    window.addEventListener('pagehide', () => { vivo = false; confeti.destruir(); }, { once: true });
+    return {
+        detectar(index) {
+            const anterior = contexto.actual;
+            contexto.detectar(index);
+            const id = contexto.actual;
+            if (id === anterior) return;
+            aviso.hidden = !id;
+            if (!id) inspector.hidden = true;
+            if (!id) { confeti.limpiar(); mostrar(); return; }
+            nombre.textContent = `Conoce a ${NOMBRES[index]}`;
+            aviso.href = fichaEquipo(id); inspector.href = fichaEquipo(id);
+            if (!celebrados.has(id)) { celebrados.add(id); confeti.lanzar(); }
+            mostrar();
+            if (!inventario.has(id)) void consultarEstado();
+        },
     };
-    const consultarEstado = async () => {
-        const solicitud = ++version;
-        inventario = null;
-        mensaje = 'Consultando tu colección…';
-        refrescar.disabled = true;
-        mostrarEstado();
-        try {
-            const data = await consultar();
-            if (solicitud !== version || !vivo) return;
-            inventario = data;
-        } catch (error) {
-            if (solicitud !== version || !vivo) return;
-            mensaje = error.status === 401
-                ? 'Puedes disfrutar AR sin cuenta. Inicia sesión para consultar tus mascotas. El escaneo no concede cartas automáticamente.'
-                : 'No pudimos consultar tu colección. Revisa tu conexión y vuelve a intentar. No se ha confirmado ninguna recompensa.';
-        } finally {
-            if (solicitud === version && vivo) { refrescar.disabled = false; mostrarEstado(); }
-        }
-    };
-    const abrirPanel = async (event) => {
-        if (panel.open || !contexto.actual) return;
-        origen = event.currentTarget;
-        const id = contexto.abrir();
-        botones.forEach(button => { button.disabled = true; });
-        try {
-            const equipo = (await obtenerEquipos()).find(row => row.id === id);
-            if (!vivo || !equipo || contexto.lectura !== id) return;
-            document.getElementById('ar-equipo-nombre').textContent = equipo.nombre;
-            document.getElementById('ar-equipo-ciudad').textContent = equipo.ciudad;
-            const logo = document.getElementById('ar-equipo-logo');
-            logo.src = equipo.imagenes.logoFondo; logo.alt = `Logo de ${equipo.nombre}`;
-            document.getElementById('ar-equipo-historia').textContent = equipo.detalles.historia.slice(0,280) + (equipo.detalles.historia.length>280 ? '…' : '');
-            document.getElementById('ar-equipo-estadio').textContent = equipo.detalles.estadio.nombre || 'Consulta la ficha del equipo';
-            document.getElementById('ar-equipo-mascota').textContent = equipo.detalles.mascota.nombre || '';
-            document.getElementById('ar-equipo-ficha').href = fichaEquipo(id);
-            panel.showModal();
-            void consultarEstado();
-        } catch {
-            document.getElementById('modelo-status').textContent = 'No pudimos abrir la información. Inténtalo de nuevo.';
-            contexto.cerrar();
-        } finally { if (vivo) botones.forEach(button => { button.disabled = false; }); }
-    };
-    botones.forEach(button => button.addEventListener('click', abrirPanel));
-    cerrar.addEventListener('click', () => panel.close());
-    panel.addEventListener('close', () => { contexto.cerrar(); origen.focus(); });
-    refrescar.addEventListener('click', consultarEstado);
-    window.addEventListener('pagehide', () => { vivo = false; ++version; }, { once:true });
-    return { detectar(index) { contexto.detectar(index); } };
 }

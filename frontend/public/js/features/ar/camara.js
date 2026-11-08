@@ -625,7 +625,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('ar-ui').classList.add('hidden');
         btnCerrarInspector.classList.remove('hidden');
-        document.getElementById('btn-info-inspector').classList.remove('hidden');
+        document.getElementById('ar-equipo-inspector').classList.remove('hidden');
+        document.getElementById('ar-equipo-inspector').hidden = false;
 
         modelosEnTargets.forEach((modelo) => modelo.setAttribute('visible', false));
         if (modeloCamara) modeloCamara.setAttribute('visible', true);
@@ -646,7 +647,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('ar-ui').classList.remove('hidden');
         btnCerrarInspector.classList.add('hidden');
-        document.getElementById('btn-info-inspector').classList.add('hidden');
+        document.getElementById('ar-equipo-inspector').classList.add('hidden');
+        document.getElementById('ar-equipo-inspector').hidden = true;
 
         if (modeloCamara) modeloCamara.setAttribute('visible', false);
         modelosEnTargets.forEach((modelo) => modelo.setAttribute('visible', true));

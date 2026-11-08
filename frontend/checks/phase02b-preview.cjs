@@ -60,7 +60,7 @@ const server=http.createServer(async(req,res)=>{
             htmlResponse(res,html);return;
         }
         if(url.pathname==='/js/api/backend-client.js'){
-            res.setHeader('Content-Type','text/javascript');res.end(`export async function solicitarBackend(){const estado=new URLSearchParams(location.search).get('estado');if(estado==='guest')throw Object.assign(new Error('Fixture guest'),{status:401});if(estado==='error')throw new Error('Fixture network');return {mascots:['algodoneros-ul','charros-jal','dorados-chi','sultanes-mty'].map(team_slug=>({team_slug,card_name:'Mascota del equipo',is_owned:estado==='owned',browser_claim_enabled:false}))};}`);return;
+            res.setHeader('Content-Type','text/javascript');res.end(`const owned=new Set();export async function solicitarBackend(path,options={}){const estado=new URLSearchParams(location.search).get('estado');if(estado==='guest')throw Object.assign(new Error('Fixture guest'),{status:401});if(estado==='error')throw new Error('Fixture network');const mascot=team_slug=>({team_slug,card_name:'Mascota del equipo',is_owned:estado==='owned'||owned.has(team_slug),browser_claim_enabled:true});if(options.method==='POST'){const id=options.body.team_slug,already_owned=mascot(id).is_owned;owned.add(id);return {mascot:mascot(id),already_owned,already_processed:already_owned};}return {mascots:['algodoneros-ul','charros-jal','dorados-chi','sultanes-mty'].map(mascot)};}`);return;
         }
         const checks={'/__ar-fixture.js':'ar-fixture.js','/__review.js':'phase02b-browser.js'};
         if(checks[url.pathname]){res.setHeader('Content-Type','text/javascript');res.end(await fs.readFile(path.join(__dirname,checks[url.pathname])));return;}

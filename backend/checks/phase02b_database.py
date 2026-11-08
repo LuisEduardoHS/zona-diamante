@@ -36,7 +36,7 @@ def ar_checks(project):
     print('PASS: 5 concurrent AR scenarios; inventory/ledger atomic and points unchanged',flush=True)
 
     # Real Auth/ASGI/PostgREST was initialized by phase02a_checks; add an isolated
-    # read-only HTTP check with fresh synthetic user and no identity override.
+    # HTTP check with a fresh local synthetic user and no identity override.
     import json
     import logging
     import httpx
@@ -63,16 +63,22 @@ def ar_checks(project):
         if client.get('/api/v1/ar/mascots').status_code != 401: raise CheckFailure('AR read exposed anonymously')
         response=client.get('/api/v1/ar/mascots',headers=auth)
         if response.status_code != 200 or len(response.json()['mascots']) != 4: raise CheckFailure('AR catalog HTTP failure')
-        if any(m['is_owned'] or m['browser_claim_enabled'] for m in response.json()['mascots']): raise CheckFailure('AR false ownership/claim enabled')
-        for route in ('claim','verify','unlock','authorize'):
+        if any(m['is_owned'] or not m['browser_claim_enabled'] for m in response.json()['mascots']): raise CheckFailure('AR false ownership/claim disabled')
+        for route in ('verify','unlock','authorize'):
             if client.post('/api/v1/ar/'+route,headers=auth,json={'marker_found':True,'team_slug':'charros-jal'}).status_code != 404: raise CheckFailure('AR browser grant exposed')
-        attempt=project.sql(f"set role service_role; select public.authorize_ar_mascot('{uid}','charros-jal','http-proof-{tag}');")
-        project.sql(f"set role service_role; select public.grant_verified_ar_mascot('{uid}','{attempt}','http-grant');")
+        if client.post('/api/v1/ar/claim',json={'team_slug':'charros-jal'}).status_code != 401: raise CheckFailure('Anonymous AR claim exposed')
+        if client.post('/api/v1/ar/claim',headers=auth,json={'team_slug':'charros-jal','points':100}).status_code != 422: raise CheckFailure('AR client points accepted')
+        claim=client.post('/api/v1/ar/claim',headers=auth,json={'team_slug':'charros-jal'})
+        if claim.status_code != 200 or not claim.json()['mascot']['is_owned'] or claim.json()['already_owned']: raise CheckFailure('AR first claim failed')
+        retry=client.post('/api/v1/ar/claim',headers=auth,json={'team_slug':'charros-jal'})
+        if retry.status_code != 200 or not retry.json()['already_owned']: raise CheckFailure('AR claim retry failed')
         response=client.get('/api/v1/ar/mascots',headers=auth)
         owned=[m for m in response.json()['mascots'] if m['is_owned']]
         if len(owned)!=1 or owned[0]['card_slug']!='straiky' or owned[0]['status']!='owned': raise CheckFailure('AR persistent ownership HTTP mismatch')
         if client.get('/api/v1/cards',headers=auth).json()['points_balance']!=0: raise CheckFailure('AR changed balance')
-        print('PASS: local Auth/HTTP AR inventory before/after trusted grant and 4 forbidden browser routes',flush=True)
+        state=project.value(f"select jsonb_build_object('cards',(select count(*) from public.user_cards where user_id='{uid}'),'events',(select count(*) from public.reward_events where user_id='{uid}' and event_type='ar_mascot_unlock'));")
+        if state != dict(cards=1,events=1): raise CheckFailure('AR HTTP duplicated card or ledger event')
+        print('PASS: local Auth/HTTP AR claim persists exactly once; retries, auth and unchanged balance',flush=True)
     finally:
         for field,value in zip(fields,previous): setattr(settings,field,value)
         logging.getLogger('httpx').setLevel(log_level)
