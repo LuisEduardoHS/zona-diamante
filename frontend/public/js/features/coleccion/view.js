@@ -1,5 +1,6 @@
 const labels = { team: 'Equipo', player: 'Jugador', mvp_player: 'MVP', mascot: 'Mascota' };
 export const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+export const collectionIcon = (name, base) => `<svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="${escapeHTML(new URL('assets/icons/lucide.svg?v=20261108-secciones', base))}#${escapeHTML(name)}"></use></svg>`;
 const hex = (value, fallback) => /^#[a-f\d]{6}$/i.test(value || '') ? value : fallback;
 const normalize = text => String(text || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/^el /,'').trim();
 export function safeImage(value, base) {
@@ -31,5 +32,5 @@ export function cardFace(card, team, base) {
 export function cardTile(card, team, base) {
     const label = card.is_owned ? 'Adquirida' : card.unlock_method === 'ar' ? 'Exclusiva AR' : `${card.cost.toLocaleString('es-MX')} pts`;
     return `<button type="button" class="col-tile ${card.is_owned ? 'col-tile--owned' : ''}" data-card="${card.id}" aria-label="${escapeHTML(card.name)}, ${escapeHTML(label)}">
-        ${cardFace(card,team,base)}<span class="col-tile-meta"><span>${card.is_owned ? '✓ Adquirida' : card.unlock_method === 'ar' ? 'Exclusiva AR' : 'Desbloquear'}</span><strong>${card.is_owned ? 'En tu álbum' : card.unlock_method === 'ar' ? 'Cámara ↗' : escapeHTML(label)}</strong></span></button>`;
+        ${cardFace(card,team,base)}<span class="col-tile-meta"><span>${card.is_owned ? `${collectionIcon('badge-check', base)} Adquirida` : card.unlock_method === 'ar' ? 'Exclusiva AR' : 'Desbloquear'}</span><strong>${card.is_owned ? 'En tu álbum' : card.unlock_method === 'ar' ? `Cámara ${collectionIcon('arrow-up-right', base)}` : escapeHTML(label)}</strong></span></button>`;
 }

@@ -4,7 +4,7 @@ import { obtenerEquipos } from '../../services/datos-equipos.js';
 import { RUTAS, ruta, baseURL } from '../../app/rutas.js';
 import { createCollectionStore, purchaseJournal } from './store.js';
 import { TYPES, filterCards, progress, canPurchase, number, errorMessage } from './model.js';
-import { cardTile, cardFace, escapeHTML as e } from './view.js';
+import { cardTile, cardFace, collectionIcon, escapeHTML as e } from './view.js?v=20261108-secciones';
 
 const mounts = new WeakMap();
 export function iniciarColeccion(signal) {
@@ -68,7 +68,7 @@ export function iniciarColeccion(signal) {
         $('col-detail-title').textContent = card.name;
         $('col-detail-type').textContent = `${TYPES[card.card_type]} · ${card.team_name}`;
         $('col-detail-description').textContent = card.description || 'Una carta para llevar tu afición al siguiente nivel.';
-        $('col-detail-price').textContent = card.is_owned ? '✓ En tu colección' : card.unlock_method === 'ar' ? 'Exclusiva AR · no se compra con puntos' : `${number(card.cost)} puntos`;
+        $('col-detail-price').innerHTML = card.is_owned ? `${collectionIcon('badge-check', baseURL)} En tu colección` : card.unlock_method === 'ar' ? 'Exclusiva AR · no se compra con puntos' : `${e(number(card.cost))} puntos`;
         const insufficient = state.data.points_balance < card.cost;
         const buy = !card.is_owned && card.unlock_method === 'points' && card.card_type !== 'mascot';
         $('col-buy').hidden = !buy || !state.uid || confirming || Boolean(state.success === selected);

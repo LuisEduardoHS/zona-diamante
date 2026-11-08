@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#ffffff">
     <link rel="icon" type="image/svg+xml" href="../../assets/logo-naranja.svg">
-    <link href="../../css/output.css?v=20261108-lucide" rel="stylesheet">
+    <link href="../../css/output.css?v=20261108-lucide-secciones" rel="stylesheet">
     <title>Mi perfil | Zona Diamante</title>
 </head>
 <body class="profile-page bg-white text-[#2b2b31]">
@@ -25,12 +25,12 @@
                 <p>JPG, PNG o WebP de hasta 5 MB.</p>
                 <div class="profile-avatar-actions">
                     <label class="profile-file-button" for="perfil-avatar">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" aria-hidden="true" focusable="false"><!-- Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc. --><path d="M213.1 128.8L202.7 160L128 160C92.7 160 64 188.7 64 224L64 480C64 515.3 92.7 544 128 544L512 544C547.3 544 576 515.3 576 480L576 224C576 188.7 547.3 160 512 160L437.3 160L426.9 128.8C420.4 109.2 402.1 96 381.4 96L258.6 96C237.9 96 219.6 109.2 213.1 128.8zM320 256C373 256 416 299 416 352C416 405 373 448 320 448C267 448 224 405 224 352C224 299 267 256 320 256z"/></svg>
+                        <svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="../../assets/icons/lucide.svg?v=20261108-secciones#camera"></use></svg>
                         <span class="sr-only">Elegir foto</span>
                         <input id="perfil-avatar" class="sr-only" type="file" accept="image/png,image/jpeg,image/webp">
                     </label>
                     <button id="perfil-avatar-quitar" class="profile-text-button" type="button" hidden>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" aria-hidden="true" focusable="false"><!-- Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc. --><path d="M232.7 69.9L224 96L128 96C110.3 96 96 110.3 96 128C96 145.7 110.3 160 128 160L512 160C529.7 160 544 145.7 544 128C544 110.3 529.7 96 512 96L416 96L407.3 69.9C402.9 56.8 390.7 48 376.9 48L263.1 48C249.3 48 237.1 56.8 232.7 69.9zM512 208L128 208L149.1 531.1C150.7 556.4 171.7 576 197 576L443 576C468.3 576 489.3 556.4 490.9 531.1L512 208z"/></svg>
+                        <svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="../../assets/icons/lucide.svg?v=20261108-secciones#trash-2"></use></svg>
                         <span class="sr-only">Quitar foto</span>
                     </button>
                 </div>
@@ -49,7 +49,7 @@
                 </div>
                 <div class="auth-field">
                     <label class="auth-label" for="perfil-usuario">Nombre de usuario</label>
-                    <div class="auth-input-prefix"><span aria-hidden="true">@</span><input id="perfil-usuario" class="auth-input" name="username" type="text" minlength="3" maxlength="24" pattern="[a-z0-9._]+" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="aficionado24" required></div>
+                    <div class="auth-input-prefix"><span aria-hidden="true"><svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="../../assets/icons/lucide.svg?v=20261108-secciones#at-sign"></use></svg></span><input id="perfil-usuario" class="auth-input" name="username" type="text" minlength="3" maxlength="24" pattern="[a-z0-9._]+" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="aficionado24" required></div>
                     <p class="auth-helper">Minúsculas, números, punto o guion bajo.</p>
                 </div>
                 <div class="auth-field">
@@ -68,12 +68,12 @@
         <section class="profile-card" aria-labelledby="perfil-progreso-titulo">
             <div class="profile-section-heading"><div><p class="profile-kicker">Zona Diamante</p><h2 id="perfil-progreso-titulo">Tu progreso</h2></div></div>
             <div class="profile-points"><span>Puntos disponibles</span><strong id="perfil-puntos">—</strong></div>
-            <a class="profile-row-link" href="../coleccion/coleccion.html"><span><strong>Mi colección</strong><small>Consulta las cartas que has desbloqueado</small></span><span aria-hidden="true">›</span></a>
+            <a class="profile-row-link" href="../coleccion/coleccion.html"><span><strong>Mi colección</strong><small>Consulta las cartas que has desbloqueado</small></span><span aria-hidden="true"><svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="../../assets/icons/lucide.svg?v=20261108-secciones#chevron-right"></use></svg></span></a>
         </section>
 
         <section class="profile-card" aria-labelledby="perfil-seguridad-titulo">
             <div class="profile-section-heading"><div><p class="profile-kicker">Acceso</p><h2 id="perfil-seguridad-titulo">Seguridad</h2></div></div>
-            <a class="profile-row-link" href="recuperar.html"><span><strong>Cambiar contraseña</strong><small>Recibe un enlace seguro en tu correo</small></span><span aria-hidden="true">›</span></a>
+            <a class="profile-row-link" href="recuperar.html"><span><strong>Cambiar contraseña</strong><small>Recibe un enlace seguro en tu correo</small></span><span aria-hidden="true"><svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="../../assets/icons/lucide.svg?v=20261108-secciones#chevron-right"></use></svg></span></a>
             <button id="perfil-cerrar-sesion" class="profile-logout" type="button">Cerrar sesión</button>
             <p id="perfil-sesion-estado" class="auth-status" role="status" aria-live="polite"></p>
         </section>

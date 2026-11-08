@@ -2,7 +2,11 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 // Share only the icons in use, rather than shipping Lucide's full catalog.
-const names = ['arrow-left', 'arrow-right', 'calendar-days', 'calendar-off', 'chevron-down', 'clock-3', 'map-pin', 'refresh-cw'];
+const names = [
+    'arrow-down', 'arrow-left', 'arrow-right', 'arrow-up-right', 'at-sign', 'badge-check',
+    'calendar-days', 'calendar-off', 'camera', 'chevron-down', 'chevron-right',
+    'clock-3', 'coins', 'layers-3', 'map-pin', 'plus', 'refresh-cw', 'search', 'trash-2', 'x',
+];
 const source = path.dirname(require.resolve('lucide-static/package.json'));
 const destination = path.resolve(__dirname, '../public/assets/icons');
 const { version } = require('lucide-static/package.json');

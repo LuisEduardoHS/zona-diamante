@@ -120,7 +120,8 @@
 .profile-avatar-copy h2 { @apply m-0 text-[1.1rem]; }
 .profile-avatar-copy p { @apply m-[5px_0_12px] text-[#74747b] text-[.76rem]; }
 .profile-avatar-actions { @apply flex flex-nowrap items-center gap-1; }
-.profile-avatar-actions svg { @apply size-5 shrink-0 fill-current; }
+.profile-avatar-actions svg { @apply size-5 shrink-0 fill-none; }
+.profile-page .auth-input-prefix > span { @apply grid place-items-center; }
 .profile-avatar-actions .profile-file-button,
 .profile-avatar-actions .profile-text-button { @apply size-11 shrink-0 border-0 bg-transparent p-0 text-[#008298] shadow-none; }
 .profile-avatar-actions .profile-text-button[hidden] { @apply hidden; }
@@ -142,7 +143,8 @@
 .profile-row-link strong,
 .profile-row-link small { @apply block; }
 .profile-row-link small { @apply mt-[3px] text-[#74747b] text-[.75rem]; }
-.profile-row-link > span:last-child { @apply text-brand text-[1.8rem]; }
+.profile-row-link > span:last-child { @apply grid shrink-0 place-items-center text-brand; }
+.profile-row-link .lucide-icon { @apply size-5; }
 .profile-logout { @apply w-full min-h-[50px] mt-[10px] [border:1px_solid_rgb(170_48_41_/_.25)] rounded-[999px] [background:rgb(170_48_41_/_.06)] text-[#a42d26] [font:inherit] font-black cursor-pointer; }
 .profile-form-actions button,
 .profile-logout,
@@ -177,6 +179,9 @@
 .ayuda-pregunta[open] > p { @apply max-h-[180px] opacity-[1] pb-5; }
 .ayuda-pregunta > summary span { @apply inline-block [transition:transform_240ms_ease,_color_240ms_ease]; }
 .ayuda-pregunta[open] > summary span { @apply [transform:rotate(45deg)] text-brand; }
+#ayuda-app .ayuda-select { @apply relative mt-2 block; }
+#ayuda-app .ayuda-select select { @apply mt-0 appearance-none cursor-pointer pr-10; }
+#ayuda-app .ayuda-select > .lucide-icon { @apply pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-brand; }
 @media (prefers-reduced-motion: reduce) {
     .ayuda-pregunta > p,
     .ayuda-pregunta > summary span { @apply [transition:none]; }
