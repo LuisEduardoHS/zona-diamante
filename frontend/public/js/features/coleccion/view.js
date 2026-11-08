@@ -1,4 +1,7 @@
 const labels = { team: 'Equipo', player: 'Jugador', mvp_player: 'MVP', mascot: 'Mascota' };
+// Font Awesome Free v7.3.1, CC BY 4.0 — assets/icons/fontawesome/LICENSE.txt.
+// Lock artwork supplied for the collection's blocked state.
+const lockIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" aria-hidden="true" focusable="false"><path d="M256 160L256 224L384 224L384 160C384 124.7 355.3 96 320 96C284.7 96 256 124.7 256 160zM192 224L192 160C192 89.3 249.3 32 320 32C390.7 32 448 89.3 448 160L448 224C483.3 224 512 252.7 512 288L512 512C512 547.3 483.3 576 448 576L192 576C156.7 576 128 547.3 128 512L128 288C128 252.7 156.7 224 192 224z"/></svg>';
 export const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const collectionIcon = (name, base) => `<svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="${escapeHTML(new URL('assets/icons/lucide.svg?v=20261108-secciones', base))}#${escapeHTML(name)}"></use></svg>`;
 const hex = (value, fallback) => /^#[a-f\d]{6}$/i.test(value || '') ? value : fallback;
@@ -27,10 +30,11 @@ export function cardFace(card, team, base) {
         ${!art.portrait && card.card_type !== 'team' ? `<span class="col-player-mark" aria-hidden="true">${card.card_type === 'mascot' ? 'AR' : e(initials)}</span>` : ''}
         <div class="col-card-caption"><span>${e(card.team_name)}</span><strong>${e(card.name)}</strong></div>
         <div class="col-card-foot"><span>CARTAS · ZONA DIAMANTE</span><span>#${e(String(card.id).padStart(2,'0'))}</span></div>
+        ${!card.is_owned ? `<span class="col-card-lock" aria-hidden="true">${lockIcon}</span>` : ''}
     </div>`;
 }
 export function cardTile(card, team, base) {
     const label = card.is_owned ? 'Adquirida' : card.unlock_method === 'ar' ? 'Exclusiva AR' : `${card.cost.toLocaleString('es-MX')} pts`;
-    return `<button type="button" class="col-tile ${card.is_owned ? 'col-tile--owned' : ''}" data-card="${card.id}" aria-label="${escapeHTML(card.name)}, ${escapeHTML(label)}">
+    return `<button type="button" class="col-tile ${card.is_owned ? 'col-tile--owned' : ''}" data-card="${card.id}" aria-label="${escapeHTML(card.name)}, ${card.is_owned ? '' : 'Bloqueada, '}${escapeHTML(label)}">
         ${cardFace(card,team,base)}<span class="col-tile-meta"><span>${card.is_owned ? `${collectionIcon('badge-check', base)} Adquirida` : card.unlock_method === 'ar' ? 'Exclusiva AR' : 'Desbloquear'}</span><strong>${card.is_owned ? 'En tu álbum' : card.unlock_method === 'ar' ? `Cámara ${collectionIcon('arrow-up-right', base)}` : escapeHTML(label)}</strong></span></button>`;
 }

@@ -64,6 +64,9 @@
 .col-card-caption strong { @apply block text-[clamp(16px,1.6vw,22px)] leading-[1.06] font-black tracking-[-.4px] wrap-anywhere; }
 .col-card-foot { @apply p-[7px_10px] flex items-center justify-between text-[5px] font-[750] tracking-[.06em] [background:#002f428c] min-h-[21px]; }
 .col-card-foot span:last-child { @apply text-[9px]; }
+.col-card-lock { @apply pointer-events-none absolute inset-0 z-[3] grid place-items-center bg-[#07131c]/55; }
+.col-card-lock svg { @apply size-12 fill-[#fff3d6] [filter:drop-shadow(0_2px_5px_#000b)]; }
+.col-detail-art .col-card-lock svg { @apply size-16; }
 .col-face--mvp_player { @apply [border-color:#fbe7bd] [box-shadow:0_3px_15px_#8c622426,0_0_0_1px_#dbb870]; }
 .col-face--mvp_player::after { @apply [border-color:#f7d89b]; }
 .col-face--mascot .col-card-top span:last-child { @apply [background:#f5d1a7] text-[#543209]; }

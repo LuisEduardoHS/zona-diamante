@@ -4,7 +4,7 @@ import { obtenerEquipos } from '../../services/datos-equipos.js';
 import { RUTAS, ruta, baseURL } from '../../app/rutas.js';
 import { createCollectionStore, purchaseJournal } from './store.js';
 import { TYPES, filterCards, progress, canPurchase, number, errorMessage } from './model.js';
-import { cardTile, cardFace, collectionIcon, escapeHTML as e } from './view.js?v=20261108-secciones';
+import { cardTile, cardFace, collectionIcon, escapeHTML as e } from './view.js?v=20261108-locked';
 
 const mounts = new WeakMap();
 export function iniciarColeccion(signal) {
