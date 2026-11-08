@@ -1,22 +1,15 @@
-import { solicitarBackend } from '../../api/backend-client.js';
+import { obtenerCalendarioPartidos, obtenerLogosPartidos } from '../../api/matches-client.js';
 import { ruta } from '../../app/rutas.js';
-import { TIMEZONE, LEAGUES, html, today, validDate, shiftDate, week, calendarLabel, filterGames, gameCard } from './model.js';
+import { TIMEZONE, LEAGUES, html, today, validDate, shiftDate, week, calendarLabel, filterGames, gameCard, actualizarLogosPartidos } from './model.js';
+import { crearMovimientoCalendario } from './movimiento-calendario.js';
 
-let logoManifest;
-async function loadLogos() {
-    logoManifest ||= fetch(ruta('data/match-logos.json')).then(response => {
-        if (!response.ok) throw new Error('Logos unavailable');
-        return response.json();
-    }).then(data => new Map(data.logos.filter(logo => /^assets\/img\/partidos\/\d+\.svg$/.test(logo.path)).map(logo => [logo.id, logo.path])))
-        .catch(() => { logoManifest = null; return new Map(); });
-    return logoManifest;
-}
 const calendarIcon = `<svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="${ruta('assets/icons/lucide.svg')}#calendar-off"></use></svg>`;
 const skeleton = () => Array.from({ length: 4 }, () => '<div class="partidos-skeleton" aria-hidden="true"><span></span><div></div><div></div></div>').join('');
 
 export function iniciarPartidos(signal) {
     const root = document.getElementById('partidos-app');
     if (!root || signal.aborted) return;
+    const movimiento = crearMovimientoCalendario(signal);
     const $ = id => root.querySelector(`#partidos-${id}`);
     const params = new URL(location.href).searchParams;
     const currentDay = today();
@@ -59,13 +52,15 @@ export function iniciarPartidos(signal) {
     function empty(title, message, action = '') {
         $('lista').innerHTML = `<div class="partidos-empty">${calendarIcon}<h3>${html(title)}</h3><p>${html(message)}</p>${action}</div>`;
     }
-    function render() {
+    function render({ animar = true } = {}) {
         if (!data || signal.aborted) return;
+        movimiento.limpiar($('lista'));
         const filtered = filterGames(data.games, team, status);
         $('total').textContent = filterGames(data.games, team).length;
         if (filtered.length) $('lista').innerHTML = filtered.map(game => gameCard(game, logos, ruta)).join('');
         else if (team || status !== 'all') empty('Sin partidos con estos filtros', 'Prueba con otro equipo o consulta toda la jornada.', '<button type="button" data-action="clear">Ver toda la jornada</button>');
         else empty('El diamante toma una pausa', `No hay partidos programados para esta fecha en la ${LEAGUES[league]}. Puedes consultar otro día en el calendario.`);
+        if (animar) movimiento.revelar($('lista').children, { distancia: 12 });
         $('estado').textContent = `${filtered.length} ${filtered.length === 1 ? 'partido' : 'partidos'} · ${LEAGUES[league]} · ${calendarLabel(date)}`;
         const updated = new Date(data.updated_at);
         const time = new Intl.DateTimeFormat('es-MX', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: TIMEZONE }).format(updated);
@@ -80,6 +75,7 @@ export function iniciarPartidos(signal) {
             data = null;
             $('total').textContent = '0';
             $('equipo').innerHTML = '<option value="">Todos los equipos</option>';
+            movimiento.limpiar($('lista'));
             $('lista').innerHTML = skeleton();
         }
         loading = true;
@@ -90,24 +86,22 @@ export function iniciarPartidos(signal) {
         if (!background) $('estado').textContent = 'Consultando los partidos…';
         notice();
         try {
-            const result = await solicitarBackend(`/api/v1/matches?${new URLSearchParams({ league, date })}`, {
-                authenticated: false,
-                signal: AbortSignal.any([signal, request.signal, AbortSignal.timeout(25000)]),
-            });
+            const result = await obtenerCalendarioPartidos(league, date, { signal: AbortSignal.any([signal, request.signal]) });
             if (current !== version || signal.aborted) return;
-            if (!Array.isArray(result?.games) || !Array.isArray(result?.teams) || result.date !== date || result.league !== league) throw new Error('Invalid schedule');
             data = result;
             $('equipo').innerHTML = '<option value="">Todos los equipos</option>' + data.teams.map(item => `<option value="${html(item.id)}">${html(item.name)}</option>`).join('');
             if (team && !data.teams.some(item => String(item.id) === team)) team = '';
             $('equipo').value = team;
             updateURL();
-            render();
+            render({ animar: !background });
             if (data.stale) notice('Mostramos la última jornada guardada. El proveedor no está disponible en este momento; los marcadores pueden haber cambiado.');
         } catch (error) {
             if (current !== version || signal.aborted || request.signal.aborted) return;
             if (data) notice('No pudimos actualizar la jornada. Conservamos los últimos datos consultados; puedes volver a intentarlo.');
             else {
+                movimiento.limpiar($('lista'));
                 empty('No pudimos cargar los partidos', 'Comprueba tu conexión e inténtalo de nuevo en unos minutos.', '<button type="button" data-action="retry">Volver a intentar</button>');
+                if (!background) movimiento.revelar($('lista').children, { distancia: 12 });
                 $('actualizacion').textContent = 'Sin conexión con los resultados';
             }
             $('estado').textContent = 'No pudimos actualizar los partidos.';
@@ -121,8 +115,10 @@ export function iniciarPartidos(signal) {
     }
     function selectDate(value) {
         if (!validDate(value, maxYear)) { $('fecha').value = date; return; }
+        const changed = value !== date;
         date = value;
         controls();
+        if (changed) movimiento.acentuar($('fecha-titulo'));
         void load();
     }
     root.addEventListener('click', event => {
@@ -131,7 +127,7 @@ export function iniciarPartidos(signal) {
         if (button.dataset.league) {
             if (league === button.dataset.league) return;
             league = button.dataset.league; team = '';
-            controls(); void load();
+            controls(); movimiento.acentuar($('liga-nombre')); void load();
         } else if (button.dataset.date) selectDate(button.dataset.date);
         else if (button.id === 'partidos-anterior') selectDate(shiftDate(date, -1));
         else if (button.id === 'partidos-siguiente') selectDate(shiftDate(date, 1));
@@ -152,6 +148,7 @@ export function iniciarPartidos(signal) {
     document.addEventListener('visibilitychange', refresh, { signal });
     signal.addEventListener('abort', () => { ++version; clearInterval(timer); request?.abort(); }, { once: true });
     controls();
-    void loadLogos().then(result => { if (!signal.aborted) { logos = result; render(); } });
+    movimiento.revelar(root.querySelectorAll('.partidos-hero, .partidos-controles, .partidos-results-heading, .partidos-filtros, .partidos-explora'));
+    void obtenerLogosPartidos().then(result => { if (!signal.aborted) { logos = result; actualizarLogosPartidos($('lista'), logos, ruta); } });
     void load();
 }

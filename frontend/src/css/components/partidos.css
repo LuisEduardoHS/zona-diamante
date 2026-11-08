@@ -88,3 +88,14 @@
 .partidos-skeleton div { @apply mt-4 h-12 rounded-2xl bg-[#f2f5f5]; }
 .partidos-page button:focus-visible, .partidos-page a:focus-visible, .partidos-page select:focus-visible { @apply outline-3 outline-offset-3 outline-brand; }
 .partidos-hero a:focus-visible { @apply outline-white; }
+.partidos-ligas button, .partidos-dia, .partidos-filtros button, .partidos-date-actions button, .partidos-fuente button, .partidos-explora a, .partido-card { @apply [transition:transform_180ms_ease,_translate_180ms_ease,_scale_160ms_ease,_background-color_180ms_ease,_border-color_180ms_ease,_color_180ms_ease,_box-shadow_180ms_ease]; }
+.partidos-page button:not(:disabled):active, .partidos-explora a:active { @apply scale-[.97]; }
+@media (hover: hover) {
+    .partidos-ligas button:not(:disabled):hover, .partidos-dia:not(:disabled):hover, .partidos-filtros button:hover, .partidos-date-actions button:not(:disabled):hover { @apply -translate-y-0.5; }
+    .partido-card:hover { @apply -translate-y-0.5 shadow-[0_7px_20px_#003c4710]; }
+ }
+@media (prefers-reduced-motion: reduce) {
+    .partidos-page *, .partidos-page *::before, .partidos-page *::after { @apply transition-none! animate-none!; }
+    .partidos-page button:not(:disabled):active, .partidos-explora a:active, .partidos-ligas button:not(:disabled):hover, .partidos-dia:not(:disabled):hover, .partidos-filtros button:hover, .partidos-date-actions button:not(:disabled):hover, .partido-card:hover { @apply transform-none! translate-none! scale-none!; }
+    .equipo-calendar .partido-card:hover { @apply transition-none! transform-none! translate-none!; }
+ }

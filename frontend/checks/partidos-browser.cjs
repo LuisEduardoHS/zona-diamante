@@ -25,7 +25,11 @@ const check = async (name, run) => { await run(); checks.push(name); console.log
         page.setDefaultNavigationTimeout(15000);
         page.on('pageerror', error => errors.push(error.message));
         const waitReady = () => page.waitForFunction(() => document.getElementById('partidos-lista')?.getAttribute('aria-busy') === 'false', null, { timeout: 15000 });
-        const go = async (query = 'liga=lmb&fecha=2026-07-01') => { await page.goto(`${base}/pages/contenido/partidos.html?${query}`); await waitReady(); };
+        const go = async (query = 'liga=lmb&fecha=2026-07-01') => {
+            await page.goto(`${base}/pages/contenido/partidos.html?${query}`);
+            try { await waitReady(); }
+            catch (error) { console.error('Page errors:', errors); console.error((await page.locator('body').innerText()).slice(0, 600)); throw error; }
+        };
         let snapshot;
         await check('real LMB schedule loads as a guest, with 20 teams and local logos', async () => {
             const response = await context.request.get(`${backend}/api/v1/matches?league=lmb&date=2026-07-01`);

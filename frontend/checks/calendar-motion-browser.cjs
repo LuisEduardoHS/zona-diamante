@@ -1,0 +1,81 @@
+// Start frontend :5500 and FastAPI :8000. Read-only API snapshot; browser-only
+// fixtures make motion/refresh checks independent of upstream response time.
+const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
+const assert = require('node:assert/strict');
+const base = process.env.MATCHES_FRONTEND || 'http://127.0.0.1:5500';
+const backend = process.env.MATCHES_BACKEND || 'http://127.0.0.1:8000';
+
+(async () => {
+    const browser = await chromium.launch({ channel: 'msedge', headless: true });
+    const errors = [];
+    try {
+        const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: 'no-preference' });
+        await context.route('**/js/app/runtime-config.js', route => route.fulfill({ contentType: 'text/javascript', body: `export const runtimeConfig={BACKEND_API_URL:'${backend}'};` }));
+        await context.route('**/js/features/auth/supabase-provider.js', route => route.fulfill({ contentType: 'text/javascript', body: `export const proveedorSupabase=Object.fromEntries(['iniciarSesion','crearCuenta','solicitarRestablecimiento','restablecerContrasena','actualizarPerfil','cerrarSesion'].map(name=>[name,async()=>{throw Error('Read-only review')}]).concat([['obtenerPerfil',async()=>({user:null,profile:null})],['observarSesion',fn=>{fn({user:null,profile:null,cargando:false});return()=>{}}]]));` }));
+        await context.route('**/js/services/supabase-client.js', route => route.fulfill({ contentType: 'text/javascript', body: 'export const supabase={auth:{getSession:async()=>({data:{session:null}})}};' }));
+        const response = await context.request.get(`${backend}/api/v1/matches?league=lmb&date=2026-07-01`);
+        assert.equal(response.status(), 200);
+        const snapshot = await response.json();
+        let requests = 0;
+        await context.route('**/api/v1/matches?*', route => {
+            requests++;
+            const query = new URL(route.request().url()).searchParams;
+            return route.fulfill({ contentType: 'application/json', body: JSON.stringify({ ...snapshot, league: query.get('league'), date: query.get('date') }) });
+        });
+        const page = await context.newPage(); page.setDefaultTimeout(10000);
+        page.on('pageerror', error => errors.push(error.message));
+        await page.clock.install({ time: new Date('2026-07-01T18:00:00Z') });
+        const ready = () => page.waitForFunction(() => document.getElementById('partidos-lista')?.getAttribute('aria-busy') === 'false');
+        const reveal = selector => page.waitForFunction(selector => [...document.querySelectorAll(selector)].some(node => node.getAnimations().some(animation => animation.effect.getKeyframes()[0]?.opacity === '0')), selector);
+        const accent = selector => page.waitForFunction(selector => [...document.querySelectorAll(selector)].some(node => node.getAnimations().some(animation => Number(animation.effect.getKeyframes()[0]?.opacity) === .45)), selector);
+        const settle = () => page.evaluate(() => Promise.allSettled(document.getAnimations().filter(animation => animation.playState === 'running' && Number.isFinite(animation.effect?.getComputedTiming().endTime)).map(animation => animation.finished)));
+        await page.goto(`${base}/pages/contenido/partidos.html?liga=lmb&fecha=2026-07-01`);
+        await reveal('.partidos-controles'); await ready();
+        await page.locator('.partidos-results-heading').evaluate(node => node.scrollIntoView({ block: 'start' }));
+        await reveal('.partido-card');
+        await settle();
+        console.log('PASS: calendar controls and visible game cards reveal on entry/scroll');
+        await page.locator('button[data-status=scheduled]').click();
+        await reveal('.partidos-empty');
+        assert.match(await page.locator('.partidos-empty').textContent(), /Sin partidos con estos filtros/);
+        await page.locator('button[data-status=all]').click(); await reveal('.partido-card');
+        const oldCard = await page.locator('.partido-card').first().elementHandle();
+        await page.locator('#partidos-siguiente').click(); await ready();
+        await accent('#partidos-fecha-titulo');
+        assert.equal(await oldCard.evaluate(node => node.getAnimations().length), 0, 'Replacing a list cancels its old animations');
+        console.log('PASS: filters and date changes animate; replaced cards release their animations');
+        await page.emulateMedia({ reducedMotion: 'reduce' });
+        await page.waitForFunction(() => !document.querySelector('#partidos-app').getAnimations({ subtree: true }).some(animation => animation.playState === 'running'));
+        await page.locator('button[data-status=scheduled]').click();
+        assert.equal(await page.locator('.partidos-empty').evaluate(node => node.getAnimations().length), 0);
+        assert.equal(await page.locator('.partidos-empty').evaluate(node => getComputedStyle(node).opacity), '1');
+        assert.equal(await page.locator('button[data-status=all]').evaluate(node => getComputedStyle(node).transitionProperty), 'none');
+        console.log('PASS: changing to reduced motion cancels movement and leaves content visible');
+        await page.emulateMedia({ reducedMotion: 'no-preference' });
+        await page.locator('button[data-status=all]').click(); await reveal('.partido-card');
+        await page.locator('#partidos-hoy').click(); await ready(); await settle();
+        const before = requests;
+        await page.clock.fastForward(60001); await ready();
+        assert.equal(requests, before + 1);
+        assert.equal(await page.locator('#partidos-lista').evaluate(node => node.getAnimations({ subtree: true }).length), 0, 'Background polling must not replay card reveals');
+        console.log('PASS: automatic score refresh stays still');
+        await page.goto(`${base}/pages/equipos/equipo.html?id=sultanes-mty&fecha=2026-07-01`);
+        await page.waitForFunction(() => document.querySelector('[data-equipo-calendar=juegos]')?.getAttribute('aria-busy') === 'false');
+        await page.locator('.equipo-calendar').evaluate(node => node.scrollIntoView({ block: 'start' }));
+        await reveal('.equipo-calendar .partido-card');
+        await settle();
+        await page.locator('[data-equipo-calendar=siguiente]').click();
+        await accent('[data-equipo-calendar=titulo-fecha]');
+        const oldRoot = await page.locator('.equipo-calendar').elementHandle();
+        await page.locator('.site-bottom-nav a[href$="index.html"]').click();
+        await page.waitForSelector('.inicio-acciones');
+        assert.equal(await oldRoot.evaluate(node => node.getAnimations({ subtree: true }).length), 0);
+        console.log('PASS: team calendar shares reveal motion and cancels animations on navigation');
+        await page.emulateMedia({ reducedMotion: 'reduce' });
+        await page.goto(`${base}/pages/contenido/partidos.html?liga=lmb&fecha=2026-07-01`); await ready();
+        assert.equal(await page.locator('#partidos-app').evaluate(node => node.getAnimations({ subtree: true }).length), 0);
+        assert.equal(await page.locator('.partido-card').count(), snapshot.games.length);
+        assert.deepEqual(errors, []);
+        console.log('PASS: reduced-motion initial load is complete and static; no browser errors');
+    } finally { await browser.close(); }
+})().catch(error => { console.error(error); process.exitCode = 1; });

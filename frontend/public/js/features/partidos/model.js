@@ -43,7 +43,7 @@ export function gameCard(game, logos, assetURL) {
         const showScore = game.status !== 'scheduled' && !['postponed', 'cancelled'].includes(game.status);
         const value = number => showScore && number != null ? html(number) : '—';
         return `<div class="partido-team" data-winner="${game.status === 'final' && data.winner}">
-            <div class="partido-team-name"><div class="partido-logo"><span aria-hidden="true">${html(data.team.abbreviation)}</span>${logo ? `<img src="${html(assetURL(logo))}" alt="" width="48" height="48" loading="lazy" decoding="async">` : ''}</div><div class="partido-name"><strong>${html(data.team.name)}</strong><small>${label}</small></div></div>
+            <div class="partido-team-name"><div class="partido-logo" data-team-id="${html(data.team.id)}"><span aria-hidden="true">${html(data.team.abbreviation)}</span>${logo ? `<img src="${html(assetURL(logo))}" alt="" width="48" height="48" loading="lazy" decoding="async">` : ''}</div><div class="partido-name"><strong>${html(data.team.name)}</strong><small>${label}</small></div></div>
             <span class="partido-number partido-runs" aria-label="${showScore && data.score != null ? `${html(data.score)} carreras` : 'Marcador pendiente'}">${value(data.score)}</span><span class="partido-number">${value(data.hits)}</span><span class="partido-number">${value(data.errors)}</span>
         </div>`;
     };
@@ -54,4 +54,16 @@ export function gameCard(game, logos, assetURL) {
         <div class="partido-scoreboard"><div class="partido-columns" aria-hidden="true"><span>${game.double_header ? `Juego ${html(game.game_number)}` : 'Equipos'}</span><span title="Carreras">C</span><span title="Hits">H</span><span title="Errores">E</span></div>${side(game.away, 'Visitante')}${side(game.home, 'Local')}</div>
         <p class="partido-venue"><svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="${html(assetURL('assets/icons/lucide.svg'))}#map-pin"></use></svg>${html(game.venue)}</p>
     </article>`;
+}
+
+// Late logo metadata must not replace cards, cancel reveals, or disturb focus.
+export function actualizarLogosPartidos(container, logos, assetURL) {
+    for (const holder of container.querySelectorAll('.partido-logo[data-team-id]')) {
+        const path = logos.get(Number(holder.dataset.teamId));
+        if (!path || holder.querySelector('img')) continue;
+        const image = document.createElement('img');
+        image.src = assetURL(path); image.alt = ''; image.width = image.height = 48;
+        image.loading = 'lazy'; image.decoding = 'async';
+        holder.append(image);
+    }
 }

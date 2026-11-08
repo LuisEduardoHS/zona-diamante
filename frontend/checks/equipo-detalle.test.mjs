@@ -8,7 +8,7 @@ let pageSource = await readFile(new URL('../public/js/features/equipos/equipo.js
 pageSource = pageSource.replace(/^import.*$/mg, '') + '\n';
 const filtrosURL = moduleURL(await readFile(new URL('../public/js/features/equipos/filtros-video.js', import.meta.url), 'utf8'));
 pageSource = `import { FILTROS_VIDEO, AJUSTES_VIDEO, HERRAMIENTAS_VIDEO, normalizarVideo, filtroCSSVideo, temperaturaVideo } from '${filtrosURL}';\n` + pageSource;
-pageSource = "const ruta = p => p; const RUTAS = { inicio: 'index.html', coleccion: 'coleccion' };\n" + pageSource;
+pageSource = "const ruta = p => p; const RUTAS = { inicio: 'index.html', coleccion: 'coleccion', partidos: 'pages/contenido/partidos.html' };\n" + pageSource;
 const { detalleTemplate, fuenteVideo, FILTROS_VIDEO, iniciarRevelado } = await import(moduleURL(pageSource));
 const rows = JSON.parse(await readFile(new URL('../public/data/equipos.json', import.meta.url), 'utf8'));
 const teams = rows.map(service.normalizarEquipo);
@@ -21,7 +21,7 @@ test('las cuatro fichas mantienen el orden, rival, galería y video de cada equi
             const next = output.indexOf(cls);
             assert.ok(next > position, `${team.nombre}: ${cls}`); position = next;
         }
-        assert.match(output, /Por confirmar/);
+        assert.match(output, /data-equipo-calendar="juegos" aria-busy="true"/);
         assert.equal(team.detalles.galeria.length, 5);
         assert.ok(fuenteVideo(team.detalles.video));
         for (const url of [...Object.values(team.imagenes), ...team.detalles.galeria.map(x => x.imagen)]) {
@@ -49,13 +49,16 @@ test('escapa contenido y rechaza esquemas y estilos no permitidos', () => {
     assert.equal(FILTROS_VIDEO.original.css, 'none');
 });
 
-test('muestra fechas con hora CDMX y admite listas vacías', () => {
+test('el calendario usa la fuente de partidos y no representa los juegos estáticos de la ficha', () => {
     const team = structuredClone(teams[0]);
     team.detalles.calendario = [{ oponente: 'Dorados', inicio: '2026-10-11T01:00:00Z' }];
-    assert.match(detalleTemplate(team, teams), /10 de octubre/);
-    assert.match(detalleTemplate(team, teams), /CDMX/);
+    const output = detalleTemplate(team, teams);
+    assert.doesNotMatch(output, /10 de octubre|2026-10-11T01:00:00Z/);
+    assert.match(output, /Horarios de Ciudad de México/);
+    assert.match(output, /Ver calendario completo/);
+    assert.match(output, /data-equipo-calendar="fecha"/);
     team.detalles.calendario = [];
-    assert.match(detalleTemplate(team, teams), /Aún no hay juegos programados/);
+    assert.match(detalleTemplate(team, teams), /Consultando los partidos del equipo/);
 });
 
 test('el proveedor comparte la carga, cambia de origen y se recupera de errores', async () => {

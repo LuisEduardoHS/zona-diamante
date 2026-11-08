@@ -392,6 +392,13 @@ para equipos sin logo. No hacen falta variables de entorno nuevas.
 Para publicar esta sección deben desplegarse tanto el frontend como el backend
 actualizado. El frontend utiliza el `BACKEND_API_URL` configurado durante el build.
 
+Las fichas de equipos consultan el mismo calendario público y reutilizan sus
+tarjetas, logos, estados y horarios. Cada ficha muestra la jornada de su equipo
+de LMB, permite cambiar la fecha y abre el calendario general con ese equipo y
+esa fecha seleccionados. Los calendarios estáticos del catálogo no se muestran.
+La correspondencia entre las cuatro fichas y los IDs de la liga se mantiene en
+`frontend/public/js/features/equipos/calendario-equipo.js`.
+
 ### Iconos Lucide
 
 El frontend usa `lucide-static` como dependencia de desarrollo. El comando

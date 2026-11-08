@@ -1,5 +1,6 @@
 import { obtenerEquipos } from '../../services/datos-equipos.js?v=20261010-2';
 import { RUTAS, ruta } from '../../app/rutas.js';
+import { iniciarCalendarioEquipo } from './calendario-equipo.js';
 import { FILTROS_VIDEO, AJUSTES_VIDEO, HERRAMIENTAS_VIDEO, normalizarVideo, filtroCSSVideo, temperaturaVideo } from './filtros-video.js';
 export { FILTROS_VIDEO };
 
@@ -65,26 +66,25 @@ export function fuenteVideo(video) {
     return '';
 }
 
-function calendarioTemplate(equipo, equipos) {
-    const d = equipo.detalles;
-    const juegos = d.calendario;
+function calendarioTemplate() {
+    const calIcon = name => `<svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="${ruta('assets/icons/lucide.svg')}#${name}"></use></svg>`;
     return `<section class="equipo-calendar equipo-card" aria-labelledby="equipo-calendario">
         <h2 class="equipo-section-bar" id="equipo-calendario">Calendario de juegos</h2>
         <div class="equipo-calendar-body">
-            ${juegos.length ? `<ul>${juegos.map(juego => {
-                const rival = equipos.find(item => item.id === juego.oponenteId || item.nombre === juego.oponente);
-                const pendiente = !juego.inicio && (!juego.fecha || /próximamente|definir|confirmar/i.test(juego.fecha));
-                const date = juego.inicio ? new Date(juego.inicio) : null;
-                const valid = date && Number.isFinite(date.getTime());
-                const fecha = valid ? new Intl.DateTimeFormat('es-MX', { day: 'numeric', month: 'long', timeZone: 'America/Mexico_City' }).format(date) : pendiente ? 'Por confirmar' : juego.fecha;
-                const hora = valid ? new Intl.DateTimeFormat('es-MX', { hour: 'numeric', minute: '2-digit', timeZone: 'America/Mexico_City' }).format(date) + ' · CDMX' : juego.hora || 'Horario por definir';
-                return `<li class="equipo-match">
-                    <div class="equipo-match-clubs"><span>${image(equipo.imagenes.logoFondo, equipo.nombre)}<small>${html(equipo.nombre)}</small></span><b>vs</b><span>${rival ? image(rival.imagenes.logoFondo, rival.nombre) : '<span class="equipo-rival-placeholder" aria-hidden="true">?</span>'}<small>${html(juego.oponente || 'Rival por confirmar')}</small></span></div>
-                    <div class="equipo-match-date">${valid ? `<time datetime="${html(juego.inicio)}">${html(fecha)}</time>` : `<strong>${html(fecha)}</strong>`}<small>${html(hora)}</small></div>
-                </li>`;
-            }).join('')}</ul>` : '<p class="equipo-empty">Aún no hay juegos programados.</p>'}
-            ${juegos.some(juego => !juego.inicio && /próximamente|definir|confirmar/i.test(juego.fecha || '')) ? '<p class="equipo-note">Fechas y horarios pendientes de confirmación.</p>' : ''}
-            ${d.calendarioUrl ? `<a class="equipo-text-link" href="${html(d.calendarioUrl)}" target="_blank" rel="noopener noreferrer">Consultar sitio oficial ${icon('arrow-up-right-from-square')}</a>` : ''}
+            <p class="equipo-calendar-league">LMB · Horarios de Ciudad de México</p>
+            <div class="equipo-calendar-controls" data-equipo-calendar="controles">
+                <p class="equipo-calendar-date" data-equipo-calendar="titulo-fecha">Consultando jornada…</p>
+                <div class="equipo-calendar-date-actions">
+                    <button type="button" data-equipo-calendar="anterior" aria-label="Día anterior">${calIcon('arrow-left')}</button>
+                    <button type="button" data-equipo-calendar="hoy">Hoy</button>
+                    <label class="equipo-calendar-picker" title="Elegir fecha">${calIcon('calendar-days')}<input type="date" min="2000-01-01" data-equipo-calendar="fecha" aria-label="Elegir fecha del calendario del equipo"></label>
+                    <button type="button" data-equipo-calendar="siguiente" aria-label="Día siguiente">${calIcon('arrow-right')}</button>
+                </div>
+            </div>
+            <p class="equipo-calendar-notice" data-equipo-calendar="aviso" role="status" hidden></p>
+            <div class="equipo-calendar-games" data-equipo-calendar="juegos" aria-busy="true"><p class="equipo-calendar-empty">Consultando los partidos del equipo…</p></div>
+            <div class="equipo-calendar-footer"><p data-equipo-calendar="actualizacion"></p><button type="button" data-equipo-calendar="actualizar">${calIcon('refresh-cw')} Actualizar</button></div>
+            <a class="equipo-text-link" data-equipo-calendar="completo" href="${ruta(RUTAS.partidos)}">Ver calendario completo ${calIcon('arrow-right')}</a>
         </div>
     </section>`;
 }
@@ -118,7 +118,7 @@ export function detalleTemplate(equipo, equipos) {
         <section class="equipo-mascot equipo-card" aria-label="Mascota del equipo">${image(d.mascota.imagen, d.mascota.nombre)}<div><h2>${html(d.mascota.nombre || 'Mascota')}</h2><p>La energía de<br>nuestra afición.</p></div></section>
         ${d.palmares.length ? `<section class="equipo-honours" aria-label="Palmarés"><ul>${d.palmares.map(titulo => `<li>${icon('trophy')}${html(titulo)}</li>`).join('')}</ul></section>` : ''}
         <figure class="equipo-mvp">${image(d.mvp.imagen, d.mvp.nombre)}<span class="equipo-mvp-badge">MVP</span><figcaption><h2>${html(d.mvp.nombre || 'Jugador destacado')}</h2></figcaption></figure>
-        ${calendarioTemplate(equipo, equipos)}
+        ${calendarioTemplate()}
     </div>
     <section class="equipo-media" aria-label="Galería y video de ${html(equipo.nombre)}">
         <div class="equipo-media-heading"><p>Dentro del diamante</p><h2>En nuestra casa</h2></div>
@@ -336,6 +336,7 @@ export async function cargarDetalleEquipo(signal) {
         container.setAttribute('aria-busy', 'false');
         document.title = `${equipo.nombre} | Zona Diamante`;
         iniciarMedios(container, equipo, signal);
+        iniciarCalendarioEquipo(container, equipo, signal);
         iniciarRevelado(container, signal);
         if (new URLSearchParams(location.search).get('video') === 'filtros') container.querySelector('[data-open-video="filters"]')?.click();
     } catch (error) {

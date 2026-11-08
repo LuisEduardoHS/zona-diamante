@@ -59,6 +59,30 @@
 .equipo-mvp figcaption { @apply relative mt-[-18px] p-[15px_22px] rounded-[25px] [background:var(--equipo-primary)] text-white; }
 .equipo-mvp h2 { @apply text-[21px]; }
 .equipo-calendar-body { @apply p-[18px_14px_22px]; }
+.equipo-calendar-league { @apply text-center text-[10px] font-bold text-[#61717a]; }
+.equipo-calendar-controls { @apply my-4 flex flex-col items-center gap-3; }
+.equipo-calendar-controls[hidden] { @apply hidden; }
+.equipo-calendar-date { @apply text-center text-sm font-extrabold text-[var(--equipo-primary)]; }
+.equipo-calendar-date-actions { @apply flex items-center justify-center gap-2; }
+.equipo-calendar-date-actions button, .equipo-calendar-picker { @apply relative grid size-11 place-items-center rounded-full border border-[#d7e1e3] bg-white text-[var(--equipo-primary)]; }
+.equipo-calendar-date-actions button[data-equipo-calendar=hoy] { @apply w-auto px-4 text-xs font-bold; }
+.equipo-calendar-date-actions button:disabled { @apply cursor-default opacity-30; }
+.equipo-calendar-picker { @apply cursor-pointer; }
+.equipo-calendar-picker input { @apply absolute inset-0 size-full min-w-0 cursor-pointer opacity-0; }
+.equipo-calendar-picker input::-webkit-calendar-picker-indicator { @apply absolute inset-0 size-full cursor-pointer; }
+.equipo-calendar-picker:focus-within { @apply outline-3 outline-offset-2 outline-accent; }
+.equipo-calendar-games { @apply grid min-w-0 gap-3; }
+.equipo-calendar-games .partido-card { @apply rounded-[20px]; }
+.equipo-calendar-games .partido-runs { @apply leading-normal; }
+.equipo-calendar-games .partido-team[data-winner=true] .partido-runs { @apply bg-[var(--equipo-tint)] text-[var(--equipo-primary)]; }
+.equipo-calendar-empty { @apply rounded-2xl border border-dashed border-[#ced9dc] bg-white px-4 py-5 text-center text-xs leading-relaxed text-[#5d6b73]; }
+.equipo-calendar-empty button { @apply mt-3 min-h-11 rounded-full bg-[var(--equipo-primary)] px-4 py-2 text-xs font-extrabold text-white; }
+.equipo-calendar-notice { @apply mb-3 rounded-xl bg-[#fff1de] px-3 py-2.5 text-xs leading-relaxed text-[#83501a]; }
+.equipo-calendar-notice[hidden] { @apply hidden; }
+.equipo-calendar-footer { @apply mt-3 flex flex-wrap items-center justify-between gap-2 text-[9px] font-semibold text-[#61717a]; }
+.equipo-calendar-footer button { @apply inline-flex min-h-11 items-center gap-1.5 rounded-full px-2 text-[10px] font-bold text-[var(--equipo-primary)]; }
+.equipo-calendar-footer button:disabled { @apply cursor-wait opacity-50; }
+.equipo-calendar-footer button[hidden] { @apply hidden; }
 .equipo-calendar ul { @apply m-0 p-0 list-none; }
 .equipo-match { @apply grid [grid-template-columns:1fr_1fr] items-center gap-3 p-[10px_0]; }
 .equipo-match + .equipo-match { @apply [border-top:1px_solid_#0001]; }
