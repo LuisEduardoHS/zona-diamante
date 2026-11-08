@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "predev": "npm run build:game",
+    "predev": "npm run build:game && npm run build:icons",
     "dev": "npx @tailwindcss/cli -i ./src/css/input.css -o ./public/css/output.css --watch",
-    "build": "npm run build:game && npm run build:css && npm run build:supabase && npm run build:config && npm run check:styles",
+    "build": "npm run build:game && npm run build:icons && npm run build:css && npm run build:supabase && npm run build:config && npm run check:styles",
+    "build:icons": "node ./scripts/generate-icons.cjs",
     "build:game": "node ./scripts/generate-game-config.cjs",
     "build:css": "npx @tailwindcss/cli -i ./src/css/input.css -o ./public/css/output.css --minify",
     "build:supabase": "esbuild ./scripts/supabase-entry.mjs --bundle --format=esm --platform=browser --minify --outfile=./public/vendor/supabase.js",
@@ -25,6 +26,7 @@
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",
     "esbuild": "^0.28.2",
+    "lucide-static": "1.70.0",
     "tailwindcss": "^4.3.3"
   },
   "dependencies": {

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="description" content="Consulta el calendario, los horarios y los resultados de la Liga Mexicana de Beisbol y la Liga Mexicana del Pacífico en Zona Diamante.">
     <link rel="icon" type="image/svg+xml" href="../../assets/logo-naranja.svg">
-    <link href="../../css/output.css?v=20261108-partidos-compact" rel="stylesheet">
+    <link href="../../css/output.css?v=20261108-lucide" rel="stylesheet">
     <title>Partidos | Zona Diamante</title>
 </head>
 <body class="partidos-page bg-canvas font-sans text-ink">
@@ -21,18 +21,18 @@
                         <button type="button" data-league="lmb" aria-pressed="true">LMB <span>Verano</span></button>
                         <button type="button" data-league="lmp" aria-pressed="false">LMP <span>Invierno</span></button>
                     </div>
-                    <p class="partidos-zona"><span aria-hidden="true">◷</span> Horarios de Ciudad de México</p>
+                    <p class="partidos-zona"><svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="../../assets/icons/lucide.svg#clock-3"></use></svg> Horarios de Ciudad de México</p>
                 </div>
                 <div class="partidos-jornada">
                     <div><p id="partidos-liga-nombre" class="partidos-kicker">Liga Mexicana de Beisbol</p><h2 id="partidos-fecha-titulo">Calendario y resultados</h2></div>
                     <div class="partidos-date-actions">
-                        <button type="button" class="partidos-icon-button" id="partidos-anterior" aria-label="Día anterior">←</button>
+                        <button type="button" class="partidos-icon-button" id="partidos-anterior" aria-label="Día anterior"><svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="../../assets/icons/lucide.svg#arrow-left"></use></svg></button>
                         <button type="button" class="partidos-hoy" id="partidos-hoy">Hoy</button>
                         <label class="partidos-calendario" title="Elegir fecha">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 11h18m-13 4h2m4 0h2"/></svg>
+                            <svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="../../assets/icons/lucide.svg#calendar-days"></use></svg>
                             <span class="sr-only">Elegir fecha</span><input type="date" id="partidos-fecha" min="2000-01-01" aria-label="Elegir fecha">
                         </label>
-                        <button type="button" class="partidos-icon-button" id="partidos-siguiente" aria-label="Día siguiente">→</button>
+                        <button type="button" class="partidos-icon-button" id="partidos-siguiente" aria-label="Día siguiente"><svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="../../assets/icons/lucide.svg#arrow-right"></use></svg></button>
                     </div>
                 </div>
                 <div id="partidos-semana" class="partidos-semana" role="group" aria-label="Días de la semana"></div>
@@ -40,7 +40,7 @@
             <section aria-labelledby="partidos-resultados-titulo">
                 <div class="partidos-results-heading">
                     <div><p class="partidos-kicker">En el campo</p><h2 id="partidos-resultados-titulo">La jornada</h2></div>
-                    <label class="partidos-equipo-label"><span class="sr-only">Filtrar por equipo</span><select id="partidos-equipo" aria-label="Filtrar por equipo"><option value="">Todos los equipos</option></select></label>
+                    <label class="partidos-equipo-label"><span class="sr-only">Filtrar por equipo</span><select id="partidos-equipo" aria-label="Filtrar por equipo"><option value="">Todos los equipos</option></select><svg class="lucide-icon partidos-equipo-chevron" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="../../assets/icons/lucide.svg#chevron-down"></use></svg></label>
                 </div>
                 <div class="partidos-filtros" role="group" aria-label="Estado del partido">
                     <button type="button" data-status="all" aria-pressed="true">Todos <span id="partidos-total">0</span></button>
@@ -52,10 +52,10 @@
                 <p id="partidos-estado" class="sr-only" role="status" aria-live="polite"></p>
                 <div id="partidos-lista" class="partidos-lista" aria-busy="true"></div>
                 <noscript><p class="partidos-empty">Activa JavaScript para consultar los partidos y sus resultados.</p></noscript>
-                <div class="partidos-fuente"><p id="partidos-actualizacion">Consultando la jornada…</p><button type="button" id="partidos-actualizar">Actualizar <span aria-hidden="true">↻</span></button></div>
+                <div class="partidos-fuente"><p id="partidos-actualizacion">Consultando la jornada…</p><button type="button" id="partidos-actualizar">Actualizar <svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="../../assets/icons/lucide.svg#refresh-cw"></use></svg></button></div>
                 <p class="partidos-creditos">Datos: MLB Stats API · Los horarios y marcadores pueden cambiar.</p>
             </section>
-            <aside class="partidos-explora"><div><p class="partidos-kicker">La afición también juega</p><h2>Entre entradas, una trivia.</h2><p>Pon a prueba lo que sabes del béisbol mexicano.</p></div><a href="../experiencias/trivia.html">Jugar trivia <span aria-hidden="true">→</span></a></aside>
+            <aside class="partidos-explora"><div><p class="partidos-kicker">La afición también juega</p><h2>Entre entradas, una trivia.</h2><p>Pon a prueba lo que sabes del béisbol mexicano.</p></div><a href="../experiencias/trivia.html">Jugar trivia <svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="../../assets/icons/lucide.svg#arrow-right"></use></svg></a></aside>
         </div>
     </main>
     <div id="menu-inferior"></div>

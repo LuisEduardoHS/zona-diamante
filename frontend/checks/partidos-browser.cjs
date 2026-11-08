@@ -47,6 +47,12 @@ const check = async (name, run) => { await run(); checks.push(name); console.log
                 const controls = await page.locator('.partidos-controles').boundingBox();
                 assert.ok(controls.x >= 0 && controls.x + controls.width <= width);
                 assert.ok(await page.locator('[data-league=lmb]').evaluate(element => element.offsetHeight >= 44));
+                const select = await page.locator('#partidos-equipo').boundingBox();
+                const chevron = await page.locator('.partidos-equipo-chevron').boundingBox();
+                assert.ok(Math.abs(chevron.y + chevron.height / 2 - select.y - select.height / 2) < 1, `${width}: centered select icon`);
+                assert.ok(Math.abs(select.x + select.width - chevron.x - chevron.width - 16) < 1, `${width}: select icon has a 16px inset`);
+                assert.equal(await page.locator('#partidos-equipo').evaluate(element => getComputedStyle(element).appearance), 'none');
+                await page.waitForFunction(() => [...document.querySelectorAll('#partidos-app .lucide-icon')].every(svg => svg.getBBox().width > 0));
                 if ([390, 1440].includes(width)) {
                     await page.screenshot({ path: path.join(output, `partidos-${width}-inicio.png`) });
                     await page.locator('.partidos-results-heading').evaluate(element => element.scrollIntoView({ block: 'start' }));

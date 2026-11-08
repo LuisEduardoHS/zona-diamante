@@ -391,3 +391,17 @@ para equipos sin logo. No hacen falta variables de entorno nuevas.
 
 Para publicar esta sección deben desplegarse tanto el frontend como el backend
 actualizado. El frontend utiliza el `BACKEND_API_URL` configurado durante el build.
+
+### Iconos Lucide
+
+El frontend usa `lucide-static` como dependencia de desarrollo. El comando
+`npm --prefix frontend run build:icons` genera `frontend/public/assets/icons/lucide.svg` con
+solo los iconos utilizados y copia su licencia junto al archivo. El build general
+y el inicio de desarrollo también ejecutan este paso. No se carga una librería
+de iconos externa en el navegador.
+
+Para reutilizarlos en otra sección, añade el nombre a la lista de
+`frontend/scripts/generate-icons.cjs`, regenera los iconos y usa un SVG con la
+clase compartida `lucide-icon` y un `<use href="…/assets/icons/lucide.svg#nombre">`.
+Los iconos decorativos deben tener `aria-hidden="true"`; los botones conservan
+su texto o su etiqueta accesible.

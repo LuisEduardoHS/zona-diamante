@@ -11,6 +11,8 @@
 
 :root { --bottom-nav-height: calc(80px + env(safe-area-inset-bottom, 0px)); --bottom-clearance: calc(var(--bottom-nav-height) + 32px); }
 
+.lucide-icon { @apply inline-block size-4 shrink-0 fill-none stroke-current align-middle [stroke-width:2] [stroke-linecap:round] [stroke-linejoin:round]; }
+
 .site-bottom-nav { @apply fixed [inset:auto_0_0] w-full max-w-[100vw] h-[var(--bottom-nav-height)] pb-[env(safe-area-inset-bottom,_0px)] [border:1px_solid_#d2d2d2] [border-bottom:0]; }
 
 .site-header { @apply pt-[calc(20px_+_env(safe-area-inset-top,_0px))]; }

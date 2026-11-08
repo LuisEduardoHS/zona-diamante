@@ -52,6 +52,6 @@ export function gameCard(game, logos, assetURL) {
         <h3 id="partido-${html(game.id)}" class="sr-only">${html(game.away.team.name)} contra ${html(game.home.team.name)}${game.double_header ? `, juego ${html(game.game_number)}` : ''}</h3>
         <div class="partido-card-top"><span class="partido-status">${game.status === 'live' ? '<span class="partidos-live-dot" aria-hidden="true"></span>' : ''}${html(STATUS[game.status] || 'Por confirmar')}</span><span class="partido-inning">${html(second)}</span></div>
         <div class="partido-scoreboard"><div class="partido-columns" aria-hidden="true"><span>${game.double_header ? `Juego ${html(game.game_number)}` : 'Equipos'}</span><span title="Carreras">C</span><span title="Hits">H</span><span title="Errores">E</span></div>${side(game.away, 'Visitante')}${side(game.home, 'Local')}</div>
-        <p class="partido-venue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>${html(game.venue)}</p>
+        <p class="partido-venue"><svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="${html(assetURL('assets/icons/lucide.svg'))}#map-pin"></use></svg>${html(game.venue)}</p>
     </article>`;
 }

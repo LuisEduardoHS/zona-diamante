@@ -11,7 +11,7 @@ async function loadLogos() {
         .catch(() => { logoManifest = null; return new Map(); });
     return logoManifest;
 }
-const calendarIcon = '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="7" y="11" width="34" height="31" rx="7"/><path d="M15 6v11M33 6v11M7 22h34m-26 8h5m8 0h5m-18 6h5"/></svg>';
+const calendarIcon = `<svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="${ruta('assets/icons/lucide.svg')}#calendar-off"></use></svg>`;
 const skeleton = () => Array.from({ length: 4 }, () => '<div class="partidos-skeleton" aria-hidden="true"><span></span><div></div><div></div></div>').join('');
 
 export function iniciarPartidos(signal) {
