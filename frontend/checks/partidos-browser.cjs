@@ -117,7 +117,7 @@ const check = async (name, run) => { await run(); checks.push(name); console.log
             await page.locator('#partidos-siguiente').click(); await waitReady();
             assert.equal(await page.locator('#partidos-fecha').inputValue(), '2026-07-03');
             await page.locator('#partidos-siguiente').click();
-            await page.locator('.partidos-volver').click();
+            await page.locator('.site-bottom-nav a[href$="index.html"]').click();
             await page.waitForSelector('.inicio-acciones');
             assert.equal(await page.locator('#partidos-app').count(), 0);
         });
