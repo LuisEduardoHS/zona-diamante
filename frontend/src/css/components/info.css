@@ -1,9 +1,85 @@
-/* Reusable Tailwind components shared by the history filters and timeline. */
-.historia-filtro { @apply min-h-11 cursor-pointer rounded-full border border-[#d9e0e2] bg-white px-4 py-2 text-xs font-extrabold text-[#52646a] transition-colors hover:border-brand hover:text-brand-deep focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand motion-reduce:transition-none; }
-.historia-filtro[aria-pressed=true] { @apply border-brand bg-brand text-white; }
-.historia-evento { @apply flex items-start gap-4 rounded-[24px] bg-white p-5 shadow-[0_3px_12px_#0000000a]; }
+/* Info uses solid surfaces, editorial photos and the shared type/icon system. */
+.historia-layout { @apply mx-auto max-w-6xl px-5 pb-[var(--bottom-clearance)] pt-[calc(100px_+_env(safe-area-inset-top,0px))] sm:px-8; }
+.historia-hero { @apply grid overflow-hidden rounded-[28px] bg-brand-deep text-white md:grid-cols-[1.05fr_1fr] md:rounded-[36px]; }
+.historia-hero-copy { @apply px-6 py-7 md:p-10; }
+.historia-kicker { @apply mb-3 text-[10px] font-extrabold uppercase tracking-[.16em] text-brand-deep; }
+.historia-hero .historia-kicker { @apply text-[#bde7ec]; }
+.historia-hero h1 { @apply font-display text-[clamp(30px,8.5vw,52px)] leading-[1.12] tracking-[-.045em]; }
+.historia-hero-description { @apply mt-4 max-w-[38ch] text-[14px] leading-relaxed text-[#e0f1f3] md:text-base; }
+.historia-button { @apply inline-flex min-h-11 items-center justify-center gap-4 rounded-xl px-5 py-3 text-[13px] font-extrabold no-underline transition-colors focus-visible:outline-3 focus-visible:outline-offset-4; }
+.historia-button-light { @apply mt-6 bg-white text-brand-deep hover:bg-[#e0f1f3] focus-visible:outline-white; }
+.historia-button-brand { @apply bg-brand-deep text-white hover:bg-[#004651] focus-visible:outline-brand; }
+.historia-hero-photo { @apply m-0 flex min-w-0 flex-col; }
+.historia-hero-photo img { @apply h-[210px] min-h-[210px] w-full object-cover object-[50%_38%] md:h-0 md:min-h-[280px] md:flex-1; }
+.historia-hero-photo figcaption { @apply flex items-center justify-between gap-3 bg-[#004b58] px-5 py-3 text-[10px] text-[#c8e9ee]; }
+.historia-hero-photo figcaption span:first-child { @apply font-extrabold text-white; }
+.historia-section-nav { @apply my-5 grid grid-cols-4 gap-1 rounded-2xl border border-[#e2e8ea] bg-white p-1.5 sm:my-7 sm:gap-3 sm:p-2; }
+.historia-section-nav a { @apply grid min-h-11 place-items-center rounded-xl px-1 py-2 text-center text-[11px] font-extrabold text-brand-deep no-underline transition-colors hover:bg-[#eaf4f5] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand sm:text-sm; }
+.historia-sections { @apply space-y-12 md:space-y-16; }
+.historia-anchor { @apply scroll-mt-[100px]; }
+.historia-heading { @apply mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between md:gap-9; }
+.historia-heading h2 { @apply max-w-[23ch] font-display text-[clamp(22px,5.7vw,32px)] leading-[1.2] tracking-[-.045em]; }
+.historia-heading>p { @apply max-w-[36ch] text-sm leading-relaxed text-[#627078]; }
+.historia-game-grid { @apply grid gap-5 md:grid-cols-[.85fr_1.15fr] md:gap-8; }
+.historia-diamond { @apply m-0 flex flex-col justify-between rounded-[24px] bg-brand-deep p-6 text-white sm:p-7; }
+.historia-diamond .historia-kicker { @apply text-[#bde7ec]; }
+.historia-diamond h3 { @apply mt-1 text-[23px] font-black; }
+.historia-diamond>svg { @apply my-5 w-full max-w-[370px] self-center; }
+.historia-diamond figcaption { @apply border-t border-[#3b8a96] pt-4 text-center text-xs text-[#d2ebef]; }
+.historia-basics { @apply flex flex-col justify-center gap-4; }
+.historia-basics article { @apply flex items-start gap-4 border-b border-[#dfe6e8] pb-5; }
+.historia-basics article>span { @apply mt-0.5 shrink-0 text-xl font-black tabular-nums text-accent; }
+.historia-basics h3 { @apply text-[17px] leading-snug font-black; }
+.historia-basics article p { @apply mt-2 text-[14px] leading-relaxed text-[#627078]; }
+.historia-rule-note { @apply flex items-start gap-3 rounded-2xl bg-[#e7f1f3] p-4 text-[12px] leading-relaxed text-brand-deep; }
+.historia-rule-note>svg { @apply mt-0.5; }
+.historia-leagues { @apply overflow-hidden rounded-[24px] border border-[#dfe6e8] bg-white md:rounded-[28px]; }
+.historia-league-tabs { @apply grid grid-cols-2 gap-2 border-b border-[#dfe6e8] bg-[#edf2f3] p-2; }
+.historia-league-tabs button { @apply flex min-h-[60px] cursor-pointer items-center justify-center gap-3 rounded-xl px-3 py-3 text-xs font-bold text-[#627078] transition-colors focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand; }
+.historia-league-tabs button strong { @apply ml-1 text-base font-black; }
+.historia-league-tabs button[aria-selected=true] { @apply bg-brand-deep text-white; }
+.historia-league-tabs button[data-info-league=lmp][aria-selected=true] { @apply bg-accent text-ink; }
+.historia-league-panel { @apply grid md:grid-cols-2; }
+.historia-league-panel[hidden] { @apply hidden!; }
+.historia-league-copy { @apply p-6 sm:p-8; }
+.historia-league-label { @apply mb-3 inline-flex rounded-md bg-[#e7f1f3] px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-brand-deep; }
+.historia-league-panel-winter .historia-league-label { @apply bg-[#fff0e3] text-[#8c440f]; }
+.historia-league-copy h3 { @apply text-[clamp(24px,5vw,33px)] leading-[1.12] font-black tracking-tight; }
+.historia-league-copy>p { @apply mb-5 mt-4 text-sm leading-relaxed text-[#627078]; }
+.historia-league-panel figure { @apply m-0 flex min-w-0 flex-col; }
+.historia-league-panel figure img { @apply h-[220px] min-h-[220px] w-full object-cover object-[50%_65%] md:h-0 md:flex-1 md:min-h-[260px]; }
+.historia-league-panel figcaption { @apply bg-[#edf2f3] px-5 py-3 text-[10px] text-[#627078]; }
+.historia-source { @apply mt-4 inline-flex items-center gap-1.5 text-[11px] leading-relaxed font-bold text-brand-deep underline decoration-[#b5ced3] underline-offset-4 hover:decoration-brand-deep focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand; }
+.historia-source svg { @apply size-3.5; }
+.historia-league-copy>.historia-source { @apply flex; }
+.historia-winter-note { @apply flex flex-col justify-center bg-[#ffe7d2] p-7 text-[#713b15] sm:p-9; }
+.historia-winter-note>svg { @apply mb-5 size-10; }
+.historia-winter-note strong { @apply text-[clamp(25px,5vw,36px)] leading-[1.15] font-black tracking-tight; }
+.historia-winter-note p { @apply mt-5 max-w-[34ch] text-sm leading-relaxed; }
+.historia-winter-note>span { @apply mt-6 border-t border-[#e1b897] pt-4 text-[11px] font-extrabold uppercase tracking-wider; }
+.historia-filters { @apply mb-5 flex flex-wrap gap-2; }
+.historia-filtro { @apply min-h-11 cursor-pointer rounded-xl border border-[#d9e0e2] bg-white px-4 py-2 text-xs font-extrabold text-[#52646a] transition-colors hover:border-brand hover:text-brand-deep focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-brand motion-reduce:transition-none; }
+.historia-filtro[aria-pressed=true] { @apply border-brand-deep bg-brand-deep text-white; }
+.historia-timeline { @apply grid gap-3 md:grid-cols-2 md:gap-4; }
+.historia-evento { @apply flex items-start gap-4 rounded-[20px] border border-[#e1e7e9] bg-white p-5; }
 .historia-evento.hidden { @apply hidden; }
-.historia-ano { @apply inline-flex min-h-10 min-w-16 shrink-0 items-center justify-center rounded-full bg-[#fff0e3] px-3 py-2 text-sm font-black text-[#a64d0c]; }
-.historia-evento:nth-child(even) .historia-ano { @apply bg-[#e4f0f1] text-brand-deep; }
-.historia-evento h3 { @apply text-base leading-tight font-black text-ink; }
-.historia-evento p { @apply mt-2 text-sm leading-relaxed text-[#62666e]; }
+.historia-ano { @apply inline-flex shrink-0 border-b-[3px] border-accent pb-2 text-xl font-black tabular-nums text-brand-deep; }
+.historia-evento h3 { @apply text-base leading-snug font-black; }
+.historia-evento p { @apply mt-2 text-[13px] leading-relaxed text-[#627078]; }
+.historia-dictionary { @apply grid items-start gap-3 md:grid-cols-2; }
+.historia-term { @apply rounded-2xl border border-[#dfe6e8] bg-white; }
+.historia-term summary { @apply flex min-h-[62px] cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-base font-black text-brand-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand; }
+.historia-term summary::-webkit-details-marker { @apply hidden; }
+.historia-term summary svg { @apply transition-transform; }
+.historia-term[open] summary svg { @apply rotate-45; }
+.historia-term[open] { @apply border-[#96c6ce] bg-[#edf6f7]; }
+.historia-term>p { @apply px-5 pb-5 text-sm leading-relaxed text-[#52646a]; }
+.historia-next { @apply grid gap-7 rounded-[24px] bg-accent p-6 text-ink sm:p-9 md:grid-cols-[1fr_.85fr] md:items-center md:gap-12; }
+.historia-next .historia-kicker { @apply text-[#63310d]; }
+.historia-next h2 { @apply font-display text-[clamp(26px,6vw,40px)] leading-[1.15] tracking-[-.045em]; }
+.historia-next p:not(.historia-kicker) { @apply mt-4 max-w-[35ch] text-sm leading-relaxed; }
+.historia-next-links { @apply flex flex-col gap-3; }
+.historia-next-links a { @apply flex min-h-[58px] items-center justify-between gap-4 rounded-xl bg-white px-5 py-4 text-sm font-extrabold text-brand-deep no-underline transition-colors hover:bg-[#fff2e7] focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-ink; }
+.historia-next-links a>span { @apply flex items-center gap-3; }
+.historia-photo-credit { @apply text-center text-[10px] leading-relaxed text-[#75818a]; }
+@media (prefers-reduced-motion:reduce) { .historia-layout * { @apply transition-none!; } }

@@ -85,7 +85,7 @@ async function montarSeccion(archivo, signal) {
         const { iniciarAyuda } = await import('../features/contenido/ayuda.js');
         if (!signal.aborted) iniciarAyuda();
     } else if (archivo === RUTAS.informacion) {
-        const { iniciarHistoria } = await import('../features/contenido/historia.js?v=20261102-design');
+        const { iniciarHistoria } = await import('../features/contenido/historia.js?v=20261109-info');
         if (!signal.aborted) iniciarHistoria(signal);
     } else if (archivo === RUTAS.login) {
         const { iniciarLogin } = await import('../features/auth/login.js?v=20261028-3');

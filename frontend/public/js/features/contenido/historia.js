@@ -1,15 +1,37 @@
 export function iniciarHistoria(signal) {
     const app = document.getElementById('historia-app');
-    if (!app || app.dataset.iniciada) return;
+    if (!app || app.dataset.iniciada || signal?.aborted) return;
     app.dataset.iniciada = 'true';
 
-    app.querySelector('a[href="#cronologia"]')?.addEventListener('click', event => {
+    app.querySelectorAll('a[href^="#"]').forEach(link => link.addEventListener('click', event => {
+        const target = app.querySelector(link.getAttribute('href'));
+        if (!target) return;
         event.preventDefault();
-        document.getElementById('cronologia')?.scrollIntoView({
+        target.scrollIntoView({
             behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
             block: 'start'
         });
-    }, {signal});
+    }, {signal}));
+
+    const tabs = [...app.querySelectorAll('[data-info-league]')];
+    const selectLeague = tab => {
+        tabs.forEach(other => {
+            const selected = other === tab;
+            other.setAttribute('aria-selected', String(selected));
+            other.tabIndex = selected ? 0 : -1;
+            app.querySelector('#' + other.getAttribute('aria-controls')).hidden = !selected;
+        });
+    };
+    tabs.forEach((tab,index) => {
+        tab.addEventListener('click', () => selectLeague(tab), {signal});
+        tab.addEventListener('keydown', event => {
+            const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length-1
+                : event.key === 'ArrowRight' ? (index+1)%tabs.length
+                : event.key === 'ArrowLeft' ? (index+tabs.length-1)%tabs.length : null;
+            if (next === null) return;
+            event.preventDefault(); selectLeague(tabs[next]); tabs[next].focus();
+        }, {signal});
+    });
 
     const revelar = new IntersectionObserver(entradas => entradas.forEach(entrada => {
         if (!entrada.isIntersecting) return;

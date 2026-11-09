@@ -1,69 +1,700 @@
 <!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <link rel="icon" type="image/svg+xml" href="../../assets/logo-naranja.svg">
-    <link href="../../css/output.css?v=20261109-email" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="../../assets/logo-naranja.svg"
+    />
+    <link href="../../css/output.css?v=20261109-info" rel="stylesheet" />
     <title>Info | Zona Diamante</title>
-</head>
-<body class="historia-page bg-canvas font-sans text-ink">
+  </head>
+  <body class="historia-page bg-canvas font-sans text-ink">
     <div id="header-superior"></div>
-    <main id="historia-app" class="mx-auto w-full max-w-5xl pb-[var(--bottom-clearance)]">
-        <section class="relative isolate overflow-hidden rounded-b-[42px] bg-brand px-6 pb-8 pt-[calc(108px+env(safe-area-inset-top,0px))] text-white sm:px-10 md:rounded-b-[52px] md:pb-10">
-            <svg class="pointer-events-none absolute -right-12 -top-4 -z-10 size-[340px] text-white/10 md:right-4" viewBox="0 0 320 320" fill="none" aria-hidden="true"><circle cx="160" cy="160" r="132" stroke="currentColor" stroke-width="2"/><path d="M70 62c112 43 112 153 0 196M250 62c-112 43-112 153 0 196" stroke="currentColor" stroke-width="3" stroke-dasharray="8 10"/></svg>
-            <div class="absolute -bottom-40 -right-24 -z-10 size-60 rounded-full bg-accent" aria-hidden="true"></div>
-            <p class="mb-3 text-[11px] font-extrabold uppercase tracking-[.2em] text-[#c1e8ef]">Info · El béisbol de México</p>
-            <h1 class="max-w-[15ch] font-display text-[clamp(30px,7.8vw,54px)] leading-[1.08] tracking-[-.045em] text-balance">El juego que nos une.</h1>
-            <p class="mt-4 max-w-[38ch] text-[15px] leading-relaxed text-white/90">Detrás de cada entrada hay una historia. Descubre de dónde viene la pasión que se vive en el diamante.</p>
-            <a href="#cronologia" class="mt-6 inline-flex min-h-11 items-center gap-4 rounded-full bg-white px-5 py-3 text-sm font-extrabold text-brand-deep shadow-sm transition hover:-translate-y-0.5 hover:bg-[#e1f5f7] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-white motion-reduce:transform-none">Conocer la historia <svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="../../assets/icons/lucide.svg?v=20261108-secciones#arrow-down"></use></svg></a>
-        </section>
-        <div class="space-y-9 px-5 pt-6 sm:px-10 md:space-y-12 md:pt-9">
-            <section class="grid items-center gap-6 md:grid-cols-[1.1fr_1fr] md:gap-9" aria-labelledby="intro-titulo">
-                <figure class="m-0 overflow-hidden rounded-[28px] bg-white shadow-[0_3px_12px_#0000000a]">
-                    <img class="aspect-[1.6] w-full object-cover object-[50%_35%]" src="../../assets/img/equipos/galerias/sultanes/01.jpg" alt="Lanzador de Sultanes en acción durante un partido" width="1600" height="1069" fetchpriority="high">
-                    <figcaption class="flex items-center justify-between gap-3 px-4 py-3 text-[10px] font-bold text-[#6b7075]"><span class="text-brand">La pasión se vive en el campo</span><span>Foto: LMB</span></figcaption>
-                </figure>
-                <div>
-                    <p class="mb-2 text-[11px] font-extrabold uppercase tracking-[.16em] text-accent">Una misma afición</p>
-                    <h2 id="intro-titulo" class="max-w-[22ch] font-display text-[clamp(21px,5.7vw,30px)] leading-tight tracking-[-.035em] text-balance">Dos temporadas. Una pasión que no descansa.</h2>
-                    <p class="mt-4 text-[15px] leading-relaxed text-[#62666e]">La Liga Mexicana de Beisbol y la Liga Mexicana del Pacífico reúnen ciudades, estadios y generaciones alrededor del mismo juego.</p>
-                    <div class="mt-5 grid grid-cols-3 gap-2.5" aria-label="Datos clave del béisbol mexicano">
-                        <div class="rounded-2xl bg-[#e4f0f1] px-2 py-4 text-center"><strong class="block text-2xl font-black text-brand-deep">1925</strong><span class="mt-1 block text-[10px] font-bold text-[#52646a]">Liga de verano</span></div>
-                        <div class="rounded-2xl bg-[#fff0e3] px-2 py-4 text-center"><strong class="block text-2xl font-black text-[#a64d0c]">1945</strong><span class="mt-1 block text-[10px] font-bold text-[#785d49]">Liga invernal</span></div>
-                        <div class="rounded-2xl bg-[#e4f0f1] px-2 py-4 text-center"><strong class="block text-2xl font-black text-brand-deep">2</strong><span class="mt-1 block text-[10px] font-bold text-[#52646a]">Ligas principales</span></div>
-                    </div>
-                </div>
-            </section>
-            <section id="cronologia" class="historia-reveal scroll-mt-24" aria-labelledby="cronologia-titulo">
-                <p class="mb-2 text-[11px] font-extrabold uppercase tracking-[.16em] text-accent">Entrada por entrada</p>
-                <h2 id="cronologia-titulo" class="font-display text-[clamp(22px,5.7vw,32px)] leading-tight tracking-[-.035em]">Así empezó todo</h2>
-                <p class="mt-3 text-sm leading-relaxed text-[#62666e]">Elige una etapa y recorre la historia del juego.</p>
-                <div class="my-5 flex flex-wrap gap-2" role="group" aria-label="Filtrar etapas históricas">
-                    <button class="historia-filtro" type="button" aria-pressed="true" data-era="todas">Todas</button>
-                    <button class="historia-filtro" type="button" aria-pressed="false" data-era="origen">Orígenes</button>
-                    <button class="historia-filtro" type="button" aria-pressed="false" data-era="expansion">Expansión</button>
-                    <button class="historia-filtro" type="button" aria-pressed="false" data-era="mundo">México en el mundo</button>
-                </div>
-                <p id="historia-filter-status" class="sr-only" role="status" aria-live="polite">4 etapas</p>
-                <div class="grid gap-3 md:grid-cols-2">
-                    <article class="historia-evento" data-era="origen"><span class="historia-ano">1925</span><div><h3>La primera liga profesional</h3><p>La Liga Mexicana de verano organiza el talento del país y pone las bases de la competencia profesional.</p></div></article>
-                    <article class="historia-evento" data-era="expansion"><span class="historia-ano">1945</span><div><h3>El juego también se juega en invierno</h3><p>Nace la liga invernal, que más tarde se consolidaría como la Liga Mexicana del Pacífico.</p></div></article>
-                    <article class="historia-evento" data-era="expansion"><span class="historia-ano">Hoy</span><div><h3>Dos ligas, miles de historias</h3><p>La LMB y la LMP reúnen estadios, ciudades y aficiones distintas alrededor del mismo diamante.</p></div></article>
-                    <article class="historia-evento" data-era="mundo"><span class="historia-ano">Mundo</span><div><h3>Una camiseta que cruza fronteras</h3><p>México participa en la Serie del Caribe, el Clásico Mundial, los Juegos Olímpicos y torneos infantiles internacionales.</p></div></article>
-                </div>
-            </section>
-            <section class="historia-reveal overflow-hidden rounded-[28px] bg-white shadow-[0_3px_12px_#0000000a]" aria-labelledby="aficion-titulo">
-                <img class="aspect-[2] w-full object-cover object-[50%_65%] md:aspect-[2.8]" src="../../assets/img/equipos/galerias/charros/01.jpg" alt="Jugador deslizándose hacia una base durante un partido de Charros" loading="lazy" width="1600" height="1066">
-                <div class="p-5 sm:p-7"><p class="mb-2 text-[11px] font-extrabold uppercase tracking-[.16em] text-accent">La historia sigue</p><h2 id="aficion-titulo" class="font-display text-[clamp(21px,5.7vw,30px)] leading-tight tracking-[-.035em]">Ahora te toca a ti.</h2><p class="mt-3 max-w-[55ch] text-sm leading-relaxed text-[#62666e]">Conoce a los equipos, reúne tus cartas favoritas y pon a prueba lo que sabes. Cada afición tiene su lugar en Zona Diamante.</p><p class="mt-3 text-[10px] text-[#6b7075]">Fotografía: Liga Mexicana de Beisbol.</p></div>
-            </section>
-            <section class="historia-reveal grid gap-3 sm:grid-cols-2" aria-label="Sigue explorando Zona Diamante">
-                <a class="group flex min-h-28 items-center justify-between gap-4 rounded-[24px] bg-brand p-5 text-white transition hover:bg-brand-deep focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-brand" href="../experiencias/trivia.html"><div><p class="text-[10px] font-bold uppercase tracking-[.16em] text-[#c1e8ef]">¿Cuánto sabes?</p><h2 class="mt-2 font-display text-xl tracking-[-.035em]">Jugar trivia</h2></div><span class="grid size-10 shrink-0 place-items-center rounded-full bg-white/15 text-xl transition group-hover:translate-x-1 motion-reduce:transform-none" aria-hidden="true"><svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="../../assets/icons/lucide.svg?v=20261108-secciones#arrow-right"></use></svg></span></a>
-                <a class="group flex min-h-28 items-center justify-between gap-4 rounded-[24px] bg-[#ffe7d3] p-5 text-[#87400c] transition hover:bg-[#ffdbbd] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-accent" href="../coleccion/coleccion.html"><div><p class="text-[10px] font-bold uppercase tracking-[.16em]">Tu afición, en cartas</p><h2 class="mt-2 font-display text-xl tracking-[-.035em]">Mi colección</h2></div><span class="grid size-10 shrink-0 place-items-center rounded-full bg-white/70 text-xl transition group-hover:translate-x-1 motion-reduce:transform-none" aria-hidden="true"><svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="../../assets/icons/lucide.svg?v=20261108-secciones#arrow-right"></use></svg></span></a>
-            </section>
+    <main id="historia-app" class="historia-layout">
+      <header class="historia-hero">
+        <div class="historia-hero-copy">
+          <p class="historia-kicker">Info · Dentro del diamante</p>
+          <h1>Un país.<br />Un diamante.</h1>
+          <p class="historia-hero-description">
+            Del primer lanzamiento al último out. Conoce el juego, sus ligas y
+            las historias que hacen del béisbol una pasión en México.
+          </p>
+          <a class="historia-button historia-button-light" href="#el-juego"
+            >Entrar al juego
+            <svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <use href="../../assets/icons/lucide.svg#arrow-down"></use></svg
+          ></a>
         </div>
+        <figure class="historia-hero-photo">
+          <img
+            src="../../assets/img/equipos/galerias/sultanes/02.jpg"
+            alt="Los jugadores de Sultanes celebran juntos sobre el terreno de juego"
+            width="1600"
+            height="1066"
+            fetchpriority="high"
+          />
+          <figcaption>
+            <span>El juego se comparte.</span><span>Fotografía: LMB</span>
+          </figcaption>
+        </figure>
+      </header>
+      <nav class="historia-section-nav" aria-label="Explorar Info">
+        <a href="#el-juego">El juego</a><a href="#las-ligas">LMB y LMP</a
+        ><a href="#cronologia">La historia</a
+        ><a href="#diccionario">Diccionario</a>
+      </nav>
+      <div class="historia-sections">
+        <section
+          id="el-juego"
+          class="historia-reveal historia-anchor"
+          aria-labelledby="juego-titulo"
+        >
+          <div class="historia-heading">
+            <div>
+              <p class="historia-kicker">La primera entrada</p>
+              <h2 id="juego-titulo">Así se juega.</h2>
+            </div>
+            <p>Lo esencial para seguir el partido y disfrutar cada jugada.</p>
+          </div>
+          <div class="historia-game-grid">
+            <figure class="historia-diamond">
+              <div>
+                <span class="historia-kicker">El recorrido</span>
+                <h3>De home a home.</h3>
+              </div>
+              <svg
+                viewBox="0 0 360 280"
+                role="img"
+                aria-labelledby="diamante-titulo diamante-desc"
+              >
+                <title id="diamante-titulo">
+                  El recorrido de las cuatro bases
+                </title>
+                <desc id="diamante-desc">
+                  Desde home se avanza a primera, segunda, tercera y de regreso
+                  a home para anotar una carrera.
+                </desc>
+                <path d="M180 232 62 130 180 28 298 130Z" fill="#087f91" />
+                <path
+                  d="m180 216 99-86-99-86-99 86Z"
+                  fill="none"
+                  stroke="#f5ad72"
+                  stroke-width="3"
+                  stroke-dasharray="7 6"
+                />
+                <path
+                  d="m228 163 23-7-7 23M216 83l-7-22 23 6M132 98l-24 7 7-23M141 182l7 23-24-7"
+                  fill="none"
+                  stroke="#f5ad72"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path d="m180 203 12 11v13h-24v-13Z" fill="#f27b21" />
+                <path
+                  d="m279 118 12 12-12 12-12-12ZM180 32l12 12-12 12-12-12ZM81 118l12 12-12 12-12-12Z"
+                  fill="#fff"
+                />
+                <g
+                  fill="#fff"
+                  font-family="Urbanist,Arial,sans-serif"
+                  font-size="15"
+                  font-weight="800"
+                >
+                  <text x="302" y="136">1ª</text>
+                  <text x="180" y="17" text-anchor="middle">2ª base</text>
+                  <text x="48" y="136" text-anchor="end">3ª</text>
+                  <text x="180" y="259" text-anchor="middle">HOME</text>
+                </g>
+              </svg>
+              <figcaption>
+                Cuatro bases. Un objetivo: sumar carreras.
+              </figcaption>
+            </figure>
+            <div class="historia-basics">
+              <article>
+                <span>01</span>
+                <div>
+                  <h3>Gana quien anota más</h3>
+                  <p>
+                    El equipo que batea busca recorrer las bases y regresar a
+                    home. Cada vuelta completa de un corredor suma una carrera.
+                  </p>
+                </div>
+              </article>
+              <article>
+                <span>02</span>
+                <div>
+                  <h3>Dos mitades por entrada</h3>
+                  <p>
+                    En la parte alta batea el visitante; en la baja, el local.
+                    Los equipos se alternan entre atacar y defender.
+                  </p>
+                </div>
+              </article>
+              <article>
+                <span>03</span>
+                <div>
+                  <h3>Tres outs y cambia el turno</h3>
+                  <p>
+                    La defensa intenta sacar a tres bateadores o corredores. Al
+                    conseguirlo, termina esa mitad de la entrada.
+                  </p>
+                </div>
+              </article>
+              <div class="historia-rule-note">
+                <svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <use href="../../assets/icons/lucide.svg#clock-3"></use>
+                </svg>
+                <p>
+                  Un juego regular está previsto a nueve entradas. Si hay
+                  empate, puede extenderse a extra innings.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section
+          id="las-ligas"
+          class="historia-reveal historia-anchor"
+          aria-labelledby="ligas-titulo"
+        >
+          <div class="historia-heading">
+            <div>
+              <p class="historia-kicker">Dos temporadas, la misma afición</p>
+              <h2 id="ligas-titulo">El béisbol no se detiene.</h2>
+            </div>
+            <p>
+              Aprende a distinguir las dos ligas que encontrarás en nuestro
+              calendario.
+            </p>
+          </div>
+          <div class="historia-leagues">
+            <div
+              class="historia-league-tabs"
+              role="tablist"
+              aria-label="Conocer las ligas"
+            >
+              <button
+                id="info-tab-lmb"
+                type="button"
+                role="tab"
+                aria-selected="true"
+                aria-controls="info-panel-lmb"
+                tabindex="0"
+                data-info-league="lmb"
+              >
+                <svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <use href="../../assets/icons/lucide.svg#sun"></use></svg
+                ><span>Verano <strong>LMB</strong></span></button
+              ><button
+                id="info-tab-lmp"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="info-panel-lmp"
+                tabindex="-1"
+                data-info-league="lmp"
+              >
+                <svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <use
+                    href="../../assets/icons/lucide.svg#calendar-days"
+                  ></use></svg
+                ><span>Invierno <strong>LMP</strong></span>
+              </button>
+            </div>
+            <div
+              id="info-panel-lmb"
+              class="historia-league-panel"
+              role="tabpanel"
+              aria-labelledby="info-tab-lmb"
+              tabindex="0"
+            >
+              <div class="historia-league-copy">
+                <span class="historia-league-label">La liga de verano</span>
+                <h3>Liga Mexicana<br />de Beisbol</h3>
+                <p>
+                  Desde 1925, sus equipos representan a ciudades de distintas
+                  regiones del país. Su temporada se vive en primavera y verano,
+                  y continúa con los playoffs rumbo al campeonato.
+                </p>
+                <a
+                  class="historia-button historia-button-brand"
+                  href="partidos.html?liga=lmb"
+                  >Ver calendario LMB
+                  <svg
+                    class="lucide-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <use
+                      href="../../assets/icons/lucide.svg#arrow-right"
+                    ></use></svg></a
+                ><a
+                  class="historia-source"
+                  href="https://www.milb.com/news/la-liga-mexicana-de-beisbol-celebra-92-anos-239261410"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Conoce su historia en LMB
+                  <svg
+                    class="lucide-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <use
+                      href="../../assets/icons/lucide.svg#arrow-up-right"
+                    ></use></svg
+                ></a>
+              </div>
+              <figure>
+                <img
+                  src="../../assets/img/equipos/galerias/charros/01.jpg"
+                  alt="Jugador de Charros deslizándose hacia home durante un partido de la LMB"
+                  width="1600"
+                  height="1066"
+                  loading="lazy"
+                />
+                <figcaption>
+                  La intensidad de cada jugada · Foto: LMB
+                </figcaption>
+              </figure>
+            </div>
+            <div
+              id="info-panel-lmp"
+              class="historia-league-panel historia-league-panel-winter"
+              role="tabpanel"
+              aria-labelledby="info-tab-lmp"
+              tabindex="0"
+              hidden
+            >
+              <div class="historia-league-copy">
+                <span class="historia-league-label">La liga de invierno</span>
+                <h3>Liga Mexicana<br />del Pacífico</h3>
+                <p>
+                  Su historia se remonta a la Liga de la Costa del Pacífico de
+                  1945. Se disputa en otoño e invierno, con una identidad ligada
+                  a las ciudades y aficiones del Pacífico mexicano.
+                </p>
+                <a
+                  class="historia-button historia-button-brand"
+                  href="partidos.html?liga=lmp"
+                  >Ver calendario LMP
+                  <svg
+                    class="lucide-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <use
+                      href="../../assets/icons/lucide.svg#arrow-right"
+                    ></use></svg></a
+                ><a
+                  class="historia-source"
+                  href="https://editor.lmp.mx/75-anos-de-historia-de-beisbol-invernal-un-dia-como-hoy-arranco-la-pelota-profesional-en-el-pacifico/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Conoce su historia en LMP
+                  <svg
+                    class="lucide-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <use
+                      href="../../assets/icons/lucide.svg#arrow-up-right"
+                    ></use></svg
+                ></a>
+              </div>
+              <div class="historia-winter-note">
+                <svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <use
+                    href="../../assets/icons/lucide.svg#calendar-days"
+                  ></use></svg
+                ><strong>Otra temporada.<br />Más béisbol.</strong>
+                <p>
+                  Un mismo equipo puede tener presencia en ambas ligas. Elige
+                  LMB o LMP en Calendario para consultar la competencia que
+                  buscas.
+                </p>
+                <span>Otoño · Invierno</span>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section
+          id="cronologia"
+          class="historia-reveal historia-anchor"
+          aria-labelledby="cronologia-titulo"
+        >
+          <div class="historia-heading">
+            <div>
+              <p class="historia-kicker">
+                Momentos que nos trajeron hasta aquí
+              </p>
+              <h2 id="cronologia-titulo">Una historia de grandes jugadas.</h2>
+            </div>
+            <p>Del nacimiento de las ligas a los escenarios internacionales.</p>
+          </div>
+          <div
+            class="historia-filters"
+            role="group"
+            aria-label="Filtrar etapas históricas"
+          >
+            <button
+              class="historia-filtro"
+              type="button"
+              aria-pressed="true"
+              data-era="todas"
+            >
+              Todas</button
+            ><button
+              class="historia-filtro"
+              type="button"
+              aria-pressed="false"
+              data-era="origen"
+            >
+              Los orígenes</button
+            ><button
+              class="historia-filtro"
+              type="button"
+              aria-pressed="false"
+              data-era="mundo"
+            >
+              México en el mundo</button
+            ><button
+              class="historia-filtro"
+              type="button"
+              aria-pressed="false"
+              data-era="expansion"
+            >
+              El juego crece
+            </button>
+          </div>
+          <p
+            id="historia-filter-status"
+            class="sr-only"
+            role="status"
+            aria-live="polite"
+          >
+            6 etapas
+          </p>
+          <div class="historia-timeline">
+            <article class="historia-evento" data-era="origen">
+              <span class="historia-ano">1925</span>
+              <div>
+                <h3>Comienza la LMB</h3>
+                <p>
+                  El 28 de junio se juega el primer partido oficial de la Liga
+                  Mexicana de Beisbol, en el Parque Franco Inglés de la Ciudad
+                  de México.
+                </p>
+                <a
+                  class="historia-source"
+                  href="https://www.milb.com/news/gcs-133368462"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >La primera jornada · LMB
+                  <svg
+                    class="lucide-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <use
+                      href="../../assets/icons/lucide.svg#arrow-up-right"
+                    ></use></svg
+                ></a>
+              </div>
+            </article>
+            <article class="historia-evento" data-era="origen">
+              <span class="historia-ano">1945</span>
+              <div>
+                <h3>Nace la pelota del Pacífico</h3>
+                <p>
+                  La Liga de la Costa del Pacífico inicia el 27 de octubre con
+                  cuatro equipos. Es el punto de partida de la tradición
+                  invernal de la LMP.
+                </p>
+                <a
+                  class="historia-source"
+                  href="https://editor.lmp.mx/75-anos-de-historia-de-beisbol-invernal-un-dia-como-hoy-arranco-la-pelota-profesional-en-el-pacifico/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Los primeros años · LMP
+                  <svg
+                    class="lucide-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <use
+                      href="../../assets/icons/lucide.svg#arrow-up-right"
+                    ></use></svg
+                ></a>
+              </div>
+            </article>
+            <article class="historia-evento" data-era="mundo">
+              <span class="historia-ano">1957</span>
+              <div>
+                <h3>Los pequeños gigantes</h3>
+                <p>
+                  Monterrey conquista la Serie Mundial de Pequeñas Ligas. Ángel
+                  Macías lanza un juego perfecto en la final y el equipo
+                  mexicano hace historia.
+                </p>
+                <a
+                  class="historia-source"
+                  href="https://www.littleleague.org/news/1957-little-league-baseball-world-series-champion-angel-macias-enshrined-little-league-hall-excellence/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >El equipo de Monterrey · Little League
+                  <svg
+                    class="lucide-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <use
+                      href="../../assets/icons/lucide.svg#arrow-up-right"
+                    ></use></svg
+                ></a>
+              </div>
+            </article>
+            <article class="historia-evento" data-era="mundo">
+              <span class="historia-ano">1981</span>
+              <div>
+                <h3>La Fernandomanía</h3>
+                <p>
+                  Fernando Valenzuela gana el Cy Young y el premio al Novato del
+                  Año en la misma temporada. Su impacto acerca a miles de
+                  aficionados al juego.
+                </p>
+                <a
+                  class="historia-source"
+                  href="https://baseballhall.org/discover/fernandomania-made-it-all-the-way-to-cooperstown"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >La temporada de Fernando · Hall of Fame
+                  <svg
+                    class="lucide-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <use
+                      href="../../assets/icons/lucide.svg#arrow-up-right"
+                    ></use></svg
+                ></a>
+              </div>
+            </article>
+            <article class="historia-evento" data-era="mundo">
+              <span class="historia-ano">2023</span>
+              <div>
+                <h3>México en semifinales</h3>
+                <p>
+                  La selección mexicana alcanza por primera vez las semifinales
+                  del Clásico Mundial y entusiasma a una nueva generación.
+                </p>
+                <a
+                  class="historia-source"
+                  href="https://www.mlb.com/news/featured/origins-history-and-evolution-of-baseball-in-mexico"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >México y el Clásico · MLB
+                  <svg
+                    class="lucide-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <use
+                      href="../../assets/icons/lucide.svg#arrow-up-right"
+                    ></use></svg
+                ></a>
+              </div>
+            </article>
+            <article class="historia-evento" data-era="expansion">
+              <span class="historia-ano">2025</span>
+              <div>
+                <h3>Cien años de LMB</h3>
+                <p>
+                  La liga celebra su centenario: un siglo de equipos, estadios,
+                  rivalidades y generaciones que comparten la misma afición.
+                </p>
+                <a
+                  class="historia-source"
+                  href="https://www.gob.mx/correosdemexico/acciones-y-programas/100-anos-de-la-liga-mexicana-de-beisbol"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >El centenario · Correos de México
+                  <svg
+                    class="lucide-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <use
+                      href="../../assets/icons/lucide.svg#arrow-up-right"
+                    ></use></svg
+                ></a>
+              </div>
+            </article>
+          </div>
+        </section>
+        <section
+          id="diccionario"
+          class="historia-reveal historia-anchor"
+          aria-labelledby="diccionario-titulo"
+        >
+          <div class="historia-heading">
+            <div>
+              <p class="historia-kicker">Habla béisbol</p>
+              <h2 id="diccionario-titulo">Que no se te vaya una.</h2>
+            </div>
+            <p>Abre cada término y llega al siguiente partido con más juego.</p>
+          </div>
+          <div class="historia-dictionary">
+            <details class="historia-term" open>
+              <summary>
+                Hit
+                <svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <use href="../../assets/icons/lucide.svg#plus"></use>
+                </svg>
+              </summary>
+              <p>
+                Un batazo válido que permite al bateador llegar a una base sin
+                depender de un error de la defensa ni de una selección del
+                fildeador.
+              </p>
+            </details>
+            <details class="historia-term">
+              <summary>
+                Home run
+                <svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <use href="../../assets/icons/lucide.svg#plus"></use>
+                </svg>
+              </summary>
+              <p>
+                Un batazo que permite recorrer todas las bases y anotar en la
+                misma jugada. Cuando la pelota sale del campo por territorio
+                válido, también anotan los corredores en base.
+              </p>
+            </details>
+            <details class="historia-term">
+              <summary>
+                Strike y ponche
+                <svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <use href="../../assets/icons/lucide.svg#plus"></use>
+                </svg>
+              </summary>
+              <p>
+                Se marca strike, entre otros casos, si el bateador intenta y no
+                conecta o deja pasar un lanzamiento dentro de la zona. Tres
+                strikes producen un ponche; algunas jugadas de tercer strike
+                tienen excepciones.
+              </p>
+            </details>
+            <details class="historia-term">
+              <summary>
+                Base por bolas
+                <svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <use href="../../assets/icons/lucide.svg#plus"></use>
+                </svg>
+              </summary>
+              <p>
+                Cuando el bateador recibe cuatro lanzamientos marcados como
+                bola, obtiene el derecho a avanzar a primera base.
+              </p>
+            </details>
+            <details class="historia-term">
+              <summary>
+                Doble play
+                <svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <use href="../../assets/icons/lucide.svg#plus"></use>
+                </svg>
+              </summary>
+              <p>
+                Una jugada de la defensa que consigue dos outs durante la misma
+                acción. Puede cambiar por completo una entrada.
+              </p>
+            </details>
+            <details class="historia-term">
+              <summary>
+                Extra innings
+                <svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <use href="../../assets/icons/lucide.svg#plus"></use>
+                </svg>
+              </summary>
+              <p>
+                Las entradas adicionales que se juegan cuando el partido regular
+                termina empatado. Continúan hasta que se define un ganador,
+                según las reglas de la competencia.
+              </p>
+            </details>
+          </div>
+        </section>
+        <section
+          class="historia-reveal historia-next"
+          aria-labelledby="siguiente-titulo"
+        >
+          <div>
+            <p class="historia-kicker">La siguiente jugada es tuya</p>
+            <h2 id="siguiente-titulo">Del dato<br />al diamante.</h2>
+            <p>
+              Busca el próximo partido, pon a prueba lo que sabes y sigue
+              construyendo tu colección.
+            </p>
+          </div>
+          <div class="historia-next-links">
+            <a href="partidos.html"
+              ><span
+                ><svg
+                  class="lucide-icon"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <use
+                    href="../../assets/icons/lucide.svg#calendar-days"
+                  ></use></svg
+                >Ver calendario</span
+              ><svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <use
+                  href="../../assets/icons/lucide.svg#arrow-right"
+                ></use></svg></a
+            ><a href="../experiencias/trivia.html"
+              ><span
+                ><svg
+                  class="lucide-icon"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <use href="../../assets/icons/lucide.svg#sparkles"></use></svg
+                >Jugar trivia</span
+              ><svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <use
+                  href="../../assets/icons/lucide.svg#arrow-right"
+                ></use></svg></a
+            ><a href="../coleccion/coleccion.html"
+              ><span
+                ><svg
+                  class="lucide-icon"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <use href="../../assets/icons/lucide.svg#layers-3"></use></svg
+                >Mi colección</span
+              ><svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <use
+                  href="../../assets/icons/lucide.svg#arrow-right"
+                ></use></svg
+            ></a>
+          </div>
+        </section>
+        <p class="historia-photo-credit">
+          Fotografías de la Liga Mexicana de Beisbol, conservadas en las
+          galerías del proyecto.
+        </p>
+      </div>
     </main>
     <div id="menu-inferior"></div>
-    <script type="module" src="../../js/app/main.js?v=20261109-email"></script>
-</body>
+    <script type="module" src="../../js/app/main.js?v=20261109-info"></script>
+  </body>
 </html>

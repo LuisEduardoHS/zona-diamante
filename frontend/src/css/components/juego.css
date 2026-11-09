@@ -66,8 +66,8 @@
 .game-paused { @apply absolute z-[4] [inset:0] flex flex-col items-center justify-center gap-[14px] p-[30px] text-center [background:#003f50d9] [backdrop-filter:blur(5px)] rounded-[inherit]; }
 .game-paused strong { @apply text-[26px] font-black; }.game-paused p { @apply text-[13px] m-[0_0_8px] max-w-[25ch]; }.game-paused .game-primary { @apply text-[19px]!; }
 .game-text-button { @apply block min-h-[44px] p-[6px_12px] [border:0] text-white [background:transparent] font-extrabold! text-[13px]! underline [text-underline-offset:4px]; }
-.game-result { @apply flex items-center justify-center p-[7%]; }
-.game-result-card { @apply relative flex items-center flex-col w-full p-[48px_18px_12px] rounded-[24px] text-center [background:#148b9de8] [box-shadow:0_15px_35px_#00252e35]; }
+.game-result { @apply flex flex-col items-center [justify-content:safe_center] gap-4 overflow-y-auto p-[7%]; }
+.game-result-card { @apply relative flex shrink-0 items-center flex-col w-full p-[48px_18px_12px] rounded-[24px] text-center [background:#148b9de8] [box-shadow:0_15px_35px_#00252e35]; }
 .game-result-close { @apply absolute right-[4px] top-[4px] w-[44px] h-[44px] p-0 grid place-items-center [border:0] [background:transparent] text-white rounded-[50%]; }
 .game-result-close::before { @apply [content:''] absolute [inset:9px] rounded-[50%] [background:#90e5ee55]; }
 .game-result-close svg { @apply relative w-[20px] h-[20px] [fill:currentColor] pointer-events-none; }
@@ -85,7 +85,7 @@
 .game-result-actions { @apply flex items-center flex-col w-full; }
 .is-guest-result .game-result-actions { @apply flex-row gap-2; }
 .is-guest-result .game-result-actions>* { @apply [flex:1] w-auto; }
-.game-award-toast { @apply absolute z-[1] top-[12%] right-0 p-[10px_16px_10px_22px] rounded-[25px_0_0_25px] [background:#4bb900] text-white font-black text-[14px]; }
+.game-award-toast { @apply relative z-[1] self-end shrink-0 p-[10px_16px_10px_22px] rounded-[25px] [background:#4bb900] text-white font-black text-[14px]; }
 .game-notices { @apply absolute z-[8] top-[19%] left-[6%] right-[6%] text-center text-[12px]; }
 .game-notices:not(:has(>:not([hidden]))) { @apply hidden; }
 .game-notices p { @apply p-3 m-0 [background:#003e51ed] rounded-[14px] leading-[1.4]; }
@@ -108,7 +108,7 @@
  .game-session-note { @apply top-[78px] left-[16px] text-[10px]; }
  .game-extra-streak { @apply top-[105px] left-[16px] text-[13px]; }
  .game-cover-title h1 { @apply text-[43px]; }.game-cover-title>span { @apply text-[10px]; }.game-cover-actions { @apply left-[8%] right-[8%] bottom-[12%]; }.game-primary { @apply min-h-[44px] text-[18px]!; }.game-access-note { @apply text-[9px]; }
- .game-result { @apply overflow-visible; }.game-result::before { @apply rounded-[inherit]; }.game-result-card { @apply min-w-[280px] max-w-[360px] p-[36px_18px_6px]; }.game-result-close { @apply top-0 right-0; }.game-result h2 { @apply text-[14px] mb-2; }.game-result-numbers { @apply mb-2; }.game-result-numbers>div { @apply min-h-[55px] p-[6px]; }.game-result-numbers dd { @apply text-[24px]; }.game-result-numbers dt { @apply mt-[3px]; }.game-result-label { @apply text-[19px]; }.game-result-rule { @apply text-[12px]; }.game-result-reward { @apply m-[4px_0_6px] text-[10px]; }.game-result-bonus { @apply m-[4px_0] text-[10px]; }.game-collection-link { @apply min-h-[36px]; }.game-result-card .game-text-button { @apply min-h-[34px]; }.game-award-toast { @apply top-[-6px] right-[-100px] text-[11px] p-[7px_12px] rounded-[20px]; }
+ .game-result { @apply gap-2 overflow-y-auto; }.game-result::before { @apply rounded-[inherit]; }.game-result-card { @apply min-w-[280px] max-w-[360px] p-[36px_18px_6px]; }.game-result-close { @apply top-0 right-0; }.game-result h2 { @apply text-[14px] mb-2; }.game-result-numbers { @apply mb-2; }.game-result-numbers>div { @apply min-h-[55px] p-[6px]; }.game-result-numbers dd { @apply text-[24px]; }.game-result-numbers dt { @apply mt-[3px]; }.game-result-label { @apply text-[19px]; }.game-result-rule { @apply text-[12px]; }.game-result-reward { @apply m-[4px_0_6px] text-[10px]; }.game-result-bonus { @apply m-[4px_0] text-[10px]; }.game-collection-link { @apply min-h-[36px]; }.game-result-card .game-text-button { @apply min-h-[34px]; }.game-award-toast { @apply text-[11px] p-[7px_12px] rounded-[20px]; }
  .is-guest-result .game-result-numbers { @apply hidden; }.is-guest-result .game-result-card { @apply pt-11; }
  .game-paused { @apply p-2 gap-2; }.game-paused strong { @apply text-[21px]; }.game-paused p { @apply text-[11px]; }.game-notices { @apply left-[-40px] right-[-40px]; }
  }
