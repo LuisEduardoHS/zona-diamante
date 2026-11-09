@@ -413,3 +413,58 @@ enabled = true
 # formatted with uppercase keywords, indent 2, max width 180, trailing commas,
 # and column/key alignment. Set to "null" to emit raw, unformatted SQL.
 # format_options = "{\"keywordCase\":\"upper\",\"indent\":2,\"maxWidth\":180,\"commaStyle\":\"trailing\"}"
+
+# Zona Diamante: email layout only. Production is published with the limited
+# Management API patch in backend/checks/configure_auth_emails.py.
+
+[auth.email.template.confirmation]
+subject = "Confirma tu correo | Zona Diamante"
+content_path = "./supabase/templates/auth/confirmation.html"
+
+[auth.email.template.recovery]
+subject = "Restablece tu contraseña | Zona Diamante"
+content_path = "./supabase/templates/auth/recovery.html"
+
+[auth.email.template.invite]
+subject = "Tu invitación a Zona Diamante"
+content_path = "./supabase/templates/auth/invite.html"
+
+[auth.email.template.magic_link]
+subject = "Tu enlace para entrar | Zona Diamante"
+content_path = "./supabase/templates/auth/magic_link.html"
+
+[auth.email.template.email_change]
+subject = "Confirma el cambio de correo | Zona Diamante"
+content_path = "./supabase/templates/auth/email_change.html"
+
+[auth.email.template.reauthentication]
+subject = "Tu código de seguridad | Zona Diamante"
+content_path = "./supabase/templates/auth/reauthentication.html"
+
+[auth.email.notification.password_changed]
+subject = "Tu contraseña cambió | Zona Diamante"
+content_path = "./supabase/templates/auth/password_changed.html"
+
+[auth.email.notification.email_changed]
+subject = "Tu correo cambió | Zona Diamante"
+content_path = "./supabase/templates/auth/email_changed.html"
+
+[auth.email.notification.phone_changed]
+subject = "Tu teléfono cambió | Zona Diamante"
+content_path = "./supabase/templates/auth/phone_changed.html"
+
+[auth.email.notification.identity_linked]
+subject = "Nuevo método de acceso | Zona Diamante"
+content_path = "./supabase/templates/auth/identity_linked.html"
+
+[auth.email.notification.identity_unlinked]
+subject = "Método de acceso eliminado | Zona Diamante"
+content_path = "./supabase/templates/auth/identity_unlinked.html"
+
+[auth.email.notification.mfa_factor_enrolled]
+subject = "Nueva verificación de seguridad | Zona Diamante"
+content_path = "./supabase/templates/auth/mfa_factor_enrolled.html"
+
+[auth.email.notification.mfa_factor_unenrolled]
+subject = "Verificación de seguridad eliminada | Zona Diamante"
+content_path = "./supabase/templates/auth/mfa_factor_unenrolled.html"

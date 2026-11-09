@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light"><title>Recupera el acceso a tu cuenta | Zona Diamante</title></head>
+<body style="margin:0;padding:24px 12px;background:#f4f7f8;color:#2b2b31;font-family:Arial,Helvetica,sans-serif">
+<div style="display:none;max-height:0;overflow:hidden">Recibimos una solicitud para restablecer tu contraseña. Usa el siguiente botón para elegir una nueva y volver a Zona Diamante.</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;background:#ffffff;border-radius:20px;overflow:hidden">
+<tr><td style="padding:28px;background:#007f90;color:#ffffff;font-size:19px;font-weight:bold">ZONA DIAMANTE</td></tr>
+<tr><td style="padding:32px 28px">
+<p style="margin:0 0 14px;font-size:16px;line-height:1.6;word-break:break-word;overflow-wrap:anywhere">{{ if .Data.display_name }}Hola, {{ .Data.display_name }}.{{ else }}Hola.{{ end }}</p>
+<h1 style="margin:0 0 16px;color:#007f90;font-size:30px;line-height:1.2">Recupera el acceso a tu cuenta</h1>
+<p style="margin:0 0 24px;font-size:16px;line-height:1.65">Recibimos una solicitud para restablecer tu contraseña. Usa el siguiente botón para elegir una nueva y volver a Zona Diamante.</p>
+<table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="background:#f78019;border-radius:12px"><a href="{{ .ConfirmationURL }}" style="display:inline-block;padding:16px 24px;color:#ffffff;font-size:17px;font-weight:bold;text-decoration:none">Restablecer contraseña</a></td></tr></table><p style="margin:22px 0 0;font-size:13px;line-height:1.6;color:#68747b">El enlace tiene vigencia limitada y es de un solo uso. Si el botón no abre, copia esta dirección en tu navegador:</p><p style="margin:8px 0 0;word-break:break-all;overflow-wrap:anywhere;font-size:12px;line-height:1.6;color:#007f90">{{ .ConfirmationURL }}</p>
+<p style="margin:24px 0 0;color:#68747b;font-size:13px;line-height:1.65">Si no solicitaste esta acción, puedes ignorar este mensaje.</p>
+</td></tr>
+<tr><td style="padding:22px 28px;border-top:1px solid #e5ebee;color:#68747b;font-size:12px;line-height:1.6">Este mensaje está relacionado con el acceso y la seguridad de tu cuenta.<br>Zona Diamante</td></tr>
+</table>
+</body></html>

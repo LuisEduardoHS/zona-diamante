@@ -1,0 +1,80 @@
+[
+  {
+    "section": "template",
+    "name": "confirmation",
+    "subject": "Confirma tu correo | Zona Diamante",
+    "file": "confirmation.html"
+  },
+  {
+    "section": "template",
+    "name": "recovery",
+    "subject": "Restablece tu contraseña | Zona Diamante",
+    "file": "recovery.html"
+  },
+  {
+    "section": "template",
+    "name": "invite",
+    "subject": "Tu invitación a Zona Diamante",
+    "file": "invite.html"
+  },
+  {
+    "section": "template",
+    "name": "magic_link",
+    "subject": "Tu enlace para entrar | Zona Diamante",
+    "file": "magic_link.html"
+  },
+  {
+    "section": "template",
+    "name": "email_change",
+    "subject": "Confirma el cambio de correo | Zona Diamante",
+    "file": "email_change.html"
+  },
+  {
+    "section": "template",
+    "name": "reauthentication",
+    "subject": "Tu código de seguridad | Zona Diamante",
+    "file": "reauthentication.html"
+  },
+  {
+    "section": "notification",
+    "name": "password_changed",
+    "subject": "Tu contraseña cambió | Zona Diamante",
+    "file": "password_changed.html"
+  },
+  {
+    "section": "notification",
+    "name": "email_changed",
+    "subject": "Tu correo cambió | Zona Diamante",
+    "file": "email_changed.html"
+  },
+  {
+    "section": "notification",
+    "name": "phone_changed",
+    "subject": "Tu teléfono cambió | Zona Diamante",
+    "file": "phone_changed.html"
+  },
+  {
+    "section": "notification",
+    "name": "identity_linked",
+    "subject": "Nuevo método de acceso | Zona Diamante",
+    "file": "identity_linked.html"
+  },
+  {
+    "section": "notification",
+    "name": "identity_unlinked",
+    "subject": "Método de acceso eliminado | Zona Diamante",
+    "file": "identity_unlinked.html"
+  },
+  {
+    "section": "notification",
+    "name": "mfa_factor_enrolled",
+    "subject": "Nueva verificación de seguridad | Zona Diamante",
+    "file": "mfa_factor_enrolled.html"
+  },
+  {
+    "section": "notification",
+    "name": "mfa_factor_unenrolled",
+    "subject": "Verificación de seguridad eliminada | Zona Diamante",
+    "file": "mfa_factor_unenrolled.html"
+  }
+]

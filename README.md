@@ -463,3 +463,8 @@ Los avisos personalizados de nueva trivia se integran con Brevo. La primera
 etapa incluye preferencias por cuenta, baja desde el correo, plantilla y cola
 de envío, con el envío automático desactivado por defecto. Configuración,
 prueba y activación: [correos de trivia](docs/correos-trivia.md).
+
+Los correos de Supabase Auth también tienen el diseño de Zona Diamante y
+usan el remitente propio a través de Brevo SMTP. Incluyen confirmación,
+recuperación, invitación, acceso y las plantillas de seguridad. Fuentes,
+publicación y pruebas: [correos de autenticación](docs/correos-autenticacion.md).
