@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#ffffff">
     <link rel="icon" type="image/svg+xml" href="../../assets/logo-naranja.svg">
-    <link href="../../css/output.css?v=20261108-buffered" rel="stylesheet">
+    <link href="../../css/output.css?v=20261109-email" rel="stylesheet">
     <title>Mi perfil | Zona Diamante</title>
 </head>
 <body class="profile-page bg-white text-[#2b2b31]">
@@ -71,6 +71,15 @@
             <a class="profile-row-link" href="../coleccion/coleccion.html"><span><strong>Mi colección</strong><small>Consulta las cartas que has desbloqueado</small></span><span aria-hidden="true"><svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="../../assets/icons/lucide.svg?v=20261108-secciones#chevron-right"></use></svg></span></a>
         </section>
 
+        <section class="profile-card" aria-labelledby="perfil-avisos-titulo">
+            <div class="profile-section-heading"><div><p class="profile-kicker">A tu correo</p><h2 id="perfil-avisos-titulo">Avisos de trivia</h2></div></div>
+            <form id="perfil-avisos-form" class="auth-form" aria-busy="true">
+                <label class="flex items-start gap-3 cursor-pointer"><input class="mt-1 size-5 shrink-0 accent-[#007f90]" name="trivia_email_enabled" type="checkbox" disabled><span>Recibir un correo cuando haya una nueva trivia.<small class="block text-[#68747b] mt-1">Puedes desactivar estos avisos cuando quieras.</small></span></label>
+                <button class="auth-secondary self-start" type="submit" disabled>Guardar preferencia</button>
+                <p class="auth-status" role="status" aria-live="polite"></p>
+            </form>
+        </section>
+
         <section class="profile-card" aria-labelledby="perfil-seguridad-titulo">
             <div class="profile-section-heading"><div><p class="profile-kicker">Acceso</p><h2 id="perfil-seguridad-titulo">Seguridad</h2></div></div>
             <a class="profile-row-link" href="recuperar.html"><span><strong>Cambiar contraseña</strong><small>Recibe un enlace seguro en tu correo</small></span><span aria-hidden="true"><svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="../../assets/icons/lucide.svg?v=20261108-secciones#chevron-right"></use></svg></span></a>
@@ -79,6 +88,6 @@
         </section>
     </main>
     <div id="menu-inferior"></div>
-    <script type="module" src="../../js/app/main.js?v=20261108-buffered"></script>
+    <script type="module" src="../../js/app/main.js?v=20261109-email"></script>
 </body>
 </html>

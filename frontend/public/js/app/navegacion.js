@@ -100,7 +100,7 @@ async function montarSeccion(archivo, signal) {
         const { iniciarRestablecimiento } = await import('../features/auth/restablecer.js?v=20260927-2');
         if (!signal.aborted) iniciarRestablecimiento();
     } else if (archivo === RUTAS.perfil) {
-        const { iniciarPerfil } = await import('../features/auth/perfil.js?v=20260927-2');
+        const { iniciarPerfil } = await import('../features/auth/perfil.js?v=20261109-email');
         if (!signal.aborted) iniciarPerfil(signal);
     }
 }

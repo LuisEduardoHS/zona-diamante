@@ -13,6 +13,7 @@ from app.api.routes.cards import router as cards_router
 from app.api.routes.games import router as games_router
 from app.api.routes.game_beta import router as game_beta_router
 from app.api.routes.game_buffered import router as game_buffered_router
+from app.api.routes.email_notifications import router as email_notifications_router
 from app.api.routes.ar import router as ar_router
 from app.api.routes.matches import router as matches_router
 
@@ -41,6 +42,7 @@ app.include_router(trivia_router)
 app.include_router(cards_router)
 app.include_router(game_beta_router)
 app.include_router(game_buffered_router)
+app.include_router(email_notifications_router)
 app.include_router(games_router)
 app.include_router(ar_router)
 app.include_router(matches_router)

@@ -1,0 +1,110 @@
+# Correos personalizados de trivia
+
+## Estado de la primera etapa
+
+Integración preparada con Brevo, sin credenciales ni envíos reales. El
+interruptor `TRIVIA_EMAIL_ENABLED` es `false` por defecto. Instalar la
+migración no crea cron jobs, no prepara destinatarios y no envía correos.
+
+El siguiente paso del propietario es crear una cuenta en
+[Brevo](https://www.brevo.com/) y verificar el correo del remitente. Puede
+verificarse con el código que llega a esa bandeja. Sin dominio propio,
+Brevo puede reemplazar el dominio visible del remitente por uno suyo.
+[Instrucciones oficiales para crear el remitente](https://help.brevo.com/hc/en-us/articles/208836149-Create-a-new-sender-From-name-and-From-email),
+[reemplazo del dominio](https://help.brevo.com/hc/en-us/articles/16045394674066-Troubleshooting-Domain-authentication).
+
+## Configuración y prueba
+
+En `backend/.env` (ignorado por Git) y después en las variables de Render:
+
+```dotenv
+TRIVIA_EMAIL_ENABLED=false
+BREVO_API_KEY=<clave de API de Brevo, no clave SMTP>
+EMAIL_FROM_ADDRESS=<correo que verificaste como remitente>
+EMAIL_FROM_NAME=Zona Diamante
+EMAIL_DISPATCH_SECRET=<valor aleatorio de al menos 32 caracteres>
+EMAIL_SITE_URL=https://zona-diamante.pages.dev
+EMAIL_API_URL=https://zona-diamante.onrender.com
+TRIVIA_EMAIL_BATCH_SIZE=10
+```
+
+No agregar las claves al frontend ni al repositorio. Usar el mismo secreto
+de ejecución en Render y en la configuración local que instalará el cron.
+Los correos de inicio de sesión y recuperación de Supabase permanecen aparte.
+
+Desde `backend/`:
+
+```powershell
+venv/Scripts/python.exe -m app.jobs.trivia_email preview --name Luis
+venv/Scripts/python.exe -m app.jobs.trivia_email check
+venv/Scripts/python.exe -m app.jobs.trivia_email send-test --to TU_CORREO --name Luis
+```
+
+`preview` genera HTML y texto sin acceder a usuarios. `check` verifica las
+variables y consulta que el remitente exista y esté activo en Brevo; no
+envía. `send-test` envía únicamente al destinatario indicado y no crea una
+campaña. Su enlace de baja es de muestra. Una aceptación de Brevo no
+demuestra entrega en bandeja: comprobar también spam y sus registros.
+
+## Activación después de probar el correo
+
+1. Aplicar `20261109000100_trivia_email_notifications.sql` y publicar backend
+   y frontend.
+2. Configurar las variables en Render, comprobar el remitente y entregar
+   el correo de prueba al propietario.
+3. Cambiar `TRIVIA_EMAIL_ENABLED=true` en Render y en la configuración local.
+4. Desde la raíz, ejecutar:
+
+```powershell
+backend/venv/Scripts/python.exe backend/checks/configure_trivia_email_scheduler.py --linked --activate
+```
+
+Esto configura Supabase Cron y pg_net con un secreto guardado en Vault.
+El cron llama al backend cada cinco minutos, aunque no haya visitas al
+sitio. El backend crea/consulta la trivia del período vigente con
+`TRIVIA_TIMEZONE`: actualmente cambia a medianoche y mediodía. El envío
+se realiza en grupos de diez por ejecución; para muchos usuarios la tanda
+completa puede tardar varios ciclos. Brevo puede exigir activar la cuenta
+transaccional y aplica las cuotas del plan contratado.
+
+Para detener envíos inmediatamente, poner `TRIVIA_EMAIL_ENABLED=false` en
+Render. También se puede desactivar el job `zd-trivia-email` en el panel de
+Cron de Supabase. No hay temporizadores en el navegador para enviar emails.
+
+## Destinatarios y persistencia
+
+Se avisa a las cuentas registradas antes de iniciar el período, con correo
+confirmado, no eliminadas ni suspendidas, que no hayan completado esa trivia
+y mantengan activados los avisos. La preferencia inicial está activada y
+se puede desactivar en Perfil o desde un correo sin iniciar sesión. Abrir
+el enlace de baja muestra confirmación; solamente el POST desactiva, para
+que un escáner de enlaces no dé de baja a la persona involuntariamente.
+
+Cada correo lleva nombre, cantidad de preguntas, máximo de puntos y enlace
+al sitio. Se envía individualmente; no comparte las direcciones de otros
+usuarios. Las tablas y RPC del sistema son exclusivas de `service_role`,
+con RLS y sin acceso directo para usuarios del navegador.
+
+La combinación usuario/trivia es única. Los trabajadores toman una reserva
+temporal y usan el ID del envío como `headers.idempotencyKey` en Brevo. Los
+reintentos ambiguos terminan a los diez minutos, dentro de los treinta que
+[Brevo documenta para su clave](https://developers.brevo.com/docs/heterogenous-versions-batch-emails).
+Una respuesta `duplicate_parameter` confirma que ya se aceptó. Si falta
+confirmación después de esa ventana, el registro queda `uncertain` y no se
+reenvía automáticamente: primero se revisan los registros del proveedor.
+El estado `sent` significa aceptado por Brevo, no entrega final.
+
+Se revalidan correo, preferencia, suspensión, finalización y vigencia al
+tomar cada envío. Una trivia vencida se suprime. Los errores de cuota o
+conexión detienen la tanda y se reintentan después; una clave ausente o un
+remitente sin verificar impiden iniciar la tanda.
+
+## Comprobaciones
+
+- `backend/venv/Scripts/python.exe -m pytest backend/tests`.
+- `backend/venv/Scripts/python.exe backend/checks/check_trivia_email_database.py --linked --with-migration`
+  antes de instalar la migración; omitir `--with-migration` después. Crea
+  fixtures y verifica selección, permisos, baja, unicidad y reintentos dentro
+  de una transacción revertida; nunca llama al proveedor ni envía correo.
+- `frontend/checks/trivia-email-browser.cjs`: interfaz real con API/cuenta
+  simuladas y vista previa del HTML en tamaños de teléfono y escritorio.

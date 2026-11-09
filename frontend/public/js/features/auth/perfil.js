@@ -2,6 +2,7 @@ import { actualizarPerfil, cerrarSesion, obtenerPerfil } from './service.js';
 import { esErrorSesionRequerida, redirigirAlLogin } from './guards.js';
 import { establecerEstadoSesion } from './session.js';
 import { RUTAS, ruta } from '../../app/rutas.js';
+import { iniciarPreferenciasCorreo } from './email-preferences.js';
 import { configurarNombreUsuario, establecerEstado, establecerFormularioCargando, mensajeErrorAutenticacion, mostrarPrimerError } from './auth-ui.js';
 
 const TIPOS_AVATAR = ['image/jpeg', 'image/png', 'image/webp'];
@@ -28,6 +29,7 @@ export function iniciarPerfil(signal) {
     const cancelar = document.getElementById('perfil-cancelar');
     const botonCerrarSesion = document.getElementById('perfil-cerrar-sesion');
     if (!formulario || !estado || signal?.aborted) return;
+    iniciarPreferenciasCorreo(signal);
     let activo = true;
 
     configurarNombreUsuario(usuario);

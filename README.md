@@ -458,3 +458,8 @@ El juego reserva una partida al iniciar y envía sus entradas al terminar;
 los bateos ya no dependen de la latencia de la red. Los premios pendientes
 se guardan y reintentan sin duplicarlos. Ver [juego y conexión](docs/juego-conexion.md)
 para instalación, validación y límites del protocolo.
+
+Los avisos personalizados de nueva trivia se integran con Brevo. La primera
+etapa incluye preferencias por cuenta, baja desde el correo, plantilla y cola
+de envío, con el envío automático desactivado por defecto. Configuración,
+prueba y activación: [correos de trivia](docs/correos-trivia.md).
