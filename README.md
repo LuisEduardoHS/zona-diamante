@@ -1,470 +1,335 @@
 # Zona Diamante
 
-Zona Diamante es una experiencia web interactiva de beisbol. Permite explorar equipos, consultar informacion, jugar una trivia, participar en un juego y usar una experiencia de realidad aumentada para descubrir contenido de los equipos.
+**Béisbol mexicano, realidad aumentada y una colección que crece con cada jugada.**
 
-Producción del frontend:
+Zona Diamante es una aplicación web para conocer equipos del béisbol mexicano, consultar partidos de LMB y LMP, responder trivias y jugar para obtener puntos. Su escáner reconoce logos, muestra mascotas en 3D y permite reclamar cartas exclusivas para la colección de una cuenta.
 
-```text
-https://zona-diamante.netlify.app
-```
+La experiencia está diseñada para dispositivos móviles y también se adapta a escritorio. El frontend utiliza HTML y JavaScript modular; FastAPI y Supabase gestionan la autenticación, los datos y la entrega de recompensas.
 
-Responsabilidades principales:
+**[Abrir la aplicación](https://zona-diamante.pages.dev)** · [Sitio alternativo](https://zona-diamante.netlify.app) · [Reportar un problema](https://github.com/LuisEduardoHS/zona-diamante/issues)
 
-- **Frontend:** interfaz, navegación, sesión visual y llamadas permitidas desde el navegador.
-- **Supabase Auth:** registro, login, sesiones, confirmación de correo y recuperación de contraseña.
-- **Supabase PostgreSQL + RLS:** perfiles, equipos, cartas, intentos, recompensas y reglas de acceso.
-- **Supabase Storage:** fotografías de perfil.
-- **FastAPI:** operaciones sensibles como puntos, intentos, recompensas y desbloqueos.
+## Contenido
 
-## Tecnologias
+- [Funciones principales](#funciones-principales)
+- [Arquitectura y tecnologías](#arquitectura-y-tecnologías)
+- [Estructura del repositorio](#estructura-del-repositorio)
+- [Instalación local](#instalación-local)
+- [Configuración](#configuración)
+- [Desarrollo y pruebas](#desarrollo-y-pruebas)
+- [Despliegue](#despliegue)
+- [Documentación técnica](#documentación-técnica)
+- [Contribuciones](#contribuciones)
+- [Créditos y uso de recursos](#créditos-y-uso-de-recursos)
 
-- HTML, CSS y JavaScript modular en el frontend.
-- Tailwind CSS 4 para estilos utilitarios y compilacion del CSS comun.
-- A-Frame y MindAR para la experiencia de realidad aumentada.
-- Node.js para las herramientas de frontend.
-- Python y FastAPI para el backend.
+## Funciones principales
 
-## Estructura principal
+| Sección              | Qué puedes hacer                                                                                                                                                          |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Equipos**          | Explorar las fichas de Sultanes, Charros, Dorados y Algodoneros del Unión Laguna, con información, galerías, videos y filtros visuales predefinidos o manuales.           |
+| **Calendario**       | Consultar LMB y LMP por fecha, equipo y estado. Las fichas comparten esta fuente y muestran el próximo partido pendiente cuando corresponde.                              |
+| **Escáner AR**       | Reconocer logos con la cámara, visualizar mascotas en 3D, tomar fotografías y abrir la ficha del equipo detectado.                                                        |
+| **Colección**        | Consultar cartas de jugadores, equipos y mascotas, adquirir cartas con puntos y reclamar las exclusivas del escáner con una cuenta.                                       |
+| **Trivia**           | Resolver cinco preguntas por periodo, guardar el avance y recibir puntos según las respuestas. Se renueva a medianoche y mediodía en la zona configurada por el servidor. |
+| **Juego de bateo**   | Jugar hasta acumular tres fallos. Tras reservar una partida con conexión, los lanzamientos se ejecutan en el dispositivo y el resultado se sincroniza al terminar.        |
+| **Info y ayuda**     | Aprender reglas básicas, distinguir las ligas, explorar momentos históricos y consultar términos del juego.                                                               |
+| **Cuenta y correos** | Registrarse, recuperar la contraseña, editar el perfil y administrar los avisos de nuevas trivias. Los correos tienen el diseño de Zona Diamante.                         |
+
+El calendario público y el contenido informativo se pueden explorar sin iniciar sesión. Guardar cartas, puntos y progreso personal requiere una cuenta. El reconocimiento AR necesita permiso de cámara y un navegador compatible.
+
+## Arquitectura y tecnologías
+
+| Componente                | Tecnologías                                             | Responsabilidad                                                                             |
+| ------------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| **Frontend**              | HTML, módulos ES de JavaScript, Tailwind CSS 4, Lucide  | Interfaz adaptable, navegación entre secciones y consumo de servicios.                      |
+| **Realidad aumentada**    | A-Frame, MindAR                                         | Reconocimiento de imágenes y visualización de modelos 3D en el navegador.                   |
+| **Backend**               | Python, FastAPI, Pydantic, HTTPX                        | Validación de sesión, reglas del juego, recompensas, cartas, calendario y avisos de trivia. |
+| **Datos y autenticación** | Supabase Auth, PostgreSQL, RLS y funciones SQL          | Identidad, perfiles, intentos, inventario, transacciones y permisos de acceso.              |
+| **Archivos**              | Supabase Storage y recursos estáticos locales           | Avatares, imágenes del catálogo, fotografías, logos y modelos.                              |
+| **Correo**                | Brevo API y SMTP; Supabase Cron, pg_net y Vault         | Avisos de trivia programados y correos de autenticación.                                    |
+| **Herramientas**          | npm, Supabase CLI, pytest, Node Test Runner, Playwright | Compilación, migraciones y validación automática.                                           |
+
+El navegador se autentica con Supabase y realiza las lecturas permitidas por RLS. Para operaciones de puntos, compras o recompensas, llama a FastAPI con el token de la sesión. El backend valida al usuario y ejecuta las operaciones mediante funciones de PostgreSQL; los reintentos utilizan identificadores estables para evitar premios duplicados.
+
+El reconocimiento AR ocurre en el dispositivo: reclamar una mascota requiere una cuenta, pero no certifica presencia física ante un logo. El juego valida el resultado y sus límites en el servidor; su protocolo permite recuperar partidas y premios pendientes, sin constituir un sistema contra clientes modificados. Los alcances y límites de la sincronización se detallan en la [guía del juego](docs/juego-conexion.md).
+
+Los partidos se consultan a través del backend usando **MLB Stats API**, sin una clave adicional para el calendario. La interfaz indica cuando los datos proceden de una copia guardada por un fallo del proveedor.
+
+### Cómo se gestionan los correos
+
+- **Avisos de trivia:** Supabase Cron solicita al backend procesar la cola cada cinco minutos. Se respetan el periodo vigente, la preferencia de cada cuenta y los registros de envío. Cada correo incluye una opción de baja.
+- **Autenticación:** Supabase Auth envía directamente mediante Brevo SMTP. Incluye plantillas para confirmación, recuperación, invitaciones y otros eventos compatibles; disponer de una plantilla no activa por sí solo esa notificación.
+
+La configuración de correo es opcional para comenzar a desarrollar. Un entorno nuevo mantiene los avisos de trivia desactivados por defecto.
+
+## Estructura del repositorio
 
 ```text
 zona-diamante/
-|-- backend/
-|   |-- app/
-|   |-- tests/
-|   |-- requirements.txt
-|   `-- Dockerfile
-|
-|-- frontend/
-|   |-- public/
-|   |   |-- index.html
-|   |   |-- pages/
-|   |   |-- js/
-|   |   `-- vendor/
-|   |-- scripts/
-|   |-- src/
-|   |-- .env.example
-|   |-- package.json
-|   `-- package-lock.json
-|
-|-- supabase/
-|   |-- migrations/
-|   |-- tests/
-|   |-- seed.sql
-|   `-- config.toml
-|
-|-- .gitignore
-`-- README.md
+├── backend/
+│   ├── app/
+│   │   ├── api/routes/        # Endpoints de FastAPI
+│   │   ├── core/              # Configuración, sesión y reglas compartidas
+│   │   ├── db/                # Acceso a Supabase
+│   │   ├── jobs/              # Herramientas de correo
+│   │   ├── schemas/           # Contratos de entrada y salida
+│   │   └── services/          # Lógica de negocio
+│   ├── checks/                # Comprobaciones de integración y operación
+│   ├── tests/                 # Pruebas de backend
+│   ├── .env.example
+│   ├── Dockerfile
+│   └── requirements.txt
+├── frontend/
+│   ├── public/
+│   │   ├── assets/            # Imágenes, modelos, iconos y medios
+│   │   ├── data/              # Catálogos y configuración pública
+│   │   ├── js/                # Navegación, componentes y funciones
+│   │   └── pages/             # Pantallas de la aplicación
+│   ├── src/css/               # Fuentes de Tailwind y estilos de componentes
+│   ├── scripts/               # Compilación y validación
+│   ├── checks/                # Pruebas versionadas y revisiones con navegador
+│   ├── docs/
+│   ├── .env.example
+│   └── package.json
+├── supabase/
+│   ├── assets/                # Imágenes de cartas y manifiesto de fuentes
+│   ├── migrations/            # Historial del esquema y permisos
+│   ├── templates/             # Plantillas de correo de Auth
+│   ├── tests/                 # Pruebas SQL
+│   ├── config.toml
+│   └── seed.sql               # Datos iniciales de desarrollo
+├── docs/                     # Guías técnicas y evidencias
+└── README.md
 ```
 
----
+## Instalación local
 
-# Ejecución local
+Los siguientes comandos utilizan **PowerShell** y se ejecutan desde la raíz del repositorio, salvo donde se indica otra ubicación. En Linux o macOS, utiliza `python3` y la ruta `backend/venv/bin/python` para el entorno virtual.
 
-Estas instrucciones están pensadas para **Windows + PowerShell**.
+### 1. Requisitos
 
-## 1. Requisitos
+- Git.
+- Node.js 22 o posterior y npm.
+- Python 3.12; es la versión utilizada en la imagen Docker del backend.
+- Docker, si vas a ejecutar Supabase localmente.
 
-Instala antes de comenzar:
+También puedes usar un proyecto de Supabase de desarrollo ya configurado en lugar de iniciar los servicios locales. Las dependencias de npm de la raíz incluyen Supabase CLI.
 
-- Git
-- Node.js y npm
-- Python 3.13 o compatible con el backend
-- Docker Desktop
-
-El proyecto utiliza Supabase CLI desde las dependencias de Node del repositorio, por lo que no es necesario tener `supabase` agregado globalmente al `PATH`.
-
-Puedes comprobar las herramientas con:
+### 2. Clonar e instalar dependencias
 
 ```powershell
-git --version
-node --version
-npm --version
-python --version
-docker --version
-```
-
-## 2. Clonar el repositorio
-
-```powershell
-cd D:\projects
 git clone https://github.com/LuisEduardoHS/zona-diamante.git
 cd zona-diamante
+
+npm ci
+npm --prefix frontend ci
+
+python -m venv backend/venv
+backend/venv/Scripts/python.exe -m pip install -r backend/requirements.txt
 ```
 
-Si ya tienes el repositorio:
+### 3. Preparar Supabase
+
+Con Docker en ejecución, ajusta en `supabase/config.toml` los campos existentes de la sección `[auth]` para que los enlaces de autenticación regresen al frontend local:
+
+```toml
+[auth]
+site_url = "http://localhost:5500"
+additional_redirect_urls = [
+  "http://localhost:5500/pages/auth/perfil.html",
+  "http://localhost:5500/pages/auth/restablecer.html",
+  "http://127.0.0.1:5500/pages/auth/perfil.html",
+  "http://127.0.0.1:5500/pages/auth/restablecer.html"
+]
+```
+
+Después inicia los servicios y consulta las claves y direcciones de tu entorno:
 
 ```powershell
-git switch main
-git pull origin main
+npx supabase start
+npx supabase status
 ```
 
-## 3. Instalar dependencias
-
-### Dependencias de la raíz / Supabase CLI
-
-Desde la raíz:
+Para reconstruir **una base local desechable**, aplicando las migraciones y los datos iniciales:
 
 ```powershell
-npm install
+npx supabase db reset --local
 ```
 
-Comprueba la CLI:
+Este último comando elimina los datos de esa base local. No es un paso de actualización de producción.
+
+Si usas Supabase alojado, prepara un proyecto de desarrollo con las migraciones del repositorio y configura en Auth las direcciones de retorno correspondientes. Los archivos de Storage se publican por separado de las migraciones; consulta la [guía de imágenes del catálogo](docs/imagenes-cartas.md) para disponer de copias en un proyecto propio.
+
+### 4. Configurar las variables
 
 ```powershell
-npx supabase@2.118.0 --version
+Copy-Item frontend/.env.example frontend/.env
+Copy-Item backend/.env.example backend/.env
 ```
 
-### Frontend
-
-```powershell
-npm --prefix frontend install
-```
-
-### Backend
-
-```powershell
-cd backend
-python -m venv venv
-.\venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-cd ..
-```
-
-Si PowerShell bloquea la activación del entorno virtual, puedes usar temporalmente:
-
-```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-```
-
----
-
-# 4. Levantar Supabase local
-
-Docker Desktop debe estar abierto.
-
-Desde la raíz:
-
-```powershell
-npx supabase@2.118.0 start
-```
-
-Después revisa los servicios:
-
-```powershell
-npx supabase@2.118.0 status
-```
-
-Normalmente verás direcciones como:
-
-```text
-API:     http://127.0.0.1:54321
-DB:      postgresql://postgres:postgres@127.0.0.1:54322/postgres
-Studio:  http://127.0.0.1:54323
-Mailpit: http://127.0.0.1:54324
-```
-
-Para reconstruir la base local desde las migraciones y el seed:
-
-```powershell
-npx supabase@2.118.0 db reset
-```
-
-> `db reset` afecta únicamente a la base local cuando se ejecuta contra el entorno local. No lo utilices contra producción.
-
-## Supabase Studio local
-
-```text
-http://127.0.0.1:54323
-```
-
-## Correos locales de Auth
-
-Los correos de confirmación y recuperación generados por Supabase local pueden revisarse en Mailpit:
-
-```text
-http://127.0.0.1:54324
-```
-
----
-
-# 5. Configurar variables del frontend
-
-Copia el ejemplo:
-
-```powershell
-Copy-Item .\frontend\.env.example .\frontend\.env
-```
-
-Edita `frontend/.env`:
+En `frontend/.env`, configura los valores públicos del mismo proyecto de Supabase:
 
 ```dotenv
 SUPABASE_URL=http://127.0.0.1:54321
-SUPABASE_PUBLISHABLE_KEY=<PUBLISHABLE_KEY_LOCAL>
+SUPABASE_PUBLISHABLE_KEY=<clave_publica_local>
 BACKEND_API_URL=http://127.0.0.1:8000
 ```
 
-Obtén la `SUPABASE_PUBLISHABLE_KEY` local con:
-
-```powershell
-npx supabase@2.118.0 status
-```
-
-`frontend/.env` está ignorado por Git.
-
-Nunca coloques en el frontend:
-
-```text
-SUPABASE_SECRET_KEY
-service_role
-DATABASE_URL
-```
-
----
-
-# 6. Configurar variables del backend
-
-Si no existe todavía `backend/.env`, copia el ejemplo del backend:
-
-```powershell
-Copy-Item .\backend\.env.example .\backend\.env
-```
-
-Para trabajar completamente contra Supabase local, la configuración tendrá una forma similar a:
+En `backend/.env`, completa al menos:
 
 ```dotenv
 ENVIRONMENT=development
 SUPABASE_URL=http://127.0.0.1:54321
-SUPABASE_SECRET_KEY=<SECRET_KEY_LOCAL>
-DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:54322/postgres
-FRONTEND_ORIGINS=http://localhost:5500,https://zona-diamante.netlify.app
+SUPABASE_SECRET_KEY=<clave_privada_local_de_servidor>
+FRONTEND_ORIGINS=http://localhost:5500,http://127.0.0.1:5500
 TRIVIA_TIMEZONE=America/Monterrey
+TRIVIA_EMAIL_ENABLED=false
 ```
 
-Obtén los valores locales necesarios con:
+Sustituye los marcadores por las claves obtenidas con `supabase status`. Si utilizas Supabase alojado, usa la URL y las claves de ese proyecto. Los archivos `.env` están excluidos de Git.
 
-```powershell
-npx supabase@2.118.0 status
-```
+### 5. Compilar y ejecutar
 
-`backend/.env` debe mantenerse fuera de Git.
-
----
-
-# 7. Generar el frontend
-
-Antes de servir el frontend ejecuta:
+Genera los archivos del frontend:
 
 ```powershell
 npm --prefix frontend run build
 ```
 
-Actualmente este comando ejecuta tres tareas:
-
-```text
-build:css
-   +
-build:supabase
-   +
-build:config
-```
-
-Genera, entre otros:
-
-```text
-frontend/public/css/output.css
-frontend/public/vendor/supabase.js
-frontend/public/js/app/runtime-config.js
-```
-
-`supabase.js` y `runtime-config.js` son archivos generados y no se guardan en Git.
-
-## Desarrollo de Tailwind en modo watch
-
-Después del build inicial puedes dejar esta terminal abierta mientras modificas estilos:
+Abre una terminal para FastAPI:
 
 ```powershell
-npm --prefix frontend run dev
+cd backend
+venv/Scripts/python.exe -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-Si cambias las variables de `frontend/.env`, vuelve a ejecutar:
-
-```powershell
-npm --prefix frontend run build:config
-```
-
----
-
-# 8. Ejecutar FastAPI
-
-Abre una nueva terminal:
-
-```powershell
-cd D:\projects\zona-diamante\backend
-.\venv\Scripts\Activate.ps1
-uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
-```
-
-Backend local:
-
-```text
-http://127.0.0.1:8000
-```
-
-Health check:
-
-```text
-http://127.0.0.1:8000/health
-```
-
-## Trivia diaria
-
-La trivia usa la fecha oficial de `TRIVIA_TIMEZONE` y requiere un JWT de
-Supabase en todos sus endpoints:
-
-```text
-GET  /api/v1/trivia/daily
-POST /api/v1/trivia/daily/start
-PUT  /api/v1/trivia/daily/answers/{question_id}
-POST /api/v1/trivia/daily/submit
-```
-
-Cada selección se persiste al avanzar y `/daily/start` reanuda el único
-intento del usuario para ese día. La evaluación, los 20 puntos por acierto y
-la llave de idempotencia se calculan en backend; las respuestas correctas sólo
-se incluyen en el review posterior a completar la trivia.
-
-Para detenerlo usa:
-
-```text
-Ctrl + C
-```
-
----
-
-# 9. Servir el frontend
-
-En otra terminal, desde la raíz:
+En otra terminal, desde la raíz, sirve los archivos públicos:
 
 ```powershell
 python -m http.server 5500 --directory frontend/public
 ```
 
-Abre:
+| Servicio                          | Dirección local                |
+| --------------------------------- | ------------------------------ |
+| Aplicación                        | <http://localhost:5500>        |
+| Estado del backend                | <http://127.0.0.1:8000/health> |
+| Documentación interactiva del API | <http://127.0.0.1:8000/docs>   |
+| Supabase Studio                   | <http://127.0.0.1:54323>       |
+| Bandeja de correo local           | <http://127.0.0.1:54324>       |
 
-```text
-http://localhost:5500
+Sirve el frontend por HTTP: abrir los HTML con `file://` impide el funcionamiento normal de los módulos y la navegación. Para probar la cámara desde un teléfono, utiliza HTTPS; acceder por la IP de la computadora mediante HTTP no equivale a `localhost`.
+
+## Configuración
+
+Los ejemplos completos están en [`frontend/.env.example`](frontend/.env.example) y [`backend/.env.example`](backend/.env.example).
+
+| Variable                                           | Ubicación                      | Uso                                                                                                                 |
+| -------------------------------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| `SUPABASE_URL`                                     | Frontend y backend             | URL del proyecto que comparten ambos componentes.                                                                   |
+| `SUPABASE_PUBLISHABLE_KEY`                         | Frontend                       | Clave pública del cliente. Su acceso a datos está sujeto a las políticas de la base.                                |
+| `BACKEND_API_URL`                                  | Frontend                       | Dirección de FastAPI, incorporada al generar la configuración pública.                                              |
+| `SUPABASE_SECRET_KEY`                              | Backend                        | Credencial privada de servicio para las operaciones del servidor.                                                   |
+| `FRONTEND_ORIGINS`                                 | Backend                        | Orígenes autorizados por CORS, separados por comas.                                                                 |
+| `TRIVIA_TIMEZONE`                                  | Backend                        | Zona horaria que determina los periodos de trivia.                                                                  |
+| `DATABASE_URL`                                     | Herramientas de administración | Conexión PostgreSQL para herramientas que la requieran; no se publica en el navegador.                              |
+| `TRIVIA_EMAIL_ENABLED`, `BREVO_API_KEY`, `EMAIL_*` | Backend                        | Activación, proveedor, remitente y direcciones de los avisos de trivia.                                             |
+| `BREVO_SMTP_LOGIN`, `BREVO_SMTP_KEY`               | Configuración privada de Auth  | Credenciales usadas por la herramienta que configura SMTP en Supabase; son independientes de la clave API de Brevo. |
+
+La compilación genera `runtime-config.js` con los valores públicos del frontend. **Nunca incluyas claves privadas, `service_role`, contraseñas SMTP ni conexiones PostgreSQL en ese archivo o en recursos públicos.** Los permisos de catálogo, inventario y recompensas están definidos en las migraciones.
+
+La configuración local de Auth permite registro sin confirmación de correo por defecto. Si vas a probar ese flujo, activa `auth.email.enable_confirmations` en tu entorno local y revisa los mensajes en su bandeja de correo.
+
+## Desarrollo y pruebas
+
+### Frontend
+
+```powershell
+# Compilación completa
+npm --prefix frontend run build
+
+# Observación de cambios en Tailwind, después de la compilación inicial
+npm --prefix frontend run dev
+
+# Pruebas automatizadas de JavaScript
+npm --prefix frontend test
+
+# Validación del uso de la hoja de estilos compartida
+npm --prefix frontend run check:styles
 ```
 
-No abras los HTML directamente con `file://`, porque el proyecto utiliza módulos ES y navegación dinámica.
+El build genera las reglas públicas del juego, el sprite local de Lucide, el CSS, el cliente de Supabase y la configuración del entorno. Los artefactos de compilación excluidos de Git deben generarse también durante el despliegue. Si cambias `frontend/.env`, vuelve a ejecutar `build:config` o el build completo.
 
----
+Las pruebas versionadas están en `frontend/checks/`. Los archivos `*-browser.cjs` realizan comprobaciones adicionales con Playwright y un navegador; requieren una instalación de esas herramientas y el servidor correspondiente. Consulta las instrucciones de cada comprobación antes de ejecutarla.
 
-El sitio puede servirse directamente desde `frontend/public/` con un servidor estatico. La navegacion compartida mantiene el header y la barra inferior, y carga el contenido y los estilos de cada seccion sin reconstruir el documento completo.
+### Backend
 
-## Calendario de partidos
+Desde `backend/`:
 
-El botón **Partidos** del inicio y del menú abre el calendario público de LMB y
-LMP. Usa MLB Stats API sin API key ni sesión de usuario, a través de FastAPI:
-
-```text
-GET /api/v1/matches?league=lmb&date=2026-07-01
-GET /api/v1/matches?league=lmp&date=2026-11-07
+```powershell
+venv/Scripts/python.exe -m pytest tests
 ```
 
-La fecha y los horarios corresponden a `America/Mexico_City`. Se pueden elegir
-liga, día, equipo y estado; los filtros quedan en la URL para compartir la
-jornada. Enero de LMP consulta la temporada que comenzó el año anterior.
+La suite cubre contratos del API, autenticación, validaciones, reglas de juego, cartas, calendario y correo mediante dependencias simuladas. Las comprobaciones de `backend/checks/` que utilizan servicios reales son independientes; revisa sus parámetros y el entorno de destino antes de ejecutarlas.
 
-El backend comparte una caché en memoria por proceso (máximo 128 entradas):
-60 segundos para hoy o partidos en juego, 5 minutos para fechas futuras y
-6 horas para fechas pasadas. Si el proveedor falla, puede devolver una jornada
-guardada hace menos de 24 horas, marcada como desactualizada en la interfaz.
-Sin datos disponibles se muestra un error con reintento. No se inventan partidos.
-La vista vuelve a consultar cada minuto mientras está visible y muestra hoy o
-partidos en curso. El proveedor puede tener retrasos en sus marcadores.
+### Base de datos
 
-Los 30 logos de la temporada 2026 están guardados en
-`frontend/public/assets/img/partidos/`; su procedencia está en
-`frontend/public/data/match-logos.json`. La página usa iniciales como alternativa
-para equipos sin logo. No hacen falta variables de entorno nuevas.
+Con Supabase local en ejecución, desde la raíz:
 
-Para publicar esta sección deben desplegarse tanto el frontend como el backend
-actualizado. El frontend utiliza el `BACKEND_API_URL` configurado durante el build.
+```powershell
+npx supabase test db
+```
 
-Las fichas de equipos consultan el mismo calendario público y reutilizan sus
-tarjetas, logos, estados y horarios. Cada ficha permite elegir LMB o LMP y cambiar
-la fecha. Al abrirla o pulsar Hoy, `/api/v1/matches/next` busca el primer día con
-partidos pendientes del equipo, desde hoy hasta 366 días adelante; incluye los
-dos juegos si hay doble cartelera. Si aún no hay calendario publicado, lo indica.
-El enlace al calendario general conserva liga, equipo y fecha del partido.
-Charros usa su ID correspondiente a cada liga; la ficha de Unión Laguna no se
-confunde con Guasave. Sultanes conserva su ID histórico de LMP para consultar
-temporadas anteriores. Si el equipo no participa en la liga y temporada
-seleccionadas, se indica y el enlace abre esa liga sin filtrar por otro club.
-Los calendarios estáticos del catálogo no se muestran.
-La correspondencia entre las cuatro fichas y los IDs de la liga se mantiene en
-`frontend/public/js/features/equipos/calendario-equipo.js`.
+Las pruebas SQL se encuentran en `supabase/tests/`. Verifican el esquema, las políticas y las funciones de la economía y de AR. Las guías técnicas enlazadas abajo incluyen comprobaciones adicionales para los protocolos más recientes.
 
-### Iconos Lucide
+## Despliegue
 
-El frontend usa `lucide-static` como dependencia de desarrollo. El comando
-`npm --prefix frontend run build:icons` genera `frontend/public/assets/icons/lucide.svg` con
-solo los iconos utilizados y copia su licencia junto al archivo. El build general
-y el inicio de desarrollo también ejecutan este paso. No se carga una librería
-de iconos externa en el navegador.
+El frontend se publica como sitio estático en Cloudflare Pages y Netlify; el backend se ejecuta en Render. Supabase administra los datos, la autenticación y Storage.
 
-Para reutilizarlos en otra sección, añade el nombre a la lista de
-`frontend/scripts/generate-icons.cjs`, regenera los iconos y usa un SVG con la
-clase compartida `lucide-icon` y un `<use href="…/assets/icons/lucide.svg#nombre">`.
-Los iconos decorativos deben tener `aria-hidden="true"`; los botones conservan
-su texto o su etiqueta accesible.
+Para preparar otro entorno:
 
-### Cartas del escáner AR
+1. **Supabase:** aplica las migraciones revisadas, publica los archivos necesarios en Storage y configura Auth, sus URLs de retorno y las plantillas de correo.
+2. **Backend:** instala `backend/requirements.txt`, configura sus variables privadas y ejecuta FastAPI. El [`Dockerfile`](backend/Dockerfile) admite el puerto de la variable `PORT`.
+3. **Frontend:** configura sus tres variables públicas, instala las dependencias de `frontend/`, ejecuta `npm run build` desde esa carpeta y publica `frontend/public/`.
+4. **Conexión:** añade el dominio del frontend a `FRONTEND_ORIGINS`, utiliza HTTPS y comprueba acceso, recuperación de contraseña y operaciones de cuenta.
+5. **Correo opcional:** verifica el remitente, configura SMTP para Auth y sigue la guía de trivia para activar su cola y programador. Las migraciones por sí solas no habilitan el envío automático.
 
-Las 20 cartas tienen imágenes publicadas en Supabase Storage y asociadas por
-`image_path`. Fuentes, créditos, copias de los archivos y pasos de publicación:
-[Imágenes del catálogo](docs/imagenes-cartas.md).
+Las funciones nuevas pueden requerir cambios coordinados de base de datos, backend y frontend. Las migraciones se versionan en `supabase/migrations/`; las credenciales y la configuración privada del proveedor se mantienen fuera del repositorio.
 
-Detectar un logo muestra un aviso que abre directamente la ficha del equipo.
-El botón **Reclamar carta AR** guarda la mascota exclusiva en la colección de
-la cuenta; si ya se posee, queda solamente **Ver 3D** a todo el ancho. Invitados
-pueden usar AR y abrir la ficha, y reciben un enlace para iniciar sesión al
-intentar guardar una carta. El confeti se ejecuta al reconocer cada equipo por
-primera vez en la visita y al confirmar una carta nueva, respetando movimiento
-reducido. Se cancela al perder el resultado, ocultar o abandonar la página.
+## Documentación técnica
 
-`GET /api/v1/ar/mascots` y `POST /api/v1/ar/claim` requieren sesión. El POST sólo
-acepta `team_slug`: el servidor resuelve usuario y carta, y reutiliza las RPC
-`authorize_ar_mascot` y `grant_verified_ar_mascot` de la migración
-`20261025000200_verified_ar_mascot_grants.sql`. La referencia estable
-`ar-self-service:v1:<usuario>:<equipo>` permite reintentar sin duplicar la carta
-ni conceder puntos. La migración `20261108000100_ar_catalog_row_lock_permissions.sql`
-concede al rol del backend `UPDATE (is_active)` sobre equipos y cartas: PostgreSQL
-requiere ese permiso para los bloqueos `FOR SHARE` de la entrega. Los roles del
-navegador conservan el catálogo de sólo lectura. Sin esos permisos, consultar
-la colección funciona pero reclamar devuelve un error.
+| Guía                                                      | Contenido                                                                  |
+| --------------------------------------------------------- | -------------------------------------------------------------------------- |
+| [Fichas de equipos](frontend/docs/fichas-equipos.md)      | Catálogo, medios, filtros y galerías.                                      |
+| [Juego y conexión](docs/juego-conexion.md)                | Reserva, reproducción del resultado, persistencia y reintentos de premios. |
+| [Trivia cada doce horas](docs/trivia-cada-12-horas.md)    | Periodos, persistencia y cambios del esquema.                              |
+| [Imágenes de las cartas](docs/imagenes-cartas.md)         | Fuentes, manifiesto, Storage y publicación.                                |
+| [Correos de trivia](docs/correos-trivia.md)               | Preferencias, baja, cola, Brevo y programador.                             |
+| [Correos de autenticación](docs/correos-autenticacion.md) | Plantillas, SMTP y validación de los enlaces.                              |
 
-La prueba transaccional `backend/checks/ar_claim_permissions.sql` verifica las
-cuatro mascotas y sus reintentos usando permisos de catálogo restringidos,
-comprueba que los puntos no cambian y revierte todos los datos de prueba.
+`docs/` también conserva planes y evidencias de etapas anteriores. Esos documentos describen el estado de su implementación en ese momento; para el comportamiento actual, consulta el código, las migraciones y las guías de cada función.
 
-La política actual permite reclamar la carta desde el escáner con una cuenta.
-El reconocimiento ocurre en el dispositivo; este flujo no certifica presencia
-física ni agrega un verificador de imágenes en el servidor. La autorización de
-la carta se decide en backend y sus RPC siguen restringidas a `service_role`.
+## Contribuciones
 
-El juego reserva una partida al iniciar y envía sus entradas al terminar;
-los bateos ya no dependen de la latencia de la red. Los premios pendientes
-se guardan y reintentan sin duplicarlos. Ver [juego y conexión](docs/juego-conexion.md)
-para instalación, validación y límites del protocolo.
+Para proponer una mejora o corregir un problema:
 
-Los avisos personalizados de nueva trivia se integran con Brevo. La primera
-etapa incluye preferencias por cuenta, baja desde el correo, plantilla y cola
-de envío, con el envío automático desactivado por defecto. Configuración,
-prueba y activación: [correos de trivia](docs/correos-trivia.md).
+1. Abre un issue con el comportamiento esperado, los pasos para reproducirlo y, si aplica, el navegador y tamaño de pantalla.
+2. Realiza los cambios en una rama y conserva los estilos, componentes y contratos existentes.
+3. Ejecuta las pruebas correspondientes y el build si modificas el frontend. Incluye una migración cuando cambie el esquema o sus permisos.
+4. Abre un pull request con el propósito del cambio, la validación realizada y capturas si cambia la interfaz.
 
-Los correos de Supabase Auth también tienen el diseño de Zona Diamante y
-usan el remitente propio a través de Brevo SMTP. Incluyen confirmación,
-recuperación, invitación, acceso y las plantillas de seguridad. Fuentes,
-publicación y pruebas: [correos de autenticación](docs/correos-autenticacion.md).
+No incluyas credenciales, tokens, correos personales de usuarios ni datos de producción en issues, capturas o archivos de prueba.
+
+## Créditos y uso de recursos
+
+Desarrollado por [Luis Eduardo Hernández](https://github.com/LuisEduardoHS).
+
+Los nombres de clubes, marcas, logos, fotografías y otros medios conservan los derechos de sus respectivos titulares. Su presencia en el proyecto no implica afiliación con las ligas o equipos ni una licencia de reutilización de esos recursos.
+
+Las fuentes y atribuciones se conservan en:
+
+- [Manifiesto de imágenes de cartas](supabase/assets/card-images/manifest.json).
+- [Fuentes de las galerías](frontend/public/assets/img/equipos/galerias/fuentes.json).
+- [Manifiesto de logos del calendario](frontend/public/data/match-logos.json).
+- [Recursos del juego](frontend/public/assets/img/juego/bateador/README.md) y [recursos de trivia](frontend/public/assets/img/trivia/GENERATED-ASSETS.md).
+- Las licencias incluidas en [`frontend/public/assets/icons/`](frontend/public/assets/icons/).
+
+El repositorio no incluye actualmente un archivo `LICENSE` general. Las licencias de dependencias y recursos de terceros se conservan por separado; no debe interpretarse una licencia de un paquete como autorización sobre todos los contenidos del proyecto.
