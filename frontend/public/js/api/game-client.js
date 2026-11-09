@@ -4,6 +4,20 @@ export async function getGameServerClient() {
     const { solicitarBackend } = await import('./backend-client.js');
     return createGameServerClient(solicitarBackend);
 }
+export async function getBufferedGameClient() {
+    const { solicitarBackend } = await import('./backend-client.js');
+    return createBufferedGameClient(solicitarBackend);
+}
+export function createBufferedGameClient(request, { timeoutMs = 25000 } = {}) {
+    const root = '/api/v1/games/buffered';
+    const call = (path, options = {}) => request(path, { ...options,
+        signal: AbortSignal.any([...(options.signal ? [options.signal] : []), AbortSignal.timeout(timeoutMs)]) });
+    return {
+        start: (key, signal) => call(root, { method: 'POST', body: {}, headers: { 'Idempotency-Key': key }, signal }),
+        read: (id, signal) => call(`${root}/${encodeURIComponent(id)}`, { signal }),
+        complete: (id, events, signal) => call(`${root}/${encodeURIComponent(id)}/complete`, { method: 'POST', body: { events }, signal }),
+    };
+}
 export function createGameServerClient(request, {timeoutMs = 15000} = {}) {
     const boundedRequest = async (path, options = {}) => {
         const controller = new AbortController();

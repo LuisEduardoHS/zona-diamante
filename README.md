@@ -453,3 +453,8 @@ La política actual permite reclamar la carta desde el escáner con una cuenta.
 El reconocimiento ocurre en el dispositivo; este flujo no certifica presencia
 física ni agrega un verificador de imágenes en el servidor. La autorización de
 la carta se decide en backend y sus RPC siguen restringidas a `service_role`.
+
+El juego reserva una partida al iniciar y envía sus entradas al terminar;
+los bateos ya no dependen de la latencia de la red. Los premios pendientes
+se guardan y reintentan sin duplicarlos. Ver [juego y conexión](docs/juego-conexion.md)
+para instalación, validación y límites del protocolo.

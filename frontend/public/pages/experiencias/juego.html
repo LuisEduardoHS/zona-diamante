@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <link rel="icon" type="image/svg+xml" href="../../assets/logo-naranja.svg">
     <title>Juego | Zona Diamante</title>
-    <link href="../../css/output.css?v=20261108-locked" rel="stylesheet">
+    <link href="../../css/output.css?v=20261108-buffered" rel="stylesheet">
 </head>
 <body class="game-beta-page">
 <div id="header-superior"></div>
@@ -23,7 +23,7 @@
         </div>
         <section data-game-screen="home" class="game-home" aria-label="Inicio del juego">
             <div class="game-cover-title"><h1 id="game-title" tabindex="-1">Juego</h1><span id="game-day-label">Reto de bateo</span></div>
-            <div class="game-cover-actions"><button id="game-start" class="game-primary" type="button" disabled>Iniciar</button><span id="game-access-note" class="game-access-note">Práctica · sin puntos</span></div>
+            <div class="game-cover-actions"><button id="game-start" class="game-primary" type="button" disabled>Iniciar</button><span id="game-access-note" class="game-access-note">Práctica · sin puntos</span><div id="game-pending-home" class="game-pending-home" hidden><p id="game-pending-count" role="status"></p><button id="game-retry-points" class="game-text-button" type="button">Reintentar puntos</button></div></div>
         </section>
         <section data-game-screen="play" class="game-play-screen" aria-label="Partida de práctica" hidden>
             <button id="game-hit" type="button" class="game-hit" aria-label="Batear" aria-describedby="game-bat-hint game-feedback" disabled></button>
@@ -50,6 +50,7 @@
                 <h2 id="game-result-title" tabindex="-1">¡Juego terminado!</h2>
                 <dl class="game-result-numbers"><div><dd id="game-account-points">—</dd><dt>Puntos ganados</dt></div><div><dd id="game-balance">—</dd><dt>Balance</dt></div></dl>
                 <p id="game-result-label" class="game-result-label"></p><p id="game-result-rule" class="game-result-rule"></p><p id="game-result-bonus" class="game-result-bonus" hidden></p><p id="game-result-reward" class="game-result-reward"></p>
+                <button id="game-result-retry" class="game-text-button" type="button" hidden>Reintentar puntos</button>
                 <div id="game-result-auth" class="game-result-auth" hidden><a id="game-result-login" href="../auth/login.html">Iniciar sesión</a><a id="game-result-register" href="../auth/registro.html">Crear cuenta</a></div>
                 <div class="game-result-actions"><a id="game-collection" class="game-collection-link" href="../coleccion/coleccion.html">Mi colección</a><button type="button" id="game-replay" class="game-text-button">Volver a jugar</button></div>
             </div>
@@ -58,6 +59,6 @@
     </div>
 </main>
 <div id="menu-inferior"></div>
-<script type="module" src="../../js/app/main.js?v=20261108-partidos"></script>
+<script type="module" src="../../js/app/main.js?v=20261108-buffered"></script>
 </body>
 </html>

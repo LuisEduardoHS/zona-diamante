@@ -20,6 +20,8 @@
 .game-cover-title h1 { @apply text-[22cqw] leading-[1.1] font-black tracking-[-.055em] m-[0_0_14px] [outline:none]; }
 .game-cover-title>span { @apply block w-[78%] m-auto [background:#c4e9ef] text-[#007b9c] text-[13px] leading-[1.6] font-black rounded-[20px]; }
 .game-cover-actions { @apply absolute bottom-[10%] left-[15%] right-[15%] text-center; }
+.game-pending-home { @apply mt-3 rounded-xl bg-[#004657cc] px-3 py-2 text-[11px] leading-snug; }
+.game-pending-home p { @apply m-0; }
 .game-primary { @apply inline-flex items-center justify-center w-full min-h-[54px] [border:0] rounded-[18px] [background:#c4e9ef] text-[#007c9d] font-black! text-[24px]! [box-shadow:0_5px_0_#003f4f25] no-underline; }
 .game-primary:disabled { @apply opacity-[.6]; }
 .game-primary:hover:not(:disabled) { @apply [background:#e2f8fc]; }

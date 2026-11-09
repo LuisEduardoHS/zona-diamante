@@ -5,8 +5,8 @@ import { validateRules } from './game-state.js';
 import { validateArt, preloadSprites } from './game-media.js';
 import { installSprites, createGameView, resultPresentation } from './game-view.js';
 import { bindBatInput } from './game-input.js';
-import { createOfficialEngine } from './game-official.js';
-import { getGameServerClient } from '../../api/game-client.js';
+import { createBufferedEngine } from './game-buffered.js';
+import { obtenerColaPremiosJuego } from './game-rewards.js';
 import { createGameMotion } from './game-motion.js';
 
 const mounts = new WeakMap();
@@ -19,7 +19,7 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
     const motion=createGameMotion();
     let rules, manifest, sprites=[], engine=null, draw=null, screen='home', stopped=false;
     let user='guest', authenticated=false, completionId=null, starting=false, generation=0, officialRun=false, rewardsAvailable=true;
-    const storage = {getItem:key=>localStorage.getItem(key),setItem:(key,value)=>localStorage.setItem(key,value)};
+    let rewardQueue=null, unsubscribeQueue=()=>{};
     const show = next => {
         screen=next; root.dataset.screen=next;
         for (const panel of root.querySelectorAll('[data-game-screen]')) motion.visible(panel,panel.dataset.gameScreen===next);
@@ -36,8 +36,16 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
         for(const id of ['game-network-note','game-reconnect','game-demo','game-login'])$(id).hidden=true;
         $('game-reconnect').disabled=false;
     }
+    function pendingRewards() {
+        let count=0;
+        try { count=authenticated&&rewardQueue?rewardQueue.pending:0; } catch { /* Reported when opening the saved game. */ }
+        $('game-pending-home').hidden=!count;
+        $('game-pending-count').textContent=`${count} ${count===1?'partida pendiente':'partidas pendientes'} de confirmar puntos.`;
+        $('game-result-retry').hidden=!count||!engine?.state?.rewardPending;
+    }
     function finish(state) {
-        if(completionId===state.id)return;
+        const first=completionId!==state.id;
+        if(!first&&!state.serverResult)return;
         completionId=state.id;
         const result=resultPresentation(state);
         const endless=state.mode==='survival';
@@ -53,15 +61,17 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
         $('game-result-bonus').textContent=endless&&state.stats.hits>10?`Racha extra ×${state.stats.hits}${result.bonus?` · bonus +${result.bonus}`:''}`:result.bonus?`Bonus +${result.bonus} · racha máxima ×${state.stats.bestStreak}`:'';
         $('game-award-toast').hidden=!result.toast;$('game-award-toast').textContent=result.toast||'';
         if(state.official){const auth=obtenerEstadoSesion();if(auth.user?.id===user&&result.balance!==null)establecerEstadoSesion({...auth,profile:{...auth.profile,points_balance:result.balance}});}
-        clearNetwork();root.dataset.outcome=state.outcome;show('result');
-        if(result.credited!==null)motion.count($('game-account-points'),result.credited,{prefix:'+'});
-        if(result.balance!==null)motion.count($('game-balance'),result.balance,{from:Math.max(0,result.balance-(result.credited||0)),delay:260});
+        clearNetwork();root.dataset.outcome=state.outcome;
+        if(first)show('result');
+        pendingRewards();
+        if(screen==='result'&&result.credited!==null)motion.count($('game-account-points'),result.credited,{prefix:'+'});
+        if(screen==='result'&&result.balance!==null)motion.count($('game-balance'),result.balance,{from:Math.max(0,result.balance-(result.credited||0)),delay:260});
     }
     async function start({fresh=false,practice=false}={}) {
         if(!rules||stopped||starting||screen==='play')return;
         fresh=fresh||completionId!==null; engine?.destroy();engine=null;draw?.destroy();completionId=null;
         motion.reset();
-        starting=true;const ticket=++generation;const official=authenticated&&!practice;officialRun=official;access();clearNetwork();
+        starting=true;const ticket=++generation;const official=authenticated&&!practice&&rewardsAvailable;officialRun=official;access();clearNetwork();
         $('game-hit').disabled=true;
         draw=createGameView(root,rules,sprites,manifest,motion);let viewRules=JSON.stringify(rules);
         $('game-session-note').textContent=official?'Partida oficial':'Práctica · sin puntos';
@@ -70,8 +80,9 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
         try {
             if(official){
                 $('game-network-note').hidden=false;$('game-network-note').textContent='Conectando partida…';
-                const api=await getGameServerClient();if(stopped||ticket!==generation)return;
-                engine=createOfficialEngine({api,storage,user,mode:'survival',rules,fresh,onFrame,
+                const queue=rewardQueue||await obtenerColaPremiosJuego(user);if(stopped||ticket!==generation)return;
+                rewardQueue=queue;
+                engine=createBufferedEngine({queue,fresh,onFrame,...clock,
                     onSnapshot:s=>{if(stopped||ticket!==generation)return;
                         rewardsAvailable=s.rewarded_today<s.daily_limit;
                         $('game-session-note').textContent=!s.rules.economy.enabled?'Práctica · premios desactivados':rewardsAvailable?'Partida oficial':'Práctica · cupo diario agotado';
@@ -82,10 +93,10 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
                     onError:error=>{if(stopped||ticket!==generation)return;
                         $('game-network-note').hidden=false;$('game-reconnect').hidden=false;
                         if(error.status===401){$('game-reconnect').hidden=true;$('game-login').hidden=false;$('game-network-note').textContent='Tu sesión venció. Inicia sesión para recuperar tu partida.';}
-                        else if(error.status===429||String(error.message).includes('latency')){
-                            $('game-network-note').textContent=error.status===429?'Límite temporal alcanzado. Puedes practicar sin puntos.':'La conexión es lenta para jugar por puntos. Puedes practicar.';
+                        else if(error.status===429){
+                            $('game-network-note').textContent='Límite temporal alcanzado. Puedes practicar sin puntos.';
                             $('game-demo').hidden=false;
-                        }else $('game-network-note').textContent='Sin respuesta del servidor. Reintenta para recuperar la partida; su reloj continúa.';
+                        }else $('game-network-note').textContent=error.code==='storage'?error.message:'Necesitamos conectar una vez para iniciar por puntos. Reintenta; la partida no ha comenzado.';
                     }});
             }else engine=createGameEngine({rules,mode:'survival',id:'practice:'+crypto.randomUUID(),...clock,onFrame});
             if(stopped||ticket!==generation)return;
@@ -106,6 +117,10 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
         const ticket=generation;$('game-reconnect').disabled=true;
         try{if(engine)await engine.resume();else{show('home');void start();}}
         finally{if(!stopped&&ticket===generation)$('game-reconnect').disabled=false;}
+    },options);
+    for(const id of ['game-retry-points','game-result-retry'])$(id).addEventListener('click',async()=>{
+        $(id).disabled=true;
+        try{await rewardQueue?.flush();}finally{if(!stopped){$(id).disabled=false;pendingRewards();}}
     },options);
     const resumePlay=async()=>{const ticket=generation;await engine?.resume();if(!stopped&&ticket===generation&&screen==='play')$('game-field').focus({preventScroll:true});};
     $('game-pause').addEventListener('click',()=>{if(engine?.state?.phase==='paused')void resumePlay();else void engine?.pause();},options);
@@ -128,8 +143,18 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
     const unsubscribe=observarEstadoSesion(auth=>{
         if(auth.cargando)return;
         const next=auth.user?.id||'guest';
-        if(next!==user){generation++;engine?.destroy();engine=null;draw?.destroy();draw=null;starting=false;completionId=null;rewardsAvailable=true;$('game-exit').disabled=false;clearNetwork();show('home');user=next;}
+        if(next!==user){generation++;engine?.destroy();engine=null;draw?.destroy();draw=null;starting=false;completionId=null;rewardsAvailable=true;$('game-exit').disabled=false;clearNetwork();show('home');user=next;
+            unsubscribeQueue();rewardQueue=null;
+            if(next!=='guest')void obtenerColaPremiosJuego(next).then(queue=>{
+                if(stopped||user!==next||!queue)return;
+                rewardQueue=queue;unsubscribeQueue=queue.subscribe(event=>{
+                    if(event.type==='receipt'){rewardsAvailable=event.result.rewarded_today<event.result.daily_limit;access();}
+                    pendingRewards();
+                });pendingRewards();
+            }).catch(()=>{});
+        }
         authenticated=Boolean(auth.user);access();
+        pendingRewards();
     });
     const ready=(async()=>{
         const load=async path=>{const response=await fetcher(ruta(path),{signal:lifecycle.signal,cache:'no-cache'});if(!response.ok)throw new Error('Resources unavailable');return response.json();};
@@ -145,7 +170,7 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
     })();
     let preservePageShow=false;
     const restored=event=>{if(event.persisted&&stopped)location.reload();};
-    function cleanup(){if(stopped)return;stopped=true;generation++;engine?.destroy();draw?.destroy();motion.destroy();unsubscribe();lifecycle.abort();if(!preservePageShow)window.removeEventListener('pageshow',restored);mounts.delete(root);}
+    function cleanup(){if(stopped)return;stopped=true;generation++;engine?.destroy();draw?.destroy();motion.destroy();unsubscribe();unsubscribeQueue();lifecycle.abort();if(!preservePageShow)window.removeEventListener('pageshow',restored);mounts.delete(root);}
     const handle={ready,get state(){return engine?.state||null;},destroy:cleanup};
     mounts.set(root,handle);signal?.addEventListener('abort',cleanup,{once:true});
     window.addEventListener('pagehide',event=>{preservePageShow=event.persisted;cleanup();},options);window.addEventListener('pageshow',restored);

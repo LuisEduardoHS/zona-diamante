@@ -19,7 +19,9 @@ export function resultPresentation(state) {
     const confirmed=state.official && state.phase==='finished' && result?.phase==='completed';
     const credited=confirmed ? reward.points_awarded : null;
     const bonus=confirmed && credited>0 ? (reward.extra_hit_bonus || 0)+(reward.streak_bonus || 0) : 0;
-    const note=!confirmed ? 'Práctica · sin puntos de cuenta.'
+    const note=state.official && result?.phase==='expired' ? 'La partida guardada venció antes de confirmar sus puntos.'
+        : !confirmed && state.official ? 'Partida guardada. Confirmando tus puntos cuando haya conexión…'
+        : !confirmed ? 'Práctica · sin puntos de cuenta.'
         : reward.status==='daily_limit' ? 'Cupo diario agotado · esta partida no genera puntos.'
         : reward.status==='disabled' ? 'Recompensas desactivadas · sin puntos.'
         : reward.status==='lost' ? `Necesitas ${result.rules?.modes?.[state.mode]?.targetHits || 5} hits para ganar puntos.`
@@ -79,7 +81,7 @@ export function createGameView(root, rules, sprites, manifest, motion) {
         $('game-pause').setAttribute('aria-pressed',String(paused));
         if(motion)motion.visible($('game-paused'),paused&&!state.networkError);
         else $('game-paused').hidden = !paused || Boolean(state.networkError);
-        text($('game-paused').querySelector('p'),state.networkError?'Reconecta para recuperar la partida.':state.official?'El lanzamiento actual sigue corriendo en el servidor.':'Reanuda cuando estés listo.');
+        text($('game-paused').querySelector('p'),state.networkError?'Reintenta para recuperar la partida.':state.official&&!state.buffered?'El lanzamiento actual sigue corriendo en el servidor.':'Reanuda cuando estés listo.');
         $('game-countdown').hidden = phase !== 'countdown' || paused;
         text($('game-countdown-number'),Math.max(1,Math.ceil((rules.timing.countdownMs - state.elapsed)/1000)));
         if(phase==='countdown'&&!paused){const number=$('game-countdown-number').textContent;if(number!==previousCountdown)motion?.pulse($('game-countdown-number'),'countdown');previousCountdown=number;}
