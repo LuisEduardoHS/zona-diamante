@@ -1,13 +1,25 @@
 # Correos personalizados de trivia
 
-## Estado de la primera etapa
+## Estado operativo
 
-Integración preparada con Brevo, sin credenciales ni envíos reales. El
-interruptor `TRIVIA_EMAIL_ENABLED` es `false` por defecto. Instalar la
-migración no crea cron jobs, no prepara destinatarios y no envía correos.
+Integración activada en producción con el remitente
+`Zona Diamante <avisos@zonadiamante.dpdns.org>`. Dominio autenticado con DKIM
+y DMARC; la prueba del propietario se recibió en su bandeja de entrada.
 
-El siguiente paso del propietario es crear una cuenta en
-[Brevo](https://www.brevo.com/) y verificar el correo del remitente. Puede
+Se comprobó la ejecución real del job `zd-trivia-email` cada cinco minutos:
+Cron terminó correctamente, pg_net recibió HTTP 200 del backend y los
+envíos estaban habilitados. La primera tanda fue de seis correos aceptados
+por Brevo, sin errores; repetir la ejecución y el siguiente ciclo automático
+no volvió a enviar esos avisos.
+
+El interruptor `TRIVIA_EMAIL_ENABLED` continúa siendo `false` por defecto
+en el código y en `.env.example`; Render lo establece en `true`. Instalar
+solamente la migración no crea cron jobs ni envía correos. Las credenciales
+están fuera del repositorio, en variables privadas y Supabase Vault.
+
+## Preparación de una cuenta nueva
+
+Crear una cuenta en [Brevo](https://www.brevo.com/) y verificar el remitente. Puede
 verificarse con el código que llega a esa bandeja. Sin dominio propio,
 Brevo puede reemplazar el dominio visible del remitente por uno suyo.
 [Instrucciones oficiales para crear el remitente](https://help.brevo.com/hc/en-us/articles/208836149-Create-a-new-sender-From-name-and-From-email),
@@ -31,6 +43,9 @@ TRIVIA_EMAIL_BATCH_SIZE=10
 No agregar las claves al frontend ni al repositorio. Usar el mismo secreto
 de ejecución en Render y en la configuración local que instalará el cron.
 Los correos de inicio de sesión y recuperación de Supabase permanecen aparte.
+La clave de Brevo usa acceso restringido: **Emails transaccionales → Todos**
+para enviar y **Cuenta → Leer** para consultar el remitente. Los otros
+recursos no son necesarios.
 
 Desde `backend/`:
 
