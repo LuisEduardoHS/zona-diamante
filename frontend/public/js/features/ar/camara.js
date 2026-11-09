@@ -30,9 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const rutaModelo = (archivo) => new URL(`../../../ar/models/${archivo}`, import.meta.url).href;
     const modelosAR = {
         0: rutaModelo('Final/Pollo_Fin.glb?v=20260927-4'),
-        1: rutaModelo('Final/Straiky_Fin.glb?v=20260927-4'),
+        1: rutaModelo('Final/Straiky_Fin.glb?v=20261109-models'),
         2: rutaModelo('Final/Pancho_Fin.glb?v=20260927-4'),
-        3: rutaModelo('Final/Perro%20-%20Fin.glb?v=20260927-4')
+        3: rutaModelo('Final/Perro%20-%20Fin.glb?v=20261109-models')
     };
 
     // Elementos que muestran el resultado del escaneo.
