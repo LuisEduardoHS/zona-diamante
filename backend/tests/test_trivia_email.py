@@ -17,7 +17,7 @@ USER, JOB, TOKEN = str(uuid4()), str(uuid4()), str(uuid4())
 
 
 def fixture_job(**values):
-    return {'id': JOB, 'recipient_email': 'test@example.invalid', 'recipient_name': 'Luis',
+    return {'id': JOB, 'recipient_email': 'test@qa.zona-diamante.dev', 'recipient_name': 'Luis',
             'unsubscribe_token': TOKEN, 'question_count': 5, 'points_per_correct': 20, **values}
 
 
@@ -85,6 +85,7 @@ def test_personalized_template_escapes_names_has_real_reward_and_no_images():
     assert '100 puntos' in notice['text'] and '5 preguntas' in notice['text']
     assert 'trivia.html' in notice['html'] and TOKEN in notice['html']
     assert '<img' not in notice['html']
+    assert 'display:none' not in notice['html']
 
 
 def test_missing_provider_and_sender_are_configuration_errors(monkeypatch):
@@ -118,6 +119,26 @@ def test_provider_contract_and_individual_recipients(status, data, expected):
     payload = json.loads(sent[0].content)
     assert payload['headers'] == {'idempotencyKey': JOB}
     assert len(payload['to']) == 1 and 'cc' not in payload and 'bcc' not in payload
+    assert payload['textContent'] == mail.render_notice(fixture_job())['text']
+
+
+@pytest.mark.parametrize('address', ['qa@zona-diamante.invalid', 'qa@EXAMPLE.INVALID',
+    'qa@sub.example.com', 'qa@example.net', 'qa@localhost', 'qa@demo.test', 'qa@demo.invalid.',
+    'not-an-email', 'victim@gmail.com\r\nBcc:other@gmail.com'])
+def test_reserved_or_invalid_recipient_never_reaches_provider(address):
+    def transport(request):
+        pytest.fail('Reserved/invalid address reached provider')
+    async def send():
+        async with httpx.AsyncClient(transport=httpx.MockTransport(transport)) as provider:
+            with pytest.raises(mail.DeliveryError) as error:
+                await mail.send_notice(provider, fixture_job(recipient_email=address))
+            assert not error.value.retry and error.value.definitely_unsent
+    asyncio.run(send())
+
+
+@pytest.mark.parametrize('address', ['name@gmail.com', 'name+alias@outlook.com', 'name@sub.business.mx'])
+def test_public_recipient_accepts_normal_addresses(address):
+    assert mail.public_recipient(address)
 
 
 def test_dispatch_stops_on_outage_and_records_retriable_job(monkeypatch):

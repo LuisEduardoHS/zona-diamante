@@ -1,12 +1,12 @@
 -- Run exclusively inside the acceptance wrapper's BEGIN/ROLLBACK; no emails.
 create temporary table email_fixture as select gen_random_uuid() uid,gen_random_uuid() disabled,
-    gen_random_uuid() recent,gen_random_uuid() unconfirmed;
+    gen_random_uuid() recent,gen_random_uuid() unconfirmed,gen_random_uuid() reserved;
 insert into auth.users(id,email,email_confirmed_at,raw_user_meta_data)
-select id,'mail-qa-'||id||'@example.invalid',case when id<>unconfirmed then now() else null end,
+select id,'mail-qa-'||id||case when id=reserved then '@example.invalid' else '@qa.zona-diamante.dev' end,case when id<>unconfirmed then now() else null end,
     jsonb_build_object('username','mail_'||replace(id::text,'-',''))
-from email_fixture cross join lateral(values(uid),(disabled),(recent),(unconfirmed)) ids(id);
+from email_fixture cross join lateral(values(uid),(disabled),(recent),(unconfirmed),(reserved)) ids(id);
 update public.profiles set created_at=now()-interval '2 days'
-where id in (select uid from email_fixture union select disabled from email_fixture union select unconfirmed from email_fixture);
+where id in (select uid from email_fixture union select disabled from email_fixture union select unconfirmed from email_fixture union select reserved from email_fixture);
 grant select on email_fixture to service_role;
 set local role service_role;
 do $$
@@ -27,7 +27,7 @@ begin
     select daily_trivia_id into t from public.get_or_create_daily_trivia(day,slot);
     prepared:=public.prepare_trivia_emails(t,'America/Monterrey');
     if (select count(*) from public.trivia_email_deliveries where user_id=f.uid and trivia_id=t)<>1 then raise exception 'Eligible account was not queued.'; end if;
-    if exists(select 1 from public.trivia_email_deliveries where user_id in (f.disabled,f.recent,f.unconfirmed)) then raise exception 'Ineligible account was queued.'; end if;
+    if exists(select 1 from public.trivia_email_deliveries where user_id in (f.disabled,f.recent,f.unconfirmed,f.reserved)) then raise exception 'Ineligible/reserved account was queued.'; end if;
     if public.prepare_trivia_emails(t,'America/Monterrey')<>0 then raise exception 'Repeated schedule queued duplicates.'; end if;
     update public.trivia_email_deliveries set created_at=now()-interval '1 day' where user_id=f.uid;
     loop
@@ -53,5 +53,15 @@ begin
     update public.trivia_email_deliveries set status='pending',first_attempt_at=null where user_id=f.uid;
     perform public.claim_trivia_email(t);
     if (select status from public.trivia_email_deliveries where user_id=f.uid)<>'suppressed' then raise exception 'Unsubscribed delivery remained sendable.'; end if;
+    insert into public.trivia_email_deliveries(user_id,trivia_id,recipient_email,recipient_name,question_count,points_per_correct,unsubscribe_token,expires_at)
+    values(f.reserved,t,'legacy@example.invalid','Legacy fixture',5,20,gen_random_uuid(),clock_timestamp()+interval '30 minutes');
+    perform public.claim_trivia_email(t);
+    if (select status from public.trivia_email_deliveries where user_id=f.reserved)<>'suppressed' then raise exception 'Reserved legacy delivery remained sendable.'; end if;
+    if public.trivia_email_public_domain('qa@SUB.EXAMPLE.COM')
+        or public.trivia_email_public_domain('qa@demo.invalid.')
+        or public.trivia_email_public_domain('qa@localhost')
+        or not public.trivia_email_public_domain('qa+alias@gmail.com') then
+        raise exception 'Public recipient filter mismatch.';
+    end if;
 end $$;
 select 'PASS: eligibility, service-only access, isolated preferences, unique campaign, leases, unsubscribe and bounded retry' as result;

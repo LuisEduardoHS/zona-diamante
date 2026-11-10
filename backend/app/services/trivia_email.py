@@ -37,6 +37,21 @@ def authorized_dispatch(secret: str) -> bool:
     return len(expected) >= 32 and hmac.compare_digest(secret.encode(), expected.encode())
 
 
+def public_recipient(email: str) -> bool:
+    """Reject non-deliverable reserved/test domains before contacting Brevo."""
+    try:
+        address = Address(addr_spec=email.strip())
+        domain = address.domain.lower().rstrip('.')
+        if not address.username or '.' not in domain:
+            return False
+        if domain.split('.')[-1] in {'invalid', 'test', 'example', 'localhost'}:
+            return False
+        return not any(domain == name or domain.endswith('.' + name)
+            for name in ('example.com', 'example.net', 'example.org'))
+    except (ValueError, IndexError, AttributeError, HeaderParseError):
+        return False
+
+
 async def preference(user_id: str, enabled: bool | None = None) -> dict:
     value = await supabase_rest_request('POST', 'rpc/trivia_email_preference',
         json={'p_user_id': user_id, 'p_enabled': enabled})
@@ -56,7 +71,6 @@ def render_notice(job: dict) -> dict:
             f'Jugar: {play}\n\nDesactivar estos avisos: {unsubscribe}\nZona Diamante')
     html = f'''<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head>
 <body style="margin:0;padding:24px 12px;background:#f4f7f8;color:#2b2b31;font-family:Arial,Helvetica,sans-serif">
-<div style="display:none;max-height:0;overflow:hidden">{questions} preguntas nuevas. Hasta {questions * points} puntos para tu colección.</div>
 <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="max-width:560px;margin:auto;background:#ffffff;border-radius:20px;overflow:hidden">
 <tr><td style="padding:28px;background:#007f90;color:#ffffff;font-weight:bold;font-size:19px">ZONA DIAMANTE</td></tr>
 <tr><td style="padding:32px 28px"><p style="margin:0 0 14px;font-size:16px">Hola, {escape(name)}.</p>
@@ -77,12 +91,14 @@ class DeliveryError(RuntimeError):
 
 
 async def send_notice(client: httpx.AsyncClient, job: dict) -> str | None:
+    if not public_recipient(job['recipient_email']):
+        raise DeliveryError('reserved_or_invalid_recipient', retry=False, definitely_unsent=True)
     notice = render_notice(job)
     payload = {
         'sender': {'name': settings.email_from_name, 'email': settings.email_from_address},
         'to': [{'email': job['recipient_email'], 'name': job['recipient_name']}],
         'replyTo': {'email': settings.email_from_address, 'name': settings.email_from_name},
-        'subject': notice['subject'], 'htmlContent': notice['html'],
+        'subject': notice['subject'], 'htmlContent': notice['html'], 'textContent': notice['text'],
         'headers': {'idempotencyKey': str(UUID(str(job['id'])))},
         'tags': ['trivia-nueva'],
     }

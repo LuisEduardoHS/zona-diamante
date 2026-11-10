@@ -17,6 +17,34 @@ en el código y en `.env.example`; Render lo establece en `true`. Instalar
 solamente la migración no crea cron jobs ni envía correos. Las credenciales
 están fuera del repositorio, en variables privadas y Supabase Vault.
 
+### Incidente de entrega a Gmail: 10 de noviembre de 2026
+
+El programador ejecutó el turno de medianoche y Brevo aceptó los avisos,
+pero Gmail rechazó cuatro mensajes con `550 5.7.1` por considerarlos
+probablemente no solicitados. Outlook aceptó su mensaje. Se comprobaron el
+remitente activo, DKIM, DMARC y cuota disponible; el código de rechazo por
+sí solo no identifica si el motivo exacto es dominio, IP o contenido.
+
+Se añadió `20261110000100_trivia_email_public_recipients.sql`, aplicada y
+validada en la base remota, para excluir dominios reservados de prueba de
+la preparación y la toma de envíos. No elimina cuentas ni altera las
+preferencias reales o el historial. El backend también rechaza esos
+destinatarios antes de llamar a Brevo, envía una alternativa de texto plano
+y evita el texto oculto del preencabezado. Brevo agrega su propia cabecera
+de baja; se conserva además el enlace de baja de la aplicación.
+
+Una única prueba al propietario con el mensaje actualizado también fue
+rechazada desde la IP de Brevo. Estos ajustes no demuestran que el bloqueo
+esté resuelto: requiere revisión de entregabilidad con el proveedor. No se
+debe reenviar toda la tanda ni reiniciar sus identificadores para intentar
+sortear el rechazo. Los detalles con destinatarios se conservan únicamente
+en archivos privados de operación, fuera del repositorio.
+
+Consultar los eventos por `provider_message_id` en Brevo para distinguir
+aceptación, entrega y rebote. **`sent` en la cola significa aceptado por
+Brevo, no entregado al destinatario.** Guía del proveedor:
+[problemas de entrega a Gmail](https://help.brevo.com/hc/en-us/articles/36039161138706-Troubleshooting-Deliverability-issues-with-Gmail).
+
 ## Preparación de una cuenta nueva
 
 Crear una cuenta en [Brevo](https://www.brevo.com/) y verificar el remitente. Puede
