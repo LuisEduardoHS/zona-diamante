@@ -45,7 +45,7 @@ El calendario público y el contenido informativo se pueden explorar sin iniciar
 | **Backend**               | Python, FastAPI, Pydantic, HTTPX                        | Validación de sesión, reglas del juego, recompensas, cartas, calendario y avisos de trivia. |
 | **Datos y autenticación** | Supabase Auth, PostgreSQL, RLS y funciones SQL          | Identidad, perfiles, intentos, inventario, transacciones y permisos de acceso.              |
 | **Archivos**              | Supabase Storage y recursos estáticos locales           | Avatares, imágenes del catálogo, fotografías, logos y modelos.                              |
-| **Correo**                | Brevo API y SMTP; Supabase Cron, pg_net y Vault         | Avisos de trivia programados y correos de autenticación.                                    |
+| **Correo**                | Brevo API; Supabase Auth, Cron, pg_net y Vault         | Avisos de trivia programados y correos de autenticación con transporte independiente.        |
 | **Herramientas**          | npm, Supabase CLI, pytest, Node Test Runner, Playwright | Compilación, migraciones y validación automática.                                           |
 
 El navegador se autentica con Supabase y realiza las lecturas permitidas por RLS. Para operaciones de puntos, compras o recompensas, llama a FastAPI con el token de la sesión. El backend valida al usuario y ejecuta las operaciones mediante funciones de PostgreSQL; los reintentos utilizan identificadores estables para evitar premios duplicados.
@@ -57,7 +57,7 @@ Los partidos se consultan a través del backend usando **MLB Stats API**, sin un
 ### Cómo se gestionan los correos
 
 - **Avisos de trivia:** se activan voluntariamente desde Perfil y permanecen desactivados por defecto. Supabase Cron solicita al backend procesar la cola cada cinco minutos. Se respetan el periodo vigente, la activación de cada cuenta y los registros de envío. Cada correo incluye una opción de baja.
-- **Autenticación:** Supabase Auth envía directamente mediante Brevo SMTP. Incluye plantillas para confirmación, recuperación, invitaciones y otros eventos compatibles; disponer de una plantilla no activa por sí solo esa notificación.
+- **Autenticación:** se restauró el transporte integrado de Supabase al retirar Brevo SMTP. Ese transporte usa las plantillas predeterminadas, tiene un límite de dos correos por hora y está destinado a direcciones del equipo del proyecto. Para registros públicos y correos personalizados se necesita un SMTP propio operativo; las plantillas de Zona Diamante se conservan en el repositorio. Consulta la [guía de autenticación](docs/correos-autenticacion.md).
 
 La configuración de correo es opcional para comenzar a desarrollar. Un entorno nuevo mantiene los avisos de trivia desactivados por defecto. La preferencia de Perfil controla únicamente los avisos de trivia; los correos de autenticación se configuran por separado.
 

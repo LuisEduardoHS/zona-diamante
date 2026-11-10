@@ -2,6 +2,7 @@ import importlib.util
 import json
 from pathlib import Path
 import re
+import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 FOLDER = ROOT / 'supabase/templates/auth'
@@ -40,3 +41,45 @@ def test_redirect_additions_preserve_existing_origins_and_are_idempotent():
     assert patch['uri_allow_list'].startswith(original + ',')
     assert 'https://zona-diamante.pages.dev/pages/auth/restablecer.html' in patch['uri_allow_list']
     assert module.redirect_patch(patch) == patch
+
+
+def test_builtin_sender_rollback_clears_credentials_without_weakening_auth():
+    patch = module.default_smtp_patch()
+    assert patch == {
+        'smtp_host': None, 'smtp_port': None, 'smtp_user': None,
+        'smtp_pass': None, 'smtp_admin_email': None, 'smtp_sender_name': None,
+    }
+    assert 'mailer_autoconfirm' not in patch
+    assert 'rate_limit_email_sent' not in patch
+    assert 'external_email_enabled' not in patch
+
+
+def test_native_transport_cannot_silently_publish_custom_templates(monkeypatch):
+    class Response:
+        status_code = 200
+
+        def json(self):
+            return {'smtp_host': None, 'mailer_autoconfirm': False}
+
+    class Client:
+        def __init__(self, **kwargs):
+            pass
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            pass
+
+        def get(self, url):
+            return Response()
+
+        def patch(self, *args, **kwargs):
+            pytest.fail('Must not publish custom templates without a custom SMTP transport')
+
+    monkeypatch.setenv('SUPABASE_ACCESS_TOKEN', 'test-management-token')
+    monkeypatch.setattr(module.httpx, 'Client', Client)
+    monkeypatch.setattr(module, 'Settings', lambda **kwargs: type('Config', (), {'supabase_url': 'https://test.supabase.co'})())
+    monkeypatch.setattr(module.sys, 'argv', ['configure_auth_emails.py', '--apply'])
+    with pytest.raises(SystemExit, match='Configura un SMTP operativo'):
+        module.main()

@@ -1,9 +1,11 @@
 """Publish only branded Auth templates and optional SMTP settings via Management API."""
 import argparse
+from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
 import sys
+from uuid import uuid4
 
 import httpx
 from dotenv import dotenv_values
@@ -32,6 +34,16 @@ def smtp_patch() -> dict:
         'smtp_admin_email': 'avisos@zonadiamante.dpdns.org', 'smtp_sender_name': 'Zona Diamante'}
 
 
+def default_smtp_patch() -> dict:
+    """Return Auth to the original Supabase built-in sender, not Brevo.
+
+    Hosted Supabase limits this transport to project-team recipients and
+    two emails/hour. It is a rollback option, not a public SMTP replacement.
+    """
+    return dict.fromkeys(('smtp_host', 'smtp_port', 'smtp_user', 'smtp_pass',
+        'smtp_admin_email', 'smtp_sender_name'))
+
+
 def redirect_patch(current: dict) -> dict:
     # The SPA builds auth return URLs using the current origin. Preserve all
     # configured origins and add the exact two production Cloudflare routes.
@@ -44,7 +56,9 @@ def redirect_patch(current: dict) -> dict:
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--apply', action='store_true')
-    parser.add_argument('--smtp', action='store_true')
+    transport = parser.add_mutually_exclusive_group()
+    transport.add_argument('--smtp', action='store_true', help='Configure Brevo SMTP explicitly.')
+    transport.add_argument('--default-smtp', action='store_true', help='Restore Supabase built-in SMTP (team recipients only, 2 emails/hour).')
     args = parser.parse_args()
     token = os.environ.get('SUPABASE_ACCESS_TOKEN', '')
     if not token:
@@ -57,17 +71,25 @@ def main():
         if before.status_code != 200:
             raise SystemExit('No se pudo consultar Auth. No se publicaron cambios.')
         current = before.json()
-        patch = {**template_patch(), **redirect_patch(current)}
+        patch = redirect_patch(current)
+        if not args.default_smtp:
+            patch.update(template_patch())
+            if args.apply and not args.smtp and not current.get('smtp_host'):
+                raise SystemExit('El transporte integrado usa las plantillas predeterminadas de Supabase. Configura un SMTP operativo antes de publicar plantillas personalizadas.')
         if args.smtp:
             patch.update(smtp_patch())
-        print('Plantillas:', len(template_patch()) // 2, '| SMTP:', args.smtp, '| Claves incluidas:', len(patch))
+        elif args.default_smtp:
+            patch.update(default_smtp_patch())
+            print('Transporte integrado de Supabase: plantillas predeterminadas, destinatarios del equipo y dos correos por hora.')
+        print('Plantillas:', 'predeterminadas de Supabase' if args.default_smtp else len(template_patch()) // 2, '| Transporte:', 'Supabase integrado' if args.default_smtp else 'Brevo SMTP' if args.smtp else 'sin cambios', '| Claves incluidas:', len(patch))
         if not args.apply:
             print('Solo revisión. Agrega --apply para publicar este conjunto limitado de campos.')
             return
         folder = ROOT / '.tmp/auth-email'; folder.mkdir(parents=True, exist_ok=True)
         # Back up only the fields being changed; this file may contain a previous
         # SMTP credential and therefore stays in the ignored local directory.
-        (folder / 'rollback-patch.json').write_text(json.dumps({key: current.get(key) for key in patch}, ensure_ascii=False, indent=2), encoding='utf-8')
+        stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
+        (folder / f'rollback-{stamp}-{uuid4().hex[:8]}.json').write_text(json.dumps({key: current.get(key) for key in patch}, ensure_ascii=False, indent=2), encoding='utf-8')
         response = client.patch(url, json=patch)
         if response.status_code != 200:
             raise SystemExit('Supabase rechazó la configuración. Se omiten datos privados de la respuesta.')
@@ -81,6 +103,11 @@ def main():
         # Supabase also returns aggregate maps derived from the individual
         # subject/content fields. Those necessarily change with these templates.
         derived = {'mailer_subjects_custom_contents', 'mailer_templates_custom_contents'}
+        # Hosted Auth restores its own effective templates with built-in SMTP.
+        # Keep our sources in Git; do not mistake those automatic resets for
+        # changes to confirmation requirements, providers or other policies.
+        if args.default_smtp:
+            derived.update(template_patch())
         changed_elsewhere = [key for key in current if key not in patch and key not in derived and actual.get(key) != current[key]]
         if changed_elsewhere:
             raise SystemExit('Otros campos cambiaron durante la publicación: ' + ', '.join(changed_elsewhere))
