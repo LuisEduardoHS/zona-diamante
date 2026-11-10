@@ -99,4 +99,3 @@ begin
     where id=d.id returning * into d;
     return to_jsonb(d);
 end $$;
-

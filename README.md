@@ -59,7 +59,7 @@ Los partidos se consultan a través del backend usando **MLB Stats API**, sin un
 - **Avisos de trivia:** se activan voluntariamente desde Perfil y permanecen desactivados por defecto. Supabase Cron solicita al backend procesar la cola cada cinco minutos. Se respetan el periodo vigente, la activación de cada cuenta y los registros de envío. Cada correo incluye una opción de baja.
 - **Autenticación:** Supabase Auth envía directamente mediante Brevo SMTP. Incluye plantillas para confirmación, recuperación, invitaciones y otros eventos compatibles; disponer de una plantilla no activa por sí solo esa notificación.
 
-La configuración de correo es opcional para comenzar a desarrollar. Un entorno nuevo mantiene los avisos de trivia desactivados por defecto.
+La configuración de correo es opcional para comenzar a desarrollar. Un entorno nuevo mantiene los avisos de trivia desactivados por defecto. La preferencia de Perfil controla únicamente los avisos de trivia; los correos de autenticación se configuran por separado.
 
 ## Estructura del repositorio
 
