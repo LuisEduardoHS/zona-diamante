@@ -91,6 +91,50 @@ test('pelota llega al aro al tiempo de contacto y el resize sólo cambia proyecc
  const g=state.advance(fresh('classic'),1200,rules),p=media.ballPosition(g);assert.equal(p.x,media.CONTACT.x);assert.equal(p.y,media.CONTACT.y);assert.equal(p.visible,true);
  for(const [w,h] of [[360,740],[390,844],[768,1024],[1440,900]]){assert.ok(p.x*w>0&&p.x*w<w);assert.ok(p.y*h>0&&p.y*h<h);assert.equal(g.stats.resolved,0);}
 });
+test('lanzador y pelota comparten la suelta y el contacto al aumentar la velocidad; pausar conserva la pose',()=>{
+ for(const index of [1,10,50,200]){
+  const plan=state.pitchPlan(rules,index,'survival'),release=media.releaseTime(plan);
+  const game={...fresh('survival'),plan};
+  const at=elapsed=>({...game,elapsed});
+  assert.deepEqual([0,.4,.8,1.1].map(p=>media.pitcherFrameFor(at(release*p))),[0,1,2,3]);
+  assert.equal(media.ballPosition(at(release-1)).visible,false);
+  const thrown=media.ballPosition(at(release));
+  assert.equal(thrown.visible,true);assert.equal(thrown.x,media.RELEASE.x);assert.equal(thrown.y,media.RELEASE.y);
+  const contact=media.ballPosition(at(plan.contactMs));
+  assert.equal(contact.x,media.CONTACT.x);assert.equal(contact.y,media.CONTACT.y);assert.ok(contact.scale>thrown.scale);
+  for(const elapsed of [release*.5,release,plan.contactMs]){
+   const running=at(elapsed),paused=state.pause(running);
+   assert.equal(media.pitcherFrameFor(paused),media.pitcherFrameFor(running));
+   assert.deepEqual(media.ballPosition(paused),media.ballPosition(running));
+  }
+  assert.equal(game.stats.resolved,0);
+ }
+});
+test('un swing anticipado no teletransporta la pelota ni reinicia la secuencia de lanzamiento',()=>{
+ const game=fresh('survival'),early=state.swing(game,rules),release=media.releaseTime(game.plan);
+ assert.equal(media.ballPosition(early).visible,false);
+ const follow=state.advance(early,release,rules),ball=media.ballPosition(follow);
+ assert.equal(ball.x,media.RELEASE.x);assert.equal(ball.y,media.RELEASE.y);assert.equal(media.pitcherFrameFor(follow),3);
+ const contact=state.advance(game,game.plan.contactMs,rules),hit=state.swing(contact,rules);
+ assert.equal(media.ballPosition(hit).x,media.ballPosition(contact).x);assert.equal(media.ballPosition(hit).y,media.ballPosition(contact).y);
+});
+test('las poses del lanzador son WebP estáticos en un lienzo común, sin animación interna que siga durante la pausa',async()=>{
+ assert.equal(art.pitcher.frames.length,4);
+ for(const frame of art.pitcher.frames){
+  const bytes=await readFile(new URL('../public/'+frame.src,import.meta.url));
+  assert.equal(bytes.toString('ascii',0,4),'RIFF');
+  for(let i=12;i+8<=bytes.length;){
+   const type=bytes.toString('ascii',i,i+4),size=bytes.readUInt32LE(i+4);
+   assert.notEqual(type,'ANIM');assert.notEqual(type,'ANMF');
+   if(type==='VP8X'){
+    assert.equal(bytes[i+8]&2,0);
+    assert.equal(bytes.readUIntLE(i+12,3)+1,art.pitcher.canvas.width);
+    assert.equal(bytes.readUIntLE(i+15,3)+1,art.pitcher.canvas.height);
+   }
+   i+=8+size+size%2;
+  }
+ }
+});
 class ImageOK { set src(value){this.url=value;queueMicrotask(()=>this.onload?.());}get src(){return this.url;} }
 class ImageMissing { set src(value){this.url=value;queueMicrotask(()=>this.onerror?.());}get src(){return this.url;} }
 test('precarga conserva URL de los originales y señala recursos faltantes',async()=>{

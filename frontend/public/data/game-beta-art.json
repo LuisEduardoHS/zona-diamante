@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "canvas": { "width": 540, "height": 950 },
   "frames": [
     { "id": "ready", "src": "assets/img/juego/bateador/zd-sultanes-b1.webp", "offsetX": 65, "offsetY": 23 },
@@ -7,5 +7,15 @@
     { "id": "swing", "src": "assets/img/juego/bateador/zd-sultanes-b3.webp", "offsetX": 0, "offsetY": -1 },
     { "id": "follow", "src": "assets/img/juego/bateador/zd-sultanes-b4.webp", "offsetX": 0, "offsetY": 0 }
   ],
-  "animation": { "anticipateMs": 280, "loadUntilMs": 55, "swingUntilMs": 155, "followUntilMs": 470 }
+  "animation": { "anticipateMs": 280, "loadUntilMs": 55, "swingUntilMs": 155, "followUntilMs": 470 },
+  "pitcher": {
+    "canvas": { "width": 540, "height": 950 },
+    "frames": [
+      { "id": "windup", "src": "assets/img/juego/lanzador/zd-sultanes-L1.webp", "offsetX": 0, "offsetY": 0 },
+      { "id": "stride", "src": "assets/img/juego/lanzador/zd-sultanes-L2.webp", "offsetX": 0, "offsetY": 0 },
+      { "id": "throw", "src": "assets/img/juego/lanzador/zd-sultanes-L3.webp", "offsetX": 0, "offsetY": 0 },
+      { "id": "follow", "src": "assets/img/juego/lanzador/zd-sultanes-L4.webp", "offsetX": 0, "offsetY": 0 }
+    ]
+  },
+  "ball": { "src": "assets/img/juego/pelota-beisbjuego.webp" }
 }

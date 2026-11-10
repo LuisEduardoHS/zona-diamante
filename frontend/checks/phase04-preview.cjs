@@ -6,7 +6,7 @@ const path = require('node:path');
 const root = path.resolve(__dirname,'../public');
 const mime = {'.html':'text/html','.js':'text/javascript','.json':'application/json','.css':'text/css','.webp':'image/webp','.png':'image/png','.svg':'image/svg+xml','.woff2':'font/woff2','.ico':'image/x-icon'};
 const guest = `export const proveedorSupabase=Object.fromEntries(['iniciarSesion','crearCuenta','solicitarRestablecimiento','restablecerContrasena','obtenerPerfil','actualizarPerfil','cerrarSesion'].map(k=>[k,async()=>{throw new Error('Guest-only local review')}]).concat([['observarSesion',fn=>{fn({cargando:false,user:null,profile:null});return()=>{}}]]));`;
-const fixture = `import {iniciarJuego as mount} from './game-page.js';
+const fixture = `import {iniciarJuego as mount} from './game-page.js?v=20261110-game-art';
 export function iniciarJuego(signal){
  let time=0,next=0;const queue=new Map();
  const handle=mount(signal,{clock:{now:()=>time,requestFrame:fn=>{queue.set(++next,fn);return next},cancelFrame:id=>queue.delete(id)}});

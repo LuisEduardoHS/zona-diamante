@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <link rel="icon" type="image/svg+xml" href="../../assets/logo-naranja.svg">
     <title>Juego | Zona Diamante</title>
-    <link href="../../css/output.css?v=20261109-info" rel="stylesheet">
+    <link href="../../css/output.css?v=20261110-game-art" rel="stylesheet">
 </head>
 <body class="game-beta-page">
 <div id="header-superior"></div>
@@ -14,11 +14,12 @@
         <div id="game-field" class="game-field" tabindex="-1" aria-label="Campo de béisbol. Toca cualquier parte de la tarjeta o pulsa Espacio para batear.">
           <div id="game-scene" class="game-scene">
             <img class="game-stadium" src="../../assets/img/juego/estadio.png" alt="" aria-hidden="true">
-            <div id="game-pitcher" class="game-pitcher" aria-hidden="true"><span class="game-pitcher-head"></span><span class="game-pitcher-body"></span><span class="game-pitcher-arm"></span><span class="game-pitcher-legs"></span></div>
+            <div class="game-pitcher-shadow" aria-hidden="true"></div>
+            <div id="game-pitcher" class="game-pitcher" role="img" aria-label="Lanzador de Sultanes"></div>
             <div id="game-contact" class="game-contact" aria-hidden="true"><span></span></div>
             <div class="game-batter-shadow" aria-hidden="true"></div>
             <div id="game-batter" class="game-batter" role="img" aria-label="Bateador de Sultanes"></div>
-            <div id="game-ball" class="game-ball" aria-hidden="true" hidden></div>
+            <div id="game-ball" class="game-ball" aria-hidden="true" hidden><img width="800" height="800" alt="" draggable="false"></div>
           </div>
         </div>
         <section data-game-screen="home" class="game-home" aria-label="Inicio del juego">
@@ -59,6 +60,6 @@
     </div>
 </main>
 <div id="menu-inferior"></div>
-<script type="module" src="../../js/app/main.js?v=20261109-info"></script>
+<script type="module" src="../../js/app/main.js?v=20261110-game-art"></script>
 </body>
 </html>

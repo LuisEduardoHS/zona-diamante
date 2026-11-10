@@ -72,7 +72,7 @@ async function montarSeccion(archivo, signal) {
         const { iniciarColeccion } = await import('../features/coleccion/collection-page.js?v=20261028-3');
         if (!signal.aborted) iniciarColeccion(signal);
     } else if (archivo === RUTAS.juego) {
-        const { iniciarJuego } = await import('../features/juego/ganar_juego.js?v=20261108-buffered');
+        const { iniciarJuego } = await import('../features/juego/ganar_juego.js?v=20261110-game-art');
         if (!signal.aborted) iniciarJuego(signal);
     } else if (archivo === RUTAS.camara) {
         const frame = document.getElementById('ar-frame');

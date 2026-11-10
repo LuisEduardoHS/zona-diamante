@@ -2,8 +2,8 @@ import { RUTAS, ruta, baseURL } from '../../app/rutas.js';
 import { observarEstadoSesion, obtenerEstadoSesion, establecerEstadoSesion } from '../auth/session.js';
 import { createGameEngine } from './game-engine.js';
 import { validateRules } from './game-state.js';
-import { validateArt, preloadSprites } from './game-media.js';
-import { installSprites, createGameView, resultPresentation } from './game-view.js';
+import { validateArt, preloadSprites, preloadImage } from './game-media.js?v=20261110-game-art';
+import { installSprites, createGameView, resultPresentation } from './game-view.js?v=20261110-game-art';
 import { bindBatInput } from './game-input.js';
 import { createBufferedEngine } from './game-buffered.js';
 import { obtenerColaPremiosJuego } from './game-rewards.js';
@@ -17,7 +17,7 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
     const lifecycle = new AbortController(), options = {signal:lifecycle.signal};
     const $ = id => root.querySelector('#'+id);
     const motion=createGameMotion();
-    let rules, manifest, sprites=[], engine=null, draw=null, screen='home', stopped=false;
+    let rules, manifest, sprites=[], pitcherSprites=[], engine=null, draw=null, screen='home', stopped=false;
     let user='guest', authenticated=false, completionId=null, starting=false, generation=0, officialRun=false, rewardsAvailable=true;
     let rewardQueue=null, unsubscribeQueue=()=>{};
     const show = next => {
@@ -73,7 +73,7 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
         motion.reset();
         starting=true;const ticket=++generation;const official=authenticated&&!practice&&rewardsAvailable;officialRun=official;access();clearNetwork();
         $('game-hit').disabled=true;
-        draw=createGameView(root,rules,sprites,manifest,motion);let viewRules=JSON.stringify(rules);
+        draw=createGameView(root,rules,sprites,manifest,motion,pitcherSprites);let viewRules=JSON.stringify(rules);
         $('game-session-note').textContent=official?'Partida oficial':'Práctica · sin puntos';
         root.querySelector('[data-game-screen="play"]').setAttribute('aria-label',official?'Partida oficial':'Partida de práctica');
         const onFrame=state=>{if(stopped||ticket!==generation)return;draw(state);if(state.phase==='finished')finish(state);};
@@ -86,7 +86,7 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
                     onSnapshot:s=>{if(stopped||ticket!==generation)return;
                         rewardsAvailable=s.rewarded_today<s.daily_limit;
                         $('game-session-note').textContent=!s.rules.economy.enabled?'Práctica · premios desactivados':rewardsAvailable?'Partida oficial':'Práctica · cupo diario agotado';
-                        const next=JSON.stringify(s.rules);if(next!==viewRules){draw.destroy();draw=createGameView(root,s.rules,sprites,manifest,motion);viewRules=next;}
+                        const next=JSON.stringify(s.rules);if(next!==viewRules){draw.destroy();draw=createGameView(root,s.rules,sprites,manifest,motion,pitcherSprites);viewRules=next;}
                         clearNetwork();
                         if(['expired','abandoned'].includes(s.phase)){show('home');$('game-network-note').hidden=false;$('game-network-note').textContent=s.phase==='expired'?'La partida expiró sin premio. Puedes iniciar otra.':'Partida abandonada sin premio.';}
                     },
@@ -161,10 +161,18 @@ export function iniciarJuego(signal, { clock = {}, fetcher = fetch } = {}) {
         try{
             [rules,manifest]=await Promise.all([load('data/game-beta-rules.json'),load('data/game-beta-art.json')]);
             validateRules(rules);if(!rules.modes.survival)throw new Error('Survival rules unavailable');validateArt(manifest);
-            sprites=await preloadSprites(manifest,{base:baseURL,signal:lifecycle.signal});if(stopped)return;
+            const mediaOptions={base:baseURL,signal:lifecycle.signal};
+            let ball;
+            [sprites,pitcherSprites,ball]=await Promise.all([
+                preloadSprites(manifest,mediaOptions),preloadSprites(manifest.pitcher,mediaOptions),preloadImage(manifest.ball.src,mediaOptions)
+            ]);if(stopped)return;
             installSprites($('game-batter'),sprites,manifest);
-            const missing=sprites.filter(s=>!s.available).length;
-            $('game-resource-note').hidden=!missing;$('game-resource-note').textContent=missing?'Faltan dibujos del bateador. Mostramos los disponibles.':'';
+            installSprites($('game-pitcher'),pitcherSprites,manifest.pitcher,'Lanzador no disponible');
+            const ballImage=$('game-ball').querySelector('img');
+            if(ball.available)ballImage.src=ball.url;
+            ballImage.hidden=!ball.available;$('game-ball').classList.toggle('is-fallback',!ball.available);
+            const missing=[...sprites,...pitcherSprites,ball].some(s=>!s.available);
+            $('game-resource-note').hidden=!missing;$('game-resource-note').textContent=missing?'Faltan algunas ilustraciones. Mostramos los recursos disponibles.':'';
             $('game-loading').hidden=true;$('game-loading-error').hidden=true;access();
         }catch(error){if(stopped||error.name==='AbortError')return;$('game-loading').hidden=true;$('game-loading-error').hidden=false;$('game-loading-error').textContent='No pudimos preparar el juego. Recarga para reintentar.';}
     })();

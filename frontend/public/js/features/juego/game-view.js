@@ -1,8 +1,8 @@
-import { ballPosition, CONTACT, contactCue, frameFor, usableFrame, spriteTransform } from './game-media.js';
+import { ballPosition, CONTACT, PITCHER, contactCue, frameFor, pitcherFrameFor, usableFrame, spriteTransform } from './game-media.js?v=20261110-game-art';
 
 export const RESULT_LABELS = {perfect:'¡Perfecto!',hit:'¡Hit!',early:'Muy pronto',late:'Muy tarde',no_swing:'Sin swing',pending:'Confirmando…'};
 const text = (node,value) => { if (node.textContent !== String(value)) node.textContent = String(value); };
-export function installSprites(container, sprites, manifest) {
+export function installSprites(container, sprites, manifest, placeholderLabel = 'Bateador no disponible') {
     container.replaceChildren();
     sprites.forEach((frame,index) => {
         if (!frame.available) return;
@@ -11,7 +11,7 @@ export function installSprites(container, sprites, manifest) {
         img.hidden = index !== usableFrame(0,sprites); container.append(img);
     });
     const placeholder = document.createElement('span'); placeholder.className = 'game-art-placeholder';
-    placeholder.textContent = 'Bateador no disponible'; placeholder.hidden = sprites.some(s => s.available); container.append(placeholder);
+    placeholder.textContent = placeholderLabel; placeholder.hidden = sprites.some(s => s.available); container.append(placeholder);
 }
 // Only confirmed server snapshots can populate credited points and balance.
 export function resultPresentation(state) {
@@ -30,15 +30,19 @@ export function resultPresentation(state) {
     return {credited,balance:confirmed?result.points_balance:null,bonus,note,
         toast:confirmed&&reward.status==='confirmed'&&credited>0?`+ ${credited} puntos`:null};
 }
-export function createGameView(root, rules, sprites, manifest, motion) {
+export function createGameView(root, rules, sprites, manifest, motion, pitcherSprites) {
     const $ = id => root.querySelector('#'+id), images = [...$('game-batter').querySelectorAll('[data-frame]')];
-    let lastPose = -2, lastProgress = '', segments=[];
+    const pitcherImages = [...$('game-pitcher').querySelectorAll('[data-frame]')];
+    let lastPose = -2, lastPitcherPose = -2, lastProgress = '', segments=[];
     let previousStats=null, previousCountdown=null, lastFeedback=null;
     const field = $('game-scene');
     let fieldWidth = field.clientWidth, fieldHeight = field.clientHeight;
     const resize = new ResizeObserver(([entry]) => { fieldWidth = entry.contentRect.width; fieldHeight = entry.contentRect.height; });
     resize.observe(field);
     $('game-contact').style.left = CONTACT.x*100+'%'; $('game-contact').style.top = CONTACT.y*100+'%';
+    $('game-pitcher').style.left = PITCHER.x*100+'%';
+    $('game-pitcher').style.top = (PITCHER.groundY-PITCHER.height)*100+'%';
+    $('game-pitcher').style.height = PITCHER.height*100+'%';
     const draw = state => {
         const paused = state.phase === 'paused', phase = paused ? state.pausedFrom : state.phase;
         const mode = rules.modes[state.mode];
@@ -90,8 +94,10 @@ export function createGameView(root, rules, sprites, manifest, motion) {
         $('game-batter').dataset.pose = String(pose);
         const ball = ballPosition(state);
         $('game-ball').hidden = !ball.visible;
-        $('game-ball').style.transform = `translate(${ball.x*fieldWidth}px,${ball.y*fieldHeight}px) translate(-50%,-50%) scale(${ball.scale})`;
-        $('game-pitcher').style.setProperty('--throw',phase === 'pitch' && state.elapsed < 240 ? '-55deg' : '0deg');
+        $('game-ball').style.transform = `translate(${ball.x*fieldWidth}px,${ball.y*fieldHeight}px) translate(-50%,-50%) scale(${ball.scale}) rotate(${ball.rotation || 0}deg)`;
+        const pitcherPose=usableFrame(pitcherFrameFor(state),pitcherSprites);
+        if(pitcherPose!==lastPitcherPose){pitcherImages.forEach(img=>{img.hidden=Number(img.dataset.frame)!==pitcherPose;});lastPitcherPose=pitcherPose;}
+        $('game-pitcher').dataset.pose=String(pitcherPose);
         const cue=contactCue(state);
         const message=paused?'En pausa':phase==='preparing'?'Prepárate':phase==='countdown'?'Prepárate':phase==='feedback'?RESULT_LABELS[state.last.type]:cue==='contact'?'¡Batea!':cue==='late'?'Muy tarde':'Espera…';
         text($('game-feedback'),message);

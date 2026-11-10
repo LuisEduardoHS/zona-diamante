@@ -7,7 +7,7 @@ for(const key of ['SUPABASE_URL','BACKEND_API_URL'])if(new URL(local[key]).hostn
 const publicConfig=Object.fromEntries(['SUPABASE_URL','SUPABASE_PUBLISHABLE_KEY','BACKEND_API_URL'].map(k=>[k,local[k]]));
 const types={'.html':'text/html','.js':'text/javascript','.json':'application/json','.css':'text/css','.webp':'image/webp','.png':'image/png','.svg':'image/svg+xml','.ttf':'font/ttf'};
 const review=`<!doctype html><html lang="es"><meta charset="utf-8"><title>QA oficial unificado local</title><h1>Auth, FastAPI y PostgreSQL locales</h1><p>Cuenta sintética local. Cada tiro usa el reloj real y el botón del juego.</p><button id="login">Iniciar sesión sintética local</button><p id="status">Preparado</p><a href="/pages/experiencias/juego.html?qa=bonus">Partida con bonus (8 hits)</a> · <a href="/pages/experiencias/juego.html?qa=base">Victoria base (5 hits)</a> · <a href="/pages/experiencias/juego.html?qa=max">Diez hits</a> · <a href="/pages/experiencias/juego.html?qa=lose">Derrota</a><script type="module">import {supabase} from '/js/services/supabase-client.js';document.querySelector('#login').onclick=async()=>{const {error}=await supabase.auth.signInWithPassword(${JSON.stringify({email:local.email,password:local.password})});document.querySelector('#status').textContent=error?'Error de sesión local':'Sesión sintética iniciada';};</script></html>`;
-const fixture=`import {iniciarJuego as mount} from './game-page.js';
+const fixture=`import {iniciarJuego as mount} from './game-page.js?v=20261110-game-art';
 import {observarEstadoSesion} from '../auth/session.js';
 export function iniciarJuego(signal){
  const handle=mount(signal);window.__officialQA=handle;

@@ -50,7 +50,7 @@ const base = process.env.MATCHES_FRONTEND || 'http://127.0.0.1:5500';
         const open = async () => {
             await page.goto(`${base}/pages/experiencias/juego.html`);
             await page.waitForFunction(() => !document.getElementById('game-start')?.disabled);
-            await page.evaluate(async () => { window.__bufferedQA = (await import('/js/features/juego/game-page.js')).iniciarJuego(); });
+            await page.evaluate(async () => { window.__bufferedQA = (await import('/js/features/juego/ganar_juego.js?v=20261110-game-art')).iniciarJuego(); });
         };
         const state = () => page.evaluate(() => window.__bufferedQA.state);
         const play = async () => {
