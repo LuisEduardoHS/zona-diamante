@@ -12,7 +12,7 @@ set local role service_role;
 do $$
 declare
     f record; t uuid; day date; slot smallint; job jsonb; again jsonb; token uuid;
-    tries integer:=0; prepared integer;
+    tries integer:=0; prepared integer; consent_stamp timestamptz;
 begin
     select * into f from email_fixture;
     if has_function_privilege('anon','public.prepare_trivia_emails(uuid,text)','EXECUTE')
@@ -20,11 +20,29 @@ begin
         or has_table_privilege('authenticated','public.trivia_email_deliveries','SELECT') then
         raise exception 'Email PII or delivery RPC exposed to browser roles.';
     end if;
-    if public.trivia_email_preference(f.uid) is not true then raise exception 'Default preference mismatch.'; end if;
-    perform public.trivia_email_preference(f.disabled,false);
+    if public.trivia_email_preference(f.uid) is not false then raise exception 'Default preference must be disabled.'; end if;
+    if (select consented_at is not null from public.email_preferences where user_id=f.uid) then raise exception 'Reading created consent.'; end if;
+    begin
+        update public.email_preferences set trivia_email_enabled=true,consented_at=clock_timestamp() where user_id=f.uid;
+        raise exception 'Enabled preference without version/source was accepted.';
+    exception when check_violation then null;
+    end;
     day:=(clock_timestamp() at time zone 'America/Monterrey')::date;
     slot:=case when extract(hour from clock_timestamp() at time zone 'America/Monterrey')>=12 then 1 else 0 end;
     select daily_trivia_id into t from public.get_or_create_daily_trivia(day,slot);
+    prepared:=public.prepare_trivia_emails(t,'America/Monterrey');
+    if exists(select 1 from public.trivia_email_deliveries where user_id=f.uid) then raise exception 'Account queued without opt-in.'; end if;
+    perform public.trivia_email_preference(f.uid,true);
+    perform public.trivia_email_preference(f.disabled,true);
+    perform public.trivia_email_preference(f.disabled,false);
+    perform public.trivia_email_preference(f.recent,true);
+    perform public.trivia_email_preference(f.unconfirmed,true);
+    perform public.trivia_email_preference(f.reserved,true);
+    select consented_at into consent_stamp from public.email_preferences where user_id=f.uid;
+    if consent_stamp is null or not exists(select 1 from public.email_preferences where user_id=f.uid
+        and consent_version='trivia-email-v1' and consent_source='profile') then raise exception 'Explicit opt-in has no evidence.'; end if;
+    perform public.trivia_email_preference(f.uid);
+    if (select consented_at from public.email_preferences where user_id=f.uid) is distinct from consent_stamp then raise exception 'Read changed opt-in evidence.'; end if;
     prepared:=public.prepare_trivia_emails(t,'America/Monterrey');
     if (select count(*) from public.trivia_email_deliveries where user_id=f.uid and trivia_id=t)<>1 then raise exception 'Eligible account was not queued.'; end if;
     if exists(select 1 from public.trivia_email_deliveries where user_id in (f.disabled,f.recent,f.unconfirmed,f.reserved)) then raise exception 'Ineligible/reserved account was queued.'; end if;

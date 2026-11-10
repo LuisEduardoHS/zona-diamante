@@ -65,21 +65,23 @@ def render_notice(job: dict) -> dict:
     play = settings.email_site_url.rstrip('/') + '/pages/experiencias/trivia.html'
     token = UUID(str(job['unsubscribe_token']))
     unsubscribe = settings.email_api_url.rstrip('/') + '/api/v1/email/trivia/unsubscribe/' + str(token)
-    subject = 'Ya hay una nueva trivia en Zona Diamante'
-    text = (f'Hola, {name}.\n\nTu nueva trivia de béisbol ya está disponible. '
-            f'Son {questions} preguntas y puedes ganar hasta {questions * points} puntos.\n\n'
-            f'Jugar: {play}\n\nDesactivar estos avisos: {unsubscribe}\nZona Diamante')
+    subject = 'Zona Diamante: nueva trivia disponible'
+    text = (f'Hola, {name}.\n\nPuedes consultar la trivia del periodo actual desde tu cuenta de Zona Diamante. '
+            f'Contiene {questions} preguntas. Puntuación máxima: {questions * points} puntos.\n\n'
+            f'Consultar trivia: {play}\n\nDisponible hasta el siguiente cambio de turno. '
+            'Recibes este aviso porque activaste los avisos de trivia en tu perfil.\n\n'
+            f'Desactivar estos avisos: {unsubscribe}\nZona Diamante')
     html = f'''<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head>
 <body style="margin:0;padding:24px 12px;background:#f4f7f8;color:#2b2b31;font-family:Arial,Helvetica,sans-serif">
 <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="max-width:560px;margin:auto;background:#ffffff;border-radius:20px;overflow:hidden">
 <tr><td style="padding:28px;background:#007f90;color:#ffffff;font-weight:bold;font-size:19px">ZONA DIAMANTE</td></tr>
 <tr><td style="padding:32px 28px"><p style="margin:0 0 14px;font-size:16px">Hola, {escape(name)}.</p>
-<h1 style="margin:0 0 16px;font-size:30px;line-height:1.15;color:#007f90">Tu siguiente reto ya está aquí</h1>
-<p style="font-size:16px;line-height:1.65;margin:0 0 22px">Hay una nueva trivia de béisbol esperándote. Pon a prueba lo que sabes y sigue sumando para tu colección.</p>
-<p style="background:#edf7f8;border-radius:12px;padding:18px;font-size:17px;margin:0 0 26px"><strong>{questions} preguntas</strong> · Hasta <strong>{questions * points} puntos</strong></p>
-<table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="background:#f78019;border-radius:12px"><a href="{escape(play, quote=True)}" style="display:inline-block;padding:16px 26px;color:#ffffff;font-size:17px;font-weight:bold;text-decoration:none">Jugar la trivia</a></td></tr></table>
-<p style="font-size:13px;line-height:1.6;color:#68747b;margin:24px 0 0">Entra con tu cuenta para guardar tus puntos. Esta trivia estará disponible hasta el siguiente cambio de turno.</p></td></tr>
-<tr><td style="padding:22px 28px;border-top:1px solid #e5ebee;font-size:12px;line-height:1.6;color:#68747b">Recibes este aviso porque tienes una cuenta en Zona Diamante.<br><a href="{escape(unsubscribe, quote=True)}" style="color:#007f90">Desactivar avisos de trivia</a> · Puedes cambiarlo también desde tu perfil.</td></tr>
+<h1 style="margin:0 0 16px;font-size:30px;line-height:1.15;color:#007f90">Trivia disponible</h1>
+<p style="font-size:16px;line-height:1.65;margin:0 0 22px">Puedes consultar la trivia del periodo actual desde tu cuenta de Zona Diamante.</p>
+<p style="background:#edf7f8;border-radius:12px;padding:18px;font-size:17px;margin:0 0 26px"><strong>{questions} preguntas</strong> · Puntuación máxima: <strong>{questions * points} puntos</strong></p>
+<table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="background:#f78019;border-radius:12px"><a href="{escape(play, quote=True)}" style="display:inline-block;padding:16px 26px;color:#ffffff;font-size:17px;font-weight:bold;text-decoration:none">Consultar trivia</a></td></tr></table>
+<p style="font-size:13px;line-height:1.6;color:#68747b;margin:24px 0 0">Disponible hasta el siguiente cambio de turno. Puedes administrar estos avisos desde Perfil.</p></td></tr>
+<tr><td style="padding:22px 28px;border-top:1px solid #e5ebee;font-size:12px;line-height:1.6;color:#68747b">Recibes este aviso porque activaste los avisos de trivia en tu perfil.<br><a href="{escape(unsubscribe, quote=True)}" style="color:#007f90">Desactivar avisos de trivia</a></td></tr>
 </table></body></html>'''
     return {'subject': subject, 'html': html, 'text': text}
 

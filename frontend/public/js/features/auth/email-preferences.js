@@ -6,14 +6,16 @@ export function iniciarPreferenciasCorreo(signal) {
     const input = form.querySelector('input'), button = form.querySelector('button');
     const status = form.querySelector('[role="status"]');
     let original = null;
-    const busy = value => { form.setAttribute('aria-busy', String(value)); input.disabled = value || original === null; button.disabled = value; };
+    const busy = value => { form.setAttribute('aria-busy', String(value)); input.disabled = value || original === null; button.disabled = value || (original !== null && input.checked === original); };
+    const actionLabel = () => { button.textContent = input.checked ? 'Activar avisos' : 'Desactivar avisos'; };
+    input.addEventListener('change', () => { actionLabel(); status.textContent = ''; busy(false); }, { signal });
     const load = async () => {
         busy(true); status.textContent = 'Cargando tus preferencias…';
         try {
             const data = await solicitarBackend('/api/v1/email/preferences', { signal });
             if (signal?.aborted) return;
             original = data.trivia_email_enabled; input.checked = original;
-            status.textContent = ''; button.textContent = 'Guardar preferencia';
+            status.textContent = original ? 'Avisos activos. Puedes desactivarlos aquí.' : 'Los avisos están desactivados. Marca la opción y pulsa Activar avisos para recibirlos.'; actionLabel();
         } catch (error) {
             if (signal?.aborted) return;
             status.textContent = 'No pudimos consultar tus avisos. Reintenta.'; button.textContent = 'Reintentar';
@@ -22,6 +24,7 @@ export function iniciarPreferenciasCorreo(signal) {
     form.addEventListener('submit', async event => {
         event.preventDefault();
         if (original === null) { await load(); return; }
+        if (input.checked === original) return;
         busy(true); status.textContent = 'Guardando…';
         try {
             const data = await solicitarBackend('/api/v1/email/preferences', {

@@ -11,12 +11,15 @@ def main():
     parser.add_argument('--linked', action='store_true', required=True)
     parser.add_argument('--with-migration', action='store_true')
     parser.add_argument('--with-recipient-migration', action='store_true')
+    parser.add_argument('--with-opt-in-migration', action='store_true')
     args = parser.parse_args()
     sql = 'begin;\n'
     if args.with_migration:
         sql += (ROOT / 'supabase/migrations/20261109000100_trivia_email_notifications.sql').read_text(encoding='utf-8')
     if args.with_recipient_migration:
         sql += (ROOT / 'supabase/migrations/20261110000100_trivia_email_public_recipients.sql').read_text(encoding='utf-8')
+    if args.with_opt_in_migration:
+        sql += (ROOT / 'supabase/migrations/20261110000200_trivia_email_explicit_opt_in.sql').read_text(encoding='utf-8')
     sql += '\n' + Path(__file__).with_name('trivia_email_database.sql').read_text(encoding='utf-8') + '\nrollback;\n'
     folder = ROOT / '.tmp/trivia-email'; folder.mkdir(parents=True, exist_ok=True)
     file = folder / 'transaction-check.sql'; file.write_text(sql, encoding='utf-8')

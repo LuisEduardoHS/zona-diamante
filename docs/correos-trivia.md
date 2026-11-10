@@ -118,13 +118,34 @@ Cron de Supabase. No hay temporizadores en el navegador para enviar emails.
 
 Se avisa a las cuentas registradas antes de iniciar el período, con correo
 confirmado, no eliminadas ni suspendidas, que no hayan completado esa trivia
-y mantengan activados los avisos. La preferencia inicial está activada y
-se puede desactivar en Perfil o desde un correo sin iniciar sesión. Abrir
+y hayan activado voluntariamente los avisos desde Perfil. La preferencia
+inicial está desactivada; crear una cuenta o consultar el perfil no suscribe.
+Se requiere marcar la opción y pulsar **Activar avisos**. La interfaz informa
+que pueden recibirse hasta dos avisos diarios.
+
+La migración `20261110000200_trivia_email_explicit_opt_in.sql`, aplicada el
+10 de noviembre de 2026, desactiva las preferencias automáticas anteriores y
+cancela sus trabajos aún no enviados. Las cuentas existentes también deben
+activar la opción de nuevo. Las entregas ya aceptadas conservan su historial
+y no se reenvían para intentar levantar el bloqueo de Gmail.
+
+El RPC de preferencia registra `consented_at`, `consent_version` y
+`consent_source` únicamente al recibir una activación explícita. El backend
+obtiene el usuario de su sesión; esos metadatos no se aceptan en el cuerpo
+del cliente. La restricción de la tabla impide activar una preferencia sin
+esa evidencia, y la cola la comprueba al preparar y tomar cada envío.
+Desactivar la opción conserva la evidencia de la última activación, pero
+impide nuevas entregas. Leer la preferencia no crea ni renueva la evidencia.
+
+Se pueden desactivar los avisos en Perfil o desde un correo sin iniciar sesión. Abrir
 el enlace de baja muestra confirmación; solamente el POST desactiva, para
 que un escáner de enlaces no dé de baja a la persona involuntariamente.
 
-Cada correo lleva nombre, cantidad de preguntas, máximo de puntos y enlace
-al sitio. Se envía individualmente; no comparte las direcciones de otros
+El asunto actual es **Zona Diamante: nueva trivia disponible**. El contenido
+describe la disponibilidad del periodo, la cantidad de preguntas y la
+puntuación máxima, con HTML, texto plano y enlace de baja. El pie explica
+que se recibe porque se activaron los avisos desde Perfil. Se envía
+individualmente; no comparte las direcciones de otros
 usuarios. Las tablas y RPC del sistema son exclusivas de `service_role`,
 con RLS y sin acceso directo para usuarios del navegador.
 
@@ -151,3 +172,7 @@ remitente sin verificar impiden iniciar la tanda.
   de una transacción revertida; nunca llama al proveedor ni envía correo.
 - `frontend/checks/trivia-email-browser.cjs`: interfaz real con API/cuenta
   simuladas y vista previa del HTML en tamaños de teléfono y escritorio.
+- Para verificar la migración de activación voluntaria antes de aplicarla:
+  `backend/venv/Scripts/python.exe backend/checks/check_trivia_email_database.py --linked --with-opt-in-migration`.
+  La comprobación se revierte por completo y nunca llama a Brevo. Después
+  de aplicarla, omitir `--with-opt-in-migration`.

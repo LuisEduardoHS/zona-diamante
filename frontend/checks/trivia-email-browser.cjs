@@ -30,6 +30,10 @@ const base = process.env.MATCHES_FRONTEND || 'http://127.0.0.1:5500';
         const form = page.locator('#perfil-avisos-form'), input = form.locator('input'), status = form.locator('[role="status"]');
         await input.waitFor(); await page.waitForFunction(() => !document.querySelector('#perfil-avisos-form input').disabled);
         assert.equal(await input.isChecked(), false);
+        assert.equal(await form.locator('button').isDisabled(), true);
+        assert.equal(patches, 0);
+        await form.dispatchEvent('submit');
+        assert.equal(patches, 0, 'Opening or saving an unchanged profile cannot opt in');
         await input.check(); await form.locator('button').click();
         await status.filter({ hasText: 'activados.' }).waitFor();
         assert.equal(enabled, true); assert.equal(patches, 1);
@@ -46,7 +50,7 @@ const base = process.env.MATCHES_FRONTEND || 'http://127.0.0.1:5500';
         for (const width of [320, 600]) {
             await preview.setViewportSize({ width, height: 900 });
             assert.equal(await preview.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
-            assert.equal(await preview.locator('h1').textContent(), 'Tu siguiente reto ya está aquí');
+            assert.equal(await preview.locator('h1').textContent(), 'Trivia disponible');
             await preview.screenshot({ path: path.join(output, `email-${width}.png`), fullPage: true });
         }
         console.log('PASS personalized email preview: 320px and 600px, no horizontal overflow');

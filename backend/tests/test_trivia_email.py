@@ -62,8 +62,21 @@ def test_preferences_bind_user_from_jwt_and_reject_identity_in_body(monkeypatch)
     r = client.patch('/api/v1/email/preferences', json={'trivia_email_enabled': False})
     assert r.status_code == 200 and r.json() == {'trivia_email_enabled': False}
     assert calls == [{'p_user_id': USER, 'p_enabled': False}]
-    for body in [{'trivia_email_enabled': 'false'}, {'trivia_email_enabled': True, 'user_id': str(uuid4())}]:
+    for body in [{'trivia_email_enabled': 'false'}, {'trivia_email_enabled': True, 'user_id': str(uuid4())},
+        {'trivia_email_enabled': True, 'consented_at': '2026-11-10T12:00:00Z'},
+        {'trivia_email_enabled': True, 'consent_source': 'profile'}]:
         assert client.patch('/api/v1/email/preferences', json=body).status_code == 422
+
+
+def test_reading_preference_does_not_opt_in(monkeypatch):
+    calls=[]
+    async def rpc(*args, **kwargs):
+        calls.append(kwargs['json']);return False
+    app.dependency_overrides[get_current_user] = lambda: CurrentUser(id=USER)
+    monkeypatch.setattr(mail, 'supabase_rest_request', rpc)
+    response=client.get('/api/v1/email/preferences')
+    assert response.status_code==200 and response.json()=={'trivia_email_enabled':False}
+    assert calls==[{'p_user_id':USER,'p_enabled':None}]
 
 
 def test_unsubscribe_get_is_read_only_and_post_works_without_session(monkeypatch):
@@ -86,6 +99,9 @@ def test_personalized_template_escapes_names_has_real_reward_and_no_images():
     assert 'trivia.html' in notice['html'] and TOKEN in notice['html']
     assert '<img' not in notice['html']
     assert 'display:none' not in notice['html']
+    assert notice['subject']=='Zona Diamante: nueva trivia disponible'
+    assert 'activaste los avisos de trivia en tu perfil' in notice['text']
+    assert 'activaste los avisos de trivia en tu perfil' in notice['html']
 
 
 def test_missing_provider_and_sender_are_configuration_errors(monkeypatch):

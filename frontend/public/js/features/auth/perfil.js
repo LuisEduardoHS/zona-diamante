@@ -2,7 +2,7 @@ import { actualizarPerfil, cerrarSesion, obtenerPerfil } from './service.js';
 import { esErrorSesionRequerida, redirigirAlLogin } from './guards.js';
 import { establecerEstadoSesion } from './session.js';
 import { RUTAS, ruta } from '../../app/rutas.js';
-import { iniciarPreferenciasCorreo } from './email-preferences.js';
+import { iniciarPreferenciasCorreo } from './email-preferences.js?v=20261110-opt-in';
 import { configurarNombreUsuario, establecerEstado, establecerFormularioCargando, mensajeErrorAutenticacion, mostrarPrimerError } from './auth-ui.js';
 
 const TIPOS_AVATAR = ['image/jpeg', 'image/png', 'image/webp'];
