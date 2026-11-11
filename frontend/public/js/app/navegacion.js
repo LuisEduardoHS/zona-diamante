@@ -82,7 +82,7 @@ async function montarSeccion(archivo, signal) {
             frame.src = urlAR.href;
         }
     } else if (archivo === RUTAS.ayuda) {
-        const { iniciarAyuda } = await import('../features/contenido/ayuda.js?v=20261111-feedback');
+        const { iniciarAyuda } = await import('../features/contenido/ayuda.js?v=20261111-feedback-2');
         if (!signal.aborted) iniciarAyuda(signal);
     } else if (archivo === RUTAS.informacion) {
         const { iniciarHistoria } = await import('../features/contenido/historia.js?v=20261109-info');

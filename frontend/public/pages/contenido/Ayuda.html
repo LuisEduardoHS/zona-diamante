@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="../../assets/logo-naranja.svg">
-    <link href="../../css/output.css?v=20261111-feedback" rel="stylesheet">
+    <link href="../../css/output.css?v=20261111-feedback-2" rel="stylesheet">
     <title>Ayuda | Zona Diamante</title>
 
 </head>
@@ -72,7 +72,7 @@
                 </div>
                 <label class="mt-4 block text-sm font-bold" for="ayuda-mensaje">Mensaje<textarea id="ayuda-mensaje" class="mt-2 min-h-28 w-full resize-y rounded-xl border border-[#d9d9d9] bg-[#fffaf1] p-3 text-sm outline-none focus:border-[#008298] focus:ring-2 focus:ring-[#008298]/20" required minlength="10" maxlength="4000" placeholder="Cuéntanos qué estabas intentando hacer..."></textarea></label>
                 <p class="mt-3 text-sm leading-6 text-[#6b6b72]">Para enviar, usa una cuenta con correo confirmado. <a class="font-bold text-[#008298] underline" href="../auth/login.html">Iniciar sesión</a>. No incluyas contraseñas ni información sensible.</p>
-                <button class="mt-4 rounded-xl bg-[#008298] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#006f7e]" type="submit">Enviar mensaje</button>
+                <button class="mt-4 rounded-xl bg-[#008298] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#006f7e] disabled:opacity-60" type="submit" disabled>Enviar mensaje</button>
                 <p id="ayuda-confirmacion" class="scroll-mb-[calc(var(--bottom-clearance)+16px)] mt-3 hidden text-sm font-bold text-[#008298]" role="status" aria-live="polite"></p>
             </form>
         </section>
@@ -83,7 +83,7 @@
 
 
     <!-- JAVASCRIPT -->
-    <script type="module" src="../../js/app/main.js?v=20261111-feedback"></script>
+    <script type="module" src="../../js/app/main.js?v=20261111-feedback-2"></script>
 
 </body>
 

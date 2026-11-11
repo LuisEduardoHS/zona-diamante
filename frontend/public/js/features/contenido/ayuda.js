@@ -92,4 +92,5 @@ export function iniciarAyuda(signal) {
             }
         }
     }, { signal });
+    if (boton) boton.disabled = false;
 }
