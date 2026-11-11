@@ -304,6 +304,7 @@ Las funciones nuevas pueden requerir cambios coordinados de base de datos, backe
 | [Imágenes de las cartas](docs/imagenes-cartas.md)         | Fuentes, manifiesto, Storage y publicación.                                |
 | [Correos de trivia](docs/correos-trivia.md)               | Preferencias, baja, cola, Brevo y programador.                             |
 | [Correos de autenticación](docs/correos-autenticacion.md) | Plantillas, SMTP y validación de los enlaces.                              |
+| [Comentarios de Ayuda](docs/comentarios-ayuda.md)         | Recepción privada, envío a soporte y configuración del relay de Gmail.     |
 
 `docs/` también conserva planes y evidencias de etapas anteriores. Esos documentos describen el estado de su implementación en ese momento; para el comportamiento actual, consulta el código, las migraciones y las guías de cada función.
 

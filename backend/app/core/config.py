@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     email_site_url: str = 'https://zona-diamante.pages.dev'
     email_api_url: str = 'https://zona-diamante.onrender.com'
     trivia_email_batch_size: int = Field(default=10, ge=1, le=20)
+    feedback_recipient_email: str = 'eduardohdz2111@gmail.com'
 
     frontend_origins: str = (
         "http://localhost:5500,"

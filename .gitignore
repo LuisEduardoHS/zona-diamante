@@ -19,6 +19,7 @@ Thumbs.db
 # Archivos de configuración de entorno
 .env
 **/.env
+backend.env
 
 # Frontend generated files
 frontend/public/vendor/supabase.js

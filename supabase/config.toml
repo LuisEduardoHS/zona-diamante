@@ -468,3 +468,7 @@ content_path = "./supabase/templates/auth/mfa_factor_enrolled.html"
 [auth.email.notification.mfa_factor_unenrolled]
 subject = "Verificación de seguridad eliminada | Zona Diamante"
 content_path = "./supabase/templates/auth/mfa_factor_unenrolled.html"
+
+# Server-to-server only: this function validates its own shared secret.
+[functions.help-feedback-email]
+verify_jwt = false

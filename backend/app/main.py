@@ -16,6 +16,7 @@ from app.api.routes.game_buffered import router as game_buffered_router
 from app.api.routes.email_notifications import router as email_notifications_router
 from app.api.routes.ar import router as ar_router
 from app.api.routes.matches import router as matches_router
+from app.api.routes.feedback import router as feedback_router
 
 configure_logging()
 
@@ -46,6 +47,7 @@ app.include_router(email_notifications_router)
 app.include_router(games_router)
 app.include_router(ar_router)
 app.include_router(matches_router)
+app.include_router(feedback_router)
 
 
 @app.get("/")
