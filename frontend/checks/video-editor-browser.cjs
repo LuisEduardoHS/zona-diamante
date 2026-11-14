@@ -55,12 +55,12 @@ const teams = ['sultanes-mty', 'dorados-chi', 'charros-jal', 'algodoneros-ul'];
             assert.ok(dialog.x >= 0 && dialog.x + dialog.width <= width);
             assert.ok(dialog.y >= 0 && dialog.y + dialog.height <= height);
             assert.ok(await page.locator('#equipo-video-dialog').evaluate(node => node.scrollWidth <= node.clientWidth), `${width}: no horizontal dialog overflow`);
-            assert.equal(await page.locator('[data-filter]').count(), 8);
+            assert.equal(await page.locator('[data-filter]').count(), 6);
             assert.equal(await css(), 'none');
             const startingLoads = loads;
             const frame = await page.locator('#equipo-video-stage iframe').elementHandle();
             const original = await page.locator('#equipo-video-stage').screenshot();
-            for (const preset of ['naranja', 'pastel', 'sobresaturado']) {
+            for (const preset of ['naranja', 'pastel', 'cine', 'calido', 'retro']) {
                 await page.locator(`[data-filter=${preset}]`).click();
                 assert.equal(await page.locator(`[data-filter=${preset}]`).getAttribute('aria-pressed'), 'true');
                 assert.notEqual(await css(), 'none');

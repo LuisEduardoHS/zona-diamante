@@ -2,10 +2,8 @@ const recetas = {
     original: { nombre: 'Original', pasos: [] },
     naranja: { nombre: 'Naranja', pasos: [['sepia', .42], ['saturate', 1.65], ['hue-rotate', -12], ['contrast', 1.06]] },
     pastel: { nombre: 'Pastel', pasos: [['contrast', .82], ['saturate', .72], ['brightness', 1.09]] },
-    sobresaturado: { nombre: 'Sobresaturado', pasos: [['saturate', 2.4], ['contrast', 1.12]] },
     cine: { nombre: 'Cine', pasos: [['contrast', 1.18], ['saturate', .8], ['brightness', .95]] },
     calido: { nombre: 'Cálido', pasos: [['sepia', .3], ['saturate', 1.35]] },
-    blancoNegro: { nombre: 'Blanco y negro', pasos: [['grayscale', 1]] },
     retro: { nombre: 'Retro', pasos: [['sepia', .6], ['contrast', .9], ['saturate', .8]] },
 };
 const numero = value => String(Number(value.toFixed(5)));

@@ -4,15 +4,15 @@ import { readFile } from 'node:fs/promises';
 const source = await readFile(new URL('../public/js/features/equipos/filtros-video.js', import.meta.url), 'utf8');
 const { FILTROS_VIDEO, AJUSTES_VIDEO, normalizarVideo, filtroCSSVideo, temperaturaVideo } = await import('data:text/javascript;base64,' + Buffer.from(source).toString('base64'));
 
-test('el original no altera el video y los tres nuevos estilos son distintos', () => {
+test('el original no altera el video y los estilos disponibles son distintos', () => {
     assert.equal(filtroCSSVideo(), 'none');
     assert.equal(FILTROS_VIDEO.original.css, 'none');
-    const values = ['naranja', 'pastel', 'sobresaturado'].map(filtro => filtroCSSVideo({ filtro }));
-    assert.equal(new Set(values).size, 3);
+    assert.deepEqual(Object.keys(FILTROS_VIDEO), ['original', 'naranja', 'pastel', 'cine', 'calido', 'retro']);
+    const values = ['naranja', 'pastel', 'cine', 'calido', 'retro'].map(filtro => filtroCSSVideo({ filtro }));
+    assert.equal(new Set(values).size, 5);
     assert.ok(values.every(value => value !== 'none'));
     assert.equal(FILTROS_VIDEO.naranja.nombre, 'Naranja');
     assert.equal(FILTROS_VIDEO.pastel.nombre, 'Pastel');
-    assert.equal(FILTROS_VIDEO.sobresaturado.nombre, 'Sobresaturado');
 });
 test('intensidad cero elimina solo el predefinido y conserva los ajustes manuales', () => {
     for (const filtro of Object.keys(FILTROS_VIDEO)) assert.equal(filtroCSSVideo({ filtro, intensidad: 0 }), 'none');
